@@ -1,16 +1,20 @@
 spring:
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:tcp://localhost/~/framework
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    url: jdbc:log4jdbc:h2:tcp://localhost/~/framework
     username: sa
     password:
 
     hikari:
       maximum-pool-size: 4
+      connection-test-query: SELECT NOW() FROM DUAL
 
   h2:
     console:
       enabled: true
+      path: /h2-console
+      settings:
+        trace: false
 server:
   port: 3000
 
@@ -20,7 +24,7 @@ mybatis:
   mapper-locations:
     classpath:mappers/*.xml
 
-  type-aliases-package: com.dejay.framework.model.*
+  type-aliases-package: com.dejay.framework.vo
 # set model property to camel case
   configuration:
     map-underscore-to-camel-case: true
@@ -30,7 +34,13 @@ mybatis:
 ## mapper logging level
 logging:
   level:
+    org:
+      springframework:
+        boot:
+          autoconfigure: INFO
     com:
       dejay:
         framework:
-          repository: TRACE
+          mapper: trace
+## Log Level Setting(default info)
+    root: warn

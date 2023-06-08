@@ -1,20 +1,18 @@
-package com.dejay.framework.model;
+package com.dejay.framework.vo;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Builder
+@ToString
 @Getter
-@Setter
-@AllArgsConstructor
-@EqualsAndHashCode(of = {"id", "name"})
-public class Member {
+public class MemberVO {
     private Long id;
-    @NonNull
     private String name;
     private String email;
-    @Builder.Default
+    @Setter
     private List<String> list = new ArrayList<>();
 }
