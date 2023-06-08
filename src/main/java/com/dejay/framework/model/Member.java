@@ -7,7 +7,6 @@ import java.util.List;
 
 @Builder
 @Getter
-@Setter
 @AllArgsConstructor
 @EqualsAndHashCode(of = {"id", "name"})
 public class Member {
