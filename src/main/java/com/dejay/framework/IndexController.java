@@ -2,11 +2,13 @@ package com.dejay.framework;
 
 import com.dejay.framework.model.Hello;
 import com.dejay.framework.model.Member;
-import com.dejay.framework.model.Test;
 import com.dejay.framework.service.MemberService;
-import com.dejay.framework.service.TestService;
+import com.dejay.framework.vo.MemberVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -18,30 +20,15 @@ public class IndexController {
     private static final String content = "%s";
     private final AtomicInteger counter = new AtomicInteger();
 
-    private TestService testService;
-    private MemberService memberService;
-
-    @Autowired
-    public IndexController(TestService testService, MemberService memberService) {
-        this.memberService = memberService;
-        this.testService = testService;
-    }
-
     @GetMapping("/")
-    public Hello index() {
+    public ResponseEntity index() {
         var hello = new Hello(counter.incrementAndGet(), String.format(content, "Dejay Framework"));
-        return hello;
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("headertest", "headervalue");
+
+        return ResponseEntity.ok().headers(headers).body(hello);
     }
 
-    @GetMapping("/test")
-    public List<Test> test() {
-        return testService.getTestList();
-    }
-
-    @GetMapping("/member")
-    public List<Member> member() {
-        return memberService.getMemberList();
-    }
 }
 
 

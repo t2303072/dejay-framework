@@ -13,19 +13,10 @@ import java.sql.Connection;
 
 @Slf4j
 @SpringBootApplication
-public class FrameworkApplication implements ApplicationRunner {
-	@Autowired
-	DataSource dataSource;
+public class FrameworkApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(FrameworkApplication.class, args);
 	}
 
-	@Override
-	public void run(ApplicationArguments args) throws Exception {
-        Connection connection = dataSource.getConnection();
-		log.info("DBCP: {}", dataSource.getClass());
-        log.info("Url: {}", connection.getMetaData().getURL());
-        log.info("UserName: {}", connection.getMetaData().getUserName());
-	}
 }
