@@ -46,4 +46,4 @@ logging:
         framework:
           mapper: trace
 ## Log Level Setting(default info)
-    root: warn
+    root: info
