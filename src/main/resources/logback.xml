@@ -25,7 +25,7 @@
 
     <logger name="jdbc.sqlonly" level="INFO"/>
     <logger name="jdbc.sqltiming" level="DEBUG"/>
-    <logger name="jdbc.audit" level="FALSE" additivity="false" />
+    <logger name="jdbc.audit" level="FALSE" />
     <logger name="jdbc.resultset" level="OFF"/>
     <logger name="jdbc.resultsettable" level="DEBUG"/>
 
