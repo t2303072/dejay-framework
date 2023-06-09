@@ -24,9 +24,7 @@ server:
 ## MyBatis
 # mapper.xml 위치 지정
 mybatis:
-  mapper-locations:
-    classpath:mybatis-mappers/**/*Mapper.xml
-
+  mapper-locations: classpath:mybatis-mappers/**/*Mapper.xml
   type-aliases-package: com.dejay.framework.vo
 # set model property to camel case
   configuration:
