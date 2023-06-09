@@ -5,9 +5,7 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Builder
 @Getter
-@AllArgsConstructor
 @EqualsAndHashCode(of = {"id", "name"})
 public class Member {
     private Long id;
@@ -16,4 +14,11 @@ public class Member {
     private String email;
     @Builder.Default
     private List<String> list = new ArrayList<>();
+
+    @Builder
+    public Member(Long id, String name, String email) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+    }
 }
