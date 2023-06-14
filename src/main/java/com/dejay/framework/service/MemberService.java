@@ -1,7 +1,7 @@
 package com.dejay.framework.service;
 
 import com.dejay.framework.mapper.MemberMapper;
-import com.dejay.framework.model.Member;
+import com.dejay.framework.domain.Member;
 import com.dejay.framework.vo.MemberVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

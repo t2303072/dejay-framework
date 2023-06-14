@@ -1,6 +1,6 @@
 package com.dejay.framework.mapper;
 
-import com.dejay.framework.model.Member;
+import com.dejay.framework.domain.Member;
 import com.dejay.framework.vo.MemberVO;
 import org.apache.ibatis.annotations.Mapper;
 

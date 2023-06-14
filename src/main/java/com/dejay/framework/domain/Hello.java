@@ -1,4 +1,4 @@
-package com.dejay.framework.model;
+package com.dejay.framework.domain;
 
 public record Hello(long id, String content) {
 }
