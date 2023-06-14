@@ -8,6 +8,14 @@ group = 'com.dejay'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
+sourceSets {
+	main {
+		resources {
+			srcDirs 'src/main/resources'
+		}
+	}
+}
+
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor

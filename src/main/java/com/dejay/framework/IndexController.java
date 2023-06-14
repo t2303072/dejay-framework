@@ -1,17 +1,11 @@
 package com.dejay.framework;
 
-import com.dejay.framework.model.Hello;
-import com.dejay.framework.model.Member;
-import com.dejay.framework.service.MemberService;
-import com.dejay.framework.vo.MemberVO;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.dejay.framework.domain.Hello;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @RestController
