@@ -11,31 +11,28 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     /**
-     * ResultVO as a return type
      * @param ex
      * @return ResultVO
      * @implNote @RequestBody, @RequestPart Exception handling
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<ResultVO> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-        this.printErrorLog(ex);
-        ResultVO resultVO = this.createResultVO(ExceptionCodeMsgEnum.ERR_INVALID_PARAM_EXISTS.getCode(), ExceptionCodeMsgEnum.ERR_INVALID_PARAM_EXISTS.getMsg(), this.gatherBindingErrors(ex));
+        this.printBindingErrorLog(ex);
+        ResultVO resultVO = new ResultVO(ExceptionCodeMsgEnum.ERR_INVALID_PARAM_EXISTS.getCode(), ExceptionCodeMsgEnum.ERR_INVALID_PARAM_EXISTS.getMsg(), this.gatherBindingErrors(ex));
         return ResponseEntity.badRequest().body(resultVO);
     }
 
     /**
-     * Map as a return type
      * @param ex
-     * @return
+     * @return Map<String, String>
+     * @implNote @RequestBody, @RequestPart Exception handling
      */
 //    @ExceptionHandler(MethodArgumentNotValidException.class)
 //    protected ResponseEntity<Map<String, String>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
@@ -46,35 +43,93 @@ public class GlobalExceptionHandler {
 //    }
 
     /**
-     * ResultVO as a return type
      * @param ex
-     * @return
+     * @return ResultVO
+     * @implNote @ModelAttribute Exception handling
      */
     @ExceptionHandler(BindException.class)
-    protected ResponseEntity<ResultVO> handleMethodArgumentNotValidException(BindException ex) {
-        this.printErrorLog(ex);
-        ResultVO resultVO = this.createResultVO(ExceptionCodeMsgEnum.ERR_INVALID_PARAM_EXISTS.getCode(), ExceptionCodeMsgEnum.ERR_INVALID_PARAM_EXISTS.getMsg(), this.gatherBindingErrors(ex));
+    protected ResponseEntity<ResultVO> handleBindException(BindException ex) {
+        this.printBindingErrorLog(ex);
+        ResultVO resultVO = new ResultVO(ExceptionCodeMsgEnum.ERR_INVALID_PARAM_EXISTS.getCode(), ExceptionCodeMsgEnum.ERR_INVALID_PARAM_EXISTS.getMsg(), this.gatherBindingErrors(ex));
         return ResponseEntity.badRequest().body(resultVO);
     }
 
+    /**
+     *
+     * @param ex
+     * @return ResultVO
+     * @implNote
+     */
+    @ExceptionHandler(IllegalArgumentException.class)
+    protected ResponseEntity<ResultVO> handleIllegalArgumentException(IllegalArgumentException ex) {
+        this.printRuntimeErrorLog(ex);
+        ResultVO resultVO = new ResultVO(ExceptionCodeMsgEnum.ERR_INVALID_PARAM_EXISTS.getCode(), ExceptionCodeMsgEnum.ERR_INVALID_PARAM_EXISTS.getMsg(), null);
+        return ResponseEntity.badRequest().body(resultVO);
+    }
+
+    /**
+     *
+     * @param ex
+     * @return ResultVO
+     * @implNote
+     */
+    @ExceptionHandler(NumberFormatException.class)
+    protected ResponseEntity<ResultVO> handleNumberFormatException(NumberFormatException ex) {
+        this.printRuntimeErrorLog(ex);
+        ResultVO resultVO = new ResultVO(ExceptionCodeMsgEnum.ERR_INVALID_NUMBER_FORMAT.getCode(), ExceptionCodeMsgEnum.ERR_INVALID_NUMBER_FORMAT.getMsg(), null);
+        return ResponseEntity.badRequest().body(resultVO);
+    }
+
+    /**
+     *
+     * @param ex
+     * @return ResultVO
+     * @implNote
+     */
+    @ExceptionHandler(NullPointerException.class)
+    protected ResponseEntity<ResultVO> handleNullPointerException(NumberFormatException ex) {
+        this.printRuntimeErrorLog(ex);
+        ResultVO resultVO = new ResultVO(ExceptionCodeMsgEnum.ERR_INVALID_NUMBER_FORMAT.getCode(), ExceptionCodeMsgEnum.ERR_INVALID_NUMBER_FORMAT.getMsg(), null);
+        return ResponseEntity.badRequest().body(resultVO);
+    }
+
+    /**
+     *
+     * @param ex
+     * @return ResultVO
+     * @implNote
+     */
+    @ExceptionHandler(ClassNotFoundException.class)
+    protected ResponseEntity<ResultVO> handleClassNotFoundException(ClassNotFoundException ex) {
+        log.error("[handleMethodArgumentNotValidException] => {}", ex.getMessage());
+        ResultVO resultVO = new ResultVO(ExceptionCodeMsgEnum.ERR_CLASS_NOT_FOUND.getCode(), ExceptionCodeMsgEnum.ERR_CLASS_NOT_FOUND.getMsg(), null);
+        return ResponseEntity.badRequest().body(resultVO);
+    }
+
+    /**
+     * @param ex
+     * @return ResultVO
+     * @implNote Server error handling
+     */
+    @ExceptionHandler(Exception.class)
+    protected ResponseEntity<ResultVO> handleException(Exception ex) {
+        log.error("[handleMethodArgumentNotValidException] => {}", ex.getMessage());
+        ResultVO resultVO = new ResultVO(ExceptionCodeMsgEnum.ERR_INVALID_PARAM_EXISTS.getCode(), ExceptionCodeMsgEnum.ERR_INVALID_PARAM_EXISTS.getMsg(), null);
+        return ResponseEntity.internalServerError().body(resultVO);
+    }
 
 // -----
     private <T extends BindException> List<FieldError> gatherBindingErrors(T ex) {
         List<FieldError> errList = new ArrayList<>();
         ex.getBindingResult().getAllErrors().forEach(c -> errList.add((FieldError) c));
-
         return errList;
     }
 
-    private ResultVO createResultVO(int code, String msg, List<FieldError> errList) {
-        ResultVO resultVO = new ResultVO();
-        resultVO.setCode(code);
-        resultVO.setMessage(msg);
-        resultVO.setFieldErrors(errList);
-
-        return resultVO;
-    }
-    private <T extends BindException> void printErrorLog(T ex) {
+    private <T extends BindException> void printBindingErrorLog(T ex) {
         log.error("[handleMethodArgumentNotValidException] => {}", ex.getBindingResult().getAllErrors());
+    }
+
+    private <T extends RuntimeException> void printRuntimeErrorLog(T ex) {
+        log.error("[handleMethodArgumentNotValidException] => {}", ex.getMessage());
     }
 }
