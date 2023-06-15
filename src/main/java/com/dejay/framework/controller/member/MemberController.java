@@ -7,6 +7,7 @@ import com.dejay.framework.vo.MemberVO;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.Response;
@@ -14,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -35,8 +38,13 @@ public class MemberController {
     @GetMapping("/{id}")
     public ResponseEntity findMemberById(@PathVariable int id, HttpServletResponse response) {
         MemberVO memberVO = memberService.findMemberById(id);
-
         return ResponseEntity.ok().body(memberVO);
     }
 
+    @PostMapping("request-param-validity")
+    public ResponseEntity requestParamTest(@RequestBody @Valid Member member/*, BindingResult bindingResult*/) {
+//        log.info(bindingResult.toString());
+        log.info(member.toString());
+        return ResponseEntity.ok(member);
+    }
 }

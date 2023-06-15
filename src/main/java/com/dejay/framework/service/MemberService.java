@@ -33,8 +33,8 @@ public class MemberService {
                 .name("John")
                 .build();
 
-        boolean validated = validationUtil.parameterValidator(member, Member.class);
-        log.info("validated => {}", String.valueOf(validated));
+//        boolean validated = validationUtil.parameterValidator(member, Member.class);
+//        log.info("validated => {}", String.valueOf(validated));
 
         log.info("member: {}", member.toString());
         return memberMapper.getMemberList();
@@ -45,6 +45,9 @@ public class MemberService {
                 .id(Long.valueOf(id))
                 .name("John")
                 .build();
+
+//        validationUtil.parameterValidator(member, Member.class);
+
         MemberVO memberVO = memberMapper.findMemberById(member);
 
         return memberVO;

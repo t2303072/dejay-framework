@@ -1,6 +1,6 @@
 package com.dejay.framework.common.utils;
 
-import com.dejay.framework.common.enums.ExceptionMsgEnum;
+import com.dejay.framework.common.enums.ExceptionCodeMsgEnum;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -32,7 +32,7 @@ public class ValidationUtil {
             for (ConstraintViolation<T> violation : validate) {
                 log.error("[parameterValidator] {}", violation.getMessage());
             }
-            throw new IllegalArgumentException(ExceptionMsgEnum.ERR_INVALID_PARAM_EXISTS.getMsg());
+            throw new IllegalArgumentException(ExceptionCodeMsgEnum.ERR_INVALID_PARAM_EXISTS.getMsg());
         }
 
         return true;
