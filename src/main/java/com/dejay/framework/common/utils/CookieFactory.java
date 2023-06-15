@@ -45,7 +45,7 @@ public class CookieFactory {
         Cookie cookie = this.findCookie(request, key);
         if(cookie != null) {
             cookie.setMaxAge(0);
-            cookie.setDomain("localhost");  // TODO: 유효 도메인으로 추후 변경 필요
+            cookie.setDomain("localhost");  // TODO:IJ 유효 도메인으로 추후 변경 필요
             cookie.setPath(request.getRequestURI());
             response.addCookie(cookie);
         }

@@ -27,7 +27,7 @@ public class ValidationUtil {
         Set<ConstraintViolation<T>> validate = validator.validate((clazz.cast(obj)));
 
         if(validate.size() > 0) {
-            log.error("{}", validate.toString());
+            log.error(validate.toString());
 
             for (ConstraintViolation<T> violation : validate) {
                 log.error("[parameterValidator] {}", violation.getMessage());

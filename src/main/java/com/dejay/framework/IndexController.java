@@ -30,6 +30,11 @@ public class IndexController {
         return ResponseEntity.ok().headers(headers).body(hello);
     }
 
+    /**
+     * 리다이렉션 샘플
+     * @param request
+     * @return
+     */
     @GetMapping("/redirect")
     public ResponseEntity redirect(HttpServletRequest request) {
         log.info("REDIRECT TEST");

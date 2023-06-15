@@ -26,11 +26,10 @@ public class MemberService {
         this.validationUtil = validationUtil;
     }
 
-    @Valid
     public List<Member> getMemberList() {
         var member = Member.builder()
                 .id(19L)
-                .userId("jane")
+//                .userId("jane")
                 .name("John")
                 .build();
 
