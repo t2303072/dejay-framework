@@ -1,5 +1,6 @@
 package com.dejay.framework.common.utils;
 
+import com.dejay.framework.common.enums.ExceptionMsgEnum;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -25,12 +26,13 @@ public class ValidationUtil {
         validator = validatorFactory.getValidator();
         Set<ConstraintViolation<T>> validate = validator.validate((clazz.cast(obj)));
 
-        for (ConstraintViolation<T> violation : validate) {
-            log.info("[parameterValidator] Error Message: {}", violation.getMessage());
-        }
         if(validate.size() > 0) {
-            log.info("{}", validate.toString());
-            throw new IllegalArgumentException("유효하지 않은 매개변수 값이 존재합니다.");
+            log.error("{}", validate.toString());
+
+            for (ConstraintViolation<T> violation : validate) {
+                log.error("[parameterValidator] {}", violation.getMessage());
+            }
+            throw new IllegalArgumentException(ExceptionMsgEnum.ERR_INVALID_PARAM_EXISTS.getMsg());
         }
 
         return true;

@@ -14,12 +14,15 @@ import java.util.List;
 @EqualsAndHashCode(of = {"id", "userId"})
 public class Member {
 
-    @Min(message = "id must be larger than 10", value = 10) private Long id;
-    @NotNull(message = "userId is required") String userId;
+    @Min(message = "아이디는 10보다 큰 수여야 합니다.", value = 10)
+    private Long id;
+    @NotNull(message = "유저 아이디는 필수값 입니다.")
+    private String userId;
     private String name;
     private String email;
     private List<String> list = new ArrayList<>();
     private ResultVO resultVO;
+
     @Builder
     public Member(Long id, String userId, String name, String email) {
         this.id = id;

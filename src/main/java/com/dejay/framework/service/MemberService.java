@@ -28,14 +28,14 @@ public class MemberService {
 
     @Valid
     public List<Member> getMemberList() {
-//        new Member("name", "email")
         var member = Member.builder()
-                .id(9L)
-//                .userId("jane")
+                .id(19L)
+                .userId("jane")
                 .name("John")
                 .build();
 
-        validationUtil.parameterValidator(member, Member.class);
+        boolean validated = validationUtil.parameterValidator(member, Member.class);
+        log.info("validated => {}", String.valueOf(validated));
 
         log.info("member: {}", member.toString());
         return memberMapper.getMemberList();

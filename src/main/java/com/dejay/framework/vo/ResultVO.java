@@ -3,7 +3,9 @@ package com.dejay.framework.vo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
+@ToString
 @Getter @Setter
 public class ResultVO {
 
@@ -11,7 +13,7 @@ public class ResultVO {
     private String message;
 
     public ResultVO() {
-        this.code = 0;
+        this.code = 200;
         this.message = "success";
     }
 }
