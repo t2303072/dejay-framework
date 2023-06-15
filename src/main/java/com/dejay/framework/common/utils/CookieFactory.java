@@ -19,7 +19,8 @@ public class CookieFactory {
 
     public static final String SESSION_COOKIE_NAME = "JSESSIONID";
 
-    public void setCookie(HttpServletResponse response,String key, String value, boolean httpOnly, boolean secure, String path, int maxAge, String domain) {
+    // TODO:IJ ResponseCookie 방식 전환 여부 확인 필요
+    public void setCookie(HttpServletResponse response, String domain, String path, String key, String value, boolean httpOnly, boolean secure, int maxAge) {
         Cookie cookie = new Cookie(key, value);
         cookie.setHttpOnly(httpOnly);
         cookie.setSecure(secure);

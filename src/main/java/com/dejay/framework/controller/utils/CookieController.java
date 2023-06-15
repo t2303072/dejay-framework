@@ -21,8 +21,8 @@ public class CookieController {
 
     @GetMapping("/set-cookie")
     public ResponseEntity setCookie(HttpServletRequest request, HttpServletResponse response) {
-        cookieFactory.setCookie(response, "res-cookie1", "cookie-test1", true, false, null, 0, null);
-        cookieFactory.setCookie(response, "res-cookie2", "cookie-test2", true, false, null, 0, null);
+        cookieFactory.setCookie(response, "localhost", "/", "res-cookie1", "cookie-test1", true, false, 0);
+        cookieFactory.setCookie(response, "localhost", "/", "res-cookie2", "cookie-test2", true, false, 0);
         return ResponseEntity.ok().build();
     }
 
