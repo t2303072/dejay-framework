@@ -3,23 +3,27 @@
 
     <!-- Properties -->
     <property name="LOG_DIR" value="logs" />
-    <property name="LOG_PATH_NAME" value="${LOG_DIR}/application.log" />
+    <property name="LOG_FILE_NAME" value="application" />
+    <property name="CONSOLE_ENCODING_PATTERN" value="[ %d{yyyy-MM-dd HH:mm:ss.SSS} ] %highlight(%-5level) %magenta(%-4relative) --- [ %thread{10} ] %cyan(%logger{20}) : %msg%n" />
+    <property name="FILE_ENCODING_PATTERN" value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %-4relative --- [ %thread{10} ] %logger{35} - %msg%n" />
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern> [ %d{yyyy-MM-dd HH:mm:ss.SSS} ] %highlight(%-5level) %magenta(%-4relative) --- [ %thread{10} ] %cyan(%logger{20}) : %msg%n </pattern>
+            <pattern>${CONSOLE_ENCODING_PATTERN}</pattern>
         </encoder>
     </appender>
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_PATH_NAME}</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_DIR}/%d{yyyy-MM}/application_%d{yyyy-MM-dd}.log</fileNamePattern>
+        <file>${LOG_DIR}/${LOG_FILE_NAME}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_DIR}/%d{yyyy-MM}/${LOG_FILE_NAME}_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxHistory>30</maxHistory>
+            <maxFileSize>1GB</maxFileSize>
+            <totalSizeCap>1GB</totalSizeCap>
         </rollingPolicy>
 
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %-4relative --- [ %thread{10} ] %logger{35} - %msg%n</pattern>
+            <pattern>${FILE_ENCODING_PATTERN}</pattern>
         </encoder>
     </appender>
 
