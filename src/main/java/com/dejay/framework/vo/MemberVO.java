@@ -13,6 +13,7 @@ public class MemberVO {
     private Long id;
     private String name;
     private String email;
+    @Setter
     private ResultVO resultVO;
 
     public MemberVO() {

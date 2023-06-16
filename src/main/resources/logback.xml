@@ -3,7 +3,7 @@
 
     <!-- Properties -->
     <property name="LOG_DIR" value="logs" />
-    <property name="LOG_PATH_NAME" value="${LOG_DIR}/application-log.log" />
+    <property name="LOG_PATH_NAME" value="${LOG_DIR}/application.log" />
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -14,7 +14,7 @@
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_PATH_NAME}</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_DIR}/%d{yyyy-MM}/application_.%d{yyyy-MM-dd_HH-mm}.log</fileNamePattern>
+            <fileNamePattern>${LOG_DIR}/%d{yyyy-MM}/application_%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
 
@@ -29,14 +29,13 @@
     <logger name="jdbc.resultset" level="OFF"/>
     <logger name="jdbc.resultsettable" level="DEBUG"/>
 
-    <!-- 3rdparty Loggers -->
     <logger name="org.springframework.core" level="info" />
     <logger name="org.springframework.beans" level="info" />
     <logger name="org.springframework.context" level="info" />
     <logger name="org.springframework.web" level="info" />
 
     <root level="INFO">
-        <appender-ref ref="CONSOLE"/> <!-- Console에 로그 출력 -->
+        <appender-ref ref="CONSOLE"/> <!-- Console 로그 출력 -->
         <appender-ref ref="FILE"/> <!-- 로그 File -->
     </root>
 

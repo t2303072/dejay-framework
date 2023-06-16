@@ -7,7 +7,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ResultCodeMsgEnum {
 
-    SUCCESS(200, "success"), FAIL(400, "fail")
+      SUCCESS(200, "success")
+    , FAIL(400, "fail")
+    , NO_DATA(1, "조회된 데이터가 없습니다.")
     ;
 
     private int code;

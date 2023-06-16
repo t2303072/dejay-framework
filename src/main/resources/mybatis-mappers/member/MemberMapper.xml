@@ -2,7 +2,7 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.dejay.framework.mapper.MemberMapper">
+<mapper namespace="com.dejay.framework.mapper.member.MemberMapper">
     <select id="getMemberList" resultType="MemberVO">
         SELECT * FROM MEMBER
     </select>

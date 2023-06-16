@@ -1,5 +1,6 @@
 package com.dejay.framework.vo;
 
+import com.dejay.framework.common.enums.ResultCodeMsgEnum;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,7 +19,12 @@ public class ResultVO {
     private List<FieldError> fieldErrors;
 
     public ResultVO() {
-        this.code = 200;
-        this.message = "success";
+        this.code = ResultCodeMsgEnum.SUCCESS.getCode();
+        this.message = ResultCodeMsgEnum.SUCCESS.getMsg();
+    }
+
+    public ResultVO(int code, String message) {
+        this.code = code;
+        this.message = message;
     }
 }

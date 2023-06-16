@@ -36,7 +36,7 @@ public class MemberController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity findMemberById(@PathVariable int id, HttpServletResponse response) {
+    public ResponseEntity findMemberById(@PathVariable int id) {
         MemberVO memberVO = memberService.findMemberById(id);
         return ResponseEntity.ok().body(memberVO);
     }
@@ -44,6 +44,7 @@ public class MemberController {
     @PostMapping("request-param-validity")
     public ResponseEntity requestParamTest(@RequestBody @Valid Member member/*, BindingResult bindingResult*/) {
 //        log.info(bindingResult.toString());
+        memberService.insertMember(member);
         log.info(member.toString());
         return ResponseEntity.ok(member);
     }

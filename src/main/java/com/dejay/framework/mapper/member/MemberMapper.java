@@ -1,4 +1,4 @@
-package com.dejay.framework.mapper;
+package com.dejay.framework.mapper.member;
 
 import com.dejay.framework.domain.Member;
 import com.dejay.framework.vo.MemberVO;
@@ -10,5 +10,5 @@ import java.util.List;
 public interface MemberMapper {
 
     List<Member> getMemberList();
-    MemberVO findMemberById(Member member);
+    MemberVO findMemberById(int id);
 }
