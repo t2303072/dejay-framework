@@ -1,4 +1,4 @@
-package com.dejay.framework.controller.exception;
+package com.dejay.framework.common.exception;
 
 import com.dejay.framework.common.enums.ExceptionCodeMsgEnum;
 import com.dejay.framework.vo.ResultVO;
