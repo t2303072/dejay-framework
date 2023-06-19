@@ -114,12 +114,12 @@ public class GlobalExceptionHandler {
      * @return ResultVO
      * @implNote Server error handling
      */
-    @ExceptionHandler(Exception.class)
+    /*@ExceptionHandler(Exception.class)
     protected ResponseEntity<ResultVO> handleException(Exception ex) {
         log.error("[handleException] => {}", ex.getMessage());
         resultVO = new ResultVO(ExceptionCodeMsgEnum.ERR_INVALID_PARAM_EXISTS.getCode(), ExceptionCodeMsgEnum.ERR_INVALID_PARAM_EXISTS.getMsg(), null);
         return ResponseEntity.internalServerError().body(resultVO);
-    }
+    }*/
 
     /**
      * @param ex
