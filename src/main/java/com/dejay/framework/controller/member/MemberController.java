@@ -20,7 +20,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -31,8 +33,9 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping(value = {"", "/"})
-    public List<Member> memberList() {
-        return memberService.getMemberList();
+    public ResponseEntity memberList() {
+        Map<String, Object> result = memberService.getMemberList();
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/{id}")

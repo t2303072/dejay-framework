@@ -1,6 +1,7 @@
 package com.dejay.framework.service;
 
 import com.dejay.framework.common.enums.ResultCodeMsgEnum;
+import com.dejay.framework.common.utils.CollectionUtil;
 import com.dejay.framework.common.utils.ValidationUtil;
 import com.dejay.framework.mapper.member.MemberMapper;
 import com.dejay.framework.domain.Member;
@@ -10,7 +11,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -20,7 +23,9 @@ public class MemberService {
     private final MemberMapper memberMapper;
     private final ValidationUtil validationUtil;
 
-    public List<Member> getMemberList() {
+    public Map<String, Object> getMemberList() {
+        Map<String, Object> result = new HashMap<String, Object>();
+
         var member = Member.builder()
                 .id(19L)
 //                .userId("jane")
@@ -29,7 +34,13 @@ public class MemberService {
 //        boolean validated = validationUtil.parameterValidator(member, Member.class);
         log.info("member: {}", member.toString());
 
-        return memberMapper.getMemberList();
+        List<MemberVO> memberList = memberMapper.getMemberList();
+        result.put("memberList", memberList);
+
+        ResultVO resultStatus = CollectionUtil.setResultVOwithListSize(memberList);
+        result.put("resultStatus", resultStatus);
+
+        return result;
     }
 
     public MemberVO findMemberById(int id) {

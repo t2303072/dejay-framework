@@ -20,7 +20,7 @@ public class LoggerInterceptor implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        log.info("Handler ==> {}", handler);
+        log.info("Callee ==> {}", handler);
     }
 
     @Override

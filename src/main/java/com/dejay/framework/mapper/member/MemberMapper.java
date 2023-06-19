@@ -9,6 +9,6 @@ import java.util.List;
 @Mapper
 public interface MemberMapper {
 
-    List<Member> getMemberList();
+    List<MemberVO> getMemberList();
     MemberVO findMemberById(int id);
 }
