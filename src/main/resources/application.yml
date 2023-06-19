@@ -12,6 +12,8 @@ spring:
       maximum-pool-size: 10
       connection-test-query: SELECT NOW() FROM DUAL
 
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
 #  h2:
 #    console:
 #      enabled: true
