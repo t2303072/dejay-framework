@@ -1,12 +1,12 @@
 spring:
   datasource:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    url: jdbc:log4jdbc:h2:tcp://localhost/~/framework
-    username: sa
-    password:
-#    url: jdbc:log4jdbc:mariadb://10.34.132.61:3306/DEJAY_PUBLIC
-#    username: dejay
-#    password: 132@dejay
+#    url: jdbc:log4jdbc:h2:tcp://localhost/~/framework
+#    username: sa
+#    password:
+    url: jdbc:log4jdbc:mariadb://10.34.220.168:3306/dejay_public
+    username: dejay
+    password: 221@dejay
 
     hikari:
       maximum-pool-size: 10

@@ -1,6 +1,5 @@
 package com.dejay.framework.common.config;
 
-import com.dejay.framework.common.filter.ApiFilter;
 import com.dejay.framework.common.interceptor.LoggerInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
