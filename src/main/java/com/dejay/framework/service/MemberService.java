@@ -1,19 +1,14 @@
 package com.dejay.framework.service;
 
-import com.dejay.framework.common.utils.CollectionUtil;
 import com.dejay.framework.common.utils.ValidationUtil;
 import com.dejay.framework.mapper.member.MemberMapper;
 import com.dejay.framework.domain.Member;
 import com.dejay.framework.vo.MemberVO;
-import com.dejay.framework.vo.ResultStatusVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 @Slf4j
@@ -38,14 +33,7 @@ public class MemberService {
     }
 
     public MemberVO findMemberById(int id) {
-        MemberVO memberVO = memberMapper.findMemberById(id);
-        if(memberVO == null) {
-            MemberVO resultVO = new MemberVO();
-//            resultVO.setResultVO(new ResultStatusVO(ResultCodeMsgEnum.NO_DATA.getCode(), ResultCodeMsgEnum.NO_DATA.getMsg()));
-            return resultVO;
-        }
-
-        return memberVO;
+        return memberMapper.findMemberById(id);
     }
 
     public MemberVO insertMember(Member member) {

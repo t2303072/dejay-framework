@@ -5,9 +5,13 @@ import com.dejay.framework.vo.ResultStatusVO;
 
 import java.util.List;
 
-public class CollectionUtil {
+public class ObjectHandlingUtil {
 
-    public static <T> ResultStatusVO setResultVOwithListSize(List<T> list) {
+    public static <T> ResultStatusVO setSingleObjResultVO(T obj) {
+        return obj == null ? new ResultStatusVO(ResultCodeMsgEnum.NO_DATA.getCode(), ResultCodeMsgEnum.NO_DATA.getMsg()) : new ResultStatusVO();
+    }
+
+    public static <T> ResultStatusVO setListResultVO(List<T> list) {
         return list.size() > 0 ? new ResultStatusVO() : new ResultStatusVO(ResultCodeMsgEnum.NO_DATA.getCode(), ResultCodeMsgEnum.NO_DATA.getMsg());
     }
 }
