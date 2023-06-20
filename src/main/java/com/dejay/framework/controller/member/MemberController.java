@@ -1,28 +1,21 @@
 package com.dejay.framework.controller.member;
 
-import com.dejay.framework.common.utils.CookieFactory;
+import com.dejay.framework.common.enums.MapKeyStringEnum;
+import com.dejay.framework.common.utils.CollectionUtil;
+import com.dejay.framework.common.utils.MapUtil;
 import com.dejay.framework.domain.Member;
 import com.dejay.framework.service.MemberService;
+import com.dejay.framework.service.TestService;
 import com.dejay.framework.vo.MemberVO;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import com.dejay.framework.vo.ResultStatusVO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -30,17 +23,36 @@ import java.util.Map;
 @RequestMapping("/member")
 public class MemberController {
 
+    private final TestService testService;
     private final MemberService memberService;
+    private final MapUtil mapUtil;
 
     @GetMapping(value = {"", "/"})
     public ResponseEntity memberList() {
-        Map<String, Object> result = memberService.getMemberList();
-        return ResponseEntity.ok(result);
+        List<MemberVO> memberList = memberService.getMemberList();
+        ResultStatusVO resultStatusVO = CollectionUtil.setResultVOwithListSize(memberList);
+
+        var mapKeyList = Arrays.asList(MapKeyStringEnum.TEST.getKey(), MapKeyStringEnum.MEMBER_LIST.getKey());
+        var dataList = new ArrayList<Object>();
+        dataList.add(testService.getTest());
+        dataList.add(memberList);
+
+        Map<String, Object> resultMap = mapUtil.responseObjWrapper(resultStatusVO, mapKeyList, dataList);
+
+        return ResponseEntity.ok(resultMap);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity findMemberById(@PathVariable int id) {
         MemberVO memberVO = memberService.findMemberById(id);
+        // TODO: 응답값 구조 변경건 설명
+//        ResultStatusVO resultStatus = memberService.findMemberById(id);
+//
+//        Map<String, Object> map = service.body(resultStatus, memberVO);
+//        HashMap<Object, Object> map = new HashMap<>();
+//        map.put(member);
+//        map.put(resultStatus);
+
         return ResponseEntity.ok().body(memberVO);
     }
 

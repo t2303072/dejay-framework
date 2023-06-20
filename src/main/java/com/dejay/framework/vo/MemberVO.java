@@ -10,16 +10,8 @@ import java.util.List;
 @ToString
 @Getter
 public class MemberVO {
+
     private Long id;
     private String name;
     private String email;
-    @Setter
-    private ResultVO resultVO;
-
-    public MemberVO() {
-        this.resultVO = new ResultVO();
-    }
-
-    @Setter
-    private List<String> list = new ArrayList<>();
 }

@@ -12,18 +12,18 @@ import java.util.List;
 @ToString
 @AllArgsConstructor
 @Getter @Setter
-public class ResultVO {
+public class ResultStatusVO {
 
     private int code;
     private String message;
     private List<FieldError> fieldErrors;
 
-    public ResultVO() {
+    public ResultStatusVO() {
         this.code = ResultCodeMsgEnum.SUCCESS.getCode();
         this.message = ResultCodeMsgEnum.SUCCESS.getMsg();
     }
 
-    public ResultVO(int code, String message) {
+    public ResultStatusVO(int code, String message) {
         this.code = code;
         this.message = message;
     }

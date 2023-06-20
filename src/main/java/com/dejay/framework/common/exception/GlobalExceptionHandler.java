@@ -1,7 +1,7 @@
 package com.dejay.framework.common.exception;
 
 import com.dejay.framework.common.enums.ExceptionCodeMsgEnum;
-import com.dejay.framework.vo.ResultVO;
+import com.dejay.framework.vo.ResultStatusVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
@@ -18,18 +18,18 @@ import java.util.List;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    ResultVO resultVO  = new ResultVO();
+    ResultStatusVO resultStatusVO = new ResultStatusVO();
 
     /**
      * @param ex
-     * @return ResultVO
+     * @return ResultStatusVO
      * @implNote @RequestBody, @RequestPart Exception handling
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    protected ResponseEntity<ResultVO> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+    protected ResponseEntity<ResultStatusVO> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         this.printBindingErrorLog(ex);
-        resultVO = new ResultVO(ExceptionCodeMsgEnum.ERR_INVALID_PARAM_EXISTS.getCode(), ExceptionCodeMsgEnum.ERR_INVALID_PARAM_EXISTS.getMsg(), this.gatherBindingErrors(ex));
-        return ResponseEntity.badRequest().body(resultVO);
+        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.INVALID_PARAM_EXISTS_ERROR.getCode(), ExceptionCodeMsgEnum.INVALID_PARAM_EXISTS_ERROR.getMsg(), this.gatherBindingErrors(ex));
+        return ResponseEntity.badRequest().body(resultStatusVO);
     }
 
     /**
@@ -47,90 +47,90 @@ public class GlobalExceptionHandler {
 
     /**
      * @param ex
-     * @return ResultVO
+     * @return ResultStatusVO
      * @implNote @ModelAttribute Exception handling
      */
     @ExceptionHandler(BindException.class)
-    protected ResponseEntity<ResultVO> handleBindException(BindException ex) {
+    protected ResponseEntity<ResultStatusVO> handleBindException(BindException ex) {
         this.printBindingErrorLog(ex);
-        resultVO = new ResultVO(ExceptionCodeMsgEnum.ERR_INVALID_PARAM_EXISTS.getCode(), ExceptionCodeMsgEnum.ERR_INVALID_PARAM_EXISTS.getMsg(), this.gatherBindingErrors(ex));
-        return ResponseEntity.badRequest().body(resultVO);
+        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.INVALID_PARAM_EXISTS_ERROR.getCode(), ExceptionCodeMsgEnum.INVALID_PARAM_EXISTS_ERROR.getMsg(), this.gatherBindingErrors(ex));
+        return ResponseEntity.badRequest().body(resultStatusVO);
     }
 
     /**
      *
      * @param ex
-     * @return ResultVO
+     * @return ResultStatusVO
      * @implNote
      */
     @ExceptionHandler(IllegalArgumentException.class)
-    protected ResponseEntity<ResultVO> handleIllegalArgumentException(IllegalArgumentException ex) {
+    protected ResponseEntity<ResultStatusVO> handleIllegalArgumentException(IllegalArgumentException ex) {
         this.printRuntimeErrorLog(ex);
-        resultVO = new ResultVO(ExceptionCodeMsgEnum.ERR_INVALID_PARAM_EXISTS.getCode(), ExceptionCodeMsgEnum.ERR_INVALID_PARAM_EXISTS.getMsg(), null);
-        return ResponseEntity.badRequest().body(resultVO);
+        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.INVALID_PARAM_EXISTS_ERROR.getCode(), ExceptionCodeMsgEnum.INVALID_PARAM_EXISTS_ERROR.getMsg(), null);
+        return ResponseEntity.badRequest().body(resultStatusVO);
     }
 
     /**
      *
      * @param ex
-     * @return ResultVO
+     * @return ResultStatusVO
      * @implNote
      */
     @ExceptionHandler(NumberFormatException.class)
-    protected ResponseEntity<ResultVO> handleNumberFormatException(NumberFormatException ex) {
+    protected ResponseEntity<ResultStatusVO> handleNumberFormatException(NumberFormatException ex) {
         this.printRuntimeErrorLog(ex);
-        resultVO = new ResultVO(ExceptionCodeMsgEnum.ERR_INVALID_NUMBER_FORMAT.getCode(), ExceptionCodeMsgEnum.ERR_INVALID_NUMBER_FORMAT.getMsg(), null);
-        return ResponseEntity.badRequest().body(resultVO);
+        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.INVALID_NUMBER_FORMAT_ERROR.getCode(), ExceptionCodeMsgEnum.INVALID_NUMBER_FORMAT_ERROR.getMsg(), null);
+        return ResponseEntity.badRequest().body(resultStatusVO);
     }
 
     /**
      *
      * @param ex
-     * @return ResultVO
+     * @return ResultStatusVO
      * @implNote
      */
     @ExceptionHandler(NullPointerException.class)
-    protected ResponseEntity<ResultVO> handleNullPointerException(NumberFormatException ex) {
+    protected ResponseEntity<ResultStatusVO> handleNullPointerException(NumberFormatException ex) {
         this.printRuntimeErrorLog(ex);
-        resultVO = new ResultVO(ExceptionCodeMsgEnum.ERR_INVALID_NUMBER_FORMAT.getCode(), ExceptionCodeMsgEnum.ERR_INVALID_NUMBER_FORMAT.getMsg(), null);
-        return ResponseEntity.badRequest().body(resultVO);
+        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.INVALID_NUMBER_FORMAT_ERROR.getCode(), ExceptionCodeMsgEnum.INVALID_NUMBER_FORMAT_ERROR.getMsg(), null);
+        return ResponseEntity.badRequest().body(resultStatusVO);
     }
 
     /**
      *
      * @param ex
-     * @return ResultVO
+     * @return ResultStatusVO
      * @implNote
      */
     @ExceptionHandler(ClassNotFoundException.class)
-    protected ResponseEntity<ResultVO> handleClassNotFoundException(ClassNotFoundException ex) {
+    protected ResponseEntity<ResultStatusVO> handleClassNotFoundException(ClassNotFoundException ex) {
         log.error("[handleClassNotFoundException] => {}", ex.getMessage());
-        resultVO = new ResultVO(ExceptionCodeMsgEnum.ERR_CLASS_NOT_FOUND.getCode(), ExceptionCodeMsgEnum.ERR_CLASS_NOT_FOUND.getMsg(), null);
-        return ResponseEntity.badRequest().body(resultVO);
+        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.CLASS_NOT_FOUND_ERROR.getCode(), ExceptionCodeMsgEnum.CLASS_NOT_FOUND_ERROR.getMsg(), null);
+        return ResponseEntity.badRequest().body(resultStatusVO);
     }
 
     /**
      * @param ex
-     * @return ResultVO
+     * @return ResultStatusVO
      * @implNote Server error handling
      */
     /*@ExceptionHandler(Exception.class)
-    protected ResponseEntity<ResultVO> handleException(Exception ex) {
+    protected ResponseEntity<ResultStatusVO> handleException(Exception ex) {
         log.error("[handleException] => {}", ex.getMessage());
-        resultVO = new ResultVO(ExceptionCodeMsgEnum.ERR_INVALID_PARAM_EXISTS.getCode(), ExceptionCodeMsgEnum.ERR_INVALID_PARAM_EXISTS.getMsg(), null);
+        resultVO = new ResultStatusVO(ExceptionCodeMsgEnum.ERR_INVALID_PARAM_EXISTS.getCode(), ExceptionCodeMsgEnum.ERR_INVALID_PARAM_EXISTS.getMsg(), null);
         return ResponseEntity.internalServerError().body(resultVO);
     }*/
 
     /**
      * @param ex
-     * @return ResultVO
+     * @return ResultStatusVO
      * @implNote Server error handling
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    protected ResponseEntity<ResultVO> handleException(HttpRequestMethodNotSupportedException ex) {
+    protected ResponseEntity<ResultStatusVO> handleException(HttpRequestMethodNotSupportedException ex) {
         log.error("[handleException] => {}", ex.getMessage());
-        resultVO = new ResultVO(ex.getBody().getStatus(), ex.getBody().getDetail(), null);
-        return ResponseEntity.badRequest().body(resultVO);
+        resultStatusVO = new ResultStatusVO(ex.getBody().getStatus(), ex.getBody().getDetail(), null);
+        return ResponseEntity.badRequest().body(resultStatusVO);
     }
 
 // -----

@@ -1,19 +1,20 @@
 package com.dejay.framework.service;
 
-import com.dejay.framework.common.enums.ResultCodeMsgEnum;
 import com.dejay.framework.common.utils.CollectionUtil;
 import com.dejay.framework.common.utils.ValidationUtil;
 import com.dejay.framework.mapper.member.MemberMapper;
 import com.dejay.framework.domain.Member;
 import com.dejay.framework.vo.MemberVO;
-import com.dejay.framework.vo.ResultVO;
+import com.dejay.framework.vo.ResultStatusVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 @Slf4j
 @RequiredArgsConstructor
@@ -23,31 +24,24 @@ public class MemberService {
     private final MemberMapper memberMapper;
     private final ValidationUtil validationUtil;
 
-    public Map<String, Object> getMemberList() {
-        Map<String, Object> result = new HashMap<String, Object>();
-
+    public List<MemberVO> getMemberList() {
         var member = Member.builder()
                 .id(19L)
 //                .userId("jane")
                 .name("John")
                 .build();
+        // TODO: 데이터 세팅값 검증 로직 설명
 //        boolean validated = validationUtil.parameterValidator(member, Member.class);
         log.info("member: {}", member.toString());
 
-        List<MemberVO> memberList = memberMapper.getMemberList();
-        result.put("memberList", memberList);
-
-        ResultVO resultStatus = CollectionUtil.setResultVOwithListSize(memberList);
-        result.put("resultStatus", resultStatus);
-
-        return result;
+        return memberMapper.getMemberList();
     }
 
     public MemberVO findMemberById(int id) {
         MemberVO memberVO = memberMapper.findMemberById(id);
         if(memberVO == null) {
             MemberVO resultVO = new MemberVO();
-            resultVO.setResultVO(new ResultVO(ResultCodeMsgEnum.NO_DATA.getCode(), ResultCodeMsgEnum.NO_DATA.getMsg()));
+//            resultVO.setResultVO(new ResultStatusVO(ResultCodeMsgEnum.NO_DATA.getCode(), ResultCodeMsgEnum.NO_DATA.getMsg()));
             return resultVO;
         }
 
@@ -60,7 +54,7 @@ public class MemberService {
                 .userId(member.getUserId())
                 .name(member.getName())
                 .build();
-        boolean validated = validationUtil.parameterValidator(memberVO, Member.class);
+//        boolean validated = validationUtil.parameterValidator(memberVO, Member.class);
 
         return new MemberVO();
     }

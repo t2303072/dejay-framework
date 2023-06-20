@@ -32,7 +32,7 @@ public class ValidationUtil {
             for (ConstraintViolation<T> violation : validate) {
                 log.error("[parameterValidator] {}", violation.getMessage());
             }
-            throw new IllegalArgumentException(ExceptionCodeMsgEnum.ERR_INVALID_PARAM_EXISTS.getMsg());
+            throw new IllegalArgumentException(ExceptionCodeMsgEnum.INVALID_PARAM_EXISTS_ERROR.getMsg());
         }
 
         return true;
