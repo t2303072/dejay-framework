@@ -36,14 +36,15 @@ public class MemberService {
         return memberMapper.findMemberById(id);
     }
 
-    public MemberVO insertMember(Member member) {
-        var memberVO = Member.builder()
-                .id(Long.valueOf(member.getId()))
+    public Member insertMember(Member member) {
+        var target = Member.builder()
                 .userId(member.getUserId())
                 .name(member.getName())
+                .email(member.getEmail())
                 .build();
-//        boolean validated = validationUtil.parameterValidator(memberVO, Member.class);
+        boolean validated = validationUtil.parameterValidator(target, Member.class);
+        memberMapper.insertMember(target);
 
-        return new MemberVO();
+        return target;
     }
 }

@@ -9,6 +9,7 @@ public enum MapKeyStringEnum {
 
       RESULT_STATUS("resultStatus")
     , DATA("data")
+    , MEMBER("member")
     , MEMBER_LIST("memberList")
     , TEST("test")
     ;

@@ -25,5 +25,7 @@ public class LoggerInterceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        // TODO: Request log save logic
+        log.info("로그 저장");
     }
 }
