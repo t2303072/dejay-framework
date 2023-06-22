@@ -38,8 +38,8 @@ public class MemberService {
 
     public Member insertMember(Member member) {
         var target = Member.builder()
-                .userId(member.getUserId())
-                .name(member.getName())
+                .memberId(member.getMemberId())
+                .memberName(member.getMemberName())
                 .email(member.getEmail())
                 .build();
         boolean validated = validationUtil.parameterValidator(target, Member.class);

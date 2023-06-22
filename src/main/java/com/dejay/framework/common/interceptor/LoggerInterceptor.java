@@ -1,20 +1,46 @@
 package com.dejay.framework.common.interceptor;
 
+import com.dejay.framework.domain.log.RestApi;
+import com.dejay.framework.mapper.log.RestApiMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.connector.RequestFacade;
+import org.apache.catalina.connector.ResponseFacade;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.WebRequestHandlerInterceptorAdapter;
 
 @Slf4j
+@RequiredArgsConstructor
 @Component
 public class LoggerInterceptor implements HandlerInterceptor {
 
+    private final RestApiMapper restApiMapper;
+    private RestApi restApi;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        log.info("Request URI ==> {}", request.getRequestURI());
+
+        if(restApi != null && restApi.getLogSeq() > 0 && request.getRequestURI().equals("/error")) {
+            restApi.setStatus(response.getStatus());
+            restApiMapper.updateApiAccessLog(restApi);
+            restApi = null;
+        }else {
+            restApi = RestApi.builder()
+                    .requestUri(request.getRequestURI())
+                    .httpMethod(request.getMethod())
+                    .status(response.getStatus())
+                    .regId("ijzone")
+                    .build();
+            log.info(restApi.toString());
+
+            restApiMapper.insertApiAccessLog(restApi);
+        }
+
+
         return true;
     }
 
@@ -25,7 +51,10 @@ public class LoggerInterceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        // TODO: Request log save logic
-        log.info("로그 저장");
+        if(restApi != null && (request.getRequestURI().equals("/error") || response.getStatus() != 200)) {
+            restApi.setStatus(response.getStatus());
+            log.info(restApi.toString());
+            restApiMapper.updateApiAccessLog(restApi);
+        }
     }
 }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dejay.framework.mapper.log.RestApiMapper">
+    <insert id="insertApiAccessLog" useGeneratedKeys="true">
+        INSERT INTO menu_log(MENU_PATH, HTTP_METHOD, REG_ID, REG_DTTM, STATUS)
+        VALUES (#{requestUri}, #{httpMethod}, #{regId}, sysdate(), #{status})
+        <selectKey keyProperty="logSeq" resultType="long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <update id="updateApiAccessLog">
+        UPDATE menu_log SET STATUS = #{status}, REG_DTTM = sysdate() WHERE LOG_SEQ = #{logSeq}
+    </update>
+</mapper>

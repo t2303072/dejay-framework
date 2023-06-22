@@ -8,11 +8,11 @@
     </select>
 
     <select id="findMemberById" resultType="MemberVO">
-        SELECT * FROM MEMBER WHERE ID = #{id}
+        SELECT * FROM MEMBER WHERE MEMBER_SEQ = #{id}
     </select>
 
     <insert id="insertMember" useGeneratedKeys="true">
-        INSERT INTO MEMBER(NAME, EMAIL) VALUES (#{name}, #{email})
+        INSERT INTO MEMBER(MEMBER_ID, MEMBER_NAME, EMAIL) VALUES (#{memberId}, #{memberName}, #{email})
         <selectKey keyProperty="id" resultType="long">
             SELECT LAST_INSERT_ID()
         </selectKey>
