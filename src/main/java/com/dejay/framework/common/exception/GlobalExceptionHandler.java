@@ -11,6 +11,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -133,6 +135,19 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(resultStatusVO);
     }
 
+    /**
+     * @param ex
+     * @return ResultStatusVO
+     * @implNote Server error handling
+     */
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    protected ResponseEntity<ResultStatusVO> handleException(SQLIntegrityConstraintViolationException ex) {
+        log.error("[handleException] => {}", ex.getMessage());
+        this.printSqlErrorLog(ex);
+        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.SQL_ERROR.getCode(), ExceptionCodeMsgEnum.SQL_ERROR.getMsg(), null);
+        return ResponseEntity.badRequest().body(resultStatusVO);
+    }
+
 // -----
     private <T extends BindException> List<FieldError> gatherBindingErrors(T ex) {
         List<FieldError> errList = new ArrayList<>();
@@ -150,5 +165,9 @@ public class GlobalExceptionHandler {
 
     private <T extends RuntimeException> void printRuntimeErrorLog(T ex) {
         log.error("[printRuntimeErrorLog] ", ex);
+    }
+
+    private <T extends SQLException> void printSqlErrorLog(T ex) {
+        log.error("[printSqlErrorLog] ", ex);
     }
 }
