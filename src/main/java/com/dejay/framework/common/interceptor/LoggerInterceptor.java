@@ -51,7 +51,7 @@ public class LoggerInterceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        if(restApi != null && (request.getRequestURI().equals("/error") || response.getStatus() != 200)) {
+        if(restApi != null && (request.getRequestURI().equals("/error") || restApi.getStatus() != response.getStatus())) {
             restApi.setStatus(response.getStatus());
             log.info(restApi.toString());
             restApiMapper.updateApiAccessLog(restApi);
