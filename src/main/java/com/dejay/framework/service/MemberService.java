@@ -22,11 +22,11 @@ public class MemberService {
     public List<MemberVO> getMemberList() {
         var member = Member.builder()
                 .id(19L)
-//                .userId("jane")
-                .name("John")
+                .memberId("jane")
+                .memberName("John")
                 .build();
         // TODO: 데이터 세팅값 검증 로직 설명
-//        boolean validated = validationUtil.parameterValidator(member, Member.class);
+        boolean validated = validationUtil.parameterValidator(member, Member.class);
         log.info("member: {}", member.toString());
 
         return memberMapper.getMemberList();

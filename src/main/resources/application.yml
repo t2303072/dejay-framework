@@ -1,16 +1,4 @@
 spring:
-  datasource:
-    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-#    url: jdbc:log4jdbc:h2:tcp://localhost/~/framework
-#    username: sa
-#    password:
-    url: jdbc:log4jdbc:mariadb://10.34.220.168:3306/dejay_public
-    username: dejay
-    password: 221@dejay
-
-    hikari:
-      maximum-pool-size: 10
-      connection-test-query: SELECT NOW() FROM DUAL
 
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
@@ -22,6 +10,11 @@ spring:
 #        trace: false
 server:
   port: 3000
+  context-path: /
+  encoding:
+    charset: UTF-8
+    enabled: true
+    force: true
 
 ## MyBatis
 # mapper.xml 위치 지정
@@ -34,16 +27,3 @@ mybatis:
     call-setters-on-nulls: true
     jdbc-type-for-null: varchar
 
-## mapper logging level
-logging:
-  level:
-    org:
-      springframework:
-        boot:
-          autoconfigure: info
-    com:
-      dejay:
-        framework:
-          mapper: trace
-## Log Level Setting(default info)
-    root: info

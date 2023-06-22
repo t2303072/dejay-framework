@@ -13,6 +13,7 @@ public enum ExceptionCodeMsgEnum {
     , SERVER_DATA_ERROR(996, "서버 데이터 에러")
     , NOT_EQUAL_OBJECT_SIZE(995, "비교 객체의 사이즈가 불일치 합니다.")
     , INVALID_PARAMETER_BINDING(994, "유효하지 않은 매개변수 값 입니다.")
+    , SQL_ERROR(993, "SQL 에러")
     ;
 
     private int code;
