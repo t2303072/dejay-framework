@@ -18,7 +18,7 @@ import java.util.List;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    ResultStatusVO resultStatusVO = new ResultStatusVO();
+    private ResultStatusVO resultStatusVO = new ResultStatusVO();
 
     /**
      * @param ex
@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<ResultStatusVO> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         this.printBindingErrorLog(ex);
-        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.INVALID_PARAM_EXISTS_ERROR.getCode(), ExceptionCodeMsgEnum.INVALID_PARAM_EXISTS_ERROR.getMsg(), this.gatherBindingErrors(ex));
+        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.INVALID_ARGUMENT_EXISTS.getCode(), ExceptionCodeMsgEnum.INVALID_ARGUMENT_EXISTS.getMsg(), this.gatherBindingErrors(ex));
         return ResponseEntity.badRequest().body(resultStatusVO);
     }
 
@@ -53,7 +53,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BindException.class)
     protected ResponseEntity<ResultStatusVO> handleBindException(BindException ex) {
         this.printBindingErrorLog(ex);
-        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.INVALID_PARAM_EXISTS_ERROR.getCode(), ExceptionCodeMsgEnum.INVALID_PARAM_EXISTS_ERROR.getMsg(), this.gatherBindingErrors(ex));
+        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.INVALID_ARGUMENT_EXISTS.getCode(), ExceptionCodeMsgEnum.INVALID_ARGUMENT_EXISTS.getMsg(), this.gatherBindingErrors(ex));
         return ResponseEntity.badRequest().body(resultStatusVO);
     }
 
@@ -66,7 +66,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     protected ResponseEntity<ResultStatusVO> handleIllegalArgumentException(IllegalArgumentException ex) {
         this.printRuntimeErrorLog(ex);
-        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.INVALID_PARAM_EXISTS_ERROR.getCode(), ExceptionCodeMsgEnum.INVALID_PARAM_EXISTS_ERROR.getMsg(), null);
+        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.INVALID_ARGUMENT_EXISTS.getCode(), ExceptionCodeMsgEnum.INVALID_ARGUMENT_EXISTS.getMsg(), null);
         return ResponseEntity.badRequest().body(resultStatusVO);
     }
 
@@ -79,7 +79,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NumberFormatException.class)
     protected ResponseEntity<ResultStatusVO> handleNumberFormatException(NumberFormatException ex) {
         this.printRuntimeErrorLog(ex);
-        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.INVALID_NUMBER_FORMAT_ERROR.getCode(), ExceptionCodeMsgEnum.INVALID_NUMBER_FORMAT_ERROR.getMsg(), null);
+        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.INVALID_NUMBER_FORMAT.getCode(), ExceptionCodeMsgEnum.INVALID_NUMBER_FORMAT.getMsg(), null);
         return ResponseEntity.badRequest().body(resultStatusVO);
     }
 
@@ -90,9 +90,9 @@ public class GlobalExceptionHandler {
      * @implNote
      */
     @ExceptionHandler(NullPointerException.class)
-    protected ResponseEntity<ResultStatusVO> handleNullPointerException(NumberFormatException ex) {
+    protected ResponseEntity<ResultStatusVO> handleNullPointerException(NullPointerException ex) {
         this.printRuntimeErrorLog(ex);
-        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.INVALID_NUMBER_FORMAT_ERROR.getCode(), ExceptionCodeMsgEnum.INVALID_NUMBER_FORMAT_ERROR.getMsg(), null);
+        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.INVALID_NUMBER_FORMAT.getCode(), ExceptionCodeMsgEnum.INVALID_NUMBER_FORMAT.getMsg(), null);
         return ResponseEntity.badRequest().body(resultStatusVO);
     }
 
@@ -105,7 +105,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ClassNotFoundException.class)
     protected ResponseEntity<ResultStatusVO> handleClassNotFoundException(ClassNotFoundException ex) {
         log.error("[handleClassNotFoundException] => {}", ex.getMessage());
-        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.CLASS_NOT_FOUND_ERROR.getCode(), ExceptionCodeMsgEnum.CLASS_NOT_FOUND_ERROR.getMsg(), null);
+        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.CLASS_NOT_FOUND.getCode(), ExceptionCodeMsgEnum.CLASS_NOT_FOUND.getMsg(), null);
         return ResponseEntity.badRequest().body(resultStatusVO);
     }
 
@@ -145,9 +145,10 @@ public class GlobalExceptionHandler {
         log.error("GlobalErrorCount => {}", String.valueOf(ex.getBindingResult().getGlobalErrorCount()));
         log.error("ErrorCount => {}", String.valueOf(ex.getBindingResult().getErrorCount()));
         log.error("FieldErrorCount => {}", String.valueOf(ex.getBindingResult().getFieldErrorCount()));
+        log.error("{}", ((MethodArgumentNotValidException) ex).getBody());
     }
 
     private <T extends RuntimeException> void printRuntimeErrorLog(T ex) {
-        log.error("[printRuntimeErrorLog] => {}", ex.getMessage());
+        log.error("[printRuntimeErrorLog] ", ex);
     }
 }

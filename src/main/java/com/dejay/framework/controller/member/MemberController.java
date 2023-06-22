@@ -44,6 +44,7 @@ public class MemberController {
 
         return ResponseEntity.ok(resultMap);
     }
+
     @PostMapping({"", "/"})
     public ResponseEntity insertMember(@RequestBody @Valid Member member) {
         Member inserted = memberService.insertMember(member);
@@ -56,15 +57,13 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.CREATED).body(resultMap);
     }
 
-
     @GetMapping("{id}")
     public ResponseEntity findMemberById(@PathVariable int id) {
         MemberVO memberVO = memberService.findMemberById(id);
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultVO(memberVO);
 
         var mapKeyList = Arrays.asList(MapKeyStringEnum.MEMBER_LIST.getKey());
-        var dataList = new ArrayList<Object>();
-        dataList.add(memberVO);
+        var dataList = Arrays.asList(memberVO);
         Map<String, Object> resultMap = mapUtil.responseObjWrapper(resultStatusVO, mapKeyList, dataList);
 
         return ResponseEntity.ok().body(resultMap);
@@ -72,11 +71,16 @@ public class MemberController {
 
     @PostMapping("request-param-validity")
     public ResponseEntity requestParamTest(@RequestBody @Valid Member member/*, BindingResult bindingResult*/) {
-                log.info(member.toString());
+        log.info(member.toString());
 //        log.info(bindingResult.toString());
         memberService.insertMember(member);
+        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultVO(member);
+        List<String> mapKeyList = Arrays.asList(MapKeyStringEnum.MEMBER.getKey());
+        List<Member> dataList = Arrays.asList(member);
 
-        return ResponseEntity.ok(member);
+        Map<String, Object> resultMap = mapUtil.responseObjWrapper(resultStatusVO, mapKeyList, dataList);
+
+        return ResponseEntity.ok(resultMap);
     }
 
 }
