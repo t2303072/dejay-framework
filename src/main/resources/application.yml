@@ -27,3 +27,10 @@ mybatis:
     call-setters-on-nulls: true
     jdbc-type-for-null: varchar
 
+
+# properties 관리
+properties:
+  jasypt:
+    encryptor:
+      bean: jasyptStringEncryptor
+      password: ${JASYPT_PASSWORD}
