@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<ResultStatusVO> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         this.printBindingErrorLog(ex);
-        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.INVALID_ARGUMENT_EXISTS.getCode(), ExceptionCodeMsgEnum.INVALID_ARGUMENT_EXISTS.getMsg(), this.gatherBindingErrors(ex));
+        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.INVALID_ARGUMENT_EXISTS.getCode(), ExceptionCodeMsgEnum.INVALID_ARGUMENT_EXISTS.getMsg(), ex.getMessage(), this.gatherBindingErrors(ex));
         return ResponseEntity.badRequest().body(resultStatusVO);
     }
 
@@ -55,7 +55,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BindException.class)
     protected ResponseEntity<ResultStatusVO> handleBindException(BindException ex) {
         this.printBindingErrorLog(ex);
-        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.INVALID_ARGUMENT_EXISTS.getCode(), ExceptionCodeMsgEnum.INVALID_ARGUMENT_EXISTS.getMsg(), this.gatherBindingErrors(ex));
+        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.INVALID_ARGUMENT_EXISTS.getCode(), ExceptionCodeMsgEnum.INVALID_ARGUMENT_EXISTS.getMsg(), ex.getMessage(), this.gatherBindingErrors(ex));
         return ResponseEntity.badRequest().body(resultStatusVO);
     }
 
@@ -68,7 +68,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     protected ResponseEntity<ResultStatusVO> handleIllegalArgumentException(IllegalArgumentException ex) {
         this.printRuntimeErrorLog(ex);
-        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.INVALID_ARGUMENT_EXISTS.getCode(), ExceptionCodeMsgEnum.INVALID_ARGUMENT_EXISTS.getMsg(), null);
+        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.INVALID_ARGUMENT_EXISTS.getCode(), ExceptionCodeMsgEnum.INVALID_ARGUMENT_EXISTS.getMsg(), ex.getMessage(), null);
         return ResponseEntity.badRequest().body(resultStatusVO);
     }
 
@@ -81,7 +81,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NumberFormatException.class)
     protected ResponseEntity<ResultStatusVO> handleNumberFormatException(NumberFormatException ex) {
         this.printRuntimeErrorLog(ex);
-        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.INVALID_NUMBER_FORMAT.getCode(), ExceptionCodeMsgEnum.INVALID_NUMBER_FORMAT.getMsg(), null);
+        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.INVALID_NUMBER_FORMAT.getCode(), ExceptionCodeMsgEnum.INVALID_NUMBER_FORMAT.getMsg(), ex.getMessage(), null);
         return ResponseEntity.badRequest().body(resultStatusVO);
     }
 
@@ -94,7 +94,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NullPointerException.class)
     protected ResponseEntity<ResultStatusVO> handleNullPointerException(NullPointerException ex) {
         this.printRuntimeErrorLog(ex);
-        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.INVALID_NUMBER_FORMAT.getCode(), ExceptionCodeMsgEnum.INVALID_NUMBER_FORMAT.getMsg(), null);
+        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.INVALID_NUMBER_FORMAT.getCode(), ExceptionCodeMsgEnum.INVALID_NUMBER_FORMAT.getMsg(), ex.getMessage(), null);
         return ResponseEntity.badRequest().body(resultStatusVO);
     }
 
@@ -107,7 +107,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ClassNotFoundException.class)
     protected ResponseEntity<ResultStatusVO> handleClassNotFoundException(ClassNotFoundException ex) {
         log.error("[handleClassNotFoundException] => {}", ex.getMessage());
-        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.CLASS_NOT_FOUND.getCode(), ExceptionCodeMsgEnum.CLASS_NOT_FOUND.getMsg(), null);
+        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.CLASS_NOT_FOUND.getCode(), ExceptionCodeMsgEnum.CLASS_NOT_FOUND.getMsg(), ex.getMessage(), null);
         return ResponseEntity.badRequest().body(resultStatusVO);
     }
 
@@ -129,9 +129,9 @@ public class GlobalExceptionHandler {
      * @implNote Server error handling
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    protected ResponseEntity<ResultStatusVO> handleException(HttpRequestMethodNotSupportedException ex) {
-        log.error("[handleException] => {}", ex.getMessage());
-        resultStatusVO = new ResultStatusVO(ex.getBody().getStatus(), ex.getBody().getDetail(), null);
+    protected ResponseEntity<ResultStatusVO> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException ex) {
+        log.error("[handleHttpRequestMethodNotSupportedException] => {}", ex.getMessage());
+        resultStatusVO = new ResultStatusVO(ex.getBody().getStatus(), ex.getBody().getDetail(), ex.getMessage(), null);
         return ResponseEntity.badRequest().body(resultStatusVO);
     }
 
@@ -141,10 +141,10 @@ public class GlobalExceptionHandler {
      * @implNote Server error handling
      */
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
-    protected ResponseEntity<ResultStatusVO> handleException(SQLIntegrityConstraintViolationException ex) {
+    protected ResponseEntity<ResultStatusVO> handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException ex) {
         log.error("[handleException] => {}", ex.getMessage());
         this.printSqlErrorLog(ex);
-        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.SQL_ERROR.getCode(), ExceptionCodeMsgEnum.SQL_ERROR.getMsg(), null);
+        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.SQL_ERROR.getCode(), ExceptionCodeMsgEnum.SQL_ERROR.getMsg(), ex.getMessage(), null);
         return ResponseEntity.badRequest().body(resultStatusVO);
     }
 

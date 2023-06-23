@@ -16,6 +16,7 @@ public class ResultStatusVO {
 
     private int code;
     private String message;
+    private String specificMsg;
     private List<FieldError> fieldErrors;
 
     public ResultStatusVO() {
