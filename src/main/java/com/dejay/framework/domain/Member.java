@@ -10,7 +10,7 @@ import java.util.List;
 
 @ToString(callSuper = false)
 @Getter
-@EqualsAndHashCode(of = {"id", "userId"})
+@EqualsAndHashCode(of = {"id", "memberId"})
 public class Member {
 
     @Min(message = "아이디는 0보다 큰 수여야 합니다.", value = 0)
