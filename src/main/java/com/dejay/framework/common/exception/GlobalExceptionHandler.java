@@ -11,6 +11,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
@@ -30,7 +32,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<ResultStatusVO> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         this.printBindingErrorLog(ex);
-        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.INVALID_ARGUMENT_EXISTS.getCode(), ExceptionCodeMsgEnum.INVALID_ARGUMENT_EXISTS.getMsg(), ex.getMessage(), this.gatherBindingErrors(ex));
+        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.INVALID_ARGUMENT_EXISTS.getCode(), ExceptionCodeMsgEnum.INVALID_ARGUMENT_EXISTS.getMsg(), null, this.gatherBindingErrors(ex));
         return ResponseEntity.badRequest().body(resultStatusVO);
     }
 
@@ -55,7 +57,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BindException.class)
     protected ResponseEntity<ResultStatusVO> handleBindException(BindException ex) {
         this.printBindingErrorLog(ex);
-        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.INVALID_ARGUMENT_EXISTS.getCode(), ExceptionCodeMsgEnum.INVALID_ARGUMENT_EXISTS.getMsg(), ex.getMessage(), this.gatherBindingErrors(ex));
+        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.INVALID_ARGUMENT_EXISTS.getCode(), ExceptionCodeMsgEnum.INVALID_ARGUMENT_EXISTS.getMsg(), null, this.gatherBindingErrors(ex));
         return ResponseEntity.badRequest().body(resultStatusVO);
     }
 
@@ -148,7 +150,19 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(resultStatusVO);
     }
 
-// -----
+    /**
+     * @param ex
+     * @return ResultStatusVO
+     * @implNote Server error handling
+     */
+    @ExceptionHandler(UnsupportedEncodingException.class)
+    protected ResponseEntity<ResultStatusVO> handleUnsupportedEncodingException(UnsupportedEncodingException ex) {
+        this.printIOExceptionLog(ex);
+        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.SQL_ERROR.getCode(), ExceptionCodeMsgEnum.SQL_ERROR.getMsg(), ex.getMessage(), null);
+        return ResponseEntity.badRequest().body(resultStatusVO);
+    }
+
+    // -----
     private <T extends BindException> List<FieldError> gatherBindingErrors(T ex) {
         List<FieldError> errList = new ArrayList<>();
         ex.getBindingResult().getAllErrors().forEach(c -> errList.add((FieldError) c));
@@ -169,5 +183,9 @@ public class GlobalExceptionHandler {
 
     private <T extends SQLException> void printSqlErrorLog(T ex) {
         log.error("[printSqlErrorLog] ", ex);
+    }
+
+    private <T extends IOException> void printIOExceptionLog(T ex) {
+        log.error("[printIOExceptionLog] ", ex);
     }
 }
