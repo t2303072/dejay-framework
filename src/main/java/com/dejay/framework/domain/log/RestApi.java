@@ -13,6 +13,7 @@ public class RestApi {
     private long logSeq;
     private String requestUri;
     private String httpMethod;
+    private String resultJson;
     @Setter
     private int status;
     private String regId;
