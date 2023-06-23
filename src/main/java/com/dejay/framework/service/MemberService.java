@@ -21,7 +21,7 @@ public class MemberService {
 
     public List<MemberVO> getMemberList() {
         var member = Member.builder()
-                .id(19L)
+                .memberSeq(19L)
                 .memberId("jane")
                 .memberName("John")
                 .build();

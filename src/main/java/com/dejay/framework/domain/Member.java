@@ -14,7 +14,7 @@ import java.util.List;
 public class Member {
 
     @Min(message = "아이디는 0보다 큰 수여야 합니다.", value = 0)
-    private Long id;
+    private Long memberSeq;
     @NotNull(message = "멤버 아이디는 필수값 입니다.")
     private String memberId;
     private String memberName;
@@ -23,8 +23,8 @@ public class Member {
     private List<String> list = new ArrayList<>();
 
     @Builder
-    public Member(Long id, String memberId, String memberName, String email) {
-        this.id = id;
+    public Member(Long memberSeq, String memberId, String memberName, String email) {
+        this.memberSeq = memberSeq;
         this.memberId = memberId;
         this.memberName = memberName;
         this.email = email;

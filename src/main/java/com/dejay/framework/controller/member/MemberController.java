@@ -8,6 +8,7 @@ import com.dejay.framework.service.MemberService;
 import com.dejay.framework.service.TestService;
 import com.dejay.framework.vo.MemberVO;
 import com.dejay.framework.vo.ResultStatusVO;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -62,7 +63,7 @@ public class MemberController {
         MemberVO memberVO = memberService.findMemberById(id);
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultVO(memberVO);
 
-        var mapKeyList = Arrays.asList(MapKeyStringEnum.MEMBER_LIST.getKey());
+        var mapKeyList = Arrays.asList(MapKeyStringEnum.MEMBER.getKey());
         var dataList = Arrays.asList(memberVO);
         Map<String, Object> resultMap = mapUtil.responseObjWrapper(resultStatusVO, mapKeyList, dataList);
 
