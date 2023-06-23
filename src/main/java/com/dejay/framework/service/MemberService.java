@@ -20,14 +20,13 @@ public class MemberService {
     private final ValidationUtil validationUtil;
 
     public List<MemberVO> getMemberList() {
-        var member = Member.builder()
-                .memberSeq(19L)
-                .memberId("jane")
-                .memberName("John")
-                .build();
-        // TODO: 데이터 세팅값 검증 로직 설명
-        boolean validated = validationUtil.parameterValidator(member, Member.class);
-        log.info("member: {}", member.toString());
+//        var member = Member.builder()
+//                .memberSeq(19L)
+//                .memberId("jane")
+//                .memberName("John")
+//                .build();
+//        boolean validated = validationUtil.parameterValidator(member, Member.class);
+//        log.info("member: {}", member.toString());
 
         return memberMapper.getMemberList();
     }
