@@ -13,10 +13,11 @@ import org.springframework.stereotype.Component;
 public class SessionFactory {
 
     private static final String SESSION_ID = "SESSION_ID";
+    private static final String LOGIN_MEMBER = "loginMember";
 
     public <T> void createSession(HttpServletRequest request, T obj) {
         HttpSession httpSession = request.getSession(true);
-        httpSession.setAttribute(SESSION_ID, obj);
+        httpSession.setAttribute(LOGIN_MEMBER, obj);
     }
 
     public void removeSession(HttpServletRequest request) {

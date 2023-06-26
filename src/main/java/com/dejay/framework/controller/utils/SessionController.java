@@ -2,6 +2,7 @@ package com.dejay.framework.controller.utils;
 
 import com.dejay.framework.common.utils.CookieFactory;
 import com.dejay.framework.common.utils.SessionFactory;
+import com.dejay.framework.domain.Member;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,11 @@ public class SessionController {
 
     @GetMapping({"", "/"})
     public ResponseEntity createSession(HttpServletRequest request, HttpServletResponse response) {
-        sessionFactory.createSession(request, "ijzone");
+        Member loginInfo = Member.builder()
+                .memberId("ijzone")
+                .memberName("이익주")
+                .build();
+        sessionFactory.createSession(request, loginInfo);
         return ResponseEntity.ok().build();
     }
 
