@@ -1,5 +1,6 @@
 package com.dejay.framework.domain;
 
+import com.dejay.framework.domain.common.Paging;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @ToString(callSuper = false)
 @Getter
-@EqualsAndHashCode(of = {"id", "memberId"})
+@EqualsAndHashCode(of = {"memberId", "memberName"})
 public class Member {
 
     @Min(message = "아이디는 0보다 큰 수여야 합니다.", value = 0)
