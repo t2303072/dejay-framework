@@ -12,6 +12,7 @@ public enum MapKeyStringEnum {
     , MEMBER("member")
     , MEMBER_LIST("memberList")
     , TEST("test")
+    , PAGING("paging")
     ;
 
     private String key;
