@@ -32,10 +32,8 @@ public class LoginInterceptor implements HandlerInterceptor {
                 .map(Cookie::getValue)
                 .findAny();
         if(session == null || session.getAttribute(jSessionId.get()) == null) {
-            log.info("미인증");
-
+//            response.sendRedirect("index");
             throw new LoginException();
-//            return false;
         }
 
 
