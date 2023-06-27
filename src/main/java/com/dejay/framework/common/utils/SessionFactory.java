@@ -1,6 +1,7 @@
 package com.dejay.framework.common.utils;
 
 import com.dejay.framework.domain.Member;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
@@ -35,8 +36,12 @@ public class SessionFactory {
     public Member getLoginUserInfo(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if(session == null) return null;
-        String loginId = (String) session.getAttribute(SessionEnum.SESSION_ID.getSessionKey());
-        Member member = Member.builder().memberId(loginId).build();
+
+        CookieFactory cookieFactory = new CookieFactory();
+        Cookie jSessionId = cookieFactory.findCookie(request, SessionEnum.SESSION_ID.getSessionKey());
+        if(jSessionId == null) return null;
+
+        Member member = (Member) session.getAttribute(jSessionId.getValue());
         log.info(member.toString());
 
         return member;

@@ -1,14 +1,17 @@
 package com.dejay.framework.controller.utils;
 
+import com.dejay.framework.common.enums.MapKeyStringEnum;
+import com.dejay.framework.common.enums.ResultCodeMsgEnum;
 import com.dejay.framework.common.utils.CookieFactory;
+import com.dejay.framework.common.utils.MapUtil;
 import com.dejay.framework.common.utils.SessionFactory;
 import com.dejay.framework.domain.Member;
+import com.dejay.framework.vo.ResultStatusVO;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
+import java.util.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -25,6 +29,8 @@ import java.net.URI;
 public class SessionController {
 
     private final SessionFactory sessionFactory;
+    private final CookieFactory cookieFactory;
+    private final MapUtil mapUtil;
 
     @GetMapping({"", "/"})
     public ResponseEntity createSession(HttpServletRequest request, HttpServletResponse response) {
@@ -45,10 +51,23 @@ public class SessionController {
 
     @GetMapping("/login-test")
     public ResponseEntity sessionLogin(HttpServletRequest request) {
-        sessionFactory.getLoginUserInfo(request);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(URI.create("/index"));
-        return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
+        ResultStatusVO resultStatusVO = new ResultStatusVO();
+        List<String> mapKeyList = new ArrayList<>();
+        List<Object> dataList = new ArrayList<>();
+        Map<String, Object> resultMap;
+
+        Cookie cookie = cookieFactory.findCookie(request, SessionFactory.SessionEnum.SESSION_ID.getSessionKey());
+        if(cookie == null) {
+            resultStatusVO = new ResultStatusVO(ResultCodeMsgEnum.NO_COOKIE.getCode(), ResultCodeMsgEnum.NO_COOKIE.getMsg());
+        }else {
+            mapKeyList.add(MapKeyStringEnum.MEMBER.getKeyString());
+            Member loginUserInfo = sessionFactory.getLoginUserInfo(request);
+            dataList.add(loginUserInfo);
+            if(loginUserInfo == null) resultStatusVO = new ResultStatusVO(ResultCodeMsgEnum.NOT_LOGGED_IN.getCode(), ResultCodeMsgEnum.NOT_LOGGED_IN.getMsg());
+        }
+
+        resultMap = mapUtil.responseEntityBodyWrapper(resultStatusVO, mapKeyList, dataList);
+        return ResponseEntity.ok(resultMap);
     }
 
 }

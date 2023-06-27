@@ -15,5 +15,5 @@ public enum MapKeyStringEnum {
     , PAGING("paging")
     ;
 
-    private String key;
+    private String keyString;
 }
