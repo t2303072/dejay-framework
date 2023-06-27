@@ -21,6 +21,13 @@ public class ValidationUtil {
         this.validator = validator;
     }
 
+    /**
+     * 생성된 객체에 대한 검증
+     * @param obj {@link Object}  검증 대상 객체
+     * @param clazz {@link Class} 대상 객체 클래스
+     * @return {@link Boolean}
+     * @param <T>
+     */
     public <T> boolean parameterValidator(T obj, Class<T> clazz) {
         validatorFactory = Validation.buildDefaultValidatorFactory();
         validator = validatorFactory.getValidator();

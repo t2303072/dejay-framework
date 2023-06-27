@@ -20,6 +20,18 @@ public class CookieFactory {
     public static final String SESSION_COOKIE_NAME = "JSESSIONID";
 
     // TODO: IJ ResponseCookie 방식 전환 여부 확인 필요
+
+    /**
+     * 쿠키 생성
+     * @param response {@link HttpServletResponse}
+     * @param domain {@link String} 도메인
+     * @param path {@link String} 경로
+     * @param key {@link String} 쿠키 키 값
+     * @param value {@link String} 쿠키 밸류 값
+     * @param httpOnly {@link Boolean}
+     * @param secure {@link Boolean}
+     * @param maxAge {@link Integer}
+     */
     public void setCookie(HttpServletResponse response, String domain, String path, String key, String value, boolean httpOnly, boolean secure, int maxAge) {
         Cookie cookie = new Cookie(key, value);
         cookie.setHttpOnly(httpOnly);
@@ -31,6 +43,12 @@ public class CookieFactory {
         response.addCookie(cookie);
     }
 
+    /**
+     * 쿠키 조회
+     * @param request {@link HttpServletRequest}
+     * @param cookieName {@link String}
+     * @return cookie {@link Cookie}
+     */
     public Cookie findCookie(HttpServletRequest request, String cookieName) {
         Cookie[] cookies = request.getCookies();
         if(cookies == null) {
@@ -42,6 +60,13 @@ public class CookieFactory {
                 .findAny()
                 .orElse(null);
     }
+
+    /**
+     * 쿠키 제거
+     * @param request {@link HttpServletRequest}
+     * @param response {@link HttpServletResponse}
+     * @param key {@link String} 쿠키 키 값
+     */
     public void removeCookie(HttpServletRequest request, HttpServletResponse response, String key) {
         Cookie cookie = this.findCookie(request, key);
         if(cookie != null) {
@@ -52,6 +77,11 @@ public class CookieFactory {
         }
     }
 
+    /**
+     * 쿠키 리스트 추출
+     * @param request {@link HttpServletRequest}
+     * @return list {@link List}
+     */
     public List<Cookie> getCookieList(HttpServletRequest request) {
         List<Cookie> list = new ArrayList<Cookie>();
         if(request.getCookies() != null && request.getCookies().length > 0) {
