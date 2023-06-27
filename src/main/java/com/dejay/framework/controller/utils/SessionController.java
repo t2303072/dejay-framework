@@ -32,6 +32,7 @@ public class SessionController {
                 .memberId("ijzone")
                 .memberName("이익주")
                 .build();
+        // TODO: IJ 사용자 로그인 정보 조회 로직 추가
         sessionFactory.createSession(request, loginInfo);
         return ResponseEntity.ok().build();
     }

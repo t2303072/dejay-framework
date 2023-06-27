@@ -19,7 +19,7 @@ public class CookieFactory {
 
     public static final String SESSION_COOKIE_NAME = "JSESSIONID";
 
-    // TODO:IJ ResponseCookie 방식 전환 여부 확인 필요
+    // TODO: IJ ResponseCookie 방식 전환 여부 확인 필요
     public void setCookie(HttpServletResponse response, String domain, String path, String key, String value, boolean httpOnly, boolean secure, int maxAge) {
         Cookie cookie = new Cookie(key, value);
         cookie.setHttpOnly(httpOnly);
@@ -46,7 +46,7 @@ public class CookieFactory {
         Cookie cookie = this.findCookie(request, key);
         if(cookie != null) {
             cookie.setMaxAge(0);
-            cookie.setDomain("localhost");  // TODO:IJ 유효 도메인으로 추후 변경 필요
+            cookie.setDomain("localhost");  // TODO: IJ 유효 도메인으로 추후 변경 필요
             cookie.setPath(request.getRequestURI());
             response.addCookie(cookie);
         }
