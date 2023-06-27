@@ -8,7 +8,6 @@ import com.dejay.framework.service.MemberService;
 import com.dejay.framework.service.TestService;
 import com.dejay.framework.vo.MemberVO;
 import com.dejay.framework.vo.ResultStatusVO;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -34,14 +32,9 @@ public class MemberController {
     @GetMapping(value = {"", "/"})
     public ResponseEntity memberList() {
         List<MemberVO> memberList = memberService.getMemberList();
-        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setListResultVO(memberList);
-
-        var mapKeyList = Arrays.asList(MapKeyStringEnum.TEST.getKey(), MapKeyStringEnum.MEMBER_LIST.getKey());
-        var dataList = new ArrayList<Object>();
-        dataList.add(testService.getTest());
-        dataList.add(memberList);
-
-        Map<String, Object> resultMap = mapUtil.responseObjWrapper(resultStatusVO, mapKeyList, dataList);
+        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setListResultStatusVO(memberList);
+        var mapKeyList = Arrays.asList(MapKeyStringEnum.TEST.getKeyString(), MapKeyStringEnum.MEMBER_LIST.getKeyString());
+        Map<String, Object> resultMap = mapUtil.responseEntityBodyWrapper(resultStatusVO, mapKeyList, testService.getTest(), memberList);
 
         return ResponseEntity.ok(resultMap);
     }
@@ -49,11 +42,9 @@ public class MemberController {
     @PostMapping({"", "/"})
     public ResponseEntity insertMember(@RequestBody @Valid Member member) {
         Member inserted = memberService.insertMember(member);
-        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultVO(inserted);
-
-        var mapKeyList = Arrays.asList(MapKeyStringEnum.MEMBER.getKey());
-        var dataList = Arrays.asList(inserted);
-        Map<String, Object> resultMap = mapUtil.responseObjWrapper(resultStatusVO, mapKeyList, dataList);
+        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(inserted);
+        var mapKeyList = Arrays.asList(MapKeyStringEnum.MEMBER.getKeyString());
+        Map<String, Object> resultMap = mapUtil.responseEntityBodyWrapper(resultStatusVO, mapKeyList, inserted);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(resultMap);
     }
@@ -61,25 +52,20 @@ public class MemberController {
     @GetMapping("{id}")
     public ResponseEntity findMemberById(@PathVariable int id) {
         MemberVO memberVO = memberService.findMemberById(id);
-        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultVO(memberVO);
+        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(memberVO);
+        var mapKeyList = Arrays.asList(MapKeyStringEnum.MEMBER.getKeyString());
+        Map<String, Object> resultMap = mapUtil.responseEntityBodyWrapper(resultStatusVO, mapKeyList, memberVO);
 
-        var mapKeyList = Arrays.asList(MapKeyStringEnum.MEMBER.getKey());
-        var dataList = Arrays.asList(memberVO);
-        Map<String, Object> resultMap = mapUtil.responseObjWrapper(resultStatusVO, mapKeyList, dataList);
-
-        return ResponseEntity.ok().body(resultMap);
+        return ResponseEntity.ok(resultMap);
     }
 
     @PostMapping("request-param-validity")
-    public ResponseEntity requestParamTest(@RequestBody @Valid Member member/*, BindingResult bindingResult*/) {
+    public ResponseEntity requestParamTest(@RequestBody @Valid Member member) {
         log.info(member.toString());
-//        log.info(bindingResult.toString());
         memberService.insertMember(member);
-        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultVO(member);
-        List<String> mapKeyList = Arrays.asList(MapKeyStringEnum.MEMBER.getKey());
-        List<Member> dataList = Arrays.asList(member);
-
-        Map<String, Object> resultMap = mapUtil.responseObjWrapper(resultStatusVO, mapKeyList, dataList);
+        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(member);
+        List<String> mapKeyList = Arrays.asList(MapKeyStringEnum.MEMBER.getKeyString());
+        Map<String, Object> resultMap = mapUtil.responseEntityBodyWrapper(resultStatusVO, mapKeyList, member);
 
         return ResponseEntity.ok(resultMap);
     }

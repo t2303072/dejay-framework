@@ -7,11 +7,23 @@ import java.util.List;
 
 public class ObjectHandlingUtil {
 
-    public static <T> ResultStatusVO setSingleObjResultVO(T obj) {
-        return obj == null ? new ResultStatusVO(ResultCodeMsgEnum.NOT_LOGGED_IN.getCode(), ResultCodeMsgEnum.NOT_LOGGED_IN.getMsg()) : new ResultStatusVO();
+    /**
+     * @desc 단건 객체에 대한 결과 객체 생성
+     * @param obj T
+     * @return ResultStatusVO
+     * @param <T>
+     */
+    public static <T> ResultStatusVO setSingleObjResultStatusVO(T obj) {
+        return obj == null ? new ResultStatusVO(ResultCodeMsgEnum.NO_DATA.getCode(), ResultCodeMsgEnum.NO_DATA.getMsg()) : new ResultStatusVO();
     }
 
-    public static <T> ResultStatusVO setListResultVO(List<T> list) {
-        return list.size() > 0 ? new ResultStatusVO() : new ResultStatusVO(ResultCodeMsgEnum.NOT_LOGGED_IN.getCode(), ResultCodeMsgEnum.NOT_LOGGED_IN.getMsg());
+    /**
+     * @desc 다건 객체에 대한 결과 객체 생성
+     * @param list {@link List}
+     * @return ResultStatusVO
+     * @param <T>
+     */
+    public static <T> ResultStatusVO setListResultStatusVO(List<T> list) {
+        return list.size() > 0 ? new ResultStatusVO() : new ResultStatusVO(ResultCodeMsgEnum.NO_DATA.getCode(), ResultCodeMsgEnum.NO_DATA.getMsg());
     }
 }
