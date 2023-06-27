@@ -1,7 +1,7 @@
 package com.dejay.framework.common.exception;
 
 import com.dejay.framework.common.enums.ExceptionCodeMsgEnum;
-import com.dejay.framework.vo.ResultStatusVO;
+import com.dejay.framework.vo.common.ResultStatusVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;

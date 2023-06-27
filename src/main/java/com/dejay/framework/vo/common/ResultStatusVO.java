@@ -1,4 +1,4 @@
-package com.dejay.framework.vo;
+package com.dejay.framework.vo.common;
 
 import com.dejay.framework.common.enums.ResultCodeMsgEnum;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package com.dejay.framework.domain;
+package com.dejay.framework.domain.member;
 
 import com.dejay.framework.domain.common.Paging;
 import jakarta.validation.constraints.Email;

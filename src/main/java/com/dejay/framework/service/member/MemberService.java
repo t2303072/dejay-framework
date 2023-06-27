@@ -1,9 +1,9 @@
-package com.dejay.framework.service;
+package com.dejay.framework.service.member;
 
 import com.dejay.framework.common.utils.ValidationUtil;
 import com.dejay.framework.mapper.member.MemberMapper;
-import com.dejay.framework.domain.Member;
-import com.dejay.framework.vo.MemberVO;
+import com.dejay.framework.domain.member.Member;
+import com.dejay.framework.vo.member.MemberVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

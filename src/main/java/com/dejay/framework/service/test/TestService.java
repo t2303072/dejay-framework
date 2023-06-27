@@ -1,7 +1,7 @@
-package com.dejay.framework.service;
+package com.dejay.framework.service.test;
 
 import com.dejay.framework.domain.common.Paging;
-import com.dejay.framework.vo.TestVO;
+import com.dejay.framework.vo.test.TestVO;
 import com.dejay.framework.vo.common.PagingVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

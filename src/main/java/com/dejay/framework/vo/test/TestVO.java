@@ -1,4 +1,4 @@
-package com.dejay.framework.vo;
+package com.dejay.framework.vo.test;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

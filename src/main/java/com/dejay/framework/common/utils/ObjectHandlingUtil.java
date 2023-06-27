@@ -1,7 +1,7 @@
 package com.dejay.framework.common.utils;
 
 import com.dejay.framework.common.enums.ResultCodeMsgEnum;
-import com.dejay.framework.vo.ResultStatusVO;
+import com.dejay.framework.vo.common.ResultStatusVO;
 
 import java.util.List;
 

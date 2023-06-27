@@ -1,4 +1,4 @@
-package com.dejay.framework.vo;
+package com.dejay.framework.vo.member;
 
 import lombok.Getter;
 import lombok.ToString;

@@ -2,7 +2,7 @@ package com.dejay.framework.common.utils;
 
 import com.dejay.framework.common.enums.ExceptionCodeMsgEnum;
 import com.dejay.framework.common.enums.MapKeyStringEnum;
-import com.dejay.framework.vo.ResultStatusVO;
+import com.dejay.framework.vo.common.ResultStatusVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 

@@ -1,17 +1,16 @@
-package com.dejay.framework.controller;
+package com.dejay.framework.controller.test;
 
 import com.dejay.framework.common.enums.MapKeyStringEnum;
 import com.dejay.framework.common.utils.MapUtil;
-import com.dejay.framework.service.TestService;
-import com.dejay.framework.vo.ResultStatusVO;
-import com.dejay.framework.vo.TestVO;
+import com.dejay.framework.service.test.TestService;
+import com.dejay.framework.vo.common.ResultStatusVO;
+import com.dejay.framework.vo.test.TestVO;
 import com.dejay.framework.vo.common.PagingVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;

@@ -1,6 +1,6 @@
 package com.dejay.framework.common.utils;
 
-import com.dejay.framework.domain.Member;
+import com.dejay.framework.domain.member.Member;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
