@@ -3,6 +3,8 @@ package com.dejay.framework.common.utils;
 import com.dejay.framework.domain.Member;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -12,12 +14,18 @@ import org.springframework.stereotype.Component;
 @Component
 public class SessionFactory {
 
-    private static final String SESSION_ID = "SESSION_ID";
-    private static final String LOGIN_MEMBER = "loginMember";
+    @AllArgsConstructor
+    @Getter
+    public enum SessionEnum {
+        SESSION_ID("JSESSIONID"), LOGIN_MEMBER("loginMember");
+
+        private String sessionKey;
+    }
 
     public <T> void createSession(HttpServletRequest request, T obj) {
         HttpSession httpSession = request.getSession(true);
-        httpSession.setAttribute(LOGIN_MEMBER, obj);
+        httpSession.setAttribute(httpSession.getId(), obj);
+        httpSession.setMaxInactiveInterval(1800);
     }
 
     public void removeSession(HttpServletRequest request) {
@@ -27,7 +35,7 @@ public class SessionFactory {
     public Member getLoginUserInfo(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if(session == null) return null;
-        String loginId = (String) session.getAttribute(SESSION_ID);
+        String loginId = (String) session.getAttribute(SessionEnum.SESSION_ID.getSessionKey());
         Member member = Member.builder().memberId(loginId).build();
         log.info(member.toString());
 

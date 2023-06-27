@@ -11,8 +11,10 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.security.auth.login.LoginException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
@@ -35,19 +37,6 @@ public class GlobalExceptionHandler {
         resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.INVALID_ARGUMENT_EXISTS.getCode(), ExceptionCodeMsgEnum.INVALID_ARGUMENT_EXISTS.getMsg(), null, this.gatherBindingErrors(ex));
         return ResponseEntity.badRequest().body(resultStatusVO);
     }
-
-    /**
-     * @param ex
-     * @return Map<String, String>
-     * @implNote @RequestBody, @RequestPart Exception handling
-     */
-//    @ExceptionHandler(MethodArgumentNotValidException.class)
-//    protected ResponseEntity<Map<String, String>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-//        this.printErrorLog(ex);
-//        HashMap<String, String> errors = new HashMap<>();
-//        ex.getBindingResult().getAllErrors().forEach(c -> errors.put(((FieldError) c).getField(), c.getDefaultMessage()));
-//        return ResponseEntity.badRequest().body(errors);
-//    }
 
     /**
      * @param ex
@@ -118,18 +107,6 @@ public class GlobalExceptionHandler {
      * @return ResultStatusVO
      * @implNote Server error handling
      */
-    /*@ExceptionHandler(Exception.class)
-    protected ResponseEntity<ResultStatusVO> handleException(Exception ex) {
-        log.error("[handleException] => {}", ex.getMessage());
-        resultVO = new ResultStatusVO(ExceptionCodeMsgEnum.ERR_INVALID_PARAM_EXISTS.getCode(), ExceptionCodeMsgEnum.ERR_INVALID_PARAM_EXISTS.getMsg(), null);
-        return ResponseEntity.internalServerError().body(resultVO);
-    }*/
-
-    /**
-     * @param ex
-     * @return ResultStatusVO
-     * @implNote Server error handling
-     */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     protected ResponseEntity<ResultStatusVO> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException ex) {
         log.error("[handleHttpRequestMethodNotSupportedException] => {}", ex.getMessage());
@@ -162,6 +139,18 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(resultStatusVO);
     }
 
+    /**
+     * @param ex
+     * @return ResultStatusVO
+     * @implNote @RequestBody, @RequestPart Exception handling
+     */
+    @ExceptionHandler(LoginException.class)
+    protected ResponseEntity<ResultStatusVO> handleLoginException(LoginException ex) {
+        this.printGeneralSecurityExceptionLog(ex);
+        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.LOGIN_REQUIRED.getCode(), ExceptionCodeMsgEnum.LOGIN_REQUIRED.getMsg(), null, null);
+        return ResponseEntity.badRequest().body(resultStatusVO);
+    }
+
     // -----
     private <T extends BindException> List<FieldError> gatherBindingErrors(T ex) {
         List<FieldError> errList = new ArrayList<>();
@@ -187,5 +176,9 @@ public class GlobalExceptionHandler {
 
     private <T extends IOException> void printIOExceptionLog(T ex) {
         log.error("[printIOExceptionLog] ", ex);
+    }
+
+    private <T extends GeneralSecurityException> void printGeneralSecurityExceptionLog(T ex) {
+        log.error("[printGeneralSecurityExceptionLog] ", ex);
     }
 }

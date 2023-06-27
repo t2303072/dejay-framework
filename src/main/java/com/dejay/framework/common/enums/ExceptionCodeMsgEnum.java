@@ -14,6 +14,7 @@ public enum ExceptionCodeMsgEnum {
     , NOT_EQUAL_OBJECT_SIZE(995, "비교 객체의 사이즈가 불일치 합니다.")
     , INVALID_PARAMETER_BINDING(994, "유효하지 않은 매개변수 값 입니다.")
     , SQL_ERROR(993, "SQL 에러")
+    , LOGIN_REQUIRED(992, "로그인이 필요한 API 입니다.")
     ;
 
     private int code;
