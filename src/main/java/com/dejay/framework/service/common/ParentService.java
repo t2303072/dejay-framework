@@ -5,6 +5,7 @@ import com.dejay.framework.common.utils.PropertiesUtil;
 import com.dejay.framework.common.utils.StringUtil;
 import com.dejay.framework.common.utils.ValidationUtil;
 import com.dejay.framework.mapper.common.CommonMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,13 +14,18 @@ import org.springframework.stereotype.Service;
 public class ParentService {
 
     /** Util [[ **/
+    @Autowired
     private PropertiesUtil propertiesUtil;
+    @Autowired
     private StringUtil stringUtil;
+    @Autowired
     private DateUtil dateUtil;
+    @Autowired
     private ValidationUtil validationUtil;
     /** Util ]] **/
 
     /** Mapper [[ **/
+    @Autowired
     private CommonMapper commonMapper;
     /** Mapper ]] **/
 

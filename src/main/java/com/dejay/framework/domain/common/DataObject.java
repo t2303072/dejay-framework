@@ -13,16 +13,13 @@ import lombok.Setter;
 @Setter
 public class DataObject {
 
-    @Resource(name="data")
-    private Domain domain;
+    private Data data;
 
     @Getter
     @Setter
-    public static class Domain {
-        @Resource(name="code")
+    public static class Data {
         private Code code;
 
-        @Resource(name="member")
         private Member member;
     }
 }

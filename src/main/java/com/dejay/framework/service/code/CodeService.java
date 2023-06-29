@@ -24,6 +24,6 @@ public class CodeService extends ParentService {
         boolean isValidated = getValidationUtil().parameterValidator(target, Code.class);
         int iAffectedRows = getCommonMapper().getCodeMapper().insert(target);
 
-        return target;
+        return code;
     }
 }

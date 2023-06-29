@@ -1,13 +1,13 @@
 package com.dejay.framework.domain.code;
 
 import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 @ToString(callSuper = false)
 @Getter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Code {
     @NotNull(message = "코드는 필수값 입니다.")
     private String code;

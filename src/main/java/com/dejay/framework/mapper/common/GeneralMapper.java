@@ -33,13 +33,6 @@ public interface GeneralMapper {
     List<?> listBySearch(SearchVO search);
 
     /**
-     * 목록 조회 건수
-     * @param search
-     * @return
-     */
-
-
-    /**
      * 페이지 목록 조회
      * @param search
      * @return
