@@ -8,10 +8,6 @@ spring:
     username: ENC(IczFq75YIzNXTzSMeUHjBkK0Pcf8MXLN)
     password: ENC(TKuGEV/dnva+80V9kwB/gzGn89MyKQxz)
 
-    hikari:
-      maximum-pool-size: 10
-      connection-test-query: SELECT NOW() FROM DUAL
-
 ## mapper logging level
 logging:
   level:

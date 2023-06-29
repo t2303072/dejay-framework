@@ -1,5 +1,14 @@
 spring:
 
+  datasource:
+    hikari:
+      minimum-idle: 5 # Connection Pool에 유지 가능한 최소 커넥션 개수
+      maximum-pool-size: 10 # Connection Pool에 유지 가능한 최대 커넥션 개수
+      idle-timeout: 30000 # Connection이 Pool에서 유휴상태(사용하지 않는 상태)로 남을 수 있는 최대 시간
+      max-lifetime: 200000 # Connection의 최대 유지 가능 시간
+      connection-timeout: 30000 #  Pool에서 Connection을 구할 때 대기시간, DB서버에 맞출것
+      connection-test-query: SELECT NOW() FROM DUAL
+
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
 #  h2:
