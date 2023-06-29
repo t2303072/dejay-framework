@@ -4,7 +4,7 @@ spring:
 #    url: jdbc:log4jdbc:mariadb://10.34.220.168:3306/dejay_public
 #    username: dejay_was
 #    password: 22@dejay
-    url: ENC(R33IAvOz+1ctfKbKi5ja6Tf/emHrylzMOcLxQgyJVcgGyEUY9tJMuqjFDXE1KeWoi33TBYrj5KQ7fj9M4KPyaw==)
+    jdbc-url: ENC(R33IAvOz+1ctfKbKi5ja6Tf/emHrylzMOcLxQgyJVcgGyEUY9tJMuqjFDXE1KeWoi33TBYrj5KQ7fj9M4KPyaw==)
     username: ENC(IczFq75YIzNXTzSMeUHjBkK0Pcf8MXLN)
     password: ENC(TKuGEV/dnva+80V9kwB/gzGn89MyKQxz)
 
