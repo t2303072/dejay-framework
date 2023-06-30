@@ -1,5 +1,6 @@
 package com.dejay.framework.domain.token;
 
+import com.dejay.framework.common.enums.TokenType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -7,9 +8,10 @@ import lombok.Getter;
 @Builder
 @Getter
 @AllArgsConstructor
-public class TokenInfo {
+public class Token {
 
-    private String grantType;
-    private String accessToken;
+    private long id;
+    private String token;
     private String refreshToken;
+    private TokenType tokenType;
 }

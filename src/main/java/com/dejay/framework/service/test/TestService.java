@@ -5,6 +5,7 @@ import com.dejay.framework.vo.test.TestVO;
 import com.dejay.framework.vo.common.PagingVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -33,5 +34,12 @@ public class TestService {
                 .totalCount(paging.getTotalCount())
                 .totalPage(paging.getTotalPage())
                 .build();
+    }
+
+    public static void main(String[] args) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(16);
+        String result = encoder.encode("ijzone");
+        log.info("matches => {}", encoder.matches("ijzone", result));
+
     }
 }
