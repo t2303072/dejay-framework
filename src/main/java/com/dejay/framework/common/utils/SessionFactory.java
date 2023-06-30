@@ -42,7 +42,7 @@ public class SessionFactory {
         if(jSessionId == null) return null;
 
         Member member = (Member) session.getAttribute(jSessionId.getValue());
-        log.info(member.toString());
+        if(member != null) log.info(member.toString());
 
         return member;
     }

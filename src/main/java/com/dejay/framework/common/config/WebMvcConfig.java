@@ -20,11 +20,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
     private final LoggerInterceptor loggerInterceptor;
     private final LoginInterceptor loginInterceptor;
 
-//    @Autowired
-//    public WebMvcConfig(LoggerInterceptor loggerInterceptor) {
-//        this.loggerInterceptor = loggerInterceptor;
-//    }
-
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         List<String> loggerPattern = Arrays.asList("/**");
