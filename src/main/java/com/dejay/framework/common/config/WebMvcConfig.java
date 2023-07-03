@@ -20,15 +20,16 @@ public class WebMvcConfig implements WebMvcConfigurer {
     private final LoggerInterceptor loggerInterceptor;
     private final LoginInterceptor loginInterceptor;
 
+    private final List<String> loggerPattern = Arrays.asList("/**");
+    private final List<String> loginPattern = Arrays.asList("/member/**");
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        List<String> loggerPattern = Arrays.asList("/**");
         registry.addInterceptor(loggerInterceptor)
                 .addPathPatterns(loggerPattern)
                 .excludePathPatterns("/error")
                 .order(1);
 
-        List<String> loginPattern = Arrays.asList("/member/**");
         registry.addInterceptor(loginInterceptor)
                 .addPathPatterns(loginPattern)
                 .order(2);

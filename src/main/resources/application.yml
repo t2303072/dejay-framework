@@ -9,8 +9,8 @@ spring:
       connection-timeout: 30000 #  Pool에서 Connection을 구할 때 대기시간, DB서버에 맞출것
       connection-test-query: SELECT NOW() FROM DUAL
 
-  autoconfigure:
-    exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+#  autoconfigure:
+#    exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
 #  h2:
 #    console:
 #      enabled: true
