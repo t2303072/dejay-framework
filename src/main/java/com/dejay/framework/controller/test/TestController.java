@@ -1,6 +1,7 @@
 package com.dejay.framework.controller.test;
 
 import com.dejay.framework.common.enums.MapKeyStringEnum;
+import com.dejay.framework.common.utils.CryptoUtil;
 import com.dejay.framework.common.utils.MapUtil;
 import com.dejay.framework.service.test.TestService;
 import com.dejay.framework.vo.common.ResultStatusVO;
@@ -23,19 +24,29 @@ public class TestController {
 
     private final TestService testService;
     private final MapUtil mapUtil;
+    private final CryptoUtil cryptoUtil;
 
     @GetMapping({"", "/"})
     public ResponseEntity index() {
         List<TestVO> list = testService.getTest();
+
         return ResponseEntity.ok(list);
     }
 
     @GetMapping("paging")
     public ResponseEntity paging(@RequestParam int currentPage, @RequestParam int displayRow, @RequestParam(required = false) int totalCount) {
+        // TODO: IJ Basically, GET METHOD has no body object
         PagingVO paging = testService.paging(currentPage, displayRow, totalCount);
         var mapKeyList = Arrays.asList(MapKeyStringEnum.PAGING.getKeyString());
         Map<String, Object> resultMap = mapUtil.responseEntityBodyWrapper(new ResultStatusVO(), mapKeyList, paging);
 
         return ResponseEntity.ok(resultMap);
+    }
+
+    @GetMapping("password-encode")
+    public ResponseEntity passwordEncode() {
+        testService.passwordEncode();
+
+        return ResponseEntity.ok().build();
     }
 }

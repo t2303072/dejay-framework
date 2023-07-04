@@ -10,6 +10,7 @@ import com.dejay.framework.vo.common.ResultStatusVO;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -47,23 +48,24 @@ public class SessionController {
     }
 
     @GetMapping("/login-test")
-    public ResponseEntity sessionLogin(HttpServletRequest request) {
+    public ResponseEntity sessionLogin(HttpServletRequest request, HttpSession session) {
         ResultStatusVO resultStatusVO = new ResultStatusVO();
         List<String> mapKeyList = new ArrayList<>();
         List<Object> dataList = new ArrayList<>();
         Map<String, Object> resultMap;
+        Member loginUserInfo = null;
 
         Cookie cookie = cookieFactory.findCookie(request, SessionFactory.SessionEnum.SESSION_ID.getSessionKey());
         if(cookie == null) {
             resultStatusVO = new ResultStatusVO(ResultCodeMsgEnum.NO_COOKIE.getCode(), ResultCodeMsgEnum.NO_COOKIE.getMsg());
         }else {
             mapKeyList.add(MapKeyStringEnum.MEMBER.getKeyString());
-            Member loginUserInfo = sessionFactory.getLoginUserInfo(request);
-            dataList.add(loginUserInfo);
+            loginUserInfo = sessionFactory.getLoginUserInfo(request);
+
             if(loginUserInfo == null) resultStatusVO = new ResultStatusVO(ResultCodeMsgEnum.NOT_LOGGED_IN.getCode(), ResultCodeMsgEnum.NOT_LOGGED_IN.getMsg());
         }
 
-        resultMap = mapUtil.responseEntityBodyWrapper(resultStatusVO, mapKeyList, dataList);
+        resultMap = mapUtil.responseEntityBodyWrapper(resultStatusVO, mapKeyList, loginUserInfo);
         return ResponseEntity.ok(resultMap);
     }
 
