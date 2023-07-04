@@ -43,3 +43,7 @@ properties:
     encryptor:
       bean: jasyptStringEncryptor
       password: ${JASYPT_PASSWORD}
+
+# jwt
+jwt:
+  secret: frameworkspringsecurityjwtsecretkeytestijzone
