@@ -1,6 +1,7 @@
 package com.dejay.framework.common.utils;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,6 +15,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 @Slf4j
+@Component
 public class DateUtil {
 
     /**

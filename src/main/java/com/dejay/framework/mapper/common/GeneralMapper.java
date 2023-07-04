@@ -15,7 +15,7 @@ public interface GeneralMapper {
      * @param id
      * @return
      */
-    Object rowByID(Object id);
+    Object rowByKey(Object id);
 
 
     /**
@@ -23,7 +23,7 @@ public interface GeneralMapper {
      * @param search
      * @return
      */
-    Object rowByKey(SearchVO search);
+    Object rowBySearch(SearchVO search);
 
     /**
      * 목록 조회
@@ -31,13 +31,6 @@ public interface GeneralMapper {
      * @return
      */
     List<?> listBySearch(SearchVO search);
-
-    /**
-     * 목록 조회 건수
-     * @param search
-     * @return
-     */
-
 
     /**
      * 페이지 목록 조회

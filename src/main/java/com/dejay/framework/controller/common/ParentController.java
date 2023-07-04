@@ -3,6 +3,7 @@ package com.dejay.framework.controller.common;
 import com.dejay.framework.common.utils.MapUtil;
 import com.dejay.framework.service.common.CommonService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 부모 controller
@@ -10,7 +11,9 @@ import lombok.RequiredArgsConstructor;
  */
 public class ParentController {
 
+    @Autowired
     private CommonService commonService;
+    @Autowired
     private MapUtil mapUtil;
 
 
