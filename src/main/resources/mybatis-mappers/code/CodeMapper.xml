@@ -4,6 +4,30 @@
 
 <mapper namespace="com.dejay.framework.mapper.code.CodeMapper">
 
+    <sql id="allColumn">
+        CODE, CODE_NAME
+        , REMARK1, VALUE1, REMARK2, VALUE2
+        , CODE_ORD, USE_YN
+    </sql>
+
+    <select id="listBySearch" resultType="CodeVO" parameterType="SearchVO">
+        SELECT
+            <include refid="allColumn"></include>
+        FROM CODE
+        <where>
+        <if test="parentCode != null and parentCode != '' ">AND CODE LIKE CONCAT(#{parentCode}, '%') </if>
+        </where>
+    </select>
+
+    <select id="rowBySearch" resultType="CodeVO" parameterType="SearchVO">
+        SELECT
+        <include refid="allColumn"></include>
+        FROM CODE
+        <where>
+            <if test="code != null and code != '' ">AND CODE = #{code} </if>
+        </where>
+    </select>
+
     <insert id="insert">
         INSERT INTO CODE
         (

@@ -11,6 +11,8 @@ public enum MapKeyStringEnum {
     , DATA("data")
     , MEMBER("member")
     , MEMBER_LIST("memberList")
+    , CODE("code")
+    , CODE_LIST("codeList")
     , TEST("test")
     , PAGING("paging")
     ;

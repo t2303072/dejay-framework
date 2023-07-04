@@ -6,7 +6,6 @@ import com.dejay.framework.common.utils.StringUtil;
 import com.dejay.framework.common.utils.ValidationUtil;
 import com.dejay.framework.mapper.common.CommonMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  * Service에서 상속받아서 사용할 것

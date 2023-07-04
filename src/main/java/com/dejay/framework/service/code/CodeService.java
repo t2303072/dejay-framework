@@ -2,8 +2,12 @@ package com.dejay.framework.service.code;
 
 import com.dejay.framework.domain.code.Code;
 import com.dejay.framework.service.common.ParentService;
+import com.dejay.framework.vo.code.CodeVO;
+import com.dejay.framework.vo.search.code.CodeSearchVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -25,5 +29,13 @@ public class CodeService extends ParentService {
         int iAffectedRows = getCommonMapper().getCodeMapper().insert(target);
 
         return code;
+    }
+
+    public List<CodeVO> listCode(CodeSearchVO search) {
+        return (List<CodeVO>) getCommonMapper().getCodeMapper().listBySearch(search);
+    }
+
+    public CodeVO rowCode(CodeSearchVO search) {
+        return (CodeVO) getCommonMapper().getCodeMapper().rowBySearch(search);
     }
 }

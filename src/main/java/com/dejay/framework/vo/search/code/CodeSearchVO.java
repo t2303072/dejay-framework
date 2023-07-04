@@ -1,0 +1,20 @@
+package com.dejay.framework.vo.search.code;
+
+import com.dejay.framework.vo.search.SearchVO;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class CodeSearchVO extends SearchVO {
+
+    /**
+     * 코드 8자리에서 앞 4자리(부모코드)로 자식코드 목록 검색시 사용
+     */
+    private String parentCode;
+
+    /**
+     * 8자리 코드 (ex: 00010001)
+     */
+    private String code;
+}
