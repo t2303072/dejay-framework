@@ -1,6 +1,7 @@
 package com.dejay.framework.service.code;
 
 import com.dejay.framework.domain.code.Code;
+import com.dejay.framework.domain.common.Paging;
 import com.dejay.framework.service.common.ParentService;
 import com.dejay.framework.vo.code.CodeVO;
 import com.dejay.framework.vo.search.code.CodeSearchVO;
@@ -31,6 +32,10 @@ public class CodeService extends ParentService {
         return code;
     }
 
+    public List<CodeVO> pagingCode(CodeSearchVO search) {
+
+        return (List<CodeVO>) getCommonMapper().getCodeMapper().pagingBySearch(search);
+    }
     public List<CodeVO> listCode(CodeSearchVO search) {
         return (List<CodeVO>) getCommonMapper().getCodeMapper().listBySearch(search);
     }

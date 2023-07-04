@@ -1,7 +1,6 @@
 package com.dejay.framework.domain.common;
 
 import com.dejay.framework.vo.search.SearchVO;
-import com.dejay.framework.vo.search.code.CodeSearchVO;
 import lombok.Getter;
 import lombok.Setter;
 

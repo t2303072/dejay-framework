@@ -1,6 +1,7 @@
 package com.dejay.framework.vo.search;
 
 import com.dejay.framework.common.utils.StringUtil;
+import com.dejay.framework.domain.common.Paging;
 import com.dejay.framework.vo.search.code.CodeSearchVO;
 import lombok.Getter;
 import lombok.Setter;
@@ -112,8 +113,25 @@ public class SearchVO {
 
 
 
-    /** 그룹별 search 모델 **/
+
+
+
+    /** paging 모델 [[ **/
+
+    private Paging paging;
+
+    /** paging 모델 ]] **/
+
+
+
+
+
+    /** 그룹별 search 모델 [[ **/
 
     private CodeSearchVO codeSearch;
+
+
+
+    /** 그룹별 search 모델 ]] **/
 
 }

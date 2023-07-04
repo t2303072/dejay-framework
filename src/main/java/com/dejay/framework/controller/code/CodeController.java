@@ -38,6 +38,21 @@ public class CodeController extends ParentController {
     }
 
     /**
+     * 코드 페이징 조회
+     * @param searchObject
+     * @return
+     */
+    public ResponseEntity pagingCode(@RequestBody @Valid SearchObject searchObject) {
+        List<CodeVO> codeList = getCommonService().getCodeService().pagingCode(searchObject.getSearch().getCodeSearch());
+
+        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setListResultStatusVO(codeList);
+        var mapKeyList = Arrays.asList(MapKeyStringEnum.CODE_LIST.getKeyString());
+        Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, codeList);
+
+        return ResponseEntity.ok(resultMap);
+    }
+
+    /**
      * 코드 목록 조회
      * @param searchObject
      * @return
