@@ -26,6 +26,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         log.info("[preHandle]: {}", requestURI);
         HttpSession session = request.getSession(false);
 
+        // TODO: IJ 토큰 기반으로 변경 필요
         Optional<String> jSessionId = Arrays.stream(request.getCookies())
                 .filter(c -> c.getName().equals(SessionFactory.SessionEnum.SESSION_ID.getSessionKey()))
                 .map(Cookie::getValue)

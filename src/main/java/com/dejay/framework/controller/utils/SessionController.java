@@ -51,7 +51,6 @@ public class SessionController {
     public ResponseEntity sessionLogin(HttpServletRequest request, HttpSession session) {
         ResultStatusVO resultStatusVO = new ResultStatusVO();
         List<String> mapKeyList = new ArrayList<>();
-        List<Object> dataList = new ArrayList<>();
         Map<String, Object> resultMap;
         Member loginUserInfo = null;
 

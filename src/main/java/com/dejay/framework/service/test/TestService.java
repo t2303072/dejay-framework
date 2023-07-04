@@ -8,11 +8,6 @@ import com.dejay.framework.vo.common.PagingVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -94,7 +89,7 @@ public class TestService {
 //        log.info("user: {}", user.toString());
     }
 
-    public String login(String userName, String password) {
+    public String loginReturnJwt(String userName, String password) {
         return JwtUtil.createJwt(userName, secretKey, expiredMs);
     }
 }
