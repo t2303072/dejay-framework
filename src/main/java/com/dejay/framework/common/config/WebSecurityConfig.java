@@ -1,10 +1,12 @@
 package com.dejay.framework.common.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -21,17 +23,19 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
-//                        .requestMatchers("/admin/**").hasRole("ADMIN")
-//                        .requestMatchers("/member/**").hasRole("USER")
+                .authorizeHttpRequests(ahr -> ahr
+//                        .requestMatchers("/admin").hasRole("ADMIN")
+                        .requestMatchers("/member/**").authenticated()
 //                        .requestMatchers("/session/**").permitAll()
 //                        .requestMatchers("/test/**").permitAll()
                         .requestMatchers("/**").permitAll()
-//                        .anyRequest().authenticated()
-                );
-//                .formLogin(formLogin -> formLogin.disable())
-//                .cors(cors -> cors.disable())
-//                .csrf(csrf -> csrf.disable()).sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                        .anyRequest().permitAll()
+                )
+                .formLogin(formLogin -> formLogin.disable())
+                .cors(cors -> cors.disable())
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .httpBasic(hb -> hb.disable());
 
 
         return httpSecurity.build();
