@@ -24,7 +24,6 @@ public class TestController {
 
     private final TestService testService;
     private final MapUtil mapUtil;
-    private final CryptoUtil cryptoUtil;
 
     @GetMapping({"", "/"})
     public ResponseEntity index() {
@@ -48,5 +47,10 @@ public class TestController {
         testService.passwordEncode();
 
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity login() {
+        return ResponseEntity.ok().body(testService.login("ijzone", ""));
     }
 }

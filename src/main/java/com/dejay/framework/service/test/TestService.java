@@ -1,11 +1,13 @@
 package com.dejay.framework.service.test;
 
 import com.dejay.framework.common.utils.CryptoUtil;
+import com.dejay.framework.common.utils.JwtUtil;
 import com.dejay.framework.domain.common.Paging;
 import com.dejay.framework.vo.test.TestVO;
 import com.dejay.framework.vo.common.PagingVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,6 +25,11 @@ public class TestService {
 
     private final CryptoUtil cryptoUtil;
 
+    @Value("${jwt.secret}")
+    private String secretKey;
+
+    private Long expiredMs = 1000 * 60 * 60l;
+
     public List<TestVO> getTest() {
         List list = new ArrayList<>();
         list.add(new TestVO(1234, "test"));
@@ -30,6 +37,13 @@ public class TestService {
         return list;
     }
 
+    /**
+     * Paging
+     * @param currentPage
+     * @param displayRow
+     * @param totalCount
+     * @return
+     */
     public PagingVO paging(int currentPage, int displayRow, int totalCount) {
         Paging paging = Paging.builder()
                 .currentPage(currentPage)
@@ -43,7 +57,11 @@ public class TestService {
                 .build();
     }
 
-    // TODO: IJ
+    // TODO: IJ 암호화 알고리즘 확인
+
+    /**
+     * 비밀번호 암호화
+     */
     public void passwordEncode() {
         String rawPassword = "ijzone";
         String encodedPassword = cryptoUtil.encodePassword(rawPassword);
@@ -74,5 +92,9 @@ public class TestService {
 //        List authList = List.of(user.getAuthorities().toArray());
 //        log.info("admin: {}", admin.toString());
 //        log.info("user: {}", user.toString());
+    }
+
+    public String login(String userName, String password) {
+        return JwtUtil.createJwt(userName, secretKey, expiredMs);
     }
 }
