@@ -85,7 +85,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NullPointerException.class)
     protected ResponseEntity<ResultStatusVO> handleNullPointerException(NullPointerException ex) {
         this.printRuntimeErrorLog(ex);
-        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.INVALID_NUMBER_FORMAT.getCode(), ExceptionCodeMsgEnum.INVALID_NUMBER_FORMAT.getMsg(), ex.getMessage(), null);
+        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.NULL_POINTER.getCode(), ExceptionCodeMsgEnum.NULL_POINTER.getMsg(), ex.getMessage(), null);
         return ResponseEntity.badRequest().body(resultStatusVO);
     }
 

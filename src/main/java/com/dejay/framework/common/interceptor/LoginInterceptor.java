@@ -1,12 +1,16 @@
 package com.dejay.framework.common.interceptor;
 
+import com.dejay.framework.common.enums.MapKeyStringEnum;
+import com.dejay.framework.common.utils.JwtUtil;
 import com.dejay.framework.common.utils.SessionFactory;
+import com.dejay.framework.vo.common.TokenVO;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -24,18 +28,8 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String requestURI = request.getRequestURI();
         log.info("[preHandle]: {}", requestURI);
-        HttpSession session = request.getSession(false);
-
-        // TODO: IJ 토큰 기반으로 변경 필요
-        Optional<String> jSessionId = Arrays.stream(request.getCookies())
-                .filter(c -> c.getName().equals(SessionFactory.SessionEnum.SESSION_ID.getSessionKey()))
-                .map(Cookie::getValue)
-                .findAny();
-        if(session == null || session.getAttribute(jSessionId.get()) == null) {
-//            response.sendRedirect("index");
-            throw new LoginException();
-        }
-
+        TokenVO tokenVO = JwtUtil.decode(request.getHeader(HttpHeaders.AUTHORIZATION).split("Bearer ")[1]);
+        request.setAttribute(MapKeyStringEnum.TOKEN_VO.getKeyString(), tokenVO);
 
         return true;
     }

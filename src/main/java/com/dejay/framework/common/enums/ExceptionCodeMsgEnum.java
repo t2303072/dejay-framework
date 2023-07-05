@@ -16,6 +16,7 @@ public enum ExceptionCodeMsgEnum {
     , SQL_ERROR(993, "SQL 에러")
     , LOGIN_REQUIRED(992, "로그인이 필요한 API 입니다.")
     , PASSWORD_VALUE_NOT_PROVIDED(991, "비밀번호 값이 없습니다.")
+    , NULL_POINTER(990, "NULL POINTER")
     ;
 
     private int code;
