@@ -15,6 +15,7 @@ public enum MapKeyStringEnum {
     , CODE_LIST("codeList")
     , TEST("test")
     , PAGING("paging")
+    , TOKEN_VO("tokenVO")
     ;
 
     private String keyString;

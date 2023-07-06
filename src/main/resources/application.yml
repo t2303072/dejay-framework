@@ -18,7 +18,7 @@ spring:
 #      settings:
 #        trace: false
 server:
-  port: 3000
+  port: 8080
   context-path: /
   encoding:
     charset: UTF-8

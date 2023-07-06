@@ -27,6 +27,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private final MemberService memberService;
     private final String secretKey;
+    private static final String TOKEN_PREFIX = "Bearer ";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -35,7 +36,7 @@ public class JwtFilter extends OncePerRequestFilter {
         log.info("authorization: {}", authorization);
 
         // token 전송 여부 확인
-        if(authorization == null || !authorization.startsWith("Bearer ")) {
+        if(authorization == null || !authorization.startsWith(TOKEN_PREFIX)) {
             log.error(ResultCodeMsgEnum.INVALID_HEADER_AUTHORIZATION.getMsg());
             filterChain.doFilter(request, response);
             return;
@@ -45,7 +46,6 @@ public class JwtFilter extends OncePerRequestFilter {
         String token = authorization.split(" ")[1];
 
         // Token expiration status
-        boolean expired = JwtUtil.isExpired(token, secretKey);
         if(JwtUtil.isExpired(token, secretKey)) {
             log.error(ResultCodeMsgEnum.TOKEN_EXPIRED.getMsg());
             filterChain.doFilter(request, response);
