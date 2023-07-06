@@ -4,11 +4,13 @@ import com.dejay.framework.common.filter.JwtFilter;
 import com.dejay.framework.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -25,6 +27,8 @@ public class UserSecurityConfig {
 
     private final MemberService memberService;
 
+    final String[] permitPathArray = {"/test/**"};
+
     @Value("${jwt.secret}")
     private String secretKey;
 
@@ -32,11 +36,13 @@ public class UserSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeHttpRequests(ahr -> ahr
+                        .requestMatchers("/test/**").permitAll() // TODO: IJ 테스트 완료 후 해당 경로 제거
 //                        .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/member/**").hasAuthority("USER")
 //                        .requestMatchers("/session/**").permitAll()
 //                        .requestMatchers("/test/**").permitAll()
 //                        .requestMatchers("/**").permitAll()
+                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .anyRequest().permitAll()
                 )
                 .formLogin(formLogin -> formLogin.disable())
@@ -49,4 +55,8 @@ public class UserSecurityConfig {
         return httpSecurity.build();
     }
 
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer() {
+//        return web -> web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations()).requestMatchers("/test/**");
+//    }
 }
