@@ -38,7 +38,8 @@
     <logger name="org.springframework.context" level="info" />
     <logger name="org.springframework.web" level="DEBUG" />
 
-    <logger name="org.mybatis.spring.SqlSessionUtils" level="DEBUG"/>
+    <!-- transaction log -->
+<!--    <logger name="org.mybatis.spring.SqlSessionUtils" level="DEBUG"/>-->
 
     <root level="INFO">
         <appender-ref ref="CONSOLE"/> <!-- Console 로그 출력 -->
