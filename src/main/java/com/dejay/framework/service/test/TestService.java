@@ -3,8 +3,10 @@ package com.dejay.framework.service.test;
 import com.dejay.framework.common.utils.CryptoUtil;
 import com.dejay.framework.common.utils.JwtUtil;
 import com.dejay.framework.domain.common.Paging;
+import com.dejay.framework.domain.member.LoginRequest;
 import com.dejay.framework.vo.test.TestVO;
 import com.dejay.framework.vo.common.PagingVO;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -55,40 +57,22 @@ public class TestService {
     // TODO: IJ 암호화 알고리즘 확인
 
     /**
-     * 비밀번호 암호화
+     * 비밀번호 암호화 테스트
      */
-    public void passwordEncode() {
+    public void passwordEncode(@Valid LoginRequest loginRequest) {
         String rawPassword = "ijzone";
-        String encodedPassword = cryptoUtil.encodePassword(rawPassword);
+        String encodedPassword = cryptoUtil.encodePassword(loginRequest.getPassword());
         log.info("encodedPassword: {}", encodedPassword);
-        boolean passwordMatches = cryptoUtil.isPasswordMatches(rawPassword, encodedPassword);
-        log.info("passwordMatches? {}", passwordMatches);
-        cryptoUtil.isPasswordMatches("", "");
-//        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(16);
-//        String result = encoder.encode("ijzone");
-//        log.info("matches => {}", encoder.matches("ijzone", result));
-//
-//        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-//        String ijzone = passwordEncoder.encode("ijzone");
-//        String ijzone2 = passwordEncoder.encode("ijzone");
-//        log.info("encoded password of ijzone: => {}", ijzone);
-//        log.info("BCryptPassword => {}", encoder.matches("ijzone", ijzone));
-//
-//        User.UserBuilder users = User.withDefaultPasswordEncoder();
-//        UserDetails user = users.username("user")
-//                .password("password")
-//                .roles("USER")
-//                .build();
-//        UserDetails admin = users.username("admin")
-//                .password("password2")
-//                .roles("USER", "ADMIN")
-//                .build();
-//
-//        List authList = List.of(user.getAuthorities().toArray());
-//        log.info("admin: {}", admin.toString());
-//        log.info("user: {}", user.toString());
+//        boolean passwordMatches = cryptoUtil.isPasswordMatches(loginRequest.getPassword(), encodedPassword);
+//        log.info("passwordMatches? {}", passwordMatches);
     }
 
+    /**
+     * 생성된 JWT 반환 테스트
+     * @param userName
+     * @param password
+     * @return
+     */
     public String loginReturnJwt(String userName, String password) {
         return JwtUtil.createJwt(userName, secretKey, expiredMs);
     }

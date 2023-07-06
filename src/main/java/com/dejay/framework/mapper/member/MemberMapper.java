@@ -12,4 +12,5 @@ public interface MemberMapper {
     List<MemberVO> getMemberList();
     MemberVO findMemberById(int id);
     long insertMember(Member member);
+    MemberVO findMemberByUserName(String userName);
 }

@@ -6,8 +6,11 @@ import com.dejay.framework.common.utils.ObjectHandlingUtil;
 import com.dejay.framework.domain.member.Member;
 import com.dejay.framework.service.member.MemberService;
 import com.dejay.framework.service.test.TestService;
+import com.dejay.framework.vo.common.TokenVO;
+import com.dejay.framework.vo.login.LoginVO;
 import com.dejay.framework.vo.member.MemberVO;
 import com.dejay.framework.vo.common.ResultStatusVO;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +33,11 @@ public class MemberController {
     private final MapUtil mapUtil;
 
     @GetMapping(value = {"", "/"})
-    public ResponseEntity memberList() {
+    public ResponseEntity memberList(HttpServletRequest request) {
+        // TODO: IJ 로그인 정보
+        TokenVO tokenVO = ObjectHandlingUtil.extractTokenInfo(request); log.info(tokenVO.toString());
+        MemberVO loginVO = ObjectHandlingUtil.extractLoginInfo(request); log.info(loginVO.toString());
+
         List<MemberVO> memberList = memberService.getMemberList();
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setListResultStatusVO(memberList);
         var mapKeyList = Arrays.asList(MapKeyStringEnum.TEST.getKeyString(), MapKeyStringEnum.MEMBER_LIST.getKeyString());

@@ -1,5 +1,6 @@
 package com.dejay.framework.common.utils;
 
+import com.dejay.framework.common.enums.MapKeyStringEnum;
 import com.dejay.framework.vo.common.TokenVO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,14 +18,23 @@ import java.util.Map;
 public class JwtUtil {
 
     /**
-     * JWT 유저명 조회
-     * @param token
-     * @param secretKey
+     * JWT 생성
+     * @param userName String
+     * @param secretKey String
+     * @param expiredMs Long
      * @return
      */
-    public static String getUserName(String token, String secretKey) {
-        return Jwts.parserBuilder().setSigningKey(secretKey).build()
-                .parseClaimsJws(token).getBody().get("userName", String.class);
+    public static String createJwt(String userName, String secretKey, Long expiredMs) {
+        Claims claims = Jwts.claims();
+        claims.put(MapKeyStringEnum.JWT_USERNAME.getKeyString(), userName);
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expiredMs))
+                .setIssuer(MapKeyStringEnum.JWT_ISSUER.getKeyString())
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
     }
 
     /**
@@ -39,22 +49,14 @@ public class JwtUtil {
     }
 
     /**
-     * JWT 생성
-     * @param userName String
-     * @param secretKey String
-     * @param expiredMs Long
+     * JWT 유저명 조회
+     * @param token
+     * @param secretKey
      * @return
      */
-    public static String createJwt(String userName, String secretKey, Long expiredMs) {
-        Claims claims = Jwts.claims();
-        claims.put("userName", userName);
-
-        return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + expiredMs))
-                .signWith(SignatureAlgorithm.HS256, secretKey)
-                .compact();
+    public static String getUserName(String token, String secretKey) {
+        return Jwts.parserBuilder().setSigningKey(secretKey).build()
+                .parseClaimsJws(token).getBody().get(MapKeyStringEnum.JWT_USERNAME.getKeyString(), String.class);
     }
 
     /**
@@ -69,7 +71,7 @@ public class JwtUtil {
         String[] chunk = token.split("\\.");
         Base64.Decoder decoder = Base64.getDecoder();
         String payload = new String(decoder.decode(chunk[1]));
-        log.info("Decoded Token: {}", payload);
+        log.info("Token payload: {}", payload);
 
         ObjectMapper mapper = new ObjectMapper();
         TokenVO tokenVO = mapper.readValue(payload, TokenVO.class);

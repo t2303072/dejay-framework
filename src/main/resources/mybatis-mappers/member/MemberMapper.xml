@@ -11,6 +11,10 @@
         SELECT * FROM MEMBER WHERE MEMBER_SEQ = #{id}
     </select>
 
+    <select id="findMemberByUserName" resultType="MemberVO">
+        SELECT * FROM MEMBER WHERE MEMBER_ID = #{userName}
+    </select>
+
     <insert id="insertMember" useGeneratedKeys="true">
         INSERT INTO MEMBER(MEMBER_ID, MEMBER_NAME, EMAIL) VALUES (#{memberId}, #{memberName}, #{email})
         <selectKey keyProperty="id" resultType="long">

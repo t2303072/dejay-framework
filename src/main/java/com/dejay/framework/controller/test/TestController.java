@@ -33,9 +33,7 @@ public class TestController {
      */
     @GetMapping({"", "/"})
     public ResponseEntity index() {
-        List<TestVO> list = testService.getTest();
-
-        return ResponseEntity.ok(list);
+        return ResponseEntity.ok(testService.getTest());
     }
 
     /**
@@ -59,10 +57,9 @@ public class TestController {
      * 비밀번호 암호화 test
      * @return
      */
-    @GetMapping("password-encode")
-    public ResponseEntity passwordEncode() {
-        testService.passwordEncode();
-
+    @PostMapping("password-encode")
+    public ResponseEntity passwordEncode(@RequestBody @Valid LoginRequest loginRequest) {
+        testService.passwordEncode(loginRequest);
         return ResponseEntity.ok().build();
     }
 
@@ -73,7 +70,8 @@ public class TestController {
      * @return
      */
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid LoginRequest loginRequest, Authentication authentication) {
+    public ResponseEntity login(@RequestBody @Valid LoginRequest loginRequest) {
+
         return ResponseEntity.ok().body(testService.loginReturnJwt(loginRequest.getUserName(), loginRequest.getPassword()));
     }
 
