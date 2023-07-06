@@ -2,7 +2,7 @@ package com.dejay.framework.controller.common;
 
 import com.dejay.framework.common.utils.MapUtil;
 import com.dejay.framework.service.common.CommonService;
-import lombok.RequiredArgsConstructor;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -16,13 +16,11 @@ public class ParentController {
     @Autowired
     private MapUtil mapUtil;
 
-
-    public CommonService getCommonService(){
+    public CommonService commonService(){
         return this.commonService;
     }
-    public MapUtil getMapUtil(){
+    public MapUtil mapUtil(){
         return this.mapUtil;
     }
-
 
 }

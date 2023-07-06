@@ -56,8 +56,8 @@
     <select id="rowBySearch" resultType="CodeVO" parameterType="SearchVO">
         /* 코드 단 건 조회 - CodeMapper.rowBySearch */
         SELECT
-        <include refid="allColumn"><property name="alias" value="CD"/></include>
-        FROM CODE
+        <include refid="allColumn"><property name="alias" value="CD."/></include>
+        FROM CODE CD
         <where>
             <if test="code != null and code != '' ">AND CODE = #{code} </if>
         </where>

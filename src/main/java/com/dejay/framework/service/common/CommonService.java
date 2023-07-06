@@ -16,12 +16,12 @@ public class CommonService {
 
     private final MemberService memberService;
 
-    public CodeService getCodeService(){
+    public CodeService codeService(){
 
         return this.codeService;
     }
 
-    public MemberService getMemberService(){
+    public MemberService memberService(){
 
         return this.memberService;
     }

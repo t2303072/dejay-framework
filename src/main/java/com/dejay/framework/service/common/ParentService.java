@@ -31,23 +31,23 @@ public class ParentService {
 
 
 
-    public PropertiesUtil getPropertiesUtil() {
+    public PropertiesUtil propertiesUtil() {
         return this.propertiesUtil;
     }
 
-    public StringUtil getStringUtil() {
+    public StringUtil stringUtil() {
         return this.stringUtil;
     }
 
-    public DateUtil getDateUtil() {
+    public DateUtil dateUtil() {
         return this.dateUtil;
     }
 
-    public ValidationUtil getValidationUtil() {
+    public ValidationUtil validationUtil() {
         return this.validationUtil;
     }
 
-    public CommonMapper getCommonMapper() {
+    public CommonMapper commonMapper() {
         return this.commonMapper;
     }
 
