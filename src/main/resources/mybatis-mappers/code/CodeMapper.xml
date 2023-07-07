@@ -4,31 +4,72 @@
 
 <mapper namespace="com.dejay.framework.mapper.code.CodeMapper">
 
+    <!-- 공통 [[ -->
+
     <sql id="allColumn">
-        CODE, CODE_NAME
-        , REMARK1, VALUE1, REMARK2, VALUE2
-        , CODE_ORD, USE_YN
+        ${alias}CODE, ${alias}CODE_NAME
+        , ${alias}REMARK1, ${alias}VALUE1, ${alias}REMARK2, ${alias}VALUE2
+        , ${alias}CODE_ORD, ${alias}USE_YN
     </sql>
 
-    <select id="listBySearch" resultType="CodeVO" parameterType="SearchVO">
-        SELECT
-            <include refid="allColumn"></include>
-        FROM CODE
-        <where>
+    <sql id="wherePaging">
         <if test="parentCode != null and parentCode != '' ">AND CODE LIKE CONCAT(#{parentCode}, '%') </if>
+    </sql>
+
+    <!-- 공통 ]] -->
+
+
+
+    <!-- 조회 [[ -->
+
+    <select id="pagingBySearch" resultType="CodeVO" parameterType="SearchVO">
+        /* 코드 페이징 조회 - CodeMapper.pagingBySearch */
+        SELECT
+        <include refid="allColumn"><property name="alias" value="CD."/></include>
+        FROM CODE CD
+        <where>
+            <include refid="wherePaging"></include>
+        </where>
+        
+        <include refid="mapper.paging.pagingQuery"></include>
+    </select>
+
+    <select id="pagingCountBySearch" resultType="Integer" parameterType="SearchVO">
+        /* 코드 페이징 조회 - CodeMapper.pagingBySearch */
+        SELECT COUNT(*)
+        FROM CODE CD
+        <where>
+            <include refid="wherePaging"></include>
+        </where>
+    </select>
+
+    <select id="listBySearch" resultType="CodeVO" parameterType="SearchVO">
+        /* 코드 목록 조회 - CodeMapper.listBySearch */
+        SELECT
+            <include refid="allColumn"><property name="alias" value="CD."/></include>
+        FROM CODE CD
+        <where>
+            <include refid="wherePaging"></include>
         </where>
     </select>
 
     <select id="rowBySearch" resultType="CodeVO" parameterType="SearchVO">
+        /* 코드 단 건 조회 - CodeMapper.rowBySearch */
         SELECT
-        <include refid="allColumn"></include>
-        FROM CODE
+        <include refid="allColumn"><property name="alias" value="CD."/></include>
+        FROM CODE CD
         <where>
             <if test="code != null and code != '' ">AND CODE = #{code} </if>
         </where>
     </select>
 
+    <!-- 조회 ]] -->
+
+
+
+
     <insert id="insert">
+        /* 코드 저장 - CodeMapper.insert */
         INSERT INTO CODE
         (
             CODE, CODE_NAME

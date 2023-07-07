@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 public class CodeService extends ParentService {
 
-    public Code insertCode(Code code) {
+    public Code insertCode(Code code) throws Exception {
 
         var target = Code.builder()
                 .code(code.getCode())
@@ -25,17 +25,21 @@ public class CodeService extends ParentService {
                 .codeOrd(code.getCodeOrd())
                 .useYn(code.getUseYn())
                 .build();
-        boolean isValidated = getValidationUtil().parameterValidator(target, Code.class);
-        int iAffectedRows = getCommonMapper().getCodeMapper().insert(target);
+        boolean isValidated = validationUtil().parameterValidator(target, Code.class);
+        int iAffectedRows = commonMapper().getCodeMapper().insert(target);
 
         return code;
     }
 
+    public List<CodeVO> pagingCode(CodeSearchVO search) {
+
+        return (List<CodeVO>) commonMapper().getCodeMapper().pagingBySearch(search);
+    }
     public List<CodeVO> listCode(CodeSearchVO search) {
-        return (List<CodeVO>) getCommonMapper().getCodeMapper().listBySearch(search);
+        return (List<CodeVO>) commonMapper().getCodeMapper().listBySearch(search);
     }
 
     public CodeVO rowCode(CodeSearchVO search) {
-        return (CodeVO) getCommonMapper().getCodeMapper().rowBySearch(search);
+        return (CodeVO) commonMapper().getCodeMapper().rowBySearch(search);
     }
 }

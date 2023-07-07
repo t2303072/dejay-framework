@@ -17,4 +17,11 @@ public class CodeSearchVO extends SearchVO {
      * 8자리 코드 (ex: 00010001)
      */
     private String code;
+
+    /**
+     * 코드명
+     */
+    private String codeName;
+
+    private String useYn;
 }
