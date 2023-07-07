@@ -47,3 +47,4 @@ properties:
 # jwt
 jwt:
   secret: frameworkspringsecurityjwtsecretkeytestijzone
+  issuer: ikjooLee

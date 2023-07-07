@@ -20,10 +20,8 @@ import java.util.List;
 @Service
 public class TestService {
 
+    private final JwtUtil jwtUtil;
     private final CryptoUtil cryptoUtil;
-
-    @Value("${jwt.secret}")
-    private String secretKey;
 
     private Long expiredMs = 1000 * 60 * 60l;
 
@@ -73,7 +71,7 @@ public class TestService {
      * @param password
      * @return
      */
-    public String loginReturnJwt(String userName, String password) {
-        return JwtUtil.createJwt(userName, secretKey, expiredMs);
+    public String loginReturnJwt(String userName, String password, String[] list) {
+        return jwtUtil.createJwt(userName, expiredMs, list);
     }
 }

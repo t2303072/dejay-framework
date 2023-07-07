@@ -26,6 +26,7 @@ import java.util.Optional;
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
 
+    private final JwtUtil jwtUtil;
     private final MemberService memberService;
 
     @Override
@@ -33,7 +34,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         String requestURI = request.getRequestURI();
         log.info("[preHandle]: {}", requestURI);
 
-        TokenVO tokenVO = JwtUtil.decode(request.getHeader(HttpHeaders.AUTHORIZATION).split("Bearer ")[1]);
+        TokenVO tokenVO = jwtUtil.decode(request.getHeader(HttpHeaders.AUTHORIZATION).split("Bearer ")[1]);
         if(tokenVO == null) return false;
         request.setAttribute(MapKeyStringEnum.TOKEN_VO.getKeyString(), tokenVO);
 

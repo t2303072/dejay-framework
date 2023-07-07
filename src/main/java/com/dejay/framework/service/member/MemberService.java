@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class MemberService {
-// TODO: IJ 리턴값 Optional로 변경
+// TODO: IJ NPE 위험코드 Optional로 변경
     private final MemberMapper memberMapper;
     private final ValidationUtil validationUtil;
 

@@ -1,12 +1,16 @@
 package com.dejay.framework.controller.test;
 
 import com.dejay.framework.common.enums.MapKeyStringEnum;
+import com.dejay.framework.common.utils.JwtUtil;
 import com.dejay.framework.common.utils.MapUtil;
+import com.dejay.framework.common.utils.ObjectHandlingUtil;
 import com.dejay.framework.domain.member.LoginRequest;
 import com.dejay.framework.service.test.TestService;
 import com.dejay.framework.vo.common.ResultStatusVO;
+import com.dejay.framework.vo.common.TokenVO;
 import com.dejay.framework.vo.test.TestVO;
 import com.dejay.framework.vo.common.PagingVO;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +30,7 @@ public class TestController {
 
     private final TestService testService;
     private final MapUtil mapUtil;
+    private final JwtUtil jwtUtil;
 
     /**
      * Index test
@@ -71,8 +76,7 @@ public class TestController {
      */
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid LoginRequest loginRequest) {
-
-        return ResponseEntity.ok().body(testService.loginReturnJwt(loginRequest.getUserName(), loginRequest.getPassword()));
+        return ResponseEntity.ok().body(testService.loginReturnJwt(loginRequest.getUserName(), loginRequest.getPassword(), loginRequest.getRoles()));
     }
 
     /**
@@ -81,10 +85,11 @@ public class TestController {
      * @return
      */
     @PostMapping("/authentication-info")
-    public ResponseEntity authentication(Authentication authentication) {
+    public ResponseEntity authentication(HttpServletRequest request, Authentication authentication) {
         log.info("Authentication: userName => {}", authentication.getName());
         authentication.getAuthorities().forEach(a -> log.info("권한: {}", a.getAuthority()));
-        return ResponseEntity.ok("userName: " + authentication.getName() + " / authorities: " + authentication.getAuthorities());
+        TokenVO tokenVO = ObjectHandlingUtil.extractTokenInfo(request);
+        return ResponseEntity.ok("TokenVO: " + tokenVO.toString());
     }
 
 }

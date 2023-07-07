@@ -6,20 +6,26 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum MapKeyStringEnum {
-
+    // Common
       RESULT_STATUS("resultStatus")
+    , TEST("test")
     , DATA("data")
+    , CODE("code")
+    , PAGING("paging")
+    , ROLES("roles")
+
+    // Object
     , MEMBER("member")
     , MEMBER_VO("memberVO")
-    , MEMBER_LIST("memberList")
-    , CODE("code")
-    , CODE_LIST("codeList")
-    , TEST("test")
-    , PAGING("paging")
-    , TOKEN_VO("tokenVO")
-    , JWT_USERNAME("userName")
-    , JWT_ISSUER("ikjoo Lee")
     , LOGIN_VO("loginVO")
+    , TOKEN_VO("tokenVO")
+
+    // Collection
+    , MEMBER_LIST("memberList")
+    , CODE_LIST("codeList")
+
+    // Token
+    , JWT_USERNAME("userName")
     ;
 
     private String keyString;

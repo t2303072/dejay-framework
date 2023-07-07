@@ -6,16 +6,16 @@ import com.dejay.framework.common.utils.ObjectHandlingUtil;
 import com.dejay.framework.domain.member.Member;
 import com.dejay.framework.service.member.MemberService;
 import com.dejay.framework.service.test.TestService;
-import com.dejay.framework.vo.common.TokenVO;
-import com.dejay.framework.vo.login.LoginVO;
-import com.dejay.framework.vo.member.MemberVO;
 import com.dejay.framework.vo.common.ResultStatusVO;
+import com.dejay.framework.vo.common.TokenVO;
+import com.dejay.framework.vo.member.MemberVO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -33,7 +33,7 @@ public class MemberController {
     private final MapUtil mapUtil;
 
     @GetMapping(value = {"", "/"})
-    public ResponseEntity memberList(HttpServletRequest request) {
+    public ResponseEntity memberList(HttpServletRequest request, Authentication authentication) {
         // TODO: IJ 로그인 정보
         TokenVO tokenVO = ObjectHandlingUtil.extractTokenInfo(request); log.info(tokenVO.toString());
         MemberVO loginVO = ObjectHandlingUtil.extractLoginInfo(request); log.info(loginVO.toString());

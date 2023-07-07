@@ -4,7 +4,6 @@ import com.dejay.framework.common.enums.MapKeyStringEnum;
 import com.dejay.framework.common.enums.ResultCodeMsgEnum;
 import com.dejay.framework.vo.common.ResultStatusVO;
 import com.dejay.framework.vo.common.TokenVO;
-import com.dejay.framework.vo.login.LoginVO;
 import com.dejay.framework.vo.member.MemberVO;
 import jakarta.servlet.http.HttpServletRequest;
 

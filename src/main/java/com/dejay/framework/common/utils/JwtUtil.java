@@ -1,5 +1,6 @@
 package com.dejay.framework.common.utils;
 
+import com.dejay.framework.common.enums.ExceptionCodeMsgEnum;
 import com.dejay.framework.common.enums.MapKeyStringEnum;
 import com.dejay.framework.vo.common.TokenVO;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -7,32 +8,47 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import java.util.Base64;
-import java.util.Date;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
+@RequiredArgsConstructor
+@Component
 public class JwtUtil {
+
+    private final UserDetailsService userDetailsService;
+
+    @Value("${jwt.secret}")
+    private String secretKey;
+    @Value("${jwt.issuer}")
+    private String issuer;
 
     /**
      * JWT 생성
      * @param userName String
-     * @param secretKey String
      * @param expiredMs Long
      * @return
      */
-    public static String createJwt(String userName, String secretKey, Long expiredMs) {
+    public String createJwt(String userName, Long expiredMs, String[] roles) {
         Claims claims = Jwts.claims();
         claims.put(MapKeyStringEnum.JWT_USERNAME.getKeyString(), userName);
+        claims.put(MapKeyStringEnum.ROLES.getKeyString(), roles);
 
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiredMs))
-                .setIssuer(MapKeyStringEnum.JWT_ISSUER.getKeyString())
+                .setIssuer(issuer)
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }
@@ -40,21 +56,20 @@ public class JwtUtil {
     /**
      * JWT 만료 여부
      * @param token
-     * @param secretKey
      * @return
      */
-    public static boolean isExpired(String token, String secretKey) {
+    public boolean isExpired(String token) {
         return Jwts.parserBuilder().setSigningKey(secretKey).build()
-                .parseClaimsJws(token).getBody().getExpiration().before(new Date());
+                    .parseClaimsJws(token).getBody().getExpiration().before(new Date());
     }
 
     /**
      * JWT 유저명 조회
+     *
      * @param token
-     * @param secretKey
      * @return
      */
-    public static String getUserName(String token, String secretKey) {
+    public String getUserName(String token) {
         return Jwts.parserBuilder().setSigningKey(secretKey).build()
                 .parseClaimsJws(token).getBody().get(MapKeyStringEnum.JWT_USERNAME.getKeyString(), String.class);
     }
@@ -65,8 +80,8 @@ public class JwtUtil {
      * @return
      * @throws JsonProcessingException
      */
-    public static TokenVO decode(String token) throws JsonProcessingException {
-        if(!StringUtils.hasText(token)) throw new NullPointerException("토큰 값이 없습니다.");
+    public TokenVO decode(String token) throws JsonProcessingException {
+        if(!StringUtils.hasText(token)) throw new NullPointerException(ExceptionCodeMsgEnum.NO_TOKEN.getMsg());
 
         String[] chunk = token.split("\\.");
         Base64.Decoder decoder = Base64.getDecoder();
@@ -78,4 +93,19 @@ public class JwtUtil {
 
         return tokenVO;
     }
+
+    public Authentication getAuthentication(String token) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
+        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+    }
+
+    public String getUserPk(String token) {
+        return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().getSubject();
+    }
+
+    public String graspToken(HttpServletRequest request) {
+        return request.getHeader("X-AUTH-TOKEN");
+    }
+
+
 }
