@@ -34,6 +34,7 @@ public class TransactionAspect {
         HashMap<String, TransactionAttribute> txMethods = new HashMap<String, TransactionAttribute>();
 
         // write전용 transaction (rollback처리)
+        txMethods.put("merge*", writeOnlyAttribute);
         txMethods.put("insert*", writeOnlyAttribute);
         txMethods.put("save*", writeOnlyAttribute);
         txMethods.put("update*", writeOnlyAttribute);
@@ -41,12 +42,14 @@ public class TransactionAspect {
         txMethods.put("delete*", writeOnlyAttribute);
         txMethods.put("remove*", writeOnlyAttribute);
 
-        // readonly transaction (rollback처리 안됨)
+
+        // readonly transaction (저장은 되나 rollback처리 안됨)
         txMethods.put("paging*", readOnlyAttribute);
         txMethods.put("list*", readOnlyAttribute);
         txMethods.put("row*", readOnlyAttribute);
         txMethods.put("get*", readOnlyAttribute);
         txMethods.put("select*", readOnlyAttribute);
+        txMethods.put("one*", readOnlyAttribute);
 
         txAttributeSource.setNameMap(txMethods);
 
