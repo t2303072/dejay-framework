@@ -3,7 +3,9 @@ package com.dejay.framework.common.interceptor;
 import com.dejay.framework.common.enums.MapKeyStringEnum;
 import com.dejay.framework.common.utils.JwtUtil;
 import com.dejay.framework.common.utils.SessionFactory;
+import com.dejay.framework.service.member.MemberService;
 import com.dejay.framework.vo.common.TokenVO;
+import com.dejay.framework.vo.member.MemberVO;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,12 +26,21 @@ import java.util.Optional;
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
 
+    private final JwtUtil jwtUtil;
+    private final MemberService memberService;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String requestURI = request.getRequestURI();
         log.info("[preHandle]: {}", requestURI);
-        TokenVO tokenVO = JwtUtil.decode(request.getHeader(HttpHeaders.AUTHORIZATION).split("Bearer ")[1]);
+
+        TokenVO tokenVO = jwtUtil.decode(request.getHeader(HttpHeaders.AUTHORIZATION).split("Bearer ")[1]);
+        if(tokenVO == null) return false;
         request.setAttribute(MapKeyStringEnum.TOKEN_VO.getKeyString(), tokenVO);
+
+        MemberVO memberVO = memberService.findMemberByUserName(tokenVO.getUserName());
+        if(memberVO == null) return false;
+        request.setAttribute(MapKeyStringEnum.MEMBER_VO.getKeyString(), memberVO);
 
         return true;
     }
@@ -41,6 +52,5 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        log.info("[afterCompletion]");
     }
 }

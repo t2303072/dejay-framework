@@ -1,12 +1,16 @@
 package com.dejay.framework.controller.test;
 
 import com.dejay.framework.common.enums.MapKeyStringEnum;
+import com.dejay.framework.common.utils.JwtUtil;
 import com.dejay.framework.common.utils.MapUtil;
+import com.dejay.framework.common.utils.ObjectHandlingUtil;
 import com.dejay.framework.domain.member.LoginRequest;
 import com.dejay.framework.service.test.TestService;
 import com.dejay.framework.vo.common.ResultStatusVO;
+import com.dejay.framework.vo.common.TokenVO;
 import com.dejay.framework.vo.test.TestVO;
 import com.dejay.framework.vo.common.PagingVO;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +30,7 @@ public class TestController {
 
     private final TestService testService;
     private final MapUtil mapUtil;
+    private final JwtUtil jwtUtil;
 
     /**
      * Index test
@@ -33,9 +38,7 @@ public class TestController {
      */
     @GetMapping({"", "/"})
     public ResponseEntity index() {
-        List<TestVO> list = testService.getTest();
-
-        return ResponseEntity.ok(list);
+        return ResponseEntity.ok(testService.getTest());
     }
 
     /**
@@ -59,22 +62,20 @@ public class TestController {
      * 비밀번호 암호화 test
      * @return
      */
-    @GetMapping("password-encode")
-    public ResponseEntity passwordEncode() {
-        testService.passwordEncode();
-
+    @PostMapping("password-encode")
+    public ResponseEntity passwordEncode(@RequestBody @Valid LoginRequest loginRequest) {
+        testService.passwordEncode(loginRequest);
         return ResponseEntity.ok().build();
     }
 
     /**
      * 로그인 토큰 생성 test
      * @param loginRequest
-     * @param authentication
      * @return
      */
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid LoginRequest loginRequest, Authentication authentication) {
-        return ResponseEntity.ok().body(testService.loginReturnJwt(loginRequest.getUserName(), loginRequest.getPassword()));
+    public ResponseEntity login(@RequestBody @Valid LoginRequest loginRequest) {
+        return ResponseEntity.ok().body(testService.loginReturnJwt(loginRequest.getUserName(), loginRequest.getPassword(), loginRequest.getRoles()));
     }
 
     /**
@@ -83,10 +84,11 @@ public class TestController {
      * @return
      */
     @PostMapping("/authentication-info")
-    public ResponseEntity authentication(Authentication authentication) {
+    public ResponseEntity authentication(HttpServletRequest request, Authentication authentication) {
         log.info("Authentication: userName => {}", authentication.getName());
         authentication.getAuthorities().forEach(a -> log.info("권한: {}", a.getAuthority()));
-        return ResponseEntity.ok("userName: " + authentication.getName() + " / authorities: " + authentication.getAuthorities());
+        TokenVO tokenVO = ObjectHandlingUtil.extractTokenInfo(request);
+        return ResponseEntity.ok("TokenVO: " + tokenVO.toString());
     }
 
 }

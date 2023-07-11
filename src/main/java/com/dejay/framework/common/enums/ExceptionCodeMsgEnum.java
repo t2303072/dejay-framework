@@ -17,6 +17,8 @@ public enum ExceptionCodeMsgEnum {
     , LOGIN_REQUIRED(992, "로그인이 필요한 API 입니다.")
     , PASSWORD_VALUE_NOT_PROVIDED(991, "비밀번호 값이 없습니다.")
     , NULL_POINTER(990, "NULL POINTER")
+    , EXPIRED_TOKEN(989, "만료된 토큰 값 입니다.")
+    , NO_TOKEN(988, "토큰 값이 없습니다.")
     ;
 
     private int code;

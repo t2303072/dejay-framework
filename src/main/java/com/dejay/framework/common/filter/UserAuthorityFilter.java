@@ -2,15 +2,12 @@ package com.dejay.framework.common.filter;
 
 import com.dejay.framework.common.enums.ResultCodeMsgEnum;
 import com.dejay.framework.common.utils.JwtUtil;
-import com.dejay.framework.service.member.MemberService;
-import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,16 +20,15 @@ import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
-public class JwtFilter extends OncePerRequestFilter {
+public class UserAuthorityFilter extends OncePerRequestFilter {
 
-    private final MemberService memberService;
-    private final String secretKey;
+    private final JwtUtil jwtUtil;
     private static final String TOKEN_PREFIX = "Bearer ";
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        final String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
         log.info("authorization: {}", authorization);
 
         // token 전송 여부 확인
@@ -44,16 +40,15 @@ public class JwtFilter extends OncePerRequestFilter {
 
         // Get token
         String token = authorization.split(" ")[1];
-
         // Token expiration status
-        if(JwtUtil.isExpired(token, secretKey)) {
+        if(jwtUtil.isExpired(token)) {
             log.error(ResultCodeMsgEnum.TOKEN_EXPIRED.getMsg());
             filterChain.doFilter(request, response);
             return;
         }
 
         // Get userName out of token
-        String userName = JwtUtil.getUserName(token, secretKey);
+        String userName = jwtUtil.getUserName(token);
 
         // Grant Authentication
         UsernamePasswordAuthenticationToken authenticationToken =

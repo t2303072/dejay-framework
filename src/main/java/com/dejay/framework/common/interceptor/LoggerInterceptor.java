@@ -27,6 +27,9 @@ public class LoggerInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        String requestURI = request.getRequestURI();
+        log.info("[preHandle]: {}", requestURI);
+
 //        if(!StringUtils.hasText(reqParam)) {
 //            reqParam = request.getReader().lines().collect(Collectors.joining());
 //        }
