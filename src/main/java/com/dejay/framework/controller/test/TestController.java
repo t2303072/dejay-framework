@@ -71,7 +71,6 @@ public class TestController {
     /**
      * 로그인 토큰 생성 test
      * @param loginRequest
-     * @param authentication
      * @return
      */
     @PostMapping("/login")
