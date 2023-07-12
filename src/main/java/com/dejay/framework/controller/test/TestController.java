@@ -68,27 +68,4 @@ public class TestController {
         return ResponseEntity.ok().build();
     }
 
-    /**
-     * 로그인 토큰 생성 test
-     * @param loginRequest
-     * @return
-     */
-    @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid LoginRequest loginRequest) {
-        return ResponseEntity.ok().body(testService.loginReturnJwt(loginRequest.getUserName(), loginRequest.getPassword(), loginRequest.getRoles()));
-    }
-
-    /**
-     * 토큰인증 정보 확인
-     * @param authentication
-     * @return
-     */
-    @PostMapping("/authentication-info")
-    public ResponseEntity authentication(HttpServletRequest request, Authentication authentication) {
-        log.info("Authentication: userName => {}", authentication.getName());
-        authentication.getAuthorities().forEach(a -> log.info("권한: {}", a.getAuthority()));
-        TokenVO tokenVO = ObjectHandlingUtil.extractTokenInfo(request);
-        return ResponseEntity.ok("TokenVO: " + tokenVO.toString());
-    }
-
 }
