@@ -9,7 +9,6 @@ import com.dejay.framework.vo.common.PagingVO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -72,6 +71,6 @@ public class TestService {
      * @return
      */
     public String loginReturnJwt(String userName, String password, String[] list) {
-        return jwtUtil.createJwt(userName, expiredMs, list);
+        return jwtUtil.generateJwt(userName, expiredMs, list);
     }
 }

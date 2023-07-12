@@ -1,11 +1,14 @@
 package com.dejay.framework.controller.utils;
 
+import com.dejay.framework.common.enums.MapKeyStringEnum;
+import com.dejay.framework.common.utils.MapUtil;
 import com.dejay.framework.common.utils.ObjectHandlingUtil;
 import com.dejay.framework.common.utils.TokenFactory;
+import com.dejay.framework.domain.common.TokenObject;
 import com.dejay.framework.domain.member.LoginRequest;
+import com.dejay.framework.vo.common.ResultStatusVO;
 import com.dejay.framework.vo.common.TokenVO;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Arrays;
+import java.util.Map;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -23,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TokenController {
 
     private final TokenFactory tokenFactory;
+    private final MapUtil mapUtil;
 
     /**
      * JWT 생성
@@ -31,8 +38,12 @@ public class TokenController {
      */
     @PostMapping(value = {"", "/"})
     public ResponseEntity createJWT(@RequestBody @Valid LoginRequest loginRequest) {
-        String jwt = tokenFactory.createJWT(loginRequest.getUserName(), loginRequest.getPassword(), loginRequest.getRoles());
-        return ResponseEntity.ok(jwt);
+        TokenObject tokenObject = tokenFactory.createJWT(loginRequest.getUserName(), loginRequest.getPassword(), loginRequest.getRoles());
+        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(tokenObject);
+        var mapKeyList = Arrays.asList(MapKeyStringEnum.TOKEN_OBJECT.getKeyString());
+        Map<String, Object> resultMap = mapUtil.responseEntityBodyWrapper(resultStatusVO, mapKeyList, tokenObject);
+
+        return ResponseEntity.ok(resultMap);
     }
 
     /**

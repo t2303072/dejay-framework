@@ -2,13 +2,14 @@ package com.dejay.framework.common.utils;
 
 import com.dejay.framework.common.enums.ExceptionCodeMsgEnum;
 import com.dejay.framework.common.enums.MapKeyStringEnum;
+import com.dejay.framework.domain.common.TokenObject;
 import com.dejay.framework.vo.common.TokenVO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import jakarta.servlet.http.HttpServletRequest;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,17 +34,35 @@ public class JwtUtil {
     @Value("${jwt.issuer}")
     private String issuer;
 
+    @PostConstruct
+    protected void encodeKey() {
+        secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
+    }
+
     /**
-     * JWT 생성
-     * @param userName String
-     * @param expiredMs Long
+     * 토큰 객체 생성
+     * @param userName {@link String}
+     * @param accessExpiresAt {@link Long}
+     * @param refreshExpiresAt {@link Long}
+     * @param roles {@link Arrays}
      * @return
      */
-    public String createJwt(String userName, Long expiredMs, String[] roles) {
-        Claims claims = Jwts.claims();
+    public TokenObject createTokenObject(String userName, Long accessExpiresAt, Long refreshExpiresAt, String[] roles) {
+        String accessToken = this.generateJwt(userName, accessExpiresAt, roles);
+        String refreshToken = this.generateJwt(userName, refreshExpiresAt, roles);
+        return TokenObject.builder().accessToken(accessToken).refreshToken(refreshToken).key(userName).build();
+    }
+
+    /**
+     * JWT 생성
+     * @param userName {@link String}
+     * @param expiredMs {@link Long}
+     * @return
+     */
+    public String generateJwt(String userName, Long expiredMs, String[] roles) {
+        Claims claims = Jwts.claims().setSubject(userName);
         claims.put(MapKeyStringEnum.JWT_USERNAME.getKeyString(), userName);
         claims.put(MapKeyStringEnum.ROLES.getKeyString(), roles);
-
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -55,7 +74,7 @@ public class JwtUtil {
 
     /**
      * JWT 만료 여부
-     * @param token
+     * @param token {@link String}
      * @return
      */
     public boolean isExpired(String token) {
@@ -66,7 +85,7 @@ public class JwtUtil {
     /**
      * JWT 유저명 조회
      *
-     * @param token
+     * @param token {@link String}
      * @return
      */
     public String getUserName(String token) {
@@ -76,7 +95,7 @@ public class JwtUtil {
 
     /**
      * JWT decoder
-     * @param token String
+     * @param token {@link String}
      * @return
      * @throws JsonProcessingException
      */
@@ -103,9 +122,9 @@ public class JwtUtil {
         return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().getSubject();
     }
 
-    public String graspToken(HttpServletRequest request) {
-        return request.getHeader("X-AUTH-TOKEN");
-    }
+//    public String graspToken(HttpServletRequest request) {
+//        return request.getHeader("X-AUTH-TOKEN");
+//    }
 
 
 }

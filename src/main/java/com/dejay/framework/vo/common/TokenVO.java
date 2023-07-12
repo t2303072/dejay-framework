@@ -9,6 +9,7 @@ import lombok.ToString;
 @Getter
 @NoArgsConstructor
 public class TokenVO {
+    private String sub;
     private String userName;
     private String iss;
     private long iat;
@@ -16,7 +17,8 @@ public class TokenVO {
     private String[] roles;
 
     @Builder
-    public TokenVO(String userName, String iss, long iat, long exp, String[] roles) {
+    public TokenVO(String sub, String userName, String iss, long iat, long exp, String[] roles) {
+        this.sub = sub;
         this.userName = userName;
         this.iss = iss;
         this.iat = iat;
