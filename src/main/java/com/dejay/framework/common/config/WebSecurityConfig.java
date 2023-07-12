@@ -28,8 +28,8 @@ public class WebSecurityConfig {
 
     @Value("${jwt.secret}")
 
-    private static final String[] NO_AUTH_REQUIRED_URL = {"/index/**", "/token"};
-    private static final String[] AUTH_REQUIRED_URL = {"/member/**", "/test/**", "/token/authentication-info"};
+    private static final String[] NO_AUTH_REQUIRED_URL = {"/index/**", "/test/**", "/token"};
+    private static final String[] AUTH_REQUIRED_URL = {"/member/**", "/token/authentication-info"};
 
     @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
