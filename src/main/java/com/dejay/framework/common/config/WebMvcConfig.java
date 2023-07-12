@@ -21,7 +21,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     private final LoginInterceptor loginInterceptor;
 
     private final List<String> loggerPattern = Arrays.asList("/**");
-    private final List<String> loginPattern = Arrays.asList("/member/**", "/test/authentication-info");
+    private final List<String> loginPattern = Arrays.asList("/member/**", "/token/authentication-info");
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

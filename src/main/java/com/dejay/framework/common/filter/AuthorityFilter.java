@@ -20,7 +20,7 @@ import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
-public class UserAuthorityFilter extends OncePerRequestFilter {
+public class AuthorityFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
     private static final String TOKEN_PREFIX = "Bearer ";
@@ -28,18 +28,18 @@ public class UserAuthorityFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
-        log.info("authorization: {}", authorization);
+        final String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         // token 전송 여부 확인
         if(authorization == null || !authorization.startsWith(TOKEN_PREFIX)) {
-            log.error(ResultCodeMsgEnum.INVALID_HEADER_AUTHORIZATION.getMsg());
+            log.error(ResultCodeMsgEnum.NO_HEADER_AUTHORIZATION.getMsg());
             filterChain.doFilter(request, response);
             return;
         }
 
         // Get token
         String token = authorization.split(" ")[1];
+
         // Token expiration status
         if(jwtUtil.isExpired(token)) {
             log.error(ResultCodeMsgEnum.TOKEN_EXPIRED.getMsg());
@@ -52,7 +52,7 @@ public class UserAuthorityFilter extends OncePerRequestFilter {
 
         // Grant Authentication
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(userName, null, List.of(new SimpleGrantedAuthority("USER")));
+                new UsernamePasswordAuthenticationToken(userName, null, List.of(new SimpleGrantedAuthority("ADMIN"), new SimpleGrantedAuthority("USER")));
 
         // Set details
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
