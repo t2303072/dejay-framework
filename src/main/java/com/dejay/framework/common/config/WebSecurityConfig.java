@@ -2,6 +2,7 @@ package com.dejay.framework.common.config;
 
 import com.dejay.framework.common.filter.AuthorityFilter;
 import com.dejay.framework.common.utils.JwtUtil;
+import com.dejay.framework.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -25,6 +26,7 @@ public class WebSecurityConfig {
 
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtUtil jwtUtil;
+    private final MemberService memberService;
 
     @Value("${jwt.secret}")
 
@@ -44,7 +46,7 @@ public class WebSecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(hb -> hb.disable())
-                .addFilterBefore(new AuthorityFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new AuthorityFilter(jwtUtil, memberService), UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
     }
