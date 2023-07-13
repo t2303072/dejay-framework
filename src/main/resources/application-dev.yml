@@ -1,13 +1,9 @@
 spring:
   datasource:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    jdbc-url: jdbc:log4jdbc:mariadb://10.34.220.168:3306/dejay_public2
-    username: dejay_was
-    password: 22@dejay
-
-    hikari:
-      maximum-pool-size: 10
-      connection-test-query: SELECT NOW() FROM DUAL
+    url: jdbc:log4jdbc:mariadb://10.34.220.168:3306/dejay_public
+    username: dejay
+    password: dejay@1234
 
 ## mapper logging level
 logging:
@@ -20,5 +16,8 @@ logging:
       dejay:
         framework:
           mapper: trace
-## Log Level Setting(default info)
+    ## Log Level Setting(default info)
     root: info
+
+server:
+  port: 3001
