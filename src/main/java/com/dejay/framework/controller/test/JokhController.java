@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -16,14 +19,15 @@ public class JokhController {
     @Autowired
     JasyptConfig jasyptConfig;
 
-    @GetMapping(value = {"encryption"})
+    @PostMapping("/encryption")
     public ResponseEntity jasypt() {
 
-        log.info("url: {}", jasyptConfig.jasyptEncrypt("jdbc:log4jdbc:mariadb://10.34.220.168:3306/dejay_public"));
-        log.info("id: {}", jasyptConfig.jasyptEncrypt("dejay_was"));
-        log.info("password: {}", jasyptConfig.jasyptEncrypt("22@dejay"));
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("url", jasyptConfig.jasyptEncrypt("jdbc:log4jdbc:mariadb://10.34.220.168:3306/dejay_public"));
+        resultMap.put("url", jasyptConfig.jasyptEncrypt("dejay"));
+        resultMap.put("url", jasyptConfig.jasyptEncrypt("dejay@1234"));
 
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(resultMap.toString());
     }
 
 }

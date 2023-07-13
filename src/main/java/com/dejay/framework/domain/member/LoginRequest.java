@@ -4,11 +4,13 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Getter
 @EqualsAndHashCode(of = {"userName", "password"})
+@NoArgsConstructor
 public class LoginRequest {
 
     @NotNull(message = "userName은 필수 값 입니다.")
