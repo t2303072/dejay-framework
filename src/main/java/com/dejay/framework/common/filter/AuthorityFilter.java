@@ -2,6 +2,8 @@ package com.dejay.framework.common.filter;
 
 import com.dejay.framework.common.enums.ResultCodeMsgEnum;
 import com.dejay.framework.common.utils.JwtUtil;
+import com.dejay.framework.service.member.MemberService;
+import com.dejay.framework.vo.member.MemberVO;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,6 +26,7 @@ public class AuthorityFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
     private static final String TOKEN_PREFIX = "Bearer ";
+    private final MemberService memberService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -50,9 +53,12 @@ public class AuthorityFilter extends OncePerRequestFilter {
         // Get userName out of token
         String userName = jwtUtil.getUserName(token);
 
+        // TODO: IJ 유효 로그인 정보 여부 조회
+        MemberVO memberVO = memberService.findMemberByUserName(userName);
+
         // Grant Authentication
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(userName, null, List.of(new SimpleGrantedAuthority("ADMIN"), new SimpleGrantedAuthority("USER")));
+                new UsernamePasswordAuthenticationToken(userName, null, List.of(new SimpleGrantedAuthority("USER")));
 
         // Set details
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
