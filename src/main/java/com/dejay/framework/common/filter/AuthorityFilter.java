@@ -53,9 +53,10 @@ public class AuthorityFilter extends OncePerRequestFilter {
         // Get userName out of token
         String userName = jwtUtil.getUserName(token);
 
-        // TODO: IJ 유효 로그인 정보 여부 조회
-        MemberVO memberVO = memberService.findMemberByUserName(userName);
+        // TODO: IJ 유효 로그인 정보 여부 조회, MyBatis Interceptor에서 걸리므로 필터에서 조회하는 쿼리는 제외하는 로직 필요
+//        MemberVO memberVO = memberService.findMemberByUserName(userName);
 
+        // TODO: IJ 권한 부여 로직
         // Grant Authentication
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(userName, null, List.of(new SimpleGrantedAuthority("USER")));
