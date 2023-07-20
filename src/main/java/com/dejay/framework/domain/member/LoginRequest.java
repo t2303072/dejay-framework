@@ -15,8 +15,9 @@ public class LoginRequest {
 
     @NotNull(message = "userName은 필수 값 입니다.")
     private String userName;
+    @NotNull(message = "password는 필수 값 입니다.")
     private String password;
-    @NotNull(message = "Role은 필수 값 입니다.")
+//    @NotNull(message = "Role은 필수 값 입니다.")
     private String[] roles;
 
     @Builder

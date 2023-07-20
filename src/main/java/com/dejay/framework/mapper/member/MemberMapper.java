@@ -1,5 +1,6 @@
 package com.dejay.framework.mapper.member;
 
+import com.dejay.framework.domain.member.LoginRequest;
 import com.dejay.framework.domain.member.Member;
 import com.dejay.framework.domain.user.User;
 import com.dejay.framework.vo.member.MemberVO;
@@ -15,4 +16,5 @@ public interface MemberMapper {
     long insertMember(Member member);
     MemberVO findMemberByUserName(String userName);
     long insertUser(User user);
+    MemberVO getLoginInfo(LoginRequest loginRequest);
 }

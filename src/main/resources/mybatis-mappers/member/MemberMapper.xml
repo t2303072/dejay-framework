@@ -15,6 +15,12 @@
         SELECT * FROM MEMBER WHERE MEMBER_ID = #{userName}
     </select>
 
+    <select id="getLoginInfo" resultType="MemberVO">
+        SELECT MEMBER_ID, PASSWORD, MEMBER_NAME
+        FROM MEMBER
+        WHERE MEMBER_ID = #{userName}
+    </select>
+
     <insert id="insertMember" useGeneratedKeys="true">
         INSERT INTO MEMBER(MEMBER_ID, MEMBER_NAME, EMAIL) VALUES (#{memberId}, #{memberName}, #{email})
         <selectKey keyProperty="id" resultType="long">

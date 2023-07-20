@@ -14,14 +14,15 @@ import java.util.List;
 @RequiredArgsConstructor
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
+    private final long MAX_AGE_SEC = 3600L;
 
     private final LoggerInterceptor loggerInterceptor;
     private final LoginInterceptor loginInterceptor;
 
     private final List<String> loggerIncludePattern = Arrays.asList("/**");
+
     private final List<String> loginIncludePattern = Arrays.asList("/member/**", "/token/authentication-info");
     private final List<String> loginExcludePattern = Arrays.asList("/member/sign-up");
-    private final long MAX_AGE_SEC = 3600L;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

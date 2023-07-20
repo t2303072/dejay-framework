@@ -1,6 +1,7 @@
 package com.dejay.framework.service.member;
 
 import com.dejay.framework.common.utils.ValidationUtil;
+import com.dejay.framework.domain.member.LoginRequest;
 import com.dejay.framework.domain.user.User;
 import com.dejay.framework.mapper.member.MemberMapper;
 import com.dejay.framework.domain.member.Member;
@@ -79,5 +80,18 @@ public class MemberService {
         memberMapper.insertUser(target);
 
         return target;
+    }
+
+    public MemberVO getLoginInfo(LoginRequest loginRequest) {
+        MemberVO target = findMemberByUserName(loginRequest.getUserName());
+        if (bCryptPasswordEncoder.matches(loginRequest.getPassword(), target.getPassword())) {
+            return MemberVO.builder()
+                    .memberId(target.getMemberId())
+                    .memberName(target.getMemberName())
+                    .email(target.getEmail())
+                    .build();
+        }
+
+        return null;
     }
 }

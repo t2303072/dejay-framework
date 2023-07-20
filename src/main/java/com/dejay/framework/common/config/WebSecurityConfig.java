@@ -4,13 +4,18 @@ import com.dejay.framework.common.filter.AuthorityFilter;
 import com.dejay.framework.common.utils.JwtUtil;
 import com.dejay.framework.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -28,10 +33,17 @@ public class WebSecurityConfig {
     private final JwtUtil jwtUtil;
     private final MemberService memberService;
 
+    private final UserDetailsService userDetailsService;
+
     @Value("${jwt.secret}")
 
-    private static final String[] NO_AUTH_REQUIRED_URL = {"/index/**", "/test/**", "/token"};
+    private static final String[] NO_AUTH_REQUIRED_URL = {"/index/**", "/test/**", "/token", "/member/sign-up", "/login"};
     private static final String[] AUTH_REQUIRED_URL = {"/member/**", "/token/authentication-info"};
+
+    @Bean
+    public static BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -46,8 +58,19 @@ public class WebSecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(hb -> hb.disable())
-                .addFilterBefore(new AuthorityFilter(jwtUtil, memberService), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new AuthorityFilter(jwtUtil, memberService), UsernamePasswordAuthenticationFilter.class)
+                .logout(logout -> logout.permitAll()
+                        .deleteCookies("JSESSIONID")
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true))
+                .headers(h -> h.frameOptions(Customizer.withDefaults()).disable())
+        ;
 
         return httpSecurity.build();
+    }
+
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
     }
 }

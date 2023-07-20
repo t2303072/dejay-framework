@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -34,7 +35,10 @@ public class LoginInterceptor implements HandlerInterceptor {
         String requestURI = request.getRequestURI();
         log.info("[preHandle]: {}", requestURI);
 
-        TokenVO tokenVO = jwtUtil.decode(request.getHeader(HttpHeaders.AUTHORIZATION).split("Bearer ")[1]);
+        String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if(!StringUtils.hasText(authorizationHeader)) return false;
+
+        TokenVO tokenVO = jwtUtil.decode(authorizationHeader.split("Bearer ")[1]);
         if(tokenVO == null) return false;
         request.setAttribute(MapKeyStringEnum.TOKEN_VO.getKeyString(), tokenVO);
 
