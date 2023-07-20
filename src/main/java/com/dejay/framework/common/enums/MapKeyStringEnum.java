@@ -20,10 +20,12 @@ public enum MapKeyStringEnum {
     , LOGIN_VO("loginVO")
     , TOKEN_VO("tokenVO")
     , TOKEN_OBJECT("tokenObject")
+    , BOARD("board")
 
     // Collection
     , MEMBER_LIST("memberList")
     , CODE_LIST("codeList")
+    , BOARD_LIST("boardList")
 
     // Token
     , JWT_USERNAME("userName")

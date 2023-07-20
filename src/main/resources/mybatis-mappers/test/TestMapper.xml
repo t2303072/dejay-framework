@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dejay.framework.mapper.test.TestMapper">
+    <select id="getBoardList" resultType="com.dejay.framework.vo.test.BoardVO">
+        SELECT * FROM BOARD_DUMMY
+    </select>
+
+    <insert id="insertBoard" useGeneratedKeys="true">
+        INSERT INTO BOARD_DUMMY(BOARD_NO, TITLE, CONTENT, CREATED_AT, CREATED_BY, MODIFIED_AT, MODIFIED_BY) VALUES (111, #{title}, #{content}, SYSDATE(), #{createdBy}, SYSDATE(), #{modifiedBy})
+        <selectKey keyProperty="id" resultType="long">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+</mapper>
