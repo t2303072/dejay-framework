@@ -20,6 +20,7 @@ public enum MapKeyStringEnum {
     , LOGIN_VO("loginVO")
     , TOKEN_VO("tokenVO")
     , TOKEN_OBJECT("tokenObject")
+    , USER("user")
 
     // Collection
     , MEMBER_LIST("memberList")
