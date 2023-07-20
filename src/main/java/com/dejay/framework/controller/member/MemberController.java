@@ -4,6 +4,7 @@ import com.dejay.framework.common.enums.MapKeyStringEnum;
 import com.dejay.framework.common.utils.MapUtil;
 import com.dejay.framework.common.utils.ObjectHandlingUtil;
 import com.dejay.framework.domain.member.Member;
+import com.dejay.framework.domain.user.User;
 import com.dejay.framework.service.member.MemberService;
 import com.dejay.framework.service.test.TestService;
 import com.dejay.framework.vo.common.ResultStatusVO;
@@ -51,6 +52,16 @@ public class MemberController {
         Member inserted = memberService.insertMember(member);
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(inserted);
         var mapKeyList = Arrays.asList(MapKeyStringEnum.MEMBER.getKeyString());
+        Map<String, Object> resultMap = mapUtil.responseEntityBodyWrapper(resultStatusVO, mapKeyList, inserted);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(resultMap);
+    }
+
+    @PostMapping("sign-up")
+    public ResponseEntity insertMember(@RequestBody @Valid User user) {
+        User inserted = memberService.insertUser(user);
+        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(inserted);
+        var mapKeyList = Arrays.asList(MapKeyStringEnum.USER.getKeyString());
         Map<String, Object> resultMap = mapUtil.responseEntityBodyWrapper(resultStatusVO, mapKeyList, inserted);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(resultMap);

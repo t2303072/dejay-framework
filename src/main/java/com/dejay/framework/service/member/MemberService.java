@@ -1,11 +1,13 @@
 package com.dejay.framework.service.member;
 
 import com.dejay.framework.common.utils.ValidationUtil;
+import com.dejay.framework.domain.user.User;
 import com.dejay.framework.mapper.member.MemberMapper;
 import com.dejay.framework.domain.member.Member;
 import com.dejay.framework.vo.member.MemberVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,6 +20,7 @@ public class MemberService {
 // TODO: IJ NPE 위험코드 Optional로 변경
     private final MemberMapper memberMapper;
     private final ValidationUtil validationUtil;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     /**
      * 멤버목록 조회
@@ -53,12 +56,27 @@ public class MemberService {
     public Member insertMember(Member member) {
         var target = Member.builder()
                 .memberId(member.getMemberId())
+                .password(bCryptPasswordEncoder.encode(member.getPassword()))
                 .memberName(member.getMemberName())
                 .email(member.getEmail())
                 .build();
 
         validationUtil.parameterValidator(target, Member.class);
         memberMapper.insertMember(target);
+
+        return target;
+    }
+
+    public User insertUser(User user) {
+        var target = User.builder()
+                .id(user.getId())
+                .password(bCryptPasswordEncoder.encode(user.getPassword()))
+                .name(user.getName())
+                .email(user.getEmail())
+                .build();
+
+        validationUtil.parameterValidator(target, User.class);
+        memberMapper.insertUser(target);
 
         return target;
     }

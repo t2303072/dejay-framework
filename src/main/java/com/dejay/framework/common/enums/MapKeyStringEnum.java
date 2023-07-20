@@ -21,6 +21,7 @@ public enum MapKeyStringEnum {
     , TOKEN_VO("tokenVO")
     , TOKEN_OBJECT("tokenObject")
     , BOARD("board")
+    , USER("user")
 
     // Collection
     , MEMBER_LIST("memberList")
