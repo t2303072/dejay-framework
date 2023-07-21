@@ -25,7 +25,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  */
 
 @RequiredArgsConstructor
-@EnableWebSecurity
 @Configuration
 public class WebSecurityConfig {
 
