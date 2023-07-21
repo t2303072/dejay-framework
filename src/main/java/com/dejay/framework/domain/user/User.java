@@ -1,5 +1,6 @@
 package com.dejay.framework.domain.user;
 
+import com.dejay.framework.common.enums.Role;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
