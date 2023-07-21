@@ -4,6 +4,7 @@ import com.dejay.framework.common.enums.ExceptionCodeMsgEnum;
 import com.dejay.framework.vo.common.ResultStatusVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -135,7 +136,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UnsupportedEncodingException.class)
     protected ResponseEntity<ResultStatusVO> handleUnsupportedEncodingException(UnsupportedEncodingException ex) {
         this.printIOExceptionLog(ex);
-        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.SQL_ERROR.getCode(), ExceptionCodeMsgEnum.SQL_ERROR.getMsg(), ex.getMessage(), null);
+        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.UNSUPPORTED_ENCODING.getCode(), ExceptionCodeMsgEnum.UNSUPPORTED_ENCODING.getMsg(), ex.getMessage(), null);
         return ResponseEntity.badRequest().body(resultStatusVO);
     }
 
@@ -151,7 +152,14 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(resultStatusVO);
     }
 
-    // -----
+    @ExceptionHandler(AuthenticationException.class)
+    protected ResponseEntity<ResultStatusVO> handleAuthenticationException(AuthenticationException ex) {
+        this.printAuthenticationException(ex);
+        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.LOGIN_REQUIRED.getCode(), ExceptionCodeMsgEnum.LOGIN_REQUIRED.getMsg(), ex.getMessage(), null);
+        return ResponseEntity.badRequest().body(resultStatusVO);
+    }
+
+    // ----------------------------------------------------------------------------------------------------
     private <T extends BindException> List<FieldError> gatherBindingErrors(T ex) {
         List<FieldError> errList = new ArrayList<>();
         ex.getBindingResult().getAllErrors().forEach(c -> errList.add((FieldError) c));
@@ -180,5 +188,9 @@ public class GlobalExceptionHandler {
 
     private <T extends GeneralSecurityException> void printGeneralSecurityExceptionLog(T ex) {
         log.error("[printGeneralSecurityExceptionLog] ", ex);
+    }
+
+    private <T extends AuthenticationException> void printAuthenticationException(T ex) {
+        log.error("[printAuthenticationExceptionLog] ", ex);
     }
 }
