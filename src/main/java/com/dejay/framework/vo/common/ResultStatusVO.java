@@ -20,8 +20,8 @@ public class ResultStatusVO {
     private List<FieldError> fieldErrors;
 
     public ResultStatusVO() {
-        this.code = ResultCodeMsgEnum.SUCCESS.getCode();
-        this.message = ResultCodeMsgEnum.SUCCESS.getMsg();
+        this.code = ResultCodeMsgEnum.REQUEST_SUCCESS.getCode();
+        this.message = ResultCodeMsgEnum.REQUEST_SUCCESS.getMsg();
     }
 
     public ResultStatusVO(int code, String message) {
