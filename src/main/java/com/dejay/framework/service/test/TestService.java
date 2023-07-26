@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -74,8 +75,8 @@ public class TestService {
      * @param password
      * @return
      */
-    public String loginReturnJwt(String userName, String password, String[] list) {
-        return jwtUtil.generateJwt(userName, expiredMs, list);
+    public String loginReturnJwt(String userName, String password, Set<?> roles) {
+        return jwtUtil.generateJwt(userName, expiredMs, roles);
     }
 
     /**

@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.Set;
+
 /**
  * TODO: IJ
  * 1. 만료 전 엑세스 토큰이 있는데 재발급 요청하면 엑세스 & refresh 토큰 둘 다 만료 시키기 => refresh 토큰은 DB에 저장
@@ -27,8 +29,8 @@ public class TokenFactory {
      * @param password
      * @return
      */
-    public TokenObject createJWT(String userName, String password, String[] list) {
-        TokenObject tokenObject = jwtUtil.createTokenObject(userName, accessExpiresAt, refreshExpiresAt, list);
+    public TokenObject createJWT(String userName, String password, Set<?> roles) {
+        TokenObject tokenObject = jwtUtil.createTokenObject(userName, accessExpiresAt, refreshExpiresAt, roles);
         return tokenObject;
     }
 }

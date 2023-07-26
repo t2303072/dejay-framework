@@ -1,7 +1,10 @@
 package com.dejay.framework.service.member;
 
+import com.dejay.framework.common.utils.TokenFactory;
 import com.dejay.framework.common.utils.ValidationUtil;
+import com.dejay.framework.domain.common.TokenObject;
 import com.dejay.framework.domain.member.LoginRequest;
+import com.dejay.framework.domain.user.SignUpRequest;
 import com.dejay.framework.domain.user.User;
 import com.dejay.framework.mapper.member.MemberMapper;
 import com.dejay.framework.domain.member.Member;
@@ -22,6 +25,7 @@ public class MemberService {
     private final MemberMapper memberMapper;
     private final ValidationUtil validationUtil;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final TokenFactory tokenFactory;
 
     /**
      * 멤버목록 조회
@@ -80,6 +84,25 @@ public class MemberService {
         memberMapper.insertUser(target);
 
         return target;
+    }
+
+    public TokenObject signUp(SignUpRequest signUpRequest) {
+        var target = User.builder()
+                .id(signUpRequest.getId())
+                .password(bCryptPasswordEncoder.encode(signUpRequest.getPassword()))
+                .name(signUpRequest.getName())
+                .email(signUpRequest.getEmail())
+                .build();
+
+        validationUtil.parameterValidator(target, User.class);
+        long inserted = memberMapper.insertUser(target);
+
+        if(inserted > 0) {
+            TokenObject tokenObject = tokenFactory.createJWT(signUpRequest.getId(), signUpRequest.getPassword(), signUpRequest.getRoles());
+            return tokenObject;
+        }
+
+        return new TokenObject();
     }
 
     public MemberVO getLoginInfo(LoginRequest loginRequest) {

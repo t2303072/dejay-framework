@@ -1,5 +1,6 @@
 package com.dejay.framework.common.interceptor;
 
+import com.dejay.framework.common.enums.ExceptionCodeMsgEnum;
 import com.dejay.framework.common.enums.MapKeyStringEnum;
 import com.dejay.framework.common.utils.JwtUtil;
 import com.dejay.framework.common.utils.SessionFactory;
@@ -13,6 +14,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.oauth2.server.resource.InvalidBearerTokenException;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -39,11 +41,11 @@ public class LoginInterceptor implements HandlerInterceptor {
         if(!StringUtils.hasText(authorizationHeader)) return false;
 
         TokenVO tokenVO = jwtUtil.decode(authorizationHeader.split("Bearer ")[1]);
-        if(tokenVO == null) return false;
+        if(tokenVO == null) throw new InvalidBearerTokenException(ExceptionCodeMsgEnum.AUTH_ERROR.getMsg());
         request.setAttribute(MapKeyStringEnum.TOKEN_VO.getKeyString(), tokenVO);
 
         MemberVO memberVO = memberService.findMemberByUserName(tokenVO.getUserName());
-        if(memberVO == null) return false;
+        if(memberVO == null) throw new LoginException(ExceptionCodeMsgEnum.LOGIN_REQUIRED.getMsg());
         request.setAttribute(MapKeyStringEnum.MEMBER_VO.getKeyString(), memberVO);
 
         return true;

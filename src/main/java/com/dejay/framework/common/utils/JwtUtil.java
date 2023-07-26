@@ -47,7 +47,7 @@ public class JwtUtil {
      * @param roles {@link Arrays}
      * @return
      */
-    public TokenObject createTokenObject(String userName, Long accessExpiresAt, Long refreshExpiresAt, String[] roles) {
+    public TokenObject createTokenObject(String userName, Long accessExpiresAt, Long refreshExpiresAt, Set<?> roles) {
         String accessToken = this.generateJwt(userName, accessExpiresAt, roles);
         String refreshToken = this.generateJwt(userName, refreshExpiresAt, roles);
         return TokenObject.builder().accessToken(accessToken).refreshToken(refreshToken).key(userName).build();
@@ -59,7 +59,7 @@ public class JwtUtil {
      * @param expiredMs {@link Long}
      * @return
      */
-    public String generateJwt(String userName, Long expiredMs, String[] roles) {
+    public String generateJwt(String userName, Long expiredMs, Set<?> roles) {
         Claims claims = Jwts.claims().setSubject(userName);
         claims.put(MapKeyStringEnum.JWT_USERNAME.getKeyString(), userName);
         claims.put(MapKeyStringEnum.ROLES.getKeyString(), roles);

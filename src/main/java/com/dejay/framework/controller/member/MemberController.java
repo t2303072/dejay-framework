@@ -3,7 +3,11 @@ package com.dejay.framework.controller.member;
 import com.dejay.framework.common.enums.MapKeyStringEnum;
 import com.dejay.framework.common.utils.MapUtil;
 import com.dejay.framework.common.utils.ObjectHandlingUtil;
+import com.dejay.framework.common.utils.TokenFactory;
+import com.dejay.framework.domain.common.TokenObject;
+import com.dejay.framework.domain.member.LoginRequest;
 import com.dejay.framework.domain.member.Member;
+import com.dejay.framework.domain.user.SignUpRequest;
 import com.dejay.framework.domain.user.User;
 import com.dejay.framework.service.member.MemberService;
 import com.dejay.framework.service.test.TestService;
@@ -35,14 +39,14 @@ public class MemberController {
 
     @GetMapping(value = {"", "/"})
     public ResponseEntity memberList(HttpServletRequest request, Authentication authentication) {
-        // TODO: IJ 로그인 정보
         TokenVO tokenVO = ObjectHandlingUtil.extractTokenInfo(request); log.info(tokenVO.toString());
         MemberVO loginVO = ObjectHandlingUtil.extractLoginInfo(request); log.info(loginVO.toString());
 
         List<MemberVO> memberList = memberService.getMemberList();
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setListResultStatusVO(memberList);
+        
         var mapKeyList = Arrays.asList(MapKeyStringEnum.TEST.getKeyString(), MapKeyStringEnum.MEMBER_LIST.getKeyString());
-        Map<String, Object> resultMap = mapUtil.responseEntityBodyWrapper(resultStatusVO, mapKeyList, testService.getTest(), memberList);
+        var resultMap = mapUtil.responseEntityBodyWrapper(resultStatusVO, mapKeyList, testService.getTest(), memberList);
 
         return ResponseEntity.ok(resultMap);
     }
@@ -51,39 +55,52 @@ public class MemberController {
     public ResponseEntity insertMember(@RequestBody @Valid Member member) {
         Member inserted = memberService.insertMember(member);
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(inserted);
+
         var mapKeyList = Arrays.asList(MapKeyStringEnum.MEMBER.getKeyString());
-        Map<String, Object> resultMap = mapUtil.responseEntityBodyWrapper(resultStatusVO, mapKeyList, inserted);
+        var resultMap = mapUtil.responseEntityBodyWrapper(resultStatusVO, mapKeyList, inserted);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(resultMap);
+    }
+
+    @PostMapping(value = "insert")
+    public ResponseEntity insertMember(@RequestBody @Valid User user) {
+        User inserted = memberService.insertUser(user);
+        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(inserted);
+
+        var mapKeyList = Arrays.asList(MapKeyStringEnum.USER.getKeyString());
+        var resultMap = mapUtil.responseEntityBodyWrapper(resultStatusVO, mapKeyList, inserted);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(resultMap);
     }
 
     @PostMapping("sign-up")
-    public ResponseEntity insertMember(@RequestBody @Valid User user) {
-        User inserted = memberService.insertUser(user);
-        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(inserted);
-        var mapKeyList = Arrays.asList(MapKeyStringEnum.USER.getKeyString());
-        Map<String, Object> resultMap = mapUtil.responseEntityBodyWrapper(resultStatusVO, mapKeyList, inserted);
+    public ResponseEntity signUp(@RequestBody @Valid SignUpRequest signUpRequest) {
+        TokenObject tokenObject = memberService.signUp(signUpRequest);
+        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(tokenObject);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(resultMap);
+        var mapKeyList = Arrays.asList(MapKeyStringEnum.TOKEN_OBJECT.getKeyString());
+        var resultMap = mapUtil.responseEntityBodyWrapper(resultStatusVO, mapKeyList, tokenObject);
+
+        return ResponseEntity.ok(resultMap);
     }
 
     @GetMapping("{id}")
     public ResponseEntity findMemberById(@PathVariable int id) {
         MemberVO memberVO = memberService.findMemberById(id);
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(memberVO);
+
         var mapKeyList = Arrays.asList(MapKeyStringEnum.MEMBER.getKeyString());
-        Map<String, Object> resultMap = mapUtil.responseEntityBodyWrapper(resultStatusVO, mapKeyList, memberVO);
+        var resultMap = mapUtil.responseEntityBodyWrapper(resultStatusVO, mapKeyList, memberVO);
 
         return ResponseEntity.ok(resultMap);
     }
 
     @PostMapping("request-param-validity")
     public ResponseEntity requestParamTest(@RequestBody @Valid Member member) {
-        log.info(member.toString());
         memberService.insertMember(member);
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(member);
-        List<String> mapKeyList = Arrays.asList(MapKeyStringEnum.MEMBER.getKeyString());
-        Map<String, Object> resultMap = mapUtil.responseEntityBodyWrapper(resultStatusVO, mapKeyList, member);
+        var mapKeyList = Arrays.asList(MapKeyStringEnum.MEMBER.getKeyString());
+        var resultMap = mapUtil.responseEntityBodyWrapper(resultStatusVO, mapKeyList, member);
 
         return ResponseEntity.ok(resultMap);
     }

@@ -156,7 +156,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AuthenticationException.class)
     protected ResponseEntity<ResultStatusVO> handleAuthenticationException(AuthenticationException ex) {
         this.printAuthenticationException(ex);
-        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.LOGIN_REQUIRED.getCode(), ExceptionCodeMsgEnum.LOGIN_REQUIRED.getMsg(), ex.getMessage(), null);
+        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.AUTH_ERROR.getCode(), ExceptionCodeMsgEnum.AUTH_ERROR.getMsg(), ex.getMessage(), null);
         return ResponseEntity.badRequest().body(resultStatusVO);
     }
 
