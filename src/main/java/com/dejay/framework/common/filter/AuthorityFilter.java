@@ -18,7 +18,9 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -40,7 +42,6 @@ public class AuthorityFilter extends OncePerRequestFilter {
             return;
         }
 
-        // Get token
         String token = authorization.split(" ")[1];
 
         // Token expiration status
@@ -50,16 +51,16 @@ public class AuthorityFilter extends OncePerRequestFilter {
             return;
         }
 
-        // Get userName out of token
+        // Get request user information out of a token
         String userName = jwtUtil.getUserName(token);
+        Set<?> userRoles = jwtUtil.getUserRoles(token);
+        var authorityList = new ArrayList<SimpleGrantedAuthority>();
+        if(userRoles.size() > 0) {
+            userRoles.forEach(role -> authorityList.add(new SimpleGrantedAuthority(String.valueOf(role))));
+        }
 
-        // TODO: IJ 유효 로그인 정보 여부 조회, MyBatis Interceptor에서 걸리므로 필터에서 조회하는 쿼리는 제외하는 로직 필요
-//        MemberVO memberVO = memberService.findMemberByUserName(userName);
-
-        // TODO: IJ 권한 부여 로직
         // Grant Authentication
-        UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(userName, null, List.of(new SimpleGrantedAuthority("USER")));
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userName, null, authorityList);
 
         // Set details
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

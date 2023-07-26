@@ -79,11 +79,11 @@ public class JwtUtil {
      */
     public boolean isExpired(String token) {
         return Jwts.parserBuilder().setSigningKey(secretKey).build()
-                    .parseClaimsJws(token).getBody().getExpiration().before(new Date());
+                .parseClaimsJws(token).getBody().getExpiration().before(new Date());
     }
 
     /**
-     * JWT 유저명 조회
+     * JWT 유저 명 조회
      *
      * @param token {@link String}
      * @return
@@ -91,6 +91,17 @@ public class JwtUtil {
     public String getUserName(String token) {
         return Jwts.parserBuilder().setSigningKey(secretKey).build()
                 .parseClaimsJws(token).getBody().get(MapKeyStringEnum.JWT_USERNAME.getKeyString(), String.class);
+    }
+
+    /**
+     * JWT 유저 권한 정보 조회
+     * @param token {@link String}
+     * @return
+     * @throws JsonProcessingException
+     */
+    public Set<?> getUserRoles(String token) throws JsonProcessingException {
+        TokenVO tokenVO = this.decode(token);
+        return tokenVO.getRoles();
     }
 
     /**
@@ -112,19 +123,4 @@ public class JwtUtil {
 
         return tokenVO;
     }
-
-    public Authentication getAuthentication(String token) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-    }
-
-    public String getUserPk(String token) {
-        return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody().getSubject();
-    }
-
-//    public String graspToken(HttpServletRequest request) {
-//        return request.getHeader("X-AUTH-TOKEN");
-//    }
-
-
 }

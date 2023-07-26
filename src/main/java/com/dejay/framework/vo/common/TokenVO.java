@@ -1,9 +1,12 @@
 package com.dejay.framework.vo.common;
 
+import com.dejay.framework.common.enums.Role;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+
+import java.util.Set;
 
 @ToString
 @Getter
@@ -14,10 +17,10 @@ public class TokenVO {
     private String iss;
     private long iat;
     private long exp;
-    private String[] roles;
+    private Set<Role> roles;
 
     @Builder
-    public TokenVO(String sub, String userName, String iss, long iat, long exp, String[] roles) {
+    public TokenVO(String sub, String userName, String iss, long iat, long exp, Set<Role> roles) {
         this.sub = sub;
         this.userName = userName;
         this.iss = iss;

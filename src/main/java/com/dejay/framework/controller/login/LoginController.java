@@ -52,6 +52,7 @@ public class LoginController {
         return ResponseEntity.ok(resultMap);
     }
 
+    // TODO: IJ OAuth 로직 보류
     @PostMapping("/oauth2/google")
     public ResponseEntity oauth2Google() {
 

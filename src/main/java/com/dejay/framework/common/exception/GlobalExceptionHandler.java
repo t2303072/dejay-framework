@@ -2,6 +2,7 @@ package com.dejay.framework.common.exception;
 
 import com.dejay.framework.common.enums.ExceptionCodeMsgEnum;
 import com.dejay.framework.vo.common.ResultStatusVO;
+import com.fasterxml.jackson.core.JacksonException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
@@ -159,6 +160,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(resultStatusVO);
     }
 
+    @ExceptionHandler(JacksonException.class)
+    protected ResponseEntity<ResultStatusVO> handleJacksonException(JacksonException ex) {
+        this.printJacksonException(ex);
+        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.JSON_ERROR.getCode(), ExceptionCodeMsgEnum.JSON_ERROR.getMsg(), ex.getMessage(), null);
+        return ResponseEntity.badRequest().body(resultStatusVO);
+    }
+
     // ----------------------------------------------------------------------------------------------------
     private <T extends BindException> List<FieldError> gatherBindingErrors(T ex) {
         List<FieldError> errList = new ArrayList<>();
@@ -192,5 +200,9 @@ public class GlobalExceptionHandler {
 
     private <T extends AuthenticationException> void printAuthenticationException(T ex) {
         log.error("[printAuthenticationExceptionLog] ", ex);
+    }
+
+    private <T extends JacksonException> void printJacksonException(T ex) {
+        log.error("[printJacksonException] ", ex);
     }
 }

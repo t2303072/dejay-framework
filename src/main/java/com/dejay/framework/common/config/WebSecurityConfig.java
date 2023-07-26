@@ -12,7 +12,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -34,10 +36,9 @@ public class WebSecurityConfig {
 
     private final UserDetailsService userDetailsService;
 
-    @Value("${jwt.secret}")
-
     private static final String[] NO_AUTH_REQUIRED_URL = {"/index/**", "/test/**", "/token", "/member/sign-up", "/login"};
-    private static final String[] AUTH_REQUIRED_URL = {"/member/**", "/token/authentication-info"};
+    private static final String[] AUTH_REQUIRED_URL = {"/token/authentication-info"};
+    private static final String[] AUTH_ADMIN_REQUIRED_URL = {"/member/**"};
 
     @Bean
     public static BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -50,7 +51,9 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(ahr -> ahr
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers(NO_AUTH_REQUIRED_URL).permitAll()
+                        .requestMatchers(AUTH_ADMIN_REQUIRED_URL).hasAuthority("MEMBER")
                         .requestMatchers(AUTH_REQUIRED_URL).authenticated()
+                        .anyRequest().permitAll()
                 )
                 .formLogin(formLogin -> formLogin.disable())
                 .cors(cors -> cors.disable())
@@ -66,6 +69,11 @@ public class WebSecurityConfig {
         ;
 
         return httpSecurity.build();
+    }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
     @Autowired
