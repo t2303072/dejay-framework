@@ -72,6 +72,11 @@ public class MemberService {
         return target;
     }
 
+    /**
+     * 사용자 등록
+     * @param user
+     * @return
+     */
     public User insertUser(User user) {
         var target = User.builder()
                 .id(user.getId())
@@ -86,6 +91,11 @@ public class MemberService {
         return target;
     }
 
+    /**
+     * 사용자 등록(w/ token)
+     * @param signUpRequest
+     * @return
+     */
     public TokenObject signUp(SignUpRequest signUpRequest) {
         var target = User.builder()
                 .id(signUpRequest.getId())
@@ -105,6 +115,11 @@ public class MemberService {
         return new TokenObject();
     }
 
+    /**
+     * 로그인 정보 조회
+     * @param loginRequest
+     * @return
+     */
     public MemberVO getLoginInfo(LoginRequest loginRequest) {
         MemberVO target = findMemberByUserName(loginRequest.getUserName());
         if (bCryptPasswordEncoder.matches(loginRequest.getPassword(), target.getPassword())) {
