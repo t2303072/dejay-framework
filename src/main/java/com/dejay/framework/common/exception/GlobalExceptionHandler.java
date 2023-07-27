@@ -121,9 +121,8 @@ public class GlobalExceptionHandler {
      * @return ResultStatusVO
      * @implNote Server error handling
      */
-    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
-    protected ResponseEntity<ResultStatusVO> handleSQLIntegrityConstraintViolationException(SQLIntegrityConstraintViolationException ex) {
-        log.error("[handleException] => {}", ex.getMessage());
+    @ExceptionHandler(SQLException.class)
+    protected ResponseEntity<ResultStatusVO> handleSQLException(SQLException ex) {
         this.printSqlErrorLog(ex);
         resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.SQL_ERROR.getCode(), ExceptionCodeMsgEnum.SQL_ERROR.getMsg(), ex.getMessage(), null);
         return ResponseEntity.badRequest().body(resultStatusVO);
@@ -166,6 +165,13 @@ public class GlobalExceptionHandler {
         resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.JSON_ERROR.getCode(), ExceptionCodeMsgEnum.JSON_ERROR.getMsg(), ex.getMessage(), null);
         return ResponseEntity.badRequest().body(resultStatusVO);
     }
+
+//    @ExceptionHandler(RuntimeException.class)
+//    protected ResponseEntity<ResultStatusVO> handleRuntimeException(RuntimeException ex) {
+//        this.printRuntimeErrorLog(ex);
+//        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.RUNTIME_ERROR.getCode(), ExceptionCodeMsgEnum.RUNTIME_ERROR.getMsg(), ex.getMessage(), null);
+//        return ResponseEntity.badRequest().body(resultStatusVO);
+//    }
 
     // ----------------------------------------------------------------------------------------------------
     private <T extends BindException> List<FieldError> gatherBindingErrors(T ex) {

@@ -98,4 +98,10 @@ public class TestController {
 
         return ResponseEntity.ok(resultMap);
     }
+
+    @PostMapping("authorized-only")
+    public ResponseEntity authorizedOnlyAccess(Authentication authentication) {
+        log.info("Authentication: {}", authentication.toString());
+        return ResponseEntity.ok(authentication);
+    }
 }

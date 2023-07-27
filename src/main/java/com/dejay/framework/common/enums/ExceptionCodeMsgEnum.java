@@ -22,6 +22,7 @@ public enum ExceptionCodeMsgEnum {
     , AUTH_ERROR(987, "유효하지 않은 인증 정보 입니다.")
     , UNSUPPORTED_ENCODING(986, "지원하지 않는 인코딩 방식 입니다.")
     , JSON_ERROR(985, "JSON Error")
+    , RUNTIME_ERROR(984, "RUNTIME 에러")
     ;
 
     private int code;

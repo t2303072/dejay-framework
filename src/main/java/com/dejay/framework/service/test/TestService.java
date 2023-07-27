@@ -75,8 +75,8 @@ public class TestService {
      * @param password
      * @return
      */
-    public String loginReturnJwt(String userName, String password, Set<?> roles) {
-        return jwtUtil.generateJwt(userName, expiredMs, roles);
+    public String loginReturnJwt(String userName, String password, Set<?> authority) {
+        return jwtUtil.generateJwt(userName, expiredMs, authority);
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.dejay.framework.common.config;
 
+import com.dejay.framework.common.interceptor.AuthorityInterceptor;
 import com.dejay.framework.common.interceptor.LoggerInterceptor;
 import com.dejay.framework.common.interceptor.LoginInterceptor;
 import lombok.RequiredArgsConstructor;
@@ -18,11 +19,17 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     private final LoggerInterceptor loggerInterceptor;
     private final LoginInterceptor loginInterceptor;
+    private final AuthorityInterceptor authorityInterceptor;
 
+    // Logging
     private final List<String> loggerIncludePattern = Arrays.asList("/**");
 
+    // Login
     private final List<String> loginIncludePattern = Arrays.asList("/login/**", "/member/**", "/token/authentication-info");
     private final List<String> loginExcludePattern = Arrays.asList("/member/sign-up");
+
+    // Authority
+    private final List<String> authorityIncludePattern = Arrays.asList("/test/authorized-only");
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -35,6 +42,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addPathPatterns(loginIncludePattern)
                 .excludePathPatterns(loginExcludePattern)
                 .order(2);
+
+        registry.addInterceptor(authorityInterceptor)
+                .addPathPatterns(authorityIncludePattern)
+                .order(3);
     }
 
     @Override

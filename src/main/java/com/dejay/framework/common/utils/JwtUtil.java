@@ -41,12 +41,12 @@ public class JwtUtil {
      * @param userName {@link String}
      * @param accessExpiresAt {@link Long}
      * @param refreshExpiresAt {@link Long}
-     * @param roles {@link Arrays}
+     * @param auth {@link Arrays}
      * @return
      */
-    public TokenObject createTokenObject(String userName, Long accessExpiresAt, Long refreshExpiresAt, Set<?> roles) {
-        String accessToken = this.generateJwt(userName, accessExpiresAt, roles);
-        String refreshToken = this.generateJwt(userName, refreshExpiresAt, roles);
+    public TokenObject createTokenObject(String userName, Long accessExpiresAt, Long refreshExpiresAt, Set<?> auth) {
+        String accessToken = this.generateJwt(userName, accessExpiresAt, auth);
+        String refreshToken = this.generateJwt(userName, refreshExpiresAt, auth);
         return TokenObject.builder().accessToken(accessToken).refreshToken(refreshToken).key(userName).build();
     }
 
@@ -56,10 +56,10 @@ public class JwtUtil {
      * @param expiredMs {@link Long}
      * @return
      */
-    public String generateJwt(String userName, Long expiredMs, Set<?> roles) {
+    public String generateJwt(String userName, Long expiredMs, Set<?> auth) {
         Claims claims = Jwts.claims().setSubject(userName);
         claims.put(MapKeyStringEnum.JWT_USERNAME.getKeyString(), userName);
-        claims.put(MapKeyStringEnum.AUTH.getKeyString(), roles);
+        claims.put(MapKeyStringEnum.AUTH.getKeyString(), auth);
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -98,7 +98,7 @@ public class JwtUtil {
      */
     public Set<?> getUserAuthority(String token) throws JsonProcessingException {
         TokenVO tokenVO = this.decode(token);
-        return tokenVO.getAuthorities();
+        return tokenVO.getAuthority();
     }
 
     /**

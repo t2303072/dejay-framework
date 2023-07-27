@@ -23,16 +23,16 @@ public class User {
     private String name;
     private String email;
     private String picture;
-    private Set<Authority> authorities;
+    private Set<Authority> authority;
 
     @Builder
-    public User(String id, String password, String name, String email, String picture, Set<Authority> authorities) {
+    public User(String id, String password, String name, String email, String picture, Set<Authority> authority) {
         this.id = id;
         this.password = password;
         this.name = name;
         this.email = email;
         this.picture = picture;
-        this.authorities = authorities;
+        this.authority = authority;
     }
 
     public User update(String name, String picture) {
@@ -42,7 +42,7 @@ public class User {
         return this;
     }
 
-    public String getRoleKey() {
-        return String.valueOf(this.authorities);
+    public String getAuthorityKey() {
+        return String.valueOf(this.authority);
     }
 }

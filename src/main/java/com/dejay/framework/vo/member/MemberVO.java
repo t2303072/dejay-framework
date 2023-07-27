@@ -15,6 +15,6 @@ public class MemberVO {
     private String password;
     private String memberName;
     private String email;
-    private String[] roles;
+    private String[] authority;
 
 }

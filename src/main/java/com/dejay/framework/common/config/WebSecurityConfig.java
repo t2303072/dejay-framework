@@ -37,7 +37,7 @@ public class WebSecurityConfig {
     private final UserDetailsService userDetailsService;
 
     private static final String[] NO_AUTH_REQUIRED_URL = {"/index/**", "/test/**", "/token", "/member/sign-up", "/login"};
-    private static final String[] AUTH_REQUIRED_URL = {"/token/authentication-info"};
+    private static final String[] AUTH_REQUIRED_URL = {"/token/authentication-info", "/test/authorized-only"};
     private static final String[] AUTH_ADMIN_REQUIRED_URL = {"/member/**"};
 
     @Bean
@@ -51,7 +51,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(ahr -> ahr
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers(NO_AUTH_REQUIRED_URL).permitAll()
-                        .requestMatchers(AUTH_ADMIN_REQUIRED_URL).hasAuthority("MEMBER")
+                        .requestMatchers(AUTH_ADMIN_REQUIRED_URL).hasAnyAuthority("MEMBER")
                         .requestMatchers(AUTH_REQUIRED_URL).authenticated()
                         .anyRequest().permitAll()
                 )

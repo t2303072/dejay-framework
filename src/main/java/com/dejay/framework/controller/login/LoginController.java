@@ -42,7 +42,7 @@ public class LoginController {
         var mapKeyList = Arrays.asList(MapKeyStringEnum.TOKEN_OBJECT.getKeyString());
 
         if(loginInfo != null) {
-            TokenObject tokenObject = tokenFactory.createJWT(loginRequest.getUserName(), loginRequest.getPassword(), loginRequest.getRoles());
+            TokenObject tokenObject = tokenFactory.createJWT(loginRequest.getUserName(), loginRequest.getPassword(), loginRequest.getAuthority());
             ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(tokenObject);
             resultMap = mapUtil.responseEntityBodyWrapper(resultStatusVO, mapKeyList, tokenObject);
         }else  {

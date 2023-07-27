@@ -18,13 +18,13 @@ public class LoginRequest {
     private String userName;
     @NotNull(message = "password는 필수 값 입니다.")
     private String password;
-//    @NotNull(message = "Role은 필수 값 입니다.")
-    private Set<?> roles;
+//    @NotNull(message = "Authority는 필수 값 입니다.")
+    private Set<?> authority;
 
     @Builder
-    public LoginRequest(String userName, String password, Set<?> roles) {
+    public LoginRequest(String userName, String password, Set<?> authority) {
         this.userName = userName;
         this.password = password;
-        this.roles = roles;
+        this.authority = authority;
     }
 }

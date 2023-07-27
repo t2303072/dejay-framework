@@ -29,8 +29,8 @@ public class TokenFactory {
      * @param password
      * @return
      */
-    public TokenObject createJWT(String userName, String password, Set<?> roles) {
-        TokenObject tokenObject = jwtUtil.createTokenObject(userName, accessExpiresAt, refreshExpiresAt, roles);
+    public TokenObject createJWT(String userName, String password, Set<?> auth) {
+        TokenObject tokenObject = jwtUtil.createTokenObject(userName, accessExpiresAt, refreshExpiresAt, auth);
         return tokenObject;
     }
 }

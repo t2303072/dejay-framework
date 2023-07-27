@@ -38,7 +38,7 @@ public class TokenController {
      */
     @PostMapping(value = {"", "/"})
     public ResponseEntity createJWT(@RequestBody @Valid LoginRequest loginRequest) {
-        TokenObject tokenObject = tokenFactory.createJWT(loginRequest.getUserName(), loginRequest.getPassword(), loginRequest.getRoles());
+        TokenObject tokenObject = tokenFactory.createJWT(loginRequest.getUserName(), loginRequest.getPassword(), loginRequest.getAuthority());
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(tokenObject);
         var mapKeyList = Arrays.asList(MapKeyStringEnum.TOKEN_OBJECT.getKeyString());
         Map<String, Object> resultMap = mapUtil.responseEntityBodyWrapper(resultStatusVO, mapKeyList, tokenObject);

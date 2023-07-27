@@ -108,7 +108,7 @@ public class MemberService {
         long inserted = memberMapper.insertUser(target);
 
         if(inserted > 0) {
-            TokenObject tokenObject = tokenFactory.createJWT(signUpRequest.getId(), signUpRequest.getPassword(), signUpRequest.getAuthorities());
+            TokenObject tokenObject = tokenFactory.createJWT(signUpRequest.getId(), signUpRequest.getPassword(), signUpRequest.getAuthority());
             return tokenObject;
         }
 

@@ -17,15 +17,15 @@ public class TokenVO {
     private String iss;
     private long iat;
     private long exp;
-    private Set<Authority> authorities;
+    private Set<Authority> authority;
 
     @Builder
-    public TokenVO(String sub, String userName, String iss, long iat, long exp, Set<Authority> authorities) {
+    public TokenVO(String sub, String userName, String iss, long iat, long exp, Set<Authority> authority) {
         this.sub = sub;
         this.userName = userName;
         this.iss = iss;
         this.iat = iat;
         this.exp = exp;
-        this.authorities = authorities;
+        this.authority = authority;
     }
 }
