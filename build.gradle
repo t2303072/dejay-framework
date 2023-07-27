@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.dejay'
-version = '1.0.0'
+version = '1.0.0-RELEASE'
 sourceCompatibility = '17'
 
 sourceSets {
