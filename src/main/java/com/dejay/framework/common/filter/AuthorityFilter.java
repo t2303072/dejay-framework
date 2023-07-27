@@ -3,7 +3,6 @@ package com.dejay.framework.common.filter;
 import com.dejay.framework.common.enums.ResultCodeMsgEnum;
 import com.dejay.framework.common.utils.JwtUtil;
 import com.dejay.framework.service.member.MemberService;
-import com.dejay.framework.vo.member.MemberVO;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +18,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 @Slf4j
@@ -53,10 +51,10 @@ public class AuthorityFilter extends OncePerRequestFilter {
 
         // Get request user information out of a token
         String userName = jwtUtil.getUserName(token);
-        Set<?> userRoles = jwtUtil.getUserRoles(token);
+        Set<?> userAuthority = jwtUtil.getUserAuthority(token);
         var authorityList = new ArrayList<SimpleGrantedAuthority>();
-        if(userRoles.size() > 0) {
-            userRoles.forEach(role -> authorityList.add(new SimpleGrantedAuthority(String.valueOf(role))));
+        if(userAuthority.size() > 0) {
+            userAuthority.forEach(role -> authorityList.add(new SimpleGrantedAuthority(String.valueOf(role))));
         }
 
         // Grant Authentication

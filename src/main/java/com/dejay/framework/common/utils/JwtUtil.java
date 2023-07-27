@@ -13,9 +13,6 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -62,7 +59,7 @@ public class JwtUtil {
     public String generateJwt(String userName, Long expiredMs, Set<?> roles) {
         Claims claims = Jwts.claims().setSubject(userName);
         claims.put(MapKeyStringEnum.JWT_USERNAME.getKeyString(), userName);
-        claims.put(MapKeyStringEnum.ROLES.getKeyString(), roles);
+        claims.put(MapKeyStringEnum.AUTH.getKeyString(), roles);
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -99,9 +96,9 @@ public class JwtUtil {
      * @return
      * @throws JsonProcessingException
      */
-    public Set<?> getUserRoles(String token) throws JsonProcessingException {
+    public Set<?> getUserAuthority(String token) throws JsonProcessingException {
         TokenVO tokenVO = this.decode(token);
-        return tokenVO.getRoles();
+        return tokenVO.getAuthorities();
     }
 
     /**

@@ -13,6 +13,7 @@ public enum MapKeyStringEnum {
     , CODE("code")
     , PAGING("paging")
     , ROLES("roles")
+    , AUTH("authority")
 
     // Object
     , MEMBER("member")

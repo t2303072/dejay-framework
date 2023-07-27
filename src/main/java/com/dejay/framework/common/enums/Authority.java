@@ -1,5 +1,5 @@
 package com.dejay.framework.common.enums;
 
-public enum Role {
+public enum Authority {
     SYSTEM, ADMIN, USER, MEMBER
 }

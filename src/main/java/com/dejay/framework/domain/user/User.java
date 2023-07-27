@@ -1,6 +1,6 @@
 package com.dejay.framework.domain.user;
 
-import com.dejay.framework.common.enums.Role;
+import com.dejay.framework.common.enums.Authority;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -23,16 +23,16 @@ public class User {
     private String name;
     private String email;
     private String picture;
-    private Set<Role> roles;
+    private Set<Authority> authorities;
 
     @Builder
-    public User(String id, String password, String name, String email, String picture, Set<Role> roles) {
+    public User(String id, String password, String name, String email, String picture, Set<Authority> authorities) {
         this.id = id;
         this.password = password;
         this.name = name;
         this.email = email;
         this.picture = picture;
-        this.roles = roles;
+        this.authorities = authorities;
     }
 
     public User update(String name, String picture) {
@@ -43,6 +43,6 @@ public class User {
     }
 
     public String getRoleKey() {
-        return String.valueOf(this.roles);
+        return String.valueOf(this.authorities);
     }
 }
