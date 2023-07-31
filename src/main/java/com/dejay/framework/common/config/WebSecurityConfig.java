@@ -1,19 +1,17 @@
 package com.dejay.framework.common.config;
 
+import com.dejay.framework.common.enums.Authority;
 import com.dejay.framework.common.filter.AuthorityFilter;
 import com.dejay.framework.common.utils.JwtUtil;
 import com.dejay.framework.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -36,9 +34,9 @@ public class WebSecurityConfig {
 
     private final UserDetailsService userDetailsService;
 
-    private static final String[] NO_AUTH_REQUIRED_URL = {"/index/**", "/test/**", "/token", "/member/sign-up", "/login"};
-    private static final String[] AUTH_REQUIRED_URL = {"/token/authentication-info", "/test/authorized-only"};
-    private static final String[] AUTH_ADMIN_REQUIRED_URL = {"/member/**"};
+    private static final String[] NO_AUTH_REQUIRED_URL = {"/index/**", "/test/**", "/member/sign-up", "/login"};
+    private static final String[] AUTHORITY_REQUIRED_URL = {"/token/authentication-info", "/test/authorized-only"};
+    private static final String[] AUTHENTICATION_REQUIRED_URL = {"/member/**"};
 
     @Bean
     public static BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -51,8 +49,8 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(ahr -> ahr
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers(NO_AUTH_REQUIRED_URL).permitAll()
-                        .requestMatchers(AUTH_ADMIN_REQUIRED_URL).hasAnyAuthority("MEMBER")
-                        .requestMatchers(AUTH_REQUIRED_URL).authenticated()
+                        .requestMatchers(AUTHORITY_REQUIRED_URL).hasAnyAuthority(Authority.SYSTEM.name(), Authority.ADMIN.name())
+                        .requestMatchers(AUTHENTICATION_REQUIRED_URL).authenticated()
                         .anyRequest().permitAll()
                 )
                 .formLogin(formLogin -> formLogin.disable())

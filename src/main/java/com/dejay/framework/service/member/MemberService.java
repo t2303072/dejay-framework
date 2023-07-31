@@ -93,7 +93,7 @@ public class MemberService {
 
     /**
      * 사용자 등록(w/ token)
-     * @param signUpRequest
+     * @param signUpRequest {@link SignUpRequest}
      * @return
      */
     public TokenObject signUp(SignUpRequest signUpRequest) {
@@ -117,7 +117,7 @@ public class MemberService {
 
     /**
      * 로그인 정보 조회
-     * @param loginRequest
+     * @param loginRequest {@link LoginRequest}
      * @return
      */
     public MemberVO getLoginInfo(LoginRequest loginRequest) {

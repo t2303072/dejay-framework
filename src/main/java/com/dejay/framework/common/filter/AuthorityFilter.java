@@ -53,7 +53,9 @@ public class AuthorityFilter extends OncePerRequestFilter {
         String userName = jwtUtil.getUserName(token);
         Set<?> userAuthority = jwtUtil.getUserAuthority(token);
         var authorityList = new ArrayList<SimpleGrantedAuthority>();
-        if(userAuthority.size() > 0) {
+        if(userAuthority == null || userAuthority.size() < 1) {
+            authorityList.add(new SimpleGrantedAuthority("USER"));
+        }else {
             userAuthority.forEach(auth -> authorityList.add(new SimpleGrantedAuthority(String.valueOf(auth))));
         }
 
