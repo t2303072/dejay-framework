@@ -3,7 +3,7 @@ package com.dejay.framework.common.interceptor;
 import com.dejay.framework.common.enums.ExceptionCodeMsgEnum;
 import com.dejay.framework.common.enums.MapKeyStringEnum;
 import com.dejay.framework.common.utils.JwtUtil;
-import com.dejay.framework.common.utils.ObjectHandlingUtil;
+import com.dejay.framework.domain.auth.AuthorityCheck;
 import com.dejay.framework.service.member.MemberService;
 import com.dejay.framework.vo.common.TokenVO;
 import com.dejay.framework.vo.member.MemberVO;
@@ -47,11 +47,23 @@ public class AuthorityInterceptor implements HandlerInterceptor {
         if(tokenVO == null) throw new InvalidBearerTokenException(ExceptionCodeMsgEnum.AUTH_ERROR.getMsg());
         request.setAttribute(MapKeyStringEnum.TOKEN_VO.getKeyString(), tokenVO);
 
+        // Check menu authority
+        /**
+         * 1. 접근 메뉴 권한 여부 DB 조회
+         *
+         */
+        AuthorityCheck authority = AuthorityCheck.builder()
+                .id(tokenVO.getUserName())
+                .authList(tokenVO.getAuthority())
+//                .menuId()
+                .menuPath(request.getRequestURI())
+                .build();
+
+        log.info("authority: {} / URI: {}", authority.toString(), request.getRequestURI());
+
         MemberVO memberVO = memberService.findMemberByUserName(tokenVO.getUserName());
         if(memberVO == null) throw new LoginException(ExceptionCodeMsgEnum.LOGIN_REQUIRED.getMsg());
         request.setAttribute(MapKeyStringEnum.MEMBER_VO.getKeyString(), memberVO);
-
-        MemberVO memberByUserName = memberService.findMemberByUserName(memberVO.getMemberId());
 
         return true;
     }
