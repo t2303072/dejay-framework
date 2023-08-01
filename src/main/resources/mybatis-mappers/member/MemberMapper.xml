@@ -47,7 +47,7 @@
     </insert>
 
     <insert id="insertUser" useGeneratedKeys="true">
-        INSERT INTO MEMBER(MEMBER_ID, PASSWORD, MEMBER_NAME, EMAIL) VALUES (#{id}, #{password}, #{name}, #{email})
+        INSERT INTO MEMBER(MEMBER_ID, PASSWORD, DEPT_CODE, MEMBER_NAME, EMAIL) VALUES (#{id}, #{password}, #{deptCode}, #{name}, #{email})
         <selectKey keyProperty="seq" resultType="long">
             SELECT LAST_INSERT_ID()
         </selectKey>

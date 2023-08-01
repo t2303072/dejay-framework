@@ -23,9 +23,10 @@ public class SignUpRequest {
     private String picture;
     @NotNull(message = "권한은 필수 값 입니다.")
     private Set<Authority> authority;
+    private String deptCode;
 
     @Builder
-    public SignUpRequest(long seq, String id, String password, String name, String email, String picture, Set<Authority> authority) {
+    public SignUpRequest(long seq, String id, String password, String name, String email, String picture, Set<Authority> authority, String deptCode) {
         this.seq = seq;
         this.id = id;
         this.password = password;
@@ -33,5 +34,6 @@ public class SignUpRequest {
         this.email = email;
         this.picture = picture;
         this.authority = authority;
+        this.deptCode = deptCode;
     }
 }

@@ -130,6 +130,7 @@ public class MemberService {
                 .password(bCryptPasswordEncoder.encode(signUpRequest.getPassword()))
                 .name(signUpRequest.getName())
                 .email(signUpRequest.getEmail())
+                .deptCode("00001000")
                 .build();
 
         validationUtil.parameterValidator(target, User.class);

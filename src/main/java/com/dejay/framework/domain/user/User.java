@@ -24,15 +24,17 @@ public class User {
     private String email;
     private String picture;
     private Set<Authority> authority;
+    private String deptCode;
 
     @Builder
-    public User(String id, String password, String name, String email, String picture, Set<Authority> authority) {
+    public User(String id, String password, String name, String email, String picture, Set<Authority> authority, String deptCode) {
         this.id = id;
         this.password = password;
         this.name = name;
         this.email = email;
         this.picture = picture;
         this.authority = authority;
+        this.deptCode = deptCode;
     }
 
     public User update(String name, String picture) {
