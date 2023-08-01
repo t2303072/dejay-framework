@@ -26,7 +26,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     // Login
     private final List<String> loginIncludePattern = Arrays.asList("/login/**", "/member/**", "/token/authentication-info");
-    private final List<String> loginExcludePattern = Arrays.asList("/member/sign-up");
+    private final List<String> loginExcludePattern = Arrays.asList("/login", "/member/sign-up");
 
     // Authority
     private final List<String> authorityIncludePattern = Arrays.asList("/test/authorized-only");
