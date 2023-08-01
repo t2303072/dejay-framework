@@ -2,9 +2,10 @@ package com.dejay.framework.domain.common;
 
 import com.dejay.framework.domain.code.Code;
 import com.dejay.framework.domain.member.Member;
-import jakarta.annotation.Resource;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 /**
  * 모델 공통 관리
@@ -19,6 +20,8 @@ public class DataObject {
     @Setter
     public static class Data {
         private Code code;
+
+        private List<Code> codeList;
 
         private Member member;
     }

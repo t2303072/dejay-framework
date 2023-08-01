@@ -34,20 +34,25 @@ public class SearchVO {
 
     public static final int MILLIS_IN_A_DAY = 24 * 60 * 60 * 1000;
 
+
+
+    /**
+     * 검색 조건(dropdown)
+     */
+    private String type1 = "";
+    private String type2 = "";
+    private String type3 = "";
+    private String type4 = "";
+    private String type5 = "";
+
     /**
      * 검색어
      */
-    private String searchWord = "";
-
-    private String type1 = "";
-
-    private String type2 = "";
-
-    private String type3 = "";
-
-    private String type4 = "";
-
-    private String type5 = "";
+    private String searchWord1 = "";
+    private String searchWord2 = "";
+    private String searchWord3 = "";
+    private String searchWord4 = "";
+    private String searchWord5 = "";
 
     /**
      * 해당 메뉴의 ID값
@@ -111,7 +116,10 @@ public class SearchVO {
 
     private String redirectURL = "";
 
-
+    /**
+     * 사용여부
+     */
+    private String useYn;
 
 
 

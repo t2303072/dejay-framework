@@ -9,7 +9,8 @@ import lombok.Setter;
 public class CodeSearchVO extends SearchVO {
 
     /**
-     * 코드 8자리에서 앞 4자리(부모코드)로 자식코드 목록 검색시 사용
+     * 1. 코드 8자리에서 앞 4자리(부모코드)로 자식코드 목록 검색시 사용
+     * 2. 0000인 경우는 뒤에 4자리 0000인 그룹코드 목록 검색
      */
     private String parentCode;
 
@@ -23,5 +24,10 @@ public class CodeSearchVO extends SearchVO {
      */
     private String codeName;
 
-    private String useYn;
+    /**
+     * 코드 설명1
+     */
+    private String remark1;
+
+
 }

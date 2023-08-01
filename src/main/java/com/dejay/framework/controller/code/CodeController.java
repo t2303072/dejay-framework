@@ -1,6 +1,7 @@
 package com.dejay.framework.controller.code;
 
 import com.dejay.framework.common.enums.MapKeyStringEnum;
+import com.dejay.framework.common.enums.RequestTypeEnum;
 import com.dejay.framework.common.utils.ObjectHandlingUtil;
 import com.dejay.framework.controller.common.ParentController;
 import com.dejay.framework.domain.code.Code;
@@ -31,11 +32,44 @@ public class CodeController extends ParentController {
     @PostMapping("/insert")
     public ResponseEntity insertCode(@RequestBody @Valid DataObject dataObject) throws Exception {
         Code inserted =  commonService().codeService().insertCode(dataObject.getData().getCode());
-        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(inserted);
+        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(inserted, RequestTypeEnum.CREATE);
         Map<String, Object> resultMap = mapUtil().responseEntityBodyWrapper(resultStatusVO);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(resultMap);
     }
+
+    /**
+     * 코드 저장
+     * @param dataObject
+     * @return
+     */
+    @PostMapping("/update")
+    public ResponseEntity updateCode(@RequestBody @Valid DataObject dataObject) throws Exception {
+        Code inserted =  commonService().codeService().updateCode(dataObject.getData().getCode());
+        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(inserted, RequestTypeEnum.UPDATE);
+        Map<String, Object> resultMap = mapUtil().responseEntityBodyWrapper(resultStatusVO);
+
+        return ResponseEntity.ok(resultMap);
+    }
+
+
+    /**
+     * 코드 순서 일괄변경
+     * @param dataObject
+     * @return
+     */
+    @PostMapping("/updateCodeOrder")
+    public ResponseEntity updateCodeOrder(@RequestBody @Valid DataObject dataObject) throws Exception {
+
+        Integer iAffectedRows =  commonService().codeService().updateCodeOrder(dataObject.getData().getCodeList());
+
+        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(iAffectedRows, RequestTypeEnum.UPDATE);
+        Map<String, Object> resultMap = mapUtil().responseEntityBodyWrapper(resultStatusVO);
+
+        return ResponseEntity.ok(resultMap);
+    }
+
+
 
     /**
      * 코드 페이징 조회
