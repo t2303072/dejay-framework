@@ -1,19 +1,25 @@
 package com.dejay.framework.service.member;
 
+import com.dejay.framework.common.utils.ObjectHandlingUtil;
 import com.dejay.framework.common.utils.TokenFactory;
 import com.dejay.framework.common.utils.ValidationUtil;
+import com.dejay.framework.domain.common.Paging;
+import com.dejay.framework.domain.common.SearchObject;
 import com.dejay.framework.domain.common.TokenObject;
 import com.dejay.framework.domain.member.LoginRequest;
 import com.dejay.framework.domain.user.SignUpRequest;
 import com.dejay.framework.domain.user.User;
 import com.dejay.framework.mapper.member.MemberMapper;
 import com.dejay.framework.domain.member.Member;
+import com.dejay.framework.vo.common.CollectionPagingVO;
 import com.dejay.framework.vo.member.MemberVO;
+import com.dejay.framework.vo.search.SearchVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -28,11 +34,33 @@ public class MemberService {
     private final TokenFactory tokenFactory;
 
     /**
-     * 멤버목록 조회
+     * 멤버 목록 조회
+     * @param searchObject {@link SearchObject}
      * @return
      */
-    public List<MemberVO> getMemberList() {
-        return memberMapper.getMemberList();
+    public CollectionPagingVO getMemberList(SearchObject searchObject) {
+        List<MemberVO> memberList;
+
+        int totalCount = memberMapper.memberListCount();
+        CollectionPagingVO collectionPagingVO = null;
+        if(totalCount > 0) {
+            int totalSearchCount = memberMapper.memberListSearchCount(searchObject.getSearch());
+            Paging paging = ObjectHandlingUtil.pagingOperator(searchObject, totalSearchCount);
+            SearchVO searchVO = new SearchVO();
+            searchVO.setPaging(paging);
+            memberList = memberMapper.getMemberList(searchVO);
+            collectionPagingVO = CollectionPagingVO.builder()
+                    .objects(memberList)
+                    .paging(paging)
+                    .build();
+        }else {
+            collectionPagingVO = CollectionPagingVO.builder()
+                    .objects(new ArrayList<>())
+                    .paging(Paging.builder().currentPage(1).build())
+                    .build();
+        }
+
+        return collectionPagingVO;
     }
 
     /**

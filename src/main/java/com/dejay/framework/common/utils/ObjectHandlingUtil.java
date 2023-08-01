@@ -3,6 +3,8 @@ package com.dejay.framework.common.utils;
 import com.dejay.framework.common.enums.MapKeyStringEnum;
 import com.dejay.framework.common.enums.RequestTypeEnum;
 import com.dejay.framework.common.enums.ResultCodeMsgEnum;
+import com.dejay.framework.domain.common.Paging;
+import com.dejay.framework.domain.common.SearchObject;
 import com.dejay.framework.vo.common.ResultStatusVO;
 import com.dejay.framework.vo.common.TokenVO;
 import com.dejay.framework.vo.member.MemberVO;
@@ -70,5 +72,19 @@ public class ObjectHandlingUtil {
         };
 
         return result;
+    }
+
+    /**
+     * Paging 연산기
+     * @param searchObject {@link SearchObject}
+     * @param totalCount {@link Integer}
+     * @return
+     */
+    public static Paging pagingOperator(SearchObject searchObject, int totalCount) {
+        return Paging.builder()
+                .totalCount(totalCount)
+                .currentPage(searchObject.getSearch().getPaging().getCurrentPage())
+                .displayRow(searchObject.getSearch().getPaging().getDisplayRow())
+                .build();
     }
 }

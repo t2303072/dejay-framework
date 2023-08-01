@@ -23,10 +23,14 @@ public class Paging {
     private int beginPage; // 시작 페이지
     private int endPage; // 종료 페이지
 
+    public Paging() {
+        setDefaultPaging(1, 0);
+    }
+
     @Builder
     public Paging(int currentPage, int displayRow, int totalCount) {
         if(totalCount < 1) {
-            setDefaultPaging(displayRow);
+            setDefaultPaging(currentPage, displayRow);
         }else {
             this.currentPage = currentPage;
             this.displayRow = displayRow;
@@ -37,8 +41,8 @@ public class Paging {
         }
     }
 
-    private void setDefaultPaging(int displayRow) {
-        this.currentPage = 1;
+    private void setDefaultPaging(int currentPage, int displayRow) {
+        this.currentPage = currentPage;
         this.displayRow = displayRow;
         this.totalCount = 0;
         this.offset = 0;

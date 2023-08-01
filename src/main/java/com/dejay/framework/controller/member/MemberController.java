@@ -4,14 +4,14 @@ import com.dejay.framework.common.enums.MapKeyStringEnum;
 import com.dejay.framework.common.enums.RequestTypeEnum;
 import com.dejay.framework.common.utils.MapUtil;
 import com.dejay.framework.common.utils.ObjectHandlingUtil;
-import com.dejay.framework.common.utils.TokenFactory;
+import com.dejay.framework.domain.common.SearchObject;
 import com.dejay.framework.domain.common.TokenObject;
-import com.dejay.framework.domain.member.LoginRequest;
 import com.dejay.framework.domain.member.Member;
 import com.dejay.framework.domain.user.SignUpRequest;
 import com.dejay.framework.domain.user.User;
 import com.dejay.framework.service.member.MemberService;
 import com.dejay.framework.service.test.TestService;
+import com.dejay.framework.vo.common.CollectionPagingVO;
 import com.dejay.framework.vo.common.ResultStatusVO;
 import com.dejay.framework.vo.common.TokenVO;
 import com.dejay.framework.vo.member.MemberVO;
@@ -25,8 +25,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -39,15 +37,15 @@ public class MemberController {
     private final MapUtil mapUtil;
 
     @GetMapping(value = {"", "/"})
-    public ResponseEntity memberList(HttpServletRequest request, Authentication authentication) {
+    public ResponseEntity memberList(HttpServletRequest request, @RequestBody @Valid SearchObject searchObject, Authentication authentication) {
         TokenVO tokenVO = ObjectHandlingUtil.extractTokenInfo(request); log.info(tokenVO.toString());
         MemberVO loginVO = ObjectHandlingUtil.extractLoginInfo(request); log.info(loginVO.toString());
 
-        List<MemberVO> memberList = memberService.getMemberList();
-        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setListResultStatusVO(memberList);
+        CollectionPagingVO collectionPagingVO = memberService.getMemberList(searchObject);
+        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setListResultStatusVO(collectionPagingVO.getObjects().stream().toList());
         
-        var mapKeyList = Arrays.asList(MapKeyStringEnum.TEST.getKeyString(), MapKeyStringEnum.MEMBER_LIST.getKeyString());
-        var resultMap = mapUtil.responseEntityBodyWrapper(resultStatusVO, mapKeyList, testService.getTest(), memberList);
+        var mapKeyList = Arrays.asList(MapKeyStringEnum.PAGING.getKeyString(), MapKeyStringEnum.MEMBER_LIST.getKeyString());
+        var resultMap = mapUtil.responseEntityBodyWrapper(resultStatusVO, mapKeyList, collectionPagingVO.getPaging(), collectionPagingVO.getObjects());
 
         return ResponseEntity.ok(resultMap);
     }
