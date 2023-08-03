@@ -34,7 +34,7 @@ public class TransactionAspect {
         HashMap<String, TransactionAttribute> txMethods = new HashMap<String, TransactionAttribute>();
 
         // write전용 transaction (rollback처리)
-        txMethods.put("merge*", writeOnlyAttribute);
+//        txMethods.put("merge*", writeOnlyAttribute); //메뉴별 권한 체크를 위해 merge는 제외 처리 
         txMethods.put("insert*", writeOnlyAttribute);
         txMethods.put("save*", writeOnlyAttribute);
         txMethods.put("update*", writeOnlyAttribute);
