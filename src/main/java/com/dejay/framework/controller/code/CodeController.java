@@ -39,7 +39,7 @@ public class CodeController extends ParentController {
     }
 
     /**
-     * 코드 저장
+     * 코드 수정
      * @param dataObject
      * @return
      */
@@ -51,7 +51,6 @@ public class CodeController extends ParentController {
 
         return ResponseEntity.ok(resultMap);
     }
-
 
     /**
      * 코드 순서 일괄변경
@@ -69,23 +68,6 @@ public class CodeController extends ParentController {
         return ResponseEntity.ok(resultMap);
     }
 
-
-
-    /**
-     * 코드 페이징 조회
-     * @param searchObject
-     * @return
-     */
-    @PostMapping("/paging")
-    public ResponseEntity pagingCode(@RequestBody @Valid SearchObject searchObject) {
-        List<CodeVO> codeList = commonService().codeService().pagingCode(searchObject.getSearch().getCodeSearch());
-
-        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setListResultStatusVO(codeList);
-        var mapKeyList = Arrays.asList(MapKeyStringEnum.CODE_LIST.getKeyString());
-        Map<String, Object> resultMap = mapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, codeList);
-
-        return ResponseEntity.ok(resultMap);
-    }
 
     /**
      * 코드 목록 조회
