@@ -5,6 +5,7 @@ import com.dejay.framework.common.enums.ResultCodeMsgEnum;
 import com.dejay.framework.common.utils.CookieFactory;
 import com.dejay.framework.common.utils.MapUtil;
 import com.dejay.framework.common.utils.SessionFactory;
+import com.dejay.framework.controller.common.ParentController;
 import com.dejay.framework.domain.member.Member;
 import com.dejay.framework.vo.common.ResultStatusVO;
 import jakarta.servlet.http.Cookie;
@@ -24,11 +25,7 @@ import java.util.*;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/session")
-public class SessionController {
-
-    private final SessionFactory sessionFactory;
-    private final CookieFactory cookieFactory;
-    private final MapUtil mapUtil;
+public class SessionController extends ParentController {
 
     @GetMapping({"", "/"})
     public ResponseEntity createSession(HttpServletRequest request, HttpServletResponse response) {
@@ -37,13 +34,13 @@ public class SessionController {
                 .memberName("이익주")
                 .build();
         // TODO: IJ 사용자 로그인 정보 조회 로직 추가
-        sessionFactory.createSession(request, loginInfo);
+        commonUtil().sessionFactory().createSession(request, loginInfo);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/expire")
     public ResponseEntity expireSession(HttpServletRequest request, HttpServletResponse response) {
-        sessionFactory.removeSession(request);
+        commonUtil().sessionFactory().removeSession(request);
         return ResponseEntity.ok().build();
     }
 
@@ -54,17 +51,17 @@ public class SessionController {
         Map<String, Object> resultMap;
         Member loginUserInfo = null;
 
-        Cookie cookie = cookieFactory.findCookie(request, SessionFactory.SessionEnum.SESSION_ID.getSessionKey());
+        Cookie cookie = commonUtil().cookieFactory().findCookie(request, SessionFactory.SessionEnum.SESSION_ID.getSessionKey());
         if(cookie == null) {
             resultStatusVO = new ResultStatusVO(ResultCodeMsgEnum.NO_COOKIE.getCode(), ResultCodeMsgEnum.NO_COOKIE.getMsg());
         }else {
             mapKeyList.add(MapKeyStringEnum.MEMBER.getKeyString());
-            loginUserInfo = sessionFactory.getLoginUserInfo(request);
+            loginUserInfo = commonUtil().sessionFactory().getLoginUserInfo(request);
 
             if(loginUserInfo == null) resultStatusVO = new ResultStatusVO(ResultCodeMsgEnum.NOT_LOGGED_IN.getCode(), ResultCodeMsgEnum.NOT_LOGGED_IN.getMsg());
         }
 
-        resultMap = mapUtil.responseEntityBodyWrapper(resultStatusVO, mapKeyList, loginUserInfo);
+        resultMap = mapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, loginUserInfo);
         return ResponseEntity.ok(resultMap);
     }
 

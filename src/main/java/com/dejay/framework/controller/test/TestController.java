@@ -4,6 +4,7 @@ import com.dejay.framework.common.enums.MapKeyStringEnum;
 import com.dejay.framework.common.utils.JwtUtil;
 import com.dejay.framework.common.utils.MapUtil;
 import com.dejay.framework.common.utils.ObjectHandlingUtil;
+import com.dejay.framework.controller.common.ParentController;
 import com.dejay.framework.domain.member.LoginRequest;
 import com.dejay.framework.domain.test.Board;
 import com.dejay.framework.service.test.TestService;
@@ -29,11 +30,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/test")
-public class TestController {
+public class TestController extends ParentController {
 
     private final TestService testService;
-    private final MapUtil mapUtil;
-    private final JwtUtil jwtUtil;
 
     /**
      * Index test
@@ -53,10 +52,9 @@ public class TestController {
      */
     @GetMapping("paging")
     public ResponseEntity paging(@RequestParam int currentPage, @RequestParam int displayRow, @RequestParam(required = false) int totalCount) {
-        // TODO: IJ Basically, GET METHOD has no body object
         PagingVO paging = testService.paging(currentPage, displayRow, totalCount);
         var mapKeyList = Arrays.asList(MapKeyStringEnum.PAGING.getKeyString());
-        Map<String, Object> resultMap = mapUtil.responseEntityBodyWrapper(new ResultStatusVO(), mapKeyList, paging);
+        Map<String, Object> resultMap = mapUtil().responseEntityBodyWrapper(new ResultStatusVO(), mapKeyList, paging);
 
         return ResponseEntity.ok(resultMap);
     }
@@ -80,7 +78,7 @@ public class TestController {
         List<BoardVO> boardList = testService.getBoardList();
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setListResultStatusVO(boardList);
         var mapKeyList = Arrays.asList(MapKeyStringEnum.BOARD_LIST.getKeyString());
-        Map<String, Object> resultMap = mapUtil.responseEntityBodyWrapper(resultStatusVO, mapKeyList, boardList);
+        Map<String, Object> resultMap = mapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, boardList);
 
         return ResponseEntity.ok(resultMap);
     }
@@ -94,7 +92,7 @@ public class TestController {
     public ResponseEntity insertBoard(@RequestBody @Valid Board board) {
         long inserted = testService.insertBoard(board);
         var mapKeyList = Arrays.asList(MapKeyStringEnum.BOARD.getKeyString());
-        Map<String, Object> resultMap = mapUtil.responseEntityBodyWrapper(new ResultStatusVO(), mapKeyList, inserted);
+        Map<String, Object> resultMap = mapUtil().responseEntityBodyWrapper(new ResultStatusVO(), mapKeyList, inserted);
 
         return ResponseEntity.ok(resultMap);
     }

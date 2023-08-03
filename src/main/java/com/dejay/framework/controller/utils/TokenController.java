@@ -4,6 +4,7 @@ import com.dejay.framework.common.enums.MapKeyStringEnum;
 import com.dejay.framework.common.utils.MapUtil;
 import com.dejay.framework.common.utils.ObjectHandlingUtil;
 import com.dejay.framework.common.utils.TokenFactory;
+import com.dejay.framework.controller.common.ParentController;
 import com.dejay.framework.domain.common.TokenObject;
 import com.dejay.framework.domain.member.LoginRequest;
 import com.dejay.framework.vo.common.ResultStatusVO;
@@ -26,10 +27,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/token")
-public class TokenController {
-
-    private final TokenFactory tokenFactory;
-    private final MapUtil mapUtil;
+public class TokenController extends ParentController {
 
     /**
      * JWT 생성
@@ -38,10 +36,10 @@ public class TokenController {
      */
     @PostMapping(value = {"", "/"})
     public ResponseEntity createJWT(@RequestBody @Valid LoginRequest loginRequest) {
-        TokenObject tokenObject = tokenFactory.createJWT(loginRequest.getUserName(), loginRequest.getPassword(), loginRequest.getAuthority());
+        TokenObject tokenObject = commonUtil().tokenFactory().createJWT(loginRequest.getUserName(), loginRequest.getPassword(), loginRequest.getAuthority());
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(tokenObject);
         var mapKeyList = Arrays.asList(MapKeyStringEnum.TOKEN_OBJECT.getKeyString());
-        Map<String, Object> resultMap = mapUtil.responseEntityBodyWrapper(resultStatusVO, mapKeyList, tokenObject);
+        Map<String, Object> resultMap = mapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, tokenObject);
 
         return ResponseEntity.ok(resultMap);
     }
