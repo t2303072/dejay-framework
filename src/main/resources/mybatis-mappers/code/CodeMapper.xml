@@ -93,10 +93,10 @@
             <include refid="codeColumn"><property name="alias" value="CD."/></include>
         FROM CODE CD
         <where>
-            <include refid="whereClause"></include>
+            <include refid="whereClause" />
         </where>
 
-        <include refid="orderClause"></include>
+        <include refid="orderClause" />
     </select>
 
     <select id="rowBySearch" resultType="CodeVO" parameterType="SearchVO">
@@ -105,7 +105,7 @@
             <include refid="codeColumn"><property name="alias" value="CD."/></include>
         FROM CODE CD
         <where>
-            <include refid="whereClause"></include>
+            <include refid="whereClause" />
         </where>
     </select>
 
@@ -168,12 +168,12 @@
         <include refid="codeColumn"><property name="alias" value="CD."/></include>
         FROM CODE CD
         <where>
-            <include refid="whereClause"></include>
+            <include refid="whereClause" />
         </where>
 
-        <include refid="orderClause"></include>
+        <include refid="orderClause" />
 
-        <include refid="mapper.paging.pagingQuery"></include>
+        <include refid="mapper.paging.pagingQuery" />
 
     </select>
 
@@ -182,7 +182,7 @@
         SELECT COUNT(*)
         FROM CODE CD
         <where>
-            <include refid="whereClause"></include>
+            <include refid="whereClause" />
         </where>
     </select>
     <!-- 페이징 샘플 (삭제 예정) ]] -->
