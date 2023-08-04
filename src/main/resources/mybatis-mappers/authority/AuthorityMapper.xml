@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dejay.framework.mapper.authority.AuthorityMapper">
+
+    <select id="selectMenuAuthority">
+        SELECT MEMBER.MEMBER_ID, MEMBER.DEPT_CODE, AUTH.AUTH_LEVEL, MENU.MENU_SEQ
+        FROM MEMBER MEMBER
+        INNER JOIN AUTH AUTH
+                ON MEMBER.DEPT_CODE = AUTH.DEPT_CODE
+        INNER JOIN CODE CD
+                ON AUTH.DEPT_CODE = CD.CODE
+        INNER JOIN MENU MENU
+                ON AUTH.MENU_SEQ = MENU.MENU_SEQ
+             WHERE MEMBER.USE_YN = 'Y'
+               AND CD.USE_YN = 'Y'
+               AND MENU.USE_YN = 'Y'
+               AND MEMBER.MEMBER_ID = #{memberId}
+               AND MENU.MENU_ID = #{menuId}
+    </select>
+
+</mapper>

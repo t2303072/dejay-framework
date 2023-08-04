@@ -29,7 +29,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     private final List<String> loginExcludePattern = Arrays.asList("/login", "/member/sign-up");
 
     // Authority
-    private final List<String> authorityIncludePattern = Arrays.asList("/test/authorized-only");
+    private final List<String> authorityIncludePattern = Arrays.asList("/auth/**", "/test/authorized-only");
+    private final List<String> authorityExcludePattern = Arrays.asList("/login/**", "/member/**");
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -44,7 +45,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .order(2);
 
         registry.addInterceptor(authorityInterceptor)
-                .addPathPatterns(authorityIncludePattern)
+                .excludePathPatterns(authorityExcludePattern)
                 .order(3);
     }
 

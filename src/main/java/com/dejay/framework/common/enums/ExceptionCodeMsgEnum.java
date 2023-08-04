@@ -19,10 +19,12 @@ public enum ExceptionCodeMsgEnum {
     , NULL_POINTER(990, "NULL POINTER")
     , EXPIRED_TOKEN(989, "만료된 토큰 값 입니다.")
     , NO_TOKEN(988, "토큰 값이 없습니다.")
-    , AUTH_ERROR(987, "유효하지 않은 인증 정보 입니다.")
+    , INVALID_AUTH(987, "유효하지 않은 인증 정보 입니다.")
     , UNSUPPORTED_ENCODING(986, "지원하지 않는 인코딩 방식 입니다.")
     , JSON_ERROR(985, "JSON Error")
     , RUNTIME_ERROR(984, "RUNTIME 에러")
+    , NO_AUTHORITY(983, "접근 권한이 없습니다.")
+    , NO_MENU_AUTHORITY(982, "메뉴 접근 권한이 없습니다.")
     ;
 
     private int code;

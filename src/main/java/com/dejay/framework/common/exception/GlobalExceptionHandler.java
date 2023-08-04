@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -155,7 +154,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AuthenticationException.class)
     protected ResponseEntity<ResultStatusVO> handleAuthenticationException(AuthenticationException ex) {
         this.printAuthenticationException(ex);
-        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.AUTH_ERROR.getCode(), ExceptionCodeMsgEnum.AUTH_ERROR.getMsg(), ex.getMessage(), null);
+        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.INVALID_AUTH.getCode(), ExceptionCodeMsgEnum.INVALID_AUTH.getMsg(), ex.getMessage(), null);
         return ResponseEntity.badRequest().body(resultStatusVO);
     }
 

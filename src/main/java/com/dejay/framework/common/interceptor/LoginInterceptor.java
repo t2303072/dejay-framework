@@ -3,14 +3,11 @@ package com.dejay.framework.common.interceptor;
 import com.dejay.framework.common.enums.ExceptionCodeMsgEnum;
 import com.dejay.framework.common.enums.MapKeyStringEnum;
 import com.dejay.framework.common.utils.JwtUtil;
-import com.dejay.framework.common.utils.SessionFactory;
 import com.dejay.framework.service.member.MemberService;
 import com.dejay.framework.vo.common.TokenVO;
 import com.dejay.framework.vo.member.MemberVO;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -21,8 +18,6 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.security.auth.login.LoginException;
-import java.util.Arrays;
-import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -40,7 +35,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         if(!StringUtils.hasText(authorizationHeader)) return false;
 
         TokenVO tokenVO = jwtUtil.decode(authorizationHeader.split("Bearer ")[1]);
-        if(tokenVO == null) throw new InvalidBearerTokenException(ExceptionCodeMsgEnum.AUTH_ERROR.getMsg());
+        if(tokenVO == null) throw new InvalidBearerTokenException(ExceptionCodeMsgEnum.INVALID_AUTH.getMsg());
         request.setAttribute(MapKeyStringEnum.TOKEN_VO.getKeyString(), tokenVO);
 
         MemberVO memberVO = memberService.findMemberByUserName(tokenVO.getUserName());
