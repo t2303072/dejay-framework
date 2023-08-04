@@ -130,7 +130,7 @@ public class MemberService {
                 .password(bCryptPasswordEncoder.encode(signUpRequest.getPassword()))
                 .name(signUpRequest.getName())
                 .email(signUpRequest.getEmail())
-                .deptCode("00001000")
+                .deptCode("00020000") // TODO: IJ 테스트 부서코드 추후 변경
                 .build();
 
         validationUtil.parameterValidator(target, User.class);

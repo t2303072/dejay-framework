@@ -9,12 +9,12 @@ import lombok.*;
 @Getter
 @Builder
 public class MemberVO {
-
     private long memberSeq;
     private String memberId;
     private String password;
     private String memberName;
     private String email;
     private String[] authority;
+    private String deptCode;
 
 }

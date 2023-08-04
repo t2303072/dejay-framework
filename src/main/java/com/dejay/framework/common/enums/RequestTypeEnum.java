@@ -7,5 +7,5 @@ import lombok.Getter;
 @Getter
 public enum RequestTypeEnum {
 
-    CREATE, READ, UPDATE, DELETE;
+    READ, CREATE, UPDATE, DELETE, DOWNLOAD
 }
