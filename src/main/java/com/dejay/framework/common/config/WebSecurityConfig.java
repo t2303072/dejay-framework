@@ -1,6 +1,6 @@
 package com.dejay.framework.common.config;
 
-import com.dejay.framework.common.enums.Authority;
+import com.dejay.framework.common.enums.AuthorityEnum;
 import com.dejay.framework.common.filter.AuthorityFilter;
 import com.dejay.framework.common.utils.JwtUtil;
 import com.dejay.framework.service.member.MemberService;
@@ -49,7 +49,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(ahr -> ahr
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers(NO_AUTH_REQUIRED_URL).permitAll()
-                        .requestMatchers(AUTHORITY_REQUIRED_URL).hasAnyAuthority(Authority.SYSTEM.name(), Authority.ADMIN.name())
+                        .requestMatchers(AUTHORITY_REQUIRED_URL).hasAnyAuthority(AuthorityEnum.SYSTEM.name(), AuthorityEnum.ADMIN.name())
                         .requestMatchers(AUTHENTICATION_REQUIRED_URL).authenticated()
                         .anyRequest().permitAll()
                 )

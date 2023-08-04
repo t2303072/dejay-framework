@@ -1,6 +1,6 @@
 package com.dejay.framework.domain.user;
 
-import com.dejay.framework.common.enums.Authority;
+import com.dejay.framework.common.enums.AuthorityEnum;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -23,11 +23,11 @@ public class User {
     private String name;
     private String email;
     private String picture;
-    private Set<Authority> authority;
+    private Set<AuthorityEnum> authority;
     private String deptCode;
 
     @Builder
-    public User(String id, String password, String name, String email, String picture, Set<Authority> authority, String deptCode) {
+    public User(String id, String password, String name, String email, String picture, Set<AuthorityEnum> authority, String deptCode) {
         this.id = id;
         this.password = password;
         this.name = name;

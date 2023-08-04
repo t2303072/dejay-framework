@@ -1,6 +1,6 @@
 package com.dejay.framework.domain.auth;
 
-import com.dejay.framework.common.enums.Authority;
+import com.dejay.framework.common.enums.AuthorityEnum;
 import lombok.*;
 
 import java.util.Set;
@@ -11,12 +11,12 @@ import java.util.Set;
 @NoArgsConstructor
 public class AuthorityCheck {
     private String id;
-    private Set<Authority> authList;
+    private Set<AuthorityEnum> authList;
     private String menuId;
     private String menuPath;
 
     @Builder
-    public AuthorityCheck(String id, Set<Authority> authList, String menuId, String menuPath) {
+    public AuthorityCheck(String id, Set<AuthorityEnum> authList, String menuId, String menuPath) {
         this.id = id;
         this.authList = authList;
         this.menuId = menuId;
