@@ -165,13 +165,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.badRequest().body(resultStatusVO);
     }
 
-//    @ExceptionHandler(RuntimeException.class)
-//    protected ResponseEntity<ResultStatusVO> handleRuntimeException(RuntimeException ex) {
-//        this.printRuntimeErrorLog(ex);
-//        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.RUNTIME_ERROR.getCode(), ExceptionCodeMsgEnum.RUNTIME_ERROR.getMsg(), ex.getMessage(), null);
-//        return ResponseEntity.badRequest().body(resultStatusVO);
-//    }
-
     // ----------------------------------------------------------------------------------------------------
     private <T extends BindException> List<FieldError> gatherBindingErrors(T ex) {
         List<FieldError> errList = new ArrayList<>();
