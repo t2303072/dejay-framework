@@ -54,8 +54,8 @@ public class ObjectHandlingUtil {
 
     /**
      * 데이터 관련 처리 결과 객체 생성
-     * @param obj
-     * @param key
+     * @param obj T
+     * @param key {@link RequestTypeEnum}
      * @return
      * @param <T>
      */
