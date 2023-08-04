@@ -31,11 +31,32 @@ import java.util.Arrays;
 public class AuthorityController extends ParentController {
 
     @PostMapping(value = {"", "/"})
-    public ResponseEntity selectAuth(HttpServletRequest request, Authentication authentication) {
-        TokenVO tokenVO = ObjectHandlingUtil.extractTokenInfo(request); log.info(tokenVO.toString());
-        MemberVO loginVO = ObjectHandlingUtil.extractLoginInfo(request); log.info(loginVO.toString());
-
-        return ResponseEntity.ok(null);
+    public ResponseEntity selectAuth(Authentication authentication) {
+        log.info("selectAuth: {}", authentication.toString());
+        return ResponseEntity.ok(authentication);
     }
 
+    @PostMapping("save")
+    public ResponseEntity saveAuth(Authentication authentication) {
+        log.info("createAuth: {}", authentication.toString());
+        return ResponseEntity.ok(authentication);
+    }
+
+    @PostMapping("update")
+    public ResponseEntity updateAuth(Authentication authentication) {
+        log.info("updateAuth: {}", authentication.toString());
+        return ResponseEntity.ok(authentication);
+    }
+
+    @PostMapping("delete")
+    public ResponseEntity deleteAuth(Authentication authentication) {
+        log.info("deleteAuth: {}", authentication.toString());
+        return ResponseEntity.ok(authentication);
+    }
+
+    @PostMapping("download")
+    public ResponseEntity downloadAuth(Authentication authentication) {
+        log.info("downloadAuth: {}", authentication.toString());
+        return ResponseEntity.ok(authentication);
+    }
 }
