@@ -1,5 +1,5 @@
 package com.dejay.framework.common.enums;
 
-public enum Authority {
+public enum AuthorityEnum {
     SYSTEM, ADMIN, USER, MEMBER
 }

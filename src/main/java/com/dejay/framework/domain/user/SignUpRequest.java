@@ -1,6 +1,6 @@
 package com.dejay.framework.domain.user;
 
-import com.dejay.framework.common.enums.Authority;
+import com.dejay.framework.common.enums.AuthorityEnum;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
@@ -22,11 +22,11 @@ public class SignUpRequest {
     private String email;
     private String picture;
     @NotNull(message = "권한은 필수 값 입니다.")
-    private Set<Authority> authority;
+    private Set<AuthorityEnum> authority;
     private String deptCode;
 
     @Builder
-    public SignUpRequest(long seq, String id, String password, String name, String email, String picture, Set<Authority> authority, String deptCode) {
+    public SignUpRequest(long seq, String id, String password, String name, String email, String picture, Set<AuthorityEnum> authority, String deptCode) {
         this.seq = seq;
         this.id = id;
         this.password = password;
