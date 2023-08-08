@@ -36,10 +36,10 @@ public class TokenController extends ParentController {
      */
     @PostMapping(value = {"", "/"})
     public ResponseEntity createJWT(@RequestBody @Valid LoginRequest loginRequest) {
-        TokenObject tokenObject = commonUtil().tokenFactory().createJWT(loginRequest.getUserName(), loginRequest.getPassword(), loginRequest.getAuthority());
+        TokenObject tokenObject = getCommonUtil().tokenFactory().createJWT(loginRequest.getUserName(), loginRequest.getPassword(), loginRequest.getAuthority());
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(tokenObject);
         var mapKeyList = Arrays.asList(MapKeyStringEnum.TOKEN_OBJECT.getKeyString());
-        Map<String, Object> resultMap = mapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, tokenObject);
+        Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, tokenObject);
 
         return ResponseEntity.ok(resultMap);
     }

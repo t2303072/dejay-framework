@@ -31,8 +31,8 @@ public class CodeService extends ParentService {
                 .codeOrd(code.getCodeOrd())
                 .useYn(code.getUseYn())
                 .build();
-        boolean isValidated = validationUtil().parameterValidator(target, Code.class);
-        int iAffectedRows = commonMapper().getCodeMapper().insert(target);
+        boolean isValidated = getValidationUtil().parameterValidator(target, Code.class);
+        int iAffectedRows = getCommonMapper().getCodeMapper().insert(target);
 
         return code;
     }
@@ -55,8 +55,8 @@ public class CodeService extends ParentService {
                 .codeOrd(code.getCodeOrd())
                 .useYn(code.getUseYn())
                 .build();
-        boolean isValidated = validationUtil().parameterValidator(target, Code.class);
-        int iAffectedRows = commonMapper().getCodeMapper().update(target);
+        boolean isValidated = getValidationUtil().parameterValidator(target, Code.class);
+        int iAffectedRows = getCommonMapper().getCodeMapper().update(target);
 
         return code;
     }
@@ -69,7 +69,7 @@ public class CodeService extends ParentService {
     public Integer updateCodeOrder(List<Code> codeList) {
         int iAffectedRows = 0;
         for (Code code : codeList) {
-            iAffectedRows += commonMapper().getCodeMapper().updateCodeOrder(code);
+            iAffectedRows += getCommonMapper().getCodeMapper().updateCodeOrder(code);
         }
 
         return iAffectedRows <= 0 ? null : iAffectedRows;
@@ -77,7 +77,7 @@ public class CodeService extends ParentService {
 
     public List<CodeVO> pagingCode(CodeSearchVO search) {
 
-        return (List<CodeVO>) commonMapper().getCodeMapper().pagingBySearch(search);
+        return (List<CodeVO>) getCommonMapper().getCodeMapper().pagingBySearch(search);
     }
 
     /**
@@ -86,7 +86,7 @@ public class CodeService extends ParentService {
      * @return
      */
     public List<CodeVO> listCode(CodeSearchVO search) {
-        return (List<CodeVO>) commonMapper().getCodeMapper().listBySearch(search);
+        return (List<CodeVO>) getCommonMapper().getCodeMapper().listBySearch(search);
     }
 
     /**
@@ -95,6 +95,6 @@ public class CodeService extends ParentService {
      * @return
      */
     public CodeVO rowCode(CodeSearchVO search) {
-        return (CodeVO) commonMapper().getCodeMapper().rowBySearch(search);
+        return (CodeVO) getCommonMapper().getCodeMapper().rowBySearch(search);
     }
 }

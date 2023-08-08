@@ -31,9 +31,10 @@ public class CodeController extends ParentController {
      */
     @PostMapping("/insert")
     public ResponseEntity insertCode(@RequestBody @Valid DataObject dataObject) throws Exception {
-        Code inserted =  commonService().codeService().insertCode(dataObject.getData().getCode());
+
+        Code inserted =  getCommonService().getCodeService().insertCode(dataObject.getData().getCode());
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(inserted, RequestTypeEnum.CREATE);
-        Map<String, Object> resultMap = mapUtil().responseEntityBodyWrapper(resultStatusVO);
+        Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(resultMap);
     }
@@ -45,9 +46,9 @@ public class CodeController extends ParentController {
      */
     @PostMapping("/update")
     public ResponseEntity updateCode(@RequestBody @Valid DataObject dataObject) throws Exception {
-        Code inserted =  commonService().codeService().updateCode(dataObject.getData().getCode());
+        Code inserted =  getCommonService().getCodeService().updateCode(dataObject.getData().getCode());
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(inserted, RequestTypeEnum.UPDATE);
-        Map<String, Object> resultMap = mapUtil().responseEntityBodyWrapper(resultStatusVO);
+        Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO);
 
         return ResponseEntity.ok(resultMap);
     }
@@ -60,10 +61,10 @@ public class CodeController extends ParentController {
     @PostMapping("/updateCodeOrder")
     public ResponseEntity updateCodeOrder(@RequestBody @Valid DataObject dataObject) throws Exception {
 
-        Integer iAffectedRows =  commonService().codeService().updateCodeOrder(dataObject.getData().getCodeList());
+        Integer iAffectedRows =  getCommonService().getCodeService().updateCodeOrder(dataObject.getData().getCodeList());
 
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(iAffectedRows, RequestTypeEnum.UPDATE);
-        Map<String, Object> resultMap = mapUtil().responseEntityBodyWrapper(resultStatusVO);
+        Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO);
 
         return ResponseEntity.ok(resultMap);
     }
@@ -76,11 +77,11 @@ public class CodeController extends ParentController {
      */
     @PostMapping("/list")
     public ResponseEntity listCode(@RequestBody @Valid SearchObject searchObject) {
-        List<CodeVO> codeList = commonService().codeService().listCode(searchObject.getSearch().getCodeSearch());
+        List<CodeVO> codeList = getCommonService().getCodeService().listCode(searchObject.getSearch().getCodeSearch());
 
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setListResultStatusVO(codeList);
         var mapKeyList = Arrays.asList(MapKeyStringEnum.CODE_LIST.getKeyString());
-        Map<String, Object> resultMap = mapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, codeList);
+        Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, codeList);
 
         return ResponseEntity.ok(resultMap);
     }
@@ -93,11 +94,11 @@ public class CodeController extends ParentController {
      */
     @PostMapping("/row")
     public ResponseEntity rowCode(@RequestBody @Valid SearchObject searchObject) {
-        CodeVO code = commonService().codeService().rowCode(searchObject.getSearch().getCodeSearch());
+        CodeVO code = getCommonService().getCodeService().rowCode(searchObject.getSearch().getCodeSearch());
 
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(code);
         var mapKeyList = Arrays.asList(MapKeyStringEnum.CODE.getKeyString());
-        Map<String, Object> resultMap = mapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, code);
+        Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, code);
 
         return ResponseEntity.ok(resultMap);
     }

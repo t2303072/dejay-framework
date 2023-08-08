@@ -23,6 +23,13 @@
         , ${alias}CODE_ORD, ${alias}USE_YN
     </sql>
 
+
+    <sql id="authColumn">
+        ${alias}AUTH_ID, ${alias}AUTH_LEVEL
+    </sql>
+
+
+
     <!-- column ]] -->
 
 
@@ -151,36 +158,7 @@
         WHERE CODE = #{code}
     </update>
 
-
-
     <!-- 저장/수정/삭제 ]] -->
-
-
-    <!-- 페이징 샘플 (삭제 예정) [[ -->
-    <select id="pagingBySearch" resultType="CodeVO" parameterType="SearchVO">
-        /* 코드 페이징 조회 - CodeMapper.pagingBySearch */
-        SELECT
-        <include refid="codeColumn"><property name="alias" value="CD."/></include>
-        FROM CODE CD
-        <where>
-            <include refid="whereClause" />
-        </where>
-
-        <include refid="orderClause" />
-
-        <include refid="mapper.paging.pagingQuery" />
-
-    </select>
-
-    <select id="pagingCountBySearch" resultType="Integer" parameterType="SearchVO">
-        /* 코드 페이징 조회 - CodeMapper.pagingBySearch */
-        SELECT COUNT(*)
-        FROM CODE CD
-        <where>
-            <include refid="whereClause" />
-        </where>
-    </select>
-    <!-- 페이징 샘플 (삭제 예정) ]] -->
 
 
 </mapper>

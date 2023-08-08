@@ -34,13 +34,13 @@ public class SessionController extends ParentController {
                 .memberName("이익주")
                 .build();
         // TODO: IJ 사용자 로그인 정보 조회 로직 추가
-        commonUtil().sessionFactory().createSession(request, loginInfo);
+        getCommonUtil().sessionFactory().createSession(request, loginInfo);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/expire")
     public ResponseEntity expireSession(HttpServletRequest request, HttpServletResponse response) {
-        commonUtil().sessionFactory().removeSession(request);
+        getCommonUtil().sessionFactory().removeSession(request);
         return ResponseEntity.ok().build();
     }
 
@@ -51,17 +51,17 @@ public class SessionController extends ParentController {
         Map<String, Object> resultMap;
         Member loginUserInfo = null;
 
-        Cookie cookie = commonUtil().cookieFactory().findCookie(request, SessionFactory.SessionEnum.SESSION_ID.getSessionKey());
+        Cookie cookie = getCommonUtil().cookieFactory().findCookie(request, SessionFactory.SessionEnum.SESSION_ID.getSessionKey());
         if(cookie == null) {
             resultStatusVO = new ResultStatusVO(ResultCodeMsgEnum.NO_COOKIE.getCode(), ResultCodeMsgEnum.NO_COOKIE.getMsg());
         }else {
             mapKeyList.add(MapKeyStringEnum.MEMBER.getKeyString());
-            loginUserInfo = commonUtil().sessionFactory().getLoginUserInfo(request);
+            loginUserInfo = getCommonUtil().sessionFactory().getLoginUserInfo(request);
 
             if(loginUserInfo == null) resultStatusVO = new ResultStatusVO(ResultCodeMsgEnum.NOT_LOGGED_IN.getCode(), ResultCodeMsgEnum.NOT_LOGGED_IN.getMsg());
         }
 
-        resultMap = mapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, loginUserInfo);
+        resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, loginUserInfo);
         return ResponseEntity.ok(resultMap);
     }
 
