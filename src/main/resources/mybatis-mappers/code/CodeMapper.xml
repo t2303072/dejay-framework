@@ -46,7 +46,7 @@
                     AND ${alias}CODE LIKE CONCAT('%', '0000')
                 </when>
                 <otherwise>
-                    AND ${alias}CODE LIKE CONCAT(#{parentCode}, '%')
+                    AND ( ${alias}CODE LIKE CONCAT(#{parentCode}, '%') and ${alias}CODE != CONCAT('0001', '0000') )
                 </otherwise>
             </choose>
         </if>
@@ -88,6 +88,32 @@
 
 
     <!-- 조회 [[ -->
+
+    <select id="pagingBySearch" resultType="CodeVO" parameterType="SearchVO">
+        /* 코드 페이징 조회 - CodeMapper.pagingBySearch */
+        SELECT
+        <include refid="codeColumn"><property name="alias" value="CD."/></include>
+        FROM CODE CD
+        <where>
+            <include refid="whereClause"><property name="alias" value="CD."/></include>
+        </where>
+
+        <include refid="orderClause"><property name="alias" value="CD."/></include>
+
+        <include refid="mapper.paging.pagingQuery"></include>
+
+    </select>
+
+    <select id="pagingCountBySearch" resultType="Integer" parameterType="SearchVO">
+        /* 코드 페이징 카운트 조회 - CodeMapper.pagingCountBySearch */
+        SELECT COUNT(*)
+        FROM CODE CD
+        <where>
+            <include refid="whereClause"><property name="alias" value="CD."/></include>
+        </where>
+    </select>
+
+
 
 
     <select id="listBySearch" resultType="CodeVO" parameterType="SearchVO">

@@ -16,8 +16,8 @@
              WHERE MEMBER.USE_YN = 'Y'
                AND CD.USE_YN = 'Y'
                AND MENU.USE_YN = 'Y'
-               AND MEMBER.MEMBER_ID = #{memberId}
-               AND MENU.MENU_ID = #{menuId}
+               AND MEMBER.MEMBER_ID = #{param1}
+               AND MENU.MENU_ID = #{param2}
     </select>
 
 </mapper>

@@ -6,6 +6,7 @@ import com.dejay.framework.common.utils.ObjectHandlingUtil;
 import com.dejay.framework.controller.common.ParentController;
 import com.dejay.framework.domain.code.Code;
 import com.dejay.framework.domain.common.DataObject;
+import com.dejay.framework.domain.common.Paging;
 import com.dejay.framework.domain.common.SearchObject;
 import com.dejay.framework.vo.code.CodeVO;
 import com.dejay.framework.vo.common.ResultStatusVO;
@@ -80,7 +81,7 @@ public class CodeController extends ParentController {
         List<CodeVO> codeList = getCommonService().getCodeService().listCode(searchObject.getSearch().getCodeSearch());
 
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setListResultStatusVO(codeList);
-        var mapKeyList = Arrays.asList(MapKeyStringEnum.CODE_LIST.getKeyString());
+        List<String> mapKeyList = Arrays.asList(MapKeyStringEnum.CODE_LIST.getKeyString());
         Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, codeList);
 
         return ResponseEntity.ok(resultMap);
@@ -97,9 +98,26 @@ public class CodeController extends ParentController {
         CodeVO code = getCommonService().getCodeService().rowCode(searchObject.getSearch().getCodeSearch());
 
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(code);
-        var mapKeyList = Arrays.asList(MapKeyStringEnum.CODE.getKeyString());
+        List<String> mapKeyList = Arrays.asList(MapKeyStringEnum.CODE.getKeyString());
         Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, code);
 
         return ResponseEntity.ok(resultMap);
     }
+
+    /**
+     * 코드 페이징 조회
+     * @param searchObject
+     * @return
+     */
+    @PostMapping("/paging")
+    public ResponseEntity pagingCode(@RequestBody @Valid SearchObject searchObject) {
+        List<CodeVO> codeList = getCommonService().getCodeService().pagingCode(searchObject.getSearch().getCodeSearch());
+
+        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setListResultStatusVO(codeList);
+        List<String> mapKeyList = Arrays.asList(MapKeyStringEnum.PAGING.getKeyString(), MapKeyStringEnum.CODE_LIST.getKeyString());
+        Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, searchObject.getSearch().getCodeSearch().getPaging(), codeList);
+
+        return ResponseEntity.ok(resultMap);
+    }
+
 }
