@@ -4,7 +4,10 @@ import com.dejay.framework.common.interceptor.AuthorityInterceptor;
 import com.dejay.framework.common.interceptor.LoggerInterceptor;
 import com.dejay.framework.common.interceptor.LoginInterceptor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -23,6 +26,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     // Logging
     private final List<String> loggerIncludePattern = Arrays.asList("/**");
+    private final List<String> loggerExcludePattern = Arrays.asList("/error");
 
     // Login
     private final List<String> loginIncludePattern = Arrays.asList("/login/**", "/member/**", "/token/authentication-info");
@@ -36,7 +40,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loggerInterceptor)
                 .addPathPatterns(loggerIncludePattern)
-                .excludePathPatterns("/error")
+                .excludePathPatterns(loggerExcludePattern)
                 .order(1);
 
         registry.addInterceptor(loginInterceptor)
@@ -52,9 +56,16 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/")
-                .allowedMethods("GET", "POST")
+                .allowedMethods(HttpMethod.GET.name(), HttpMethod.POST.name())
                 .allowedHeaders("*")
                 .allowCredentials(true)
                 .maxAge(MAX_AGE_SEC);
+    }
+
+    @Bean
+    public StrictHttpFirewall httpFirewall() {
+        StrictHttpFirewall firewall = new StrictHttpFirewall();
+        firewall.setAllowedHttpMethods(Arrays.asList(HttpMethod.GET.name(), HttpMethod.POST.name()));
+        return firewall;
     }
 }

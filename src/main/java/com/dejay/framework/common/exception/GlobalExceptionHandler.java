@@ -14,6 +14,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.server.ServerErrorException;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
@@ -108,7 +109,7 @@ public class GlobalExceptionHandler {
     /**
      * @param ex
      * @return ResultStatusVO
-     * @implNote Server error handling
+     * @implNote HttpMethod error handling
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     protected ResponseEntity<ResultStatusVO> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException ex) {
@@ -120,7 +121,7 @@ public class GlobalExceptionHandler {
     /**
      * @param ex
      * @return ResultStatusVO
-     * @implNote Server error handling
+     * @implNote SQL error handling
      */
     @ExceptionHandler(SQLException.class)
     protected ResponseEntity<ResultStatusVO> handleSQLException(SQLException ex) {
@@ -132,7 +133,7 @@ public class GlobalExceptionHandler {
     /**
      * @param ex
      * @return ResultStatusVO
-     * @implNote Server error handling
+     * @implNote Encoding error handling
      */
     @ExceptionHandler(UnsupportedEncodingException.class)
     protected ResponseEntity<ResultStatusVO> handleUnsupportedEncodingException(UnsupportedEncodingException ex) {
@@ -175,6 +176,18 @@ public class GlobalExceptionHandler {
         this.printJacksonException(ex);
         resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.JSON_ERROR.getCode(), ExceptionCodeMsgEnum.JSON_ERROR.getMsg(), ex.getMessage(), null);
         return ResponseEntity.badRequest().body(resultStatusVO);
+    }
+
+    /**
+     * @param ex
+     * @return ResultStatusVO
+     * @implNote Server error handling
+     */
+    @ExceptionHandler(ServerErrorException.class)
+    protected ResponseEntity<ResultStatusVO> handleServerErrorException(ServerErrorException ex) {
+        this.printRuntimeErrorLog(ex);
+        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.SERVER_ERROR.getCode(), ExceptionCodeMsgEnum.SERVER_ERROR.getMsg(), ex.getMessage(), null);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultStatusVO);
     }
 
     // ----------------------------------------------------------------------------------------------------

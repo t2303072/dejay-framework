@@ -25,6 +25,8 @@ public enum ExceptionCodeMsgEnum {
     , RUNTIME_ERROR(984, "RUNTIME 에러")
     , NO_AUTHORITY(983, "접근 권한이 없습니다.")
     , NO_MENU_AUTHORITY(982, "메뉴 접근 권한이 없습니다.")
+    , SERVER_ERROR(981, "SERVER ERROR")
+    , INVALID_METHOD_NAMING(980, "유효하지 않은 메서드 명 입니다.")
     ;
 
     private int code;

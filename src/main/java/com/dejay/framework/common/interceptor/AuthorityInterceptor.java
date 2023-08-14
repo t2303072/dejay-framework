@@ -20,6 +20,7 @@ import org.springframework.security.oauth2.server.resource.InvalidBearerTokenExc
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.server.ServerErrorException;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -103,25 +104,27 @@ public class AuthorityInterceptor implements HandlerInterceptor {
     }
 
     private String[] targetPrefix(String obj) {
-        boolean read = Arrays.stream(readPrefix).filter(p -> obj.startsWith(p)).findAny().isEmpty();
-        boolean create = Arrays.stream(createPrefix).filter(p -> obj.startsWith(p)).findAny().isEmpty();
-        boolean update = Arrays.stream(updatePrefix).filter(p -> obj.startsWith(p)).findAny().isEmpty();
-        boolean delete = Arrays.stream(deletePrefix).filter(p -> obj.startsWith(p)).findAny().isEmpty();
-        boolean download = Arrays.stream(downloadPrefix).filter(p -> obj.startsWith(p)).findAny().isEmpty();
+        boolean isRead = !Arrays.stream(readPrefix).filter(p -> obj.startsWith(p)).findAny().isEmpty();
+        boolean isCreate = !Arrays.stream(createPrefix).filter(p -> obj.startsWith(p)).findAny().isEmpty();
+        boolean isUpdate = !Arrays.stream(updatePrefix).filter(p -> obj.startsWith(p)).findAny().isEmpty();
+        boolean isDelete = !Arrays.stream(deletePrefix).filter(p -> obj.startsWith(p)).findAny().isEmpty();
+        boolean isDownload = !Arrays.stream(downloadPrefix).filter(p -> obj.startsWith(p)).findAny().isEmpty();
 
-        if(!read && create && update && delete) {
+        if(!isRead && !isCreate && !isUpdate && !isDelete && !isDownload) throw new ServerErrorException(ExceptionCodeMsgEnum.INVALID_METHOD_NAMING.getMsg(), null);
+
+        if(isRead && !isCreate && !isUpdate && !isDelete) {
             action = RequestTypeEnum.READ;
             return readPrefix;
-        } else if(read && !create && update && delete) {
+        } else if(!isRead && isCreate && !isUpdate && !isDelete) {
             action = RequestTypeEnum.CREATE;
             return createPrefix;
-        } else if(read && create && !update && delete) {
+        } else if(!isRead && !isCreate && isUpdate && !isDelete) {
             action = RequestTypeEnum.UPDATE;
             return updatePrefix;
-        } else if (read && create && update && !delete) {
+        } else if (!isRead && !isCreate && !isUpdate && isDelete) {
             action = RequestTypeEnum.DELETE;
             return deletePrefix;
-        } else if (!download) {
+        } else if (isDownload) {
             action = RequestTypeEnum.DOWNLOAD;
             return downloadPrefix;
         } else {
