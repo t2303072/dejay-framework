@@ -148,9 +148,9 @@ public class GlobalExceptionHandler {
      * @implNote Login related handling
      */
     @ExceptionHandler(CustomLoginException.class)
-    protected ResponseEntity<ResultStatusVO> handleLoginException(CustomLoginException ex) {
+    protected ResponseEntity<ResultStatusVO> handleCustomLoginException(CustomLoginException ex) {
         this.printGeneralSecurityExceptionLog(ex);
-        resultStatusVO = new ResultStatusVO(ex.getCode(), ex.getMsg(), ex.getMessage(), null);
+        resultStatusVO = new ResultStatusVO(ex.getCode(), ex.getMsg(), null, null);
         if(ex.getCode() == 979) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultStatusVO);
         }
