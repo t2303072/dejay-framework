@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.server.resource.InvalidBearerTokenException;
 import org.springframework.stereotype.Component;
@@ -98,12 +99,7 @@ public class AuthorityInterceptor implements HandlerInterceptor {
     }
 
     private void authException(String msg) {
-        throw new AuthenticationException(msg) {
-            @Override
-            public String getMessage() {
-                return super.getMessage();
-            }
-        };
+        throw new AccessDeniedException(msg);
     }
 
     private String[] targetPrefix(String obj) {

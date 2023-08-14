@@ -4,7 +4,9 @@ import com.dejay.framework.common.enums.ExceptionCodeMsgEnum;
 import com.dejay.framework.vo.common.ResultStatusVO;
 import com.fasterxml.jackson.core.JacksonException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
@@ -148,16 +150,26 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<ResultStatusVO> handleLoginException(LoginException ex) {
         this.printGeneralSecurityExceptionLog(ex);
         resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.LOGIN_REQUIRED.getCode(), ExceptionCodeMsgEnum.LOGIN_REQUIRED.getMsg(), null, null);
-        return ResponseEntity.badRequest().body(resultStatusVO);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resultStatusVO);
     }
 
-    @ExceptionHandler(AuthenticationException.class)
-    protected ResponseEntity<ResultStatusVO> handleAuthenticationException(AuthenticationException ex) {
-        this.printAuthenticationException(ex);
-        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.INVALID_AUTH.getCode(), ExceptionCodeMsgEnum.INVALID_AUTH.getMsg(), ex.getMessage(), null);
-        return ResponseEntity.badRequest().body(resultStatusVO);
+    /**
+     * @param ex
+     * @return ResultStatusVO
+     * @implNote Authority error handling
+     */
+    @ExceptionHandler(AccessDeniedException.class)
+    protected ResponseEntity<ResultStatusVO> handleAccessDeniedException(AccessDeniedException ex) {
+        this.printRuntimeErrorLog(ex);
+        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.NO_AUTHORITY.getCode(), ExceptionCodeMsgEnum.NO_AUTHORITY.getMsg(), ex.getMessage(), null);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resultStatusVO);
     }
 
+    /**
+     * @param ex
+     * @return ResultStatusVO
+     * @implNote json error handling
+     */
     @ExceptionHandler(JacksonException.class)
     protected ResponseEntity<ResultStatusVO> handleJacksonException(JacksonException ex) {
         this.printJacksonException(ex);
