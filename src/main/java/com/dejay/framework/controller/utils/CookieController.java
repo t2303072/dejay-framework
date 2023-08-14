@@ -20,14 +20,14 @@ public class CookieController extends ParentController {
 
     @GetMapping("/set-cookie")
     public ResponseEntity setCookie(HttpServletRequest request, HttpServletResponse response) {
-        commonUtil().cookieFactory().setCookie(response, "localhost", "/", "res-cookie1", "cookie-test1", true, false, 0);
-        commonUtil().cookieFactory().setCookie(response, "localhost", "/", "res-cookie2", "cookie-test2", true, false, 0);
+        getCommonUtil().cookieFactory().setCookie(response, "localhost", "/", "res-cookie1", "cookie-test1", true, false, 0);
+        getCommonUtil().cookieFactory().setCookie(response, "localhost", "/", "res-cookie2", "cookie-test2", true, false, 0);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/get-cookie")
     public ResponseEntity getCookie(HttpServletRequest request, HttpServletResponse response) {
-        commonUtil().cookieFactory().getCookieList(request);
+        getCommonUtil().cookieFactory().getCookieList(request);
 
         return ResponseEntity.ok().build();
     }
@@ -35,7 +35,7 @@ public class CookieController extends ParentController {
     @GetMapping("/remove/{key}")
     public ResponseEntity removeCookie(HttpServletRequest request, HttpServletResponse response, @PathVariable String key/*, @CookieValue(value = "res-cookie2", required = false) String cookie*/) {
 //        String key = Arrays.stream(request.getCookies()).filter(c -> c.getName().equals("res-cookie2")).findAny().get().getName();
-        commonUtil().cookieFactory().removeCookie(request, response, key);
+        getCommonUtil().cookieFactory().removeCookie(request, response, key);
 
         return ResponseEntity.ok().build();
     }

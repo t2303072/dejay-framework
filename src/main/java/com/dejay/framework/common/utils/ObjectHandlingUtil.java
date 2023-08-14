@@ -8,6 +8,7 @@ import com.dejay.framework.domain.common.SearchObject;
 import com.dejay.framework.vo.common.ResultStatusVO;
 import com.dejay.framework.vo.common.TokenVO;
 import com.dejay.framework.vo.member.MemberVO;
+import com.dejay.framework.vo.search.SearchVO;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
@@ -87,4 +88,21 @@ public class ObjectHandlingUtil {
                 .displayRow(searchObject.getSearch().getPaging().getDisplayRow())
                 .build();
     }
+
+
+    /**
+     * Paging 연산기
+     * @param search {@link SearchVO}
+     * @param totalCount {@link Integer}
+     * @return
+     */
+    public static Paging pagingOperatorBySearch(SearchVO search, int totalCount) {
+        return Paging.builder()
+                .totalCount(totalCount)
+                .currentPage(search.getPaging().getCurrentPage())
+                .displayRow(search.getPaging().getDisplayRow())
+                .build();
+    }
+
+
 }

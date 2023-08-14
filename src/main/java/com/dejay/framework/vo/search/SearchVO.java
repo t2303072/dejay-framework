@@ -7,7 +7,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  *  공용 검색 모델 <br>
@@ -34,6 +36,21 @@ public class SearchVO {
 
     public static final int MILLIS_IN_A_DAY = 24 * 60 * 60 * 1000;
 
+
+    /**
+     * 회원 권한 관련
+     */
+    private String memberId;
+    private String menuId;
+
+    /**
+     * 검색조건 > mapper에서 in 구문 사용하는 경우
+     */
+    private List<String> inList1 = new ArrayList<>();
+    private List<String> inList2 = new ArrayList<>();
+    private List<String> inList3 = new ArrayList<>();
+    private List<String> inList4 = new ArrayList<>();
+    private List<String> inList5 = new ArrayList<>();
 
 
     /**

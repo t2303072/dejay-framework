@@ -54,7 +54,7 @@ public class TestController extends ParentController {
     public ResponseEntity paging(@RequestParam int currentPage, @RequestParam int displayRow, @RequestParam(required = false) int totalCount) {
         PagingVO paging = testService.paging(currentPage, displayRow, totalCount);
         var mapKeyList = Arrays.asList(MapKeyStringEnum.PAGING.getKeyString());
-        Map<String, Object> resultMap = mapUtil().responseEntityBodyWrapper(new ResultStatusVO(), mapKeyList, paging);
+        Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(new ResultStatusVO(), mapKeyList, paging);
 
         return ResponseEntity.ok(resultMap);
     }
@@ -78,7 +78,7 @@ public class TestController extends ParentController {
         List<BoardVO> boardList = testService.getBoardList();
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setListResultStatusVO(boardList);
         var mapKeyList = Arrays.asList(MapKeyStringEnum.BOARD_LIST.getKeyString());
-        Map<String, Object> resultMap = mapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, boardList);
+        Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, boardList);
 
         return ResponseEntity.ok(resultMap);
     }
@@ -92,7 +92,7 @@ public class TestController extends ParentController {
     public ResponseEntity insertBoard(@RequestBody @Valid Board board) {
         long inserted = testService.insertBoard(board);
         var mapKeyList = Arrays.asList(MapKeyStringEnum.BOARD.getKeyString());
-        Map<String, Object> resultMap = mapUtil().responseEntityBodyWrapper(new ResultStatusVO(), mapKeyList, inserted);
+        Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(new ResultStatusVO(), mapKeyList, inserted);
 
         return ResponseEntity.ok(resultMap);
     }

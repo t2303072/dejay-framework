@@ -1,6 +1,8 @@
 package com.dejay.framework.service.code;
 
+import com.dejay.framework.common.utils.ObjectHandlingUtil;
 import com.dejay.framework.domain.code.Code;
+import com.dejay.framework.domain.common.Paging;
 import com.dejay.framework.service.common.ParentService;
 import com.dejay.framework.vo.code.CodeVO;
 import com.dejay.framework.vo.search.code.CodeSearchVO;
@@ -31,8 +33,8 @@ public class CodeService extends ParentService {
                 .codeOrd(code.getCodeOrd())
                 .useYn(code.getUseYn())
                 .build();
-        boolean isValidated = validationUtil().parameterValidator(target, Code.class);
-        int iAffectedRows = commonMapper().getCodeMapper().insert(target);
+        boolean isValidated = getValidationUtil().parameterValidator(target, Code.class);
+        int iAffectedRows = getCommonMapper().getCodeMapper().insert(target);
 
         return code;
     }
@@ -55,8 +57,8 @@ public class CodeService extends ParentService {
                 .codeOrd(code.getCodeOrd())
                 .useYn(code.getUseYn())
                 .build();
-        boolean isValidated = validationUtil().parameterValidator(target, Code.class);
-        int iAffectedRows = commonMapper().getCodeMapper().update(target);
+        boolean isValidated = getValidationUtil().parameterValidator(target, Code.class);
+        int iAffectedRows = getCommonMapper().getCodeMapper().update(target);
 
         return code;
     }
@@ -69,15 +71,27 @@ public class CodeService extends ParentService {
     public Integer updateCodeOrder(List<Code> codeList) {
         int iAffectedRows = 0;
         for (Code code : codeList) {
-            iAffectedRows += commonMapper().getCodeMapper().updateCodeOrder(code);
+            iAffectedRows += getCommonMapper().getCodeMapper().updateCodeOrder(code);
         }
 
+        //변경된 내용이 없는 경우 null return(오류 발생)
         return iAffectedRows <= 0 ? null : iAffectedRows;
     }
 
+    /**
+     * 코드 페이징 조회
+     * @param search
+     * @return
+     */
     public List<CodeVO> pagingCode(CodeSearchVO search) {
 
-        return (List<CodeVO>) commonMapper().getCodeMapper().pagingBySearch(search);
+        int totalCount = getCommonMapper().getCodeMapper().pagingCountBySearch(search);
+        Paging paging = ObjectHandlingUtil.pagingOperatorBySearch(search, totalCount);
+        search.setPaging(paging);
+
+        List<CodeVO> codeList = (List<CodeVO>) getCommonMapper().getCodeMapper().pagingBySearch(search);
+
+        return codeList;
     }
 
     /**
@@ -86,7 +100,7 @@ public class CodeService extends ParentService {
      * @return
      */
     public List<CodeVO> listCode(CodeSearchVO search) {
-        return (List<CodeVO>) commonMapper().getCodeMapper().listBySearch(search);
+        return (List<CodeVO>) getCommonMapper().getCodeMapper().listBySearch(search);
     }
 
     /**
@@ -95,6 +109,6 @@ public class CodeService extends ParentService {
      * @return
      */
     public CodeVO rowCode(CodeSearchVO search) {
-        return (CodeVO) commonMapper().getCodeMapper().rowBySearch(search);
+        return (CodeVO) getCommonMapper().getCodeMapper().rowBySearch(search);
     }
 }

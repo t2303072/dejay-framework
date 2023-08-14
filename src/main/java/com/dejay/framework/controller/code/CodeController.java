@@ -6,6 +6,7 @@ import com.dejay.framework.common.utils.ObjectHandlingUtil;
 import com.dejay.framework.controller.common.ParentController;
 import com.dejay.framework.domain.code.Code;
 import com.dejay.framework.domain.common.DataObject;
+import com.dejay.framework.domain.common.Paging;
 import com.dejay.framework.domain.common.SearchObject;
 import com.dejay.framework.vo.code.CodeVO;
 import com.dejay.framework.vo.common.ResultStatusVO;
@@ -24,52 +25,6 @@ import java.util.Map;
 @RequestMapping("/code")
 public class CodeController extends ParentController {
 
-    /**
-     * 코드 저장
-     * @param dataObject
-     * @return
-     */
-    @PostMapping("/insert")
-    public ResponseEntity insertCode(@RequestBody @Valid DataObject dataObject) throws Exception {
-        Code inserted =  commonService().codeService().insertCode(dataObject.getData().getCode());
-        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(inserted, RequestTypeEnum.CREATE);
-        Map<String, Object> resultMap = mapUtil().responseEntityBodyWrapper(resultStatusVO);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(resultMap);
-    }
-
-    /**
-     * 코드 저장
-     * @param dataObject
-     * @return
-     */
-    @PostMapping("/update")
-    public ResponseEntity updateCode(@RequestBody @Valid DataObject dataObject) throws Exception {
-        Code inserted =  commonService().codeService().updateCode(dataObject.getData().getCode());
-        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(inserted, RequestTypeEnum.UPDATE);
-        Map<String, Object> resultMap = mapUtil().responseEntityBodyWrapper(resultStatusVO);
-
-        return ResponseEntity.ok(resultMap);
-    }
-
-
-    /**
-     * 코드 순서 일괄변경
-     * @param dataObject
-     * @return
-     */
-    @PostMapping("/updateCodeOrder")
-    public ResponseEntity updateCodeOrder(@RequestBody @Valid DataObject dataObject) throws Exception {
-
-        Integer iAffectedRows =  commonService().codeService().updateCodeOrder(dataObject.getData().getCodeList());
-
-        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(iAffectedRows, RequestTypeEnum.UPDATE);
-        Map<String, Object> resultMap = mapUtil().responseEntityBodyWrapper(resultStatusVO);
-
-        return ResponseEntity.ok(resultMap);
-    }
-
-
 
     /**
      * 코드 페이징 조회
@@ -78,14 +33,16 @@ public class CodeController extends ParentController {
      */
     @PostMapping("/paging")
     public ResponseEntity pagingCode(@RequestBody @Valid SearchObject searchObject) {
-        List<CodeVO> codeList = commonService().codeService().pagingCode(searchObject.getSearch().getCodeSearch());
+
+        List<CodeVO> codeList = getCommonService().getCodeService().pagingCode(searchObject.getSearch().getCodeSearch());
 
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setListResultStatusVO(codeList);
-        var mapKeyList = Arrays.asList(MapKeyStringEnum.CODE_LIST.getKeyString());
-        Map<String, Object> resultMap = mapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, codeList);
+        List<String> mapKeyList = Arrays.asList(MapKeyStringEnum.PAGING.getKeyString(), MapKeyStringEnum.CODE_LIST.getKeyString());
+        Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, searchObject.getSearch().getCodeSearch().getPaging(), codeList);
 
         return ResponseEntity.ok(resultMap);
     }
+
 
     /**
      * 코드 목록 조회
@@ -94,11 +51,11 @@ public class CodeController extends ParentController {
      */
     @PostMapping("/list")
     public ResponseEntity listCode(@RequestBody @Valid SearchObject searchObject) {
-        List<CodeVO> codeList = commonService().codeService().listCode(searchObject.getSearch().getCodeSearch());
+        List<CodeVO> codeList = getCommonService().getCodeService().listCode(searchObject.getSearch().getCodeSearch());
 
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setListResultStatusVO(codeList);
-        var mapKeyList = Arrays.asList(MapKeyStringEnum.CODE_LIST.getKeyString());
-        Map<String, Object> resultMap = mapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, codeList);
+        List<String> mapKeyList = Arrays.asList(MapKeyStringEnum.CODE_LIST.getKeyString());
+        Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, codeList);
 
         return ResponseEntity.ok(resultMap);
     }
@@ -111,12 +68,64 @@ public class CodeController extends ParentController {
      */
     @PostMapping("/row")
     public ResponseEntity rowCode(@RequestBody @Valid SearchObject searchObject) {
-        CodeVO code = commonService().codeService().rowCode(searchObject.getSearch().getCodeSearch());
+        CodeVO code = getCommonService().getCodeService().rowCode(searchObject.getSearch().getCodeSearch());
 
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(code);
-        var mapKeyList = Arrays.asList(MapKeyStringEnum.CODE.getKeyString());
-        Map<String, Object> resultMap = mapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, code);
+        List<String> mapKeyList = Arrays.asList(MapKeyStringEnum.CODE.getKeyString());
+        Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, code);
 
         return ResponseEntity.ok(resultMap);
     }
+
+
+    /**
+     * 코드 저장
+     * @param dataObject
+     * @return
+     */
+    @PostMapping("/insert")
+    public ResponseEntity insertCode(@RequestBody @Valid DataObject dataObject) throws Exception {
+
+        Code inserted =  getCommonService().getCodeService().insertCode(dataObject.getData().getCode());
+        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(inserted, RequestTypeEnum.CREATE);
+        Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(resultMap);
+    }
+
+    /**
+     * 코드 수정
+     * @param dataObject
+     * @return
+     */
+    @PostMapping("/update")
+    public ResponseEntity updateCode(@RequestBody @Valid DataObject dataObject) throws Exception {
+        Code inserted =  getCommonService().getCodeService().updateCode(dataObject.getData().getCode());
+        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(inserted, RequestTypeEnum.UPDATE);
+        Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO);
+
+        return ResponseEntity.ok(resultMap);
+    }
+
+    /**
+     * 코드 순서 일괄변경
+     * @param dataObject
+     * @return
+     */
+    @PostMapping("/updateCodeOrder")
+    public ResponseEntity updateCodeOrder(@RequestBody @Valid DataObject dataObject) throws Exception {
+
+        Integer iAffectedRows =  getCommonService().getCodeService().updateCodeOrder(dataObject.getData().getCodeList());
+
+        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(iAffectedRows, RequestTypeEnum.UPDATE);
+        Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO);
+
+        return ResponseEntity.ok(resultMap);
+    }
+
+
+
+
+
+
 }

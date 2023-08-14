@@ -5,11 +5,13 @@ import com.dejay.framework.common.utils.PropertiesUtil;
 import com.dejay.framework.common.utils.StringUtil;
 import com.dejay.framework.common.utils.ValidationUtil;
 import com.dejay.framework.mapper.common.CommonMapper;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Service에서 상속받아서 사용할 것
  */
+@Getter
 public class ParentService {
 
     /** Util [[ **/
@@ -29,26 +31,5 @@ public class ParentService {
     /** Mapper ]] **/
 
 
-
-
-    public PropertiesUtil propertiesUtil() {
-        return this.propertiesUtil;
-    }
-
-    public StringUtil stringUtil() {
-        return this.stringUtil;
-    }
-
-    public DateUtil dateUtil() {
-        return this.dateUtil;
-    }
-
-    public ValidationUtil validationUtil() {
-        return this.validationUtil;
-    }
-
-    public CommonMapper commonMapper() {
-        return this.commonMapper;
-    }
 
 }

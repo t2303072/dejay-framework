@@ -23,36 +23,39 @@
         , ${alias}CODE_ORD, ${alias}USE_YN
     </sql>
 
+
+    <sql id="authColumn">
+        ${alias}AUTH_ID, ${alias}AUTH_LEVEL
+    </sql>
+
+
+
     <!-- column ]] -->
 
 
     <!-- whereClause [[ -->
     <sql id="whereClause">
 
-        <if test="code != null and code != '' ">
-            AND CODE = #{code}
-        </if>
-
         <if test="useYn != null and useYn != '' ">
-            AND USE_YN = #{useYn}
+            AND ${alias}USE_YN = #{useYn}
         </if>
 
         <if test="parentCode != null and parentCode != '' ">
             <choose>
                 <when test="parentCode == '0000'">
-                    AND CODE LIKE CONCAT('%', '0000')
+                    AND ${alias}CODE LIKE CONCAT('%', '0000')
                 </when>
                 <otherwise>
-                    AND CODE LIKE CONCAT(#{parentCode}, '%')
+                    AND ( ${alias}CODE LIKE CONCAT(#{parentCode}, '%') and ${alias}CODE != CONCAT('0001', '0000') )
                 </otherwise>
             </choose>
         </if>
 
         <if test="searchWord1 != null and searchWord1 != '' ">
             <choose>
-                <when test="type1 eq 'cn'">AND CODE_NAME LIKE CONCAT('%', #{searchWord1}, '%')</when>
-                <when test="type1 eq 'r1'">AND REMARK1 LIKE CONCAT('%', #{searchWord1}, '%')</when>
-                <when test="type1 == null or type1 eq '' ">AND ( CODE_NAME LIKE CONCAT('%', #{searchWord1}, '%') OR REMARK1 LIKE CONCAT('%', #{searchWord1}, '%') )</when>
+                <when test="type1 eq 'cn'">AND ${alias}CODE_NAME LIKE CONCAT('%', #{searchWord1}, '%')</when>
+                <when test="type1 eq 'r1'">AND ${alias}REMARK1 LIKE CONCAT('%', #{searchWord1}, '%')</when>
+                <when test="type1 == null or type1 eq '' ">AND ( ${alias}CODE_NAME LIKE CONCAT('%', #{searchWord1}, '%') OR ${alias}REMARK1 LIKE CONCAT('%', #{searchWord1}, '%') )</when>
                 <otherwise></otherwise>
             </choose>
         </if>
@@ -65,12 +68,12 @@
     <sql id="orderClause">
         ORDER BY
         <choose>
-            <when test="orderBy eq 'cd' ">CODE</when>
-            <when test="orderBy eq 'cn' ">CODE_NAME</when>
-            <when test="orderBy eq 'co' ">CODE_ORD</when>
-            <when test="orderBy eq 'r1' ">REMARK1</when>
-            <when test="orderBy eq 'r2' ">REMARK2</when>
-            <otherwise>CODE</otherwise>
+            <when test="orderBy eq 'cd' ">${alias}CODE</when>
+            <when test="orderBy eq 'cn' ">${alias}CODE_NAME</when>
+            <when test="orderBy eq 'co' ">${alias}CODE_ORD</when>
+            <when test="orderBy eq 'r1' ">${alias}REMARK1</when>
+            <when test="orderBy eq 'r2' ">${alias}REMARK2</when>
+            <otherwise>${alias}CODE</otherwise>
         </choose>
         <choose>
             <when test="descAsc != null and descAsc.equalsIgnoreCase('ASC') ">ASC</when>
@@ -86,6 +89,32 @@
 
     <!-- 조회 [[ -->
 
+    <select id="pagingBySearch" resultType="CodeVO" parameterType="SearchVO">
+        /* 코드 페이징 조회 - CodeMapper.pagingBySearch */
+        SELECT
+        <include refid="codeColumn"><property name="alias" value="CD."/></include>
+        FROM CODE CD
+        <where>
+            <include refid="whereClause"><property name="alias" value="CD."/></include>
+        </where>
+
+        <include refid="orderClause"><property name="alias" value="CD."/></include>
+
+        <include refid="mapper.paging.pagingQuery"></include>
+
+    </select>
+
+    <select id="pagingCountBySearch" resultType="Integer" parameterType="SearchVO">
+        /* 코드 페이징 카운트 조회 - CodeMapper.pagingCountBySearch */
+        SELECT COUNT(*)
+        FROM CODE CD
+        <where>
+            <include refid="whereClause"><property name="alias" value="CD."/></include>
+        </where>
+    </select>
+
+
+
 
     <select id="listBySearch" resultType="CodeVO" parameterType="SearchVO">
         /* 코드 목록 조회 - CodeMapper.listBySearch */
@@ -93,20 +122,19 @@
             <include refid="codeColumn"><property name="alias" value="CD."/></include>
         FROM CODE CD
         <where>
-            <include refid="whereClause"></include>
+            <include refid="whereClause"><property name="alias" value="CD."/></include>
         </where>
 
-        <include refid="orderClause"></include>
+        <include refid="orderClause"><property name="alias" value="CD."/></include>
     </select>
+
 
     <select id="rowBySearch" resultType="CodeVO" parameterType="SearchVO">
         /* 코드 단 건 조회 - CodeMapper.rowBySearch */
         SELECT
             <include refid="codeColumn"><property name="alias" value="CD."/></include>
         FROM CODE CD
-        <where>
-            <include refid="whereClause"></include>
-        </where>
+        WHERE CD.CODE = #{code}
     </select>
 
     <!-- 조회 ]] -->
@@ -156,36 +184,7 @@
         WHERE CODE = #{code}
     </update>
 
-
-
     <!-- 저장/수정/삭제 ]] -->
-
-
-    <!-- 페이징 샘플 (삭제 예정) [[ -->
-    <select id="pagingBySearch" resultType="CodeVO" parameterType="SearchVO">
-        /* 코드 페이징 조회 - CodeMapper.pagingBySearch */
-        SELECT
-        <include refid="codeColumn"><property name="alias" value="CD."/></include>
-        FROM CODE CD
-        <where>
-            <include refid="whereClause"></include>
-        </where>
-
-        <include refid="orderClause"></include>
-
-        <include refid="mapper.paging.pagingQuery"></include>
-
-    </select>
-
-    <select id="pagingCountBySearch" resultType="Integer" parameterType="SearchVO">
-        /* 코드 페이징 조회 - CodeMapper.pagingBySearch */
-        SELECT COUNT(*)
-        FROM CODE CD
-        <where>
-            <include refid="whereClause"></include>
-        </where>
-    </select>
-    <!-- 페이징 샘플 (삭제 예정) ]] -->
 
 
 </mapper>

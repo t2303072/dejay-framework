@@ -34,14 +34,14 @@ public class LoginController extends ParentController {
     public ResponseEntity login(@RequestBody @Valid LoginRequest loginRequest) {
         Map<String, Object> resultMap;
 
-        MemberVO loginInfo = commonService().memberService().getLoginInfo(loginRequest);
+        MemberVO loginInfo = getCommonService().getMemberService().getLoginInfo(loginRequest);
         var mapKeyList = Arrays.asList(MapKeyStringEnum.TOKEN_OBJECT.getKeyString());
         if(loginInfo != null) {
-            TokenObject tokenObject = commonUtil().tokenFactory().createJWT(loginRequest.getUserName(), loginRequest.getPassword(), loginRequest.getAuthority());
+            TokenObject tokenObject = getCommonUtil().tokenFactory().createJWT(loginRequest.getUserName(), loginRequest.getPassword(), loginRequest.getAuthority());
             ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(tokenObject);
-            resultMap = mapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, tokenObject);
+            resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, tokenObject);
         }else  {
-            resultMap = mapUtil().responseEntityBodyWrapper(new ResultStatusVO(ResultCodeMsgEnum.NOT_LOGGED_IN.getCode(), ResultCodeMsgEnum.NOT_LOGGED_IN.getMsg()));
+            resultMap = getMapUtil().responseEntityBodyWrapper(new ResultStatusVO(ResultCodeMsgEnum.NOT_LOGGED_IN.getCode(), ResultCodeMsgEnum.NOT_LOGGED_IN.getMsg()));
         }
 
         return ResponseEntity.ok(resultMap);
