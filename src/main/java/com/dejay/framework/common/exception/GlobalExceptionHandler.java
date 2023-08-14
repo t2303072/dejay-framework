@@ -145,12 +145,15 @@ public class GlobalExceptionHandler {
     /**
      * @param ex
      * @return ResultStatusVO
-     * @implNote @RequestBody, @RequestPart Exception handling
+     * @implNote Login related handling
      */
-    @ExceptionHandler(LoginException.class)
-    protected ResponseEntity<ResultStatusVO> handleLoginException(LoginException ex) {
+    @ExceptionHandler(CustomLoginException.class)
+    protected ResponseEntity<ResultStatusVO> handleLoginException(CustomLoginException ex) {
         this.printGeneralSecurityExceptionLog(ex);
-        resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.LOGIN_REQUIRED.getCode(), ExceptionCodeMsgEnum.LOGIN_REQUIRED.getMsg(), null, null);
+        resultStatusVO = new ResultStatusVO(ex.getCode(), ex.getMsg(), ex.getMessage(), null);
+        if(ex.getCode() == 979) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultStatusVO);
+        }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resultStatusVO);
     }
 
@@ -199,9 +202,9 @@ public class GlobalExceptionHandler {
 
     private <T extends BindException> void printBindingErrorLog(T ex) {
         log.error("[printBindingErrorLog] => {}", ex.getBindingResult().getAllErrors());
-        log.error("GlobalErrorCount => {}", String.valueOf(ex.getBindingResult().getGlobalErrorCount()));
-        log.error("ErrorCount => {}", String.valueOf(ex.getBindingResult().getErrorCount()));
-        log.error("FieldErrorCount => {}", String.valueOf(ex.getBindingResult().getFieldErrorCount()));
+        log.error("GlobalErrorCount => {}", ex.getBindingResult().getGlobalErrorCount());
+        log.error("ErrorCount => {}", ex.getBindingResult().getErrorCount());
+        log.error("FieldErrorCount => {}", ex.getBindingResult().getFieldErrorCount());
         log.error("{}", ((MethodArgumentNotValidException) ex).getBody());
     }
 

@@ -1,5 +1,7 @@
 package com.dejay.framework.service.member;
 
+import com.dejay.framework.common.enums.ExceptionCodeMsgEnum;
+import com.dejay.framework.common.exception.CustomLoginException;
 import com.dejay.framework.common.utils.ObjectHandlingUtil;
 import com.dejay.framework.common.utils.TokenFactory;
 import com.dejay.framework.common.utils.ValidationUtil;
@@ -159,6 +161,10 @@ public class MemberService {
                     .build();
         }
 
-        return null;
+        try {
+            throw new CustomLoginException(ExceptionCodeMsgEnum.INVALID_PASSWORD.getCode(), ExceptionCodeMsgEnum.INVALID_PASSWORD.getMsg());
+        } catch (CustomLoginException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

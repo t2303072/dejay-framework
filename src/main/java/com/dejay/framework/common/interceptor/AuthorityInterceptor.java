@@ -3,6 +3,7 @@ package com.dejay.framework.common.interceptor;
 import com.dejay.framework.common.enums.ExceptionCodeMsgEnum;
 import com.dejay.framework.common.enums.MapKeyStringEnum;
 import com.dejay.framework.common.enums.RequestTypeEnum;
+import com.dejay.framework.common.exception.CustomLoginException;
 import com.dejay.framework.common.utils.JwtUtil;
 import com.dejay.framework.mapper.authority.AuthorityMapper;
 import com.dejay.framework.service.member.MemberService;
@@ -57,7 +58,7 @@ public class AuthorityInterceptor implements HandlerInterceptor {
         request.setAttribute(MapKeyStringEnum.TOKEN_VO.getKeyString(), tokenVO);
 
         MemberVO memberVO = memberService.findMemberByUserName(tokenVO.getUserName());
-        if(memberVO == null) throw new LoginException(ExceptionCodeMsgEnum.LOGIN_REQUIRED.getMsg());
+        if(memberVO == null) throw new CustomLoginException(ExceptionCodeMsgEnum.LOGIN_REQUIRED.getCode(), ExceptionCodeMsgEnum.LOGIN_REQUIRED.getMsg());
         request.setAttribute(MapKeyStringEnum.MEMBER_VO.getKeyString(), memberVO);
 
         /**

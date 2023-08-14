@@ -27,6 +27,7 @@ public enum ExceptionCodeMsgEnum {
     , NO_MENU_AUTHORITY(982, "메뉴 접근 권한이 없습니다.")
     , SERVER_ERROR(981, "SERVER ERROR")
     , INVALID_METHOD_NAMING(980, "유효하지 않은 메서드 명 입니다.")
+    , INVALID_PASSWORD(979, "비밀번호가 맞지 않습니다.")
     ;
 
     private int code;
