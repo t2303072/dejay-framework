@@ -95,7 +95,7 @@ public class BoardService extends ParentService {
      * @param board
      * @return
      */
-    public BoardVO deleteBoard(BoardVO board){
+    public Board deleteBoard(Board board){
         Board target = Board.builder()
                             .boardSeq(board.getBoardSeq())
                             .title(board.getTitle())

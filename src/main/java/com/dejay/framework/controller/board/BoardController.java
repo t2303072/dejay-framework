@@ -96,6 +96,11 @@ public class BoardController extends ParentController {
         return ResponseEntity.ok(resultMap);
     }
 
+    /**
+     * 게시판 삭제
+     * @param dataObject
+     * @return
+     */
     @PostMapping(value="/delete")
     public ResponseEntity deleteBoard(@RequestBody @Valid DataObject dataObject){
         BoardVO board  = getCommonService().getBoardService().rowByKey(dataObject.getData().getBoard().getBoardSeq());
@@ -106,7 +111,7 @@ public class BoardController extends ParentController {
             return ResponseEntity.ok(nullResultMap);
         }
 
-        BoardVO deleted = getCommonService().getBoardService().deleteBoard(board);
+        Board deleted = getCommonService().getBoardService().deleteBoard(dataObject.getData().getBoard());
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(deleted);
         Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO);
 
