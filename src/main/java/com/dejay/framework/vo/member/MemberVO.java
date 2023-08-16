@@ -2,6 +2,8 @@ package com.dejay.framework.vo.member;
 
 import lombok.*;
 
+import java.util.Set;
+
 @ToString
 @EqualsAndHashCode(of = {"memberSeq", "memberId"})
 @AllArgsConstructor
@@ -14,7 +16,7 @@ public class MemberVO {
     private String password;
     private String memberName;
     private String email;
-    private String[] authority;
+    private Set<?> authority;
     private String deptCode;
 
 }

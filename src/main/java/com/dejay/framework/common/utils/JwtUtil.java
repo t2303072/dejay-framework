@@ -2,7 +2,9 @@ package com.dejay.framework.common.utils;
 
 import com.dejay.framework.common.enums.ExceptionCodeMsgEnum;
 import com.dejay.framework.common.enums.MapKeyStringEnum;
-import com.dejay.framework.domain.common.TokenObject;
+import com.dejay.framework.domain.common.TokenObjectVO;
+import com.dejay.framework.domain.token.Token;
+import com.dejay.framework.mapper.token.TokenMapper;
 import com.dejay.framework.vo.common.TokenVO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,7 +15,6 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -24,12 +25,13 @@ import java.util.*;
 @Component
 public class JwtUtil {
 
-    private final UserDetailsService userDetailsService;
-
     @Value("${jwt.secret}")
     private String secretKey;
     @Value("${jwt.issuer}")
     private String issuer;
+
+    private final ValidationUtil validationUtil;
+    private final TokenMapper tokenMapper;
 
     @PostConstruct
     protected void encodeKey() {
@@ -44,10 +46,26 @@ public class JwtUtil {
      * @param auth {@link Arrays}
      * @return
      */
-    public TokenObject createTokenObject(String userName, Long accessExpiresAt, Long refreshExpiresAt, Set<?> auth) {
+    public TokenObjectVO createTokenObject(String userName, Long accessExpiresAt, Long refreshExpiresAt, Set<?> auth) {
         String accessToken = this.generateJwt(userName, accessExpiresAt, auth);
         String refreshToken = this.generateJwt(userName, refreshExpiresAt, auth);
-        return TokenObject.builder().accessToken(accessToken).refreshToken(refreshToken).key(userName).build();
+
+        // 토큰정보 생성 및 저장
+        Token target = Token.builder()
+                .memberId(userName)
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
+        validationUtil.parameterValidator(target, Token.class);
+
+        int isTokenExist = tokenMapper.isTokenExist(userName);
+        if(isTokenExist < 1) {
+            tokenMapper.insert(target);
+        }else {
+            tokenMapper.update(target);
+        }
+
+        return TokenObjectVO.builder().accessToken(accessToken).refreshToken(refreshToken).key(userName).build();
     }
 
     /**
@@ -80,6 +98,17 @@ public class JwtUtil {
     }
 
     /**
+     * 유효 토큰(JWT) 여부
+     * @param token {@link String}
+     * @return
+     */
+    public boolean isInvalidToken(String token) {
+        boolean validToken = tokenMapper.isValidToken(token);
+        if(!validToken) return true;
+        return false;
+    }
+
+    /**
      * JWT 유저 명 조회
      *
      * @param token {@link String}
@@ -96,9 +125,9 @@ public class JwtUtil {
      * @return
      * @throws JsonProcessingException
      */
-    public Set<?> getUserAuthority(String token) throws JsonProcessingException {
+    public String getUserAuthority(String token) throws JsonProcessingException {
         TokenVO tokenVO = this.decode(token);
-        return tokenVO.getAuthority();
+        return tokenVO.getAuthority().stream().toList().get(0).getValue();
     }
 
     /**

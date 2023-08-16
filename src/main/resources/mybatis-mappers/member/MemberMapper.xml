@@ -30,7 +30,10 @@
     </select>
 
     <select id="findMemberByUserName" resultType="MemberVO">
-        SELECT * FROM MEMBER WHERE MEMBER_ID = #{userName}
+        SELECT M.MEMBER_SEQ, M.MEMBER_ID, M.PASSWORD, M.MEMBER_NAME, M.EMAIL, M.DEPT_CODE
+        FROM MEMBER M
+            LEFT OUTER JOIN CODE C ON M.DEPT_CODE = C.CODE
+        WHERE MEMBER_ID = #{userName}
     </select>
 
     <select id="getLoginInfo" resultType="MemberVO">
@@ -46,7 +49,7 @@
         </selectKey>
     </insert>
 
-    <insert id="insertUser" useGeneratedKeys="true">
+    <insert id="insert" useGeneratedKeys="true">
         INSERT INTO MEMBER(MEMBER_ID, PASSWORD, DEPT_CODE, MEMBER_NAME, EMAIL) VALUES (#{id}, #{password}, #{deptCode}, #{name}, #{email})
         <selectKey keyProperty="seq" resultType="long">
             SELECT LAST_INSERT_ID()

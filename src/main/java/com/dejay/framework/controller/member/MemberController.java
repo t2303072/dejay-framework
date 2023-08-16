@@ -5,7 +5,7 @@ import com.dejay.framework.common.enums.RequestTypeEnum;
 import com.dejay.framework.common.utils.ObjectHandlingUtil;
 import com.dejay.framework.controller.common.ParentController;
 import com.dejay.framework.domain.common.SearchObject;
-import com.dejay.framework.domain.common.TokenObject;
+import com.dejay.framework.domain.common.TokenObjectVO;
 import com.dejay.framework.domain.member.Member;
 import com.dejay.framework.domain.user.SignUpRequest;
 import com.dejay.framework.domain.user.User;
@@ -57,7 +57,7 @@ public class MemberController extends ParentController {
 
     @PostMapping(value = "insert")
     public ResponseEntity insertMember(@RequestBody @Valid User user) {
-        User inserted = getCommonService().getMemberService().insertUser(user);
+        User inserted = getCommonService().getMemberService().insert(user);
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(inserted);
 
         var mapKeyList = Arrays.asList(MapKeyStringEnum.USER.getKeyString());
@@ -68,11 +68,11 @@ public class MemberController extends ParentController {
 
     @PostMapping("sign-up")
     public ResponseEntity signUp(@RequestBody @Valid SignUpRequest signUpRequest) {
-        TokenObject tokenObject = getCommonService().getMemberService().signUp(signUpRequest);
-        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(tokenObject, RequestTypeEnum.CREATE);
+        TokenObjectVO tokenObjectVO = getCommonService().getMemberService().signUp(signUpRequest);
+        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(tokenObjectVO, RequestTypeEnum.CREATE);
 
         var mapKeyList = Arrays.asList(MapKeyStringEnum.TOKEN_OBJECT.getKeyString());
-        var resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, tokenObject);
+        var resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, tokenObjectVO);
 
         return ResponseEntity.ok(resultMap);
     }

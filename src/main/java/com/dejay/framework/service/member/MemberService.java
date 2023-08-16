@@ -7,7 +7,7 @@ import com.dejay.framework.common.utils.TokenFactory;
 import com.dejay.framework.common.utils.ValidationUtil;
 import com.dejay.framework.domain.common.Paging;
 import com.dejay.framework.domain.common.SearchObject;
-import com.dejay.framework.domain.common.TokenObject;
+import com.dejay.framework.domain.common.TokenObjectVO;
 import com.dejay.framework.domain.member.LoginRequest;
 import com.dejay.framework.domain.user.SignUpRequest;
 import com.dejay.framework.domain.user.User;
@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 
 @Slf4j
@@ -107,7 +108,7 @@ public class MemberService {
      * @param user
      * @return
      */
-    public User insertUser(User user) {
+    public User insert(User user) {
         var target = User.builder()
                 .id(user.getId())
                 .password(bCryptPasswordEncoder.encode(user.getPassword()))
@@ -116,7 +117,7 @@ public class MemberService {
                 .build();
 
         validationUtil.parameterValidator(target, User.class);
-        memberMapper.insertUser(target);
+        memberMapper.insert(target);
 
         return target;
     }
@@ -126,24 +127,24 @@ public class MemberService {
      * @param signUpRequest {@link SignUpRequest}
      * @return
      */
-    public TokenObject signUp(SignUpRequest signUpRequest) {
+    public TokenObjectVO signUp(SignUpRequest signUpRequest) {
         var target = User.builder()
                 .id(signUpRequest.getId())
                 .password(bCryptPasswordEncoder.encode(signUpRequest.getPassword()))
                 .name(signUpRequest.getName())
                 .email(signUpRequest.getEmail())
-                .deptCode("00020000") // TODO: IJ 테스트 부서코드 추후 변경
+                .deptCode(signUpRequest.getAuthority().stream().toList().get(0).getDeptCode()) // TODO: IJ 테스트 부서코드 추후 변경
                 .build();
 
         validationUtil.parameterValidator(target, User.class);
-        long inserted = memberMapper.insertUser(target);
+        long inserted = memberMapper.insert(target);
 
         if(inserted > 0) {
-            TokenObject tokenObject = tokenFactory.createJWT(signUpRequest.getId(), signUpRequest.getPassword(), signUpRequest.getAuthority());
-            return tokenObject;
+            TokenObjectVO tokenObjectVO = tokenFactory.createJWT(signUpRequest.getId(), signUpRequest.getPassword(), signUpRequest.getAuthority());
+            return tokenObjectVO;
         }
 
-        return new TokenObject();
+        return new TokenObjectVO();
     }
 
     /**
@@ -158,6 +159,8 @@ public class MemberService {
                     .memberId(target.getMemberId())
                     .memberName(target.getMemberName())
                     .email(target.getEmail())
+                    .authority(Set.of(target.getDeptCode()))
+                    .deptCode(target.getDeptCode())
                     .build();
         }
 
