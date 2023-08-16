@@ -2,6 +2,7 @@ package com.dejay.framework.vo.search;
 
 import com.dejay.framework.common.utils.StringUtil;
 import com.dejay.framework.domain.common.Paging;
+import com.dejay.framework.vo.search.board.BoardSearchVO;
 import com.dejay.framework.vo.search.code.CodeSearchVO;
 import lombok.Getter;
 import lombok.Setter;
@@ -154,7 +155,7 @@ public class SearchVO {
     /** 그룹별 search 모델 [[ **/
 
     private CodeSearchVO codeSearch;
-
+    private BoardSearchVO boardSearch;
 
 
     /** 그룹별 search 모델 ]] **/

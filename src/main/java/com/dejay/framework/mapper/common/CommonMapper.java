@@ -1,6 +1,7 @@
 package com.dejay.framework.mapper.common;
 
 
+import com.dejay.framework.mapper.board.BoardMapper;
 import com.dejay.framework.mapper.code.CodeMapper;
 import com.dejay.framework.mapper.member.MemberMapper;
 import lombok.Getter;
@@ -20,4 +21,5 @@ public class CommonMapper {
 
     private final MemberMapper memberMapper;
 
+    private final BoardMapper boardMapper;
 }

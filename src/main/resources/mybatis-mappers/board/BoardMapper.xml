@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dejay.framework.mapper.board.BoardMapper">
+
+    <!-- 공통 [[ -->
+
+    <!-- column [[ -->
+
+    <sql id = "boardColumn">
+        ${alias}BOARD_SEQ, ${alias}BOARD_CODE
+        , ${alias}TITLE, ${alias}CONTENTS
+        , ${alias}FIX_YN , ${alias}DISPLAY_YN
+        , ${alias}USE_YN
+    </sql>
+
+
+    <!-- column ]] -->
+
+    <!-- whereClause [[ -->
+
+    <sql id = "whereClause">
+        <if test="title != null and title != '' ">
+            AND ${alias}TITLE LIKE CONCAT('%',#{title},'%')
+        </if>
+
+        <if test="contents != null and contents != '' ">
+            AND ${alias}CONTENTS LIKE CONCAT('%',#{contents},'%')
+        </if>
+
+        <if test="fixYn != null and fixYn != '' ">
+            AND ${alias}FIX_YN = #{fixYn}
+        </if>
+
+        <if test="displayYn != null and displayYn != '' ">
+            AND  ${alias}DISPLAY_YN = #{displayYn}
+        </if>
+    </sql>
+
+    <sql id = "whereClauseSeq">
+        <if test="boardSeq != null and boardSeq != '' ">
+            AND ${alias}BOARD_SEQ = #{boardSeq}
+        </if>
+    </sql>
+    <!-- whereClause ]] -->
+
+    <!-- orderClause [[ -->
+    <sql id="orderClause">
+        ORDER BY
+        <choose>
+            <when test="orderBy eq 'bs'">${alias}BOARD_SEQ</when>
+            <when test="orderBy eq 'ti' ">${alias}TITLE</when>
+            <when test="orderBy eq 'ct' ">${alias}CONTENTS</when>
+            <otherwise>${alias}BOARD_SEQ</otherwise>
+        </choose>
+        <choose>
+            <when test="descAsc != null and descAsc.equalsIgnoreCase('ASC') ">ASC</when>
+            <otherwise>DESC</otherwise>
+        </choose>
+    </sql>
+    <!-- orderClause ]] -->
+    <!-- 공통 ]] -->
+
+
+
+    <!-- 조회 [[ -->
+    <select id="pagingCountBySearch" resultType="Integer" parameterType="BoardSearchVO">
+        /* 게시판 총 개수 조회 - BoarderMapper.pagingCountBySearch */
+        SELECT COUNT(*)
+        FROM BOARD BD
+    </select>
+
+    <select id="pagingBySearch"  resultType="BoardVO" parameterType="BoardSearchVO">
+        /*게시판 페이징 조회 - BoarderMapper.pagingBySearch */
+        SELECT
+            <include refid="boardColumn"><property name="alias" value="BD."/></include>
+        FROM BOARD BD
+        <where>
+            <include refid="whereClause"><property name="alias" value="BD."/></include>
+        </where>
+
+        <include refid="orderClause"><property name="alias" value="BD."/></include>
+    </select>
+
+    <select id="rowBySearch" resultType="BoardVO" parameterType="BoardSearchVO">
+        /*게시판 단 건 조회 - BoarderMapper.pagingBySearch */
+        SELECT
+            <include refid="boardColumn"><property name="alias" value="BD."/></include>
+        FROM BOARD BD
+        <where>
+            <include refid="whereClauseSeq"><property name="alias" value="BD."/></include>
+        </where>
+    </select>
+
+    <select id = "rowByKey" resultType="BoardVO" parameterType="Long">
+        /*게시판 단 건 조회 (key값) - BoardMapper.rowById */
+        SELECT
+            <include refid="boardColumn"><property name="alias" value="BD."/></include>
+        FROM BOARD BD
+        <where>
+            <include refid="whereClauseSeq"><property name="alias" value="BD."/></include>
+        </where>
+    </select>
+    <!-- 조회 ]] -->
+
+
+    <!-- 저장/수정/삭제 [[ -->
+
+    <insert id="insert" >
+        /* 게시판 저장 - BoardMapper.insert */
+        INSERT INTO BOARD
+        (
+            BOARD_CODE, TITLE,
+            CONTENTS, FIX_YN,
+            DISPLAY_YN, USE_YN
+        )
+        VALUES
+        (
+            #{boardCd}, #{title},
+           #{contents}, #{fixYn},
+            #{displayYn}, #{useYn}
+        )
+    </insert>
+
+    <update id="update">
+        /* 게시판 수정 - BoardMapper.update */
+        UPDATE BOARD BD
+        <set>
+            <if test="title != null and title != '' ">BD.TITLE = #{title},</if>
+            <if test="contents != null and contents != '' ">BD.CONTENTS = #{contents},</if>
+            <if test="fixYn != null and fixYn != '' ">BD.FIX_YN = #{fixYn},</if>
+            <if test="displayYn != null and displayYn != '' ">DISPLAY_YN = #{displayYn},</if>
+            <if test="useYn != null and useYn != '' ">BD.USE_YN = #{useYn}</if>
+        </set>
+        <where>
+            <include refid="whereClauseSeq"><property name="alias" value="BD."/></include>
+        </where>
+    </update>
+
+    <delete id="delete">
+        /* 게시판 수정 - BoardMapper.delete */
+        DELETE FROM BOARD
+        WHERE
+            BOARD_SEQ = #{boardSeq}
+    </delete>
+
+    <!-- 저장/수정/삭제 [[ -->
+</mapper>

@@ -1,5 +1,6 @@
 package com.dejay.framework.domain.common;
 
+import com.dejay.framework.domain.board.Board;
 import com.dejay.framework.domain.code.Code;
 import com.dejay.framework.domain.member.Member;
 import lombok.Getter;
@@ -24,5 +25,9 @@ public class DataObject {
         private List<Code> codeList;
 
         private Member member;
+
+        private Board board;
+
+        private List<Board> boardList;
     }
 }

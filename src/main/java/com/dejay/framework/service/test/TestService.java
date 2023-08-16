@@ -4,10 +4,8 @@ import com.dejay.framework.common.utils.CryptoUtil;
 import com.dejay.framework.common.utils.JwtUtil;
 import com.dejay.framework.domain.common.Paging;
 import com.dejay.framework.domain.member.LoginRequest;
-import com.dejay.framework.domain.test.Board;
 import com.dejay.framework.mapper.test.TestMapper;
 import com.dejay.framework.vo.common.PagingVO;
-import com.dejay.framework.vo.test.BoardVO;
 import com.dejay.framework.vo.test.TestVO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -79,27 +77,5 @@ public class TestService {
         return jwtUtil.generateJwt(userName, expiredMs, authority);
     }
 
-    /**
-     * 게시판 리스트 더미 테스트
-     * @return
-     */
-    public List<BoardVO> getBoardList() {
-        return testMapper.getBoardList();
-    }
 
-    /**
-     * 게시판 등록 더미 테스트
-     * @param board
-     * @return
-     */
-    public long insertBoard(Board board) {
-        var target = Board.builder()
-                        .title(board.getTitle())
-                        .content(board.getContent())
-                        .createdBy("writer")
-                        .modifiedBy("editor")
-                        .build();
-
-        return testMapper.insertBoard(target);
-    }
 }
