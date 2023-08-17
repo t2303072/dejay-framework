@@ -6,11 +6,11 @@
 
     <sql id="whereClause">
         <choose>
-            <when test="reissue = 'Y'">
-                AND REFRESH_TOKEN = #{refreshToken}
+            <when test='reissue eq "Y"'>
+                AND REFRESH_TOKEN = #{token}
             </when>
             <otherwise>
-                AND ACCESS_TOKEN = #{accessToken}
+                AND ACCESS_TOKEN = #{token}
             </otherwise>
         </choose>
     </sql>

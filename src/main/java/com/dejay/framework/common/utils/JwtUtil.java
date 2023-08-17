@@ -99,11 +99,13 @@ public class JwtUtil {
 
     /**
      * 유효 토큰(JWT) 여부
-     * @param token {@link String}
+     *
+     * @param token   {@link String}
+     * @param reissue
      * @return
      */
-    public boolean isInvalidToken(String token) {
-        boolean validToken = tokenMapper.isValidToken(token);
+    public boolean isInvalidToken(String token, String reissue) {
+        boolean validToken = tokenMapper.isValidToken(token, reissue);
         if(!validToken) return true;
         return false;
     }
