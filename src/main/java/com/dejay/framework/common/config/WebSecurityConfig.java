@@ -2,6 +2,7 @@ package com.dejay.framework.common.config;
 
 import com.dejay.framework.common.enums.AuthorityEnum;
 import com.dejay.framework.common.filter.AuthorityFilter;
+import com.dejay.framework.common.filter.JwtExceptionFilter;
 import com.dejay.framework.common.utils.JwtUtil;
 import com.dejay.framework.service.member.MemberService;
 import lombok.RequiredArgsConstructor;

@@ -30,7 +30,9 @@ public class MenuAuthorityVO {
     }
 
     private boolean authLevelYn(String authValue) {
-        if(authValue.equals("1")) return true;
+        if(authValue.equals("1")) {
+            return true;
+        }
         return false;
     }
 }

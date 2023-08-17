@@ -40,7 +40,9 @@ public class CodeService extends ParentService {
         codeSearchVO.setCode(code.getCode());
         CodeVO searched = (CodeVO) getCommonMapper().getCodeMapper().rowBySearch(codeSearchVO);
 
-        if(searched != null) return null;
+        if(searched != null) {
+            return null;
+        }
         int iAffectedRows = getCommonMapper().getCodeMapper().insert(target);
 
         return target;

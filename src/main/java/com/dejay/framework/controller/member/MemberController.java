@@ -32,9 +32,7 @@ import java.util.Arrays;
 public class MemberController extends ParentController {
 
     @GetMapping(value = {"", "/"})
-    public ResponseEntity memberList(HttpServletRequest request, @RequestBody @Valid SearchObject searchObject, Authentication authentication) {
-        TokenVO tokenVO = ObjectHandlingUtil.extractTokenInfo(request); log.info(tokenVO.toString());
-        MemberVO loginVO = ObjectHandlingUtil.extractLoginInfo(request); log.info(loginVO.toString());
+    public ResponseEntity memberList(HttpServletRequest request, @RequestBody @Valid SearchObject searchObject) {
 
         CollectionPagingVO collectionPagingVO = getCommonService().getMemberService().getMemberList(searchObject);
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setListResultStatusVO(collectionPagingVO.getObjects().stream().toList(), ResultCodeMsgEnum.NO_DATA);

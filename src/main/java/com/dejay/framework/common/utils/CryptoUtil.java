@@ -17,7 +17,9 @@ public class CryptoUtil {
      * @return
      */
     public String encodePassword(String rawPassword) {
-        if(!StringUtils.hasText(rawPassword)) return new String();
+        if(!StringUtils.hasText(rawPassword)) {
+            return new String();
+        }
 
         return passwordEncoder.encode(rawPassword);
     }
@@ -28,7 +30,9 @@ public class CryptoUtil {
      * @return
      */
     public boolean isPasswordMatches(String rawPassword, String encodedPassword) {
-        if(!StringUtils.hasText(rawPassword) || !StringUtils.hasText(encodedPassword)) throw new IllegalArgumentException(ExceptionCodeMsgEnum.PASSWORD_VALUE_NOT_PROVIDED.getMsg());
+        if(!StringUtils.hasText(rawPassword) || !StringUtils.hasText(encodedPassword)) {
+            throw new IllegalArgumentException(ExceptionCodeMsgEnum.PASSWORD_VALUE_NOT_PROVIDED.getMsg());
+        }
         
         return passwordEncoder.matches(rawPassword, encodedPassword);
     }

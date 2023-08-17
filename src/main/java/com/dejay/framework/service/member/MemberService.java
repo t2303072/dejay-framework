@@ -13,6 +13,7 @@ import com.dejay.framework.domain.user.SignUpRequest;
 import com.dejay.framework.domain.user.User;
 import com.dejay.framework.mapper.member.MemberMapper;
 import com.dejay.framework.domain.member.Member;
+import com.dejay.framework.service.common.ParentService;
 import com.dejay.framework.vo.common.CollectionPagingVO;
 import com.dejay.framework.vo.member.MemberVO;
 import com.dejay.framework.vo.search.SearchVO;
@@ -29,7 +30,7 @@ import java.util.Set;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class MemberService {
+public class MemberService extends ParentService {
 // TODO: IJ NPE 위험코드 Optional로 변경
     private final MemberMapper memberMapper;
     private final ValidationUtil validationUtil;
@@ -42,16 +43,15 @@ public class MemberService {
      * @return
      */
     public CollectionPagingVO getMemberList(SearchObject searchObject) {
-        List<MemberVO> memberList;
 
-        int totalCount = memberMapper.memberListCount();
+        int totalCount = getCommonMapper().getMemberMapper().memberListCount();
         CollectionPagingVO collectionPagingVO = null;
         if(totalCount > 0) {
-            int totalSearchCount = memberMapper.memberListSearchCount(searchObject.getSearch());
+            int totalSearchCount = getCommonMapper().getMemberMapper().memberListSearchCount(searchObject.getSearch());
             Paging paging = ObjectHandlingUtil.pagingOperator(searchObject, totalSearchCount);
             SearchVO searchVO = new SearchVO();
             searchVO.setPaging(paging);
-            memberList = memberMapper.getMemberList(searchVO);
+            List<MemberVO> memberList = getCommonMapper().getMemberMapper().getMemberList(searchVO);
             collectionPagingVO = CollectionPagingVO.builder()
                     .objects(memberList)
                     .paging(paging)

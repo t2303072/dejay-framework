@@ -54,11 +54,15 @@ public class AuthorityInterceptor implements HandlerInterceptor {
         }
 
         TokenVO tokenVO = jwtUtil.decode(authorizationHeader.split("Bearer ")[1]);
-        if(tokenVO == null) throw new InvalidBearerTokenException(ExceptionCodeMsgEnum.INVALID_AUTH.getMsg());
+        if(tokenVO == null) {
+            throw new InvalidBearerTokenException(ExceptionCodeMsgEnum.INVALID_AUTH.getMsg());
+        }
         request.setAttribute(MapKeyStringEnum.TOKEN_VO.getKeyString(), tokenVO);
 
         MemberVO memberVO = memberService.findMemberByUserName(tokenVO.getUserName());
-        if(memberVO == null) throw new CustomLoginException(ExceptionCodeMsgEnum.LOGIN_REQUIRED.getCode(), ExceptionCodeMsgEnum.LOGIN_REQUIRED.getMsg());
+        if(memberVO == null) {
+            throw new CustomLoginException(ExceptionCodeMsgEnum.LOGIN_REQUIRED.getCode(), ExceptionCodeMsgEnum.LOGIN_REQUIRED.getMsg());
+        }
         request.setAttribute(MapKeyStringEnum.MEMBER_VO.getKeyString(), memberVO);
 
         /**
@@ -66,12 +70,16 @@ public class AuthorityInterceptor implements HandlerInterceptor {
          */
         String menuId = request.getRequestURI().split("/")[1];
         MenuAuthorityVO menuAuthorityVO = authorityMapper.selectMenuAuthority(memberVO.getMemberId(), menuId);
-        if(menuAuthorityVO == null) authException(ExceptionCodeMsgEnum.NO_MENU_AUTHORITY.getMsg());
+        if(menuAuthorityVO == null) {
+            authException(ExceptionCodeMsgEnum.NO_MENU_AUTHORITY.getMsg());
+        }
         menuAuthorityVO.authLevelDivider();
 
         String methodName = ((HandlerMethod) handler).getMethod().getName();
         boolean hasNoAuthority = Arrays.stream(targetPrefix(methodName)).filter(p -> methodName.startsWith(p)).findAny().isEmpty();
-        if(hasNoAuthority) authException(ExceptionCodeMsgEnum.NO_AUTHORITY.getMsg());
+        if(hasNoAuthority) {
+            authException(ExceptionCodeMsgEnum.NO_AUTHORITY.getMsg());
+        }
 
         switch(action) {
             case READ -> {

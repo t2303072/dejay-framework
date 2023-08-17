@@ -35,14 +35,20 @@ public class SessionFactory {
 
     public Member getLoginUserInfo(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        if(session == null) return null;
+        if(session == null) {
+            return null;
+        }
 
         CookieFactory cookieFactory = new CookieFactory();
         Cookie jSessionId = cookieFactory.findCookie(request, SessionEnum.SESSION_ID.getSessionKey());
-        if(jSessionId == null) return null;
+        if(jSessionId == null) {
+            return null;
+        }
 
         Member member = (Member) session.getAttribute(jSessionId.getValue());
-        if(member != null) log.info(member.toString());
+        if(member != null) {
+            log.info(member.toString());
+        }
 
         return member;
     }

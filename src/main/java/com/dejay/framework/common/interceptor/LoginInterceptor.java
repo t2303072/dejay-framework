@@ -33,14 +33,20 @@ public class LoginInterceptor implements HandlerInterceptor {
         log.info("[preHandle]: {}", request.getRequestURI());
 
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if(!StringUtils.hasText(authorizationHeader)) return false;
+        if(!StringUtils.hasText(authorizationHeader)) {
+            return false;
+        }
 
         TokenVO tokenVO = jwtUtil.decode(authorizationHeader.split("Bearer ")[1]);
-        if(tokenVO == null) throw new InvalidBearerTokenException(ExceptionCodeMsgEnum.INVALID_AUTH.getMsg());
+        if(tokenVO == null) {
+            throw new InvalidBearerTokenException(ExceptionCodeMsgEnum.INVALID_AUTH.getMsg());
+        }
         request.setAttribute(MapKeyStringEnum.TOKEN_VO.getKeyString(), tokenVO);
 
         MemberVO memberVO = memberService.findMemberByUserName(tokenVO.getUserName());
-        if(memberVO == null) throw new CustomLoginException(ExceptionCodeMsgEnum.LOGIN_REQUIRED.getCode(), ExceptionCodeMsgEnum.LOGIN_REQUIRED.getMsg());
+        if(memberVO == null) {
+            throw new CustomLoginException(ExceptionCodeMsgEnum.LOGIN_REQUIRED.getCode(), ExceptionCodeMsgEnum.LOGIN_REQUIRED.getMsg());
+        }
         request.setAttribute(MapKeyStringEnum.MEMBER_VO.getKeyString(), memberVO);
 
         return true;
@@ -52,6 +58,5 @@ public class LoginInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-    }
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {}
 }
