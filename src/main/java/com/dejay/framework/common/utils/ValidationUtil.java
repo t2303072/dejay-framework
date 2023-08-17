@@ -39,6 +39,7 @@ public class ValidationUtil {
             for (ConstraintViolation<T> violation : validate) {
                 log.error("[parameterValidator] {}", violation.getMessage());
             }
+            // TODO: IJ 공통 토큰 익셉션 개발
             throw new IllegalArgumentException(ExceptionCodeMsgEnum.SERVER_DATA_ERROR.getMsg());
         }
 

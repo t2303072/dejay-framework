@@ -34,7 +34,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     // Authority
     private final List<String> authorityIncludePattern = Arrays.asList("/auth/**", "/test/authorized-only");
-    private final List<String> authorityExcludePattern = Arrays.asList("/login/**", "/member/**", "/test/**");
+    private final List<String> authorityExcludePattern = Arrays.asList("/login", "/member/**", "/test/**", "/error");
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

@@ -32,7 +32,7 @@ public class MyBatisConfig {
     public SqlSessionFactory sqlSessionFactory() throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource);
-//        sqlSessionFactoryBean.setPlugins(new MyBatisInterceptor()); TODO: IJ pause applying interceptor
+//        sqlSessionFactoryBean.setPlugins(new MyBatisInterceptor());
 
         Resource[] resources = new PathMatchingResourcePatternResolver().getResources(mapperLocations);
         sqlSessionFactoryBean.setMapperLocations(resources);

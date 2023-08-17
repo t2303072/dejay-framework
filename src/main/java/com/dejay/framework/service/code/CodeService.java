@@ -33,10 +33,17 @@ public class CodeService extends ParentService {
                 .codeOrd(code.getCodeOrd())
                 .useYn(code.getUseYn())
                 .build();
-        boolean isValidated = getValidationUtil().parameterValidator(target, Code.class);
+        getValidationUtil().parameterValidator(target, Code.class);
+
+        // 기존 코드 존재 유무 조회
+        CodeSearchVO codeSearchVO = new CodeSearchVO();
+        codeSearchVO.setCode(code.getCode());
+        CodeVO searched = (CodeVO) getCommonMapper().getCodeMapper().rowBySearch(codeSearchVO);
+
+        if(searched != null) return null;
         int iAffectedRows = getCommonMapper().getCodeMapper().insert(target);
 
-        return code;
+        return target;
     }
 
     /**

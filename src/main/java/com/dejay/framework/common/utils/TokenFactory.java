@@ -1,6 +1,6 @@
 package com.dejay.framework.common.utils;
 
-import com.dejay.framework.domain.common.TokenObject;
+import com.dejay.framework.domain.common.TokenObjectVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -29,8 +29,8 @@ public class TokenFactory {
      * @param password
      * @return
      */
-    public TokenObject createJWT(String userName, String password, Set<?> auth) {
-        TokenObject tokenObject = jwtUtil.createTokenObject(userName, accessExpiresAt, refreshExpiresAt, auth);
-        return tokenObject;
+    public TokenObjectVO createJWT(String userName, String password, Set<?> auth) {
+        TokenObjectVO tokenObjectVO = jwtUtil.createTokenObject(userName, accessExpiresAt, refreshExpiresAt, auth);
+        return tokenObjectVO;
     }
 }

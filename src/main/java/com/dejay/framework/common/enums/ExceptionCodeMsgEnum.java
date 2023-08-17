@@ -28,6 +28,7 @@ public enum ExceptionCodeMsgEnum {
     , SERVER_ERROR(981, "SERVER ERROR")
     , INVALID_METHOD_NAMING(980, "유효하지 않은 메서드 명 입니다.")
     , INVALID_PASSWORD(979, "비밀번호가 맞지 않습니다.")
+    , INVALID_TOKEN_SIGNATURE(978, "유효하지 않은 토큰 서명 정보 입니다.")
     ;
 
     private int code;

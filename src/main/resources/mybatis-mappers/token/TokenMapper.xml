@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dejay.framework.mapper.token.TokenMapper">
+
+    <sql id="whereClause">
+        <choose>
+            <when test='reissue eq "Y"'>
+                AND REFRESH_TOKEN = #{token}
+            </when>
+            <otherwise>
+                AND ACCESS_TOKEN = #{token}
+            </otherwise>
+        </choose>
+    </sql>
+
+    <select id="isTokenExist">
+        SELECT COUNT(1)
+          FROM TOKEN
+         WHERE USE_YN = 'Y'
+           AND MEMBER_ID = #{memberId}
+    </select>
+
+    <select id="isValidToken">
+        SELECT IF(COUNT(1), true, false)
+        FROM TOKEN
+        WHERE USE_YN = 'Y'
+        <include refid="whereClause"/>
+    </select>
+
+    <insert id="insert">
+        INSERT INTO TOKEN(MEMBER_ID, ACCESS_TOKEN, REFRESH_TOKEN, TOKEN_TYPE)
+        VALUES (#{memberId}, #{accessToken}, #{refreshToken}, #{tokenType})
+    </insert>
+
+    <update id="update">
+        UPDATE TOKEN
+           SET ACCESS_TOKEN = #{accessToken}, REFRESH_TOKEN = #{refreshToken}
+         WHERE USE_YN = 'Y'
+           AND MEMBER_ID = #{memberId}
+    </update>
+</mapper>

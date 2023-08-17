@@ -28,14 +28,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class WebSecurityConfig {
 
-    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtExceptionFilter jwtExceptionFilter;
     private final JwtUtil jwtUtil;
     private final MemberService memberService;
 
     private final UserDetailsService userDetailsService;
 
-    private static final String[] NO_AUTH_REQUIRED_URL = {"/index/**", "/test/**", "/member/sign-up", "/login"};
-    private static final String[] AUTHORITY_REQUIRED_URL = {"/token/authentication-info", "/test/authorized-only"};
+    private static final String[] NO_AUTH_REQUIRED_URL = {"/index/**", "/test/**", "/member/sign-up", "/login", "/error"};
+    private static final String[] AUTHORITY_REQUIRED_URL = {"/token/**", "/test/authorized-only"};
     private static final String[] AUTHENTICATION_REQUIRED_URL = {"/member/**"};
 
     @Bean
@@ -49,7 +49,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(ahr -> ahr
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers(NO_AUTH_REQUIRED_URL).permitAll()
-                        .requestMatchers(AUTHORITY_REQUIRED_URL).hasAnyAuthority(AuthorityEnum.SYSTEM.name(), AuthorityEnum.ADMIN.name())
+                        .requestMatchers(AUTHORITY_REQUIRED_URL).hasAnyAuthority(AuthorityEnum.DEVELOPMENT.getDeptCode(), AuthorityEnum.BUSINESS_SUPPORT.getDeptCode())
                         .requestMatchers(AUTHENTICATION_REQUIRED_URL).authenticated()
                         .anyRequest().permitAll()
                 )
@@ -59,6 +59,7 @@ public class WebSecurityConfig {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(hb -> hb.disable())
                 .addFilterBefore(new AuthorityFilter(jwtUtil, memberService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtExceptionFilter, AuthorityFilter.class)
                 .logout(logout -> logout.permitAll()
                         .deleteCookies("JSESSIONID")
                         .invalidateHttpSession(true)

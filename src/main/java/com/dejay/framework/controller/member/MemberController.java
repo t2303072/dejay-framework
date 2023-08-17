@@ -2,10 +2,11 @@ package com.dejay.framework.controller.member;
 
 import com.dejay.framework.common.enums.MapKeyStringEnum;
 import com.dejay.framework.common.enums.RequestTypeEnum;
+import com.dejay.framework.common.enums.ResultCodeMsgEnum;
 import com.dejay.framework.common.utils.ObjectHandlingUtil;
 import com.dejay.framework.controller.common.ParentController;
 import com.dejay.framework.domain.common.SearchObject;
-import com.dejay.framework.domain.common.TokenObject;
+import com.dejay.framework.domain.common.TokenObjectVO;
 import com.dejay.framework.domain.member.Member;
 import com.dejay.framework.domain.user.SignUpRequest;
 import com.dejay.framework.domain.user.User;
@@ -36,7 +37,7 @@ public class MemberController extends ParentController {
         MemberVO loginVO = ObjectHandlingUtil.extractLoginInfo(request); log.info(loginVO.toString());
 
         CollectionPagingVO collectionPagingVO = getCommonService().getMemberService().getMemberList(searchObject);
-        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setListResultStatusVO(collectionPagingVO.getObjects().stream().toList());
+        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setListResultStatusVO(collectionPagingVO.getObjects().stream().toList(), ResultCodeMsgEnum.NO_DATA);
         
         var mapKeyList = Arrays.asList(MapKeyStringEnum.PAGING.getKeyString(), MapKeyStringEnum.MEMBER_LIST.getKeyString());
         var resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, collectionPagingVO.getPaging(), collectionPagingVO.getObjects());
@@ -47,7 +48,7 @@ public class MemberController extends ParentController {
     @PostMapping({"", "/"})
     public ResponseEntity insertMember(@RequestBody @Valid Member member) {
         Member inserted = getCommonService().getMemberService().insertMember(member);
-        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(inserted);
+        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(inserted, ResultCodeMsgEnum.NO_DATA);
 
         var mapKeyList = Arrays.asList(MapKeyStringEnum.MEMBER.getKeyString());
         var resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, inserted);
@@ -57,8 +58,8 @@ public class MemberController extends ParentController {
 
     @PostMapping(value = "insert")
     public ResponseEntity insertMember(@RequestBody @Valid User user) {
-        User inserted = getCommonService().getMemberService().insertUser(user);
-        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(inserted);
+        User inserted = getCommonService().getMemberService().insert(user);
+        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(inserted, ResultCodeMsgEnum.NO_DATA);
 
         var mapKeyList = Arrays.asList(MapKeyStringEnum.USER.getKeyString());
         var resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, inserted);
@@ -68,11 +69,11 @@ public class MemberController extends ParentController {
 
     @PostMapping("sign-up")
     public ResponseEntity signUp(@RequestBody @Valid SignUpRequest signUpRequest) {
-        TokenObject tokenObject = getCommonService().getMemberService().signUp(signUpRequest);
-        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(tokenObject, RequestTypeEnum.CREATE);
+        TokenObjectVO tokenObjectVO = getCommonService().getMemberService().signUp(signUpRequest);
+        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(tokenObjectVO, RequestTypeEnum.CREATE);
 
         var mapKeyList = Arrays.asList(MapKeyStringEnum.TOKEN_OBJECT.getKeyString());
-        var resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, tokenObject);
+        var resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, tokenObjectVO);
 
         return ResponseEntity.ok(resultMap);
     }
@@ -80,7 +81,7 @@ public class MemberController extends ParentController {
     @GetMapping("{id}")
     public ResponseEntity findMemberById(@PathVariable int id) {
         MemberVO memberVO = getCommonService().getMemberService().findMemberById(id);
-        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(memberVO);
+        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(memberVO, ResultCodeMsgEnum.NO_DATA);
 
         var mapKeyList = Arrays.asList(MapKeyStringEnum.MEMBER.getKeyString());
         var resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, memberVO);
@@ -91,7 +92,7 @@ public class MemberController extends ParentController {
     @PostMapping("request-param-validity")
     public ResponseEntity requestParamTest(@RequestBody @Valid Member member) {
         getCommonService().getMemberService().insertMember(member);
-        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(member);
+        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(member, ResultCodeMsgEnum.NO_DATA);
         var mapKeyList = Arrays.asList(MapKeyStringEnum.MEMBER.getKeyString());
         var resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, member);
 

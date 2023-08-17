@@ -8,14 +8,14 @@ import lombok.ToString;
 @ToString
 @Getter
 @NoArgsConstructor
-public class TokenObject {
+public class TokenObjectVO {
 
     private String key;
     private String accessToken;
     private String refreshToken;
 
     @Builder
-    public TokenObject(String key, String accessToken, String refreshToken) {
+    public TokenObjectVO(String key, String accessToken, String refreshToken) {
         this.key = key;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
