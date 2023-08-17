@@ -39,9 +39,7 @@
     </sql>
 
     <sql id = "whereClauseSeq">
-        <if test="boardSeq != null and boardSeq != '' ">
             AND ${alias}BOARD_SEQ = #{boardSeq}
-        </if>
     </sql>
     <!-- whereClause ]] -->
 
@@ -69,6 +67,10 @@
         /* 게시판 총 개수 조회 - BoarderMapper.pagingCountBySearch */
         SELECT COUNT(*)
         FROM BOARD BD
+        <where>
+            <include refid="whereClause"><property name="alias" value="BD."/></include>
+        </where>
+
     </select>
 
     <select id="pagingBySearch"  resultType="BoardVO" parameterType="BoardSearchVO">
@@ -93,15 +95,6 @@
         </where>
     </select>
 
-    <select id = "rowByKey" resultType="BoardVO" parameterType="Long">
-        /*게시판 단 건 조회 (key값) - BoardMapper.rowById */
-        SELECT
-            <include refid="boardColumn"><property name="alias" value="BD."/></include>
-        FROM BOARD BD
-        <where>
-            <include refid="whereClauseSeq"><property name="alias" value="BD."/></include>
-        </where>
-    </select>
     <!-- 조회 ]] -->
 
 
