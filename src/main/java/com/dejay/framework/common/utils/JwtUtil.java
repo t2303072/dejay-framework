@@ -106,7 +106,9 @@ public class JwtUtil {
      */
     public boolean isInvalidToken(String token, String reissue) {
         boolean validToken = tokenMapper.isValidToken(token, reissue);
-        if(!validToken) return true;
+        if(!validToken) {
+            return true;
+        }
         return false;
     }
 
@@ -139,7 +141,9 @@ public class JwtUtil {
      * @throws JsonProcessingException
      */
     public TokenVO decode(String token) throws JsonProcessingException {
-        if(!StringUtils.hasText(token)) throw new NullPointerException(ExceptionCodeMsgEnum.NO_TOKEN.getMsg());
+        if(!StringUtils.hasText(token)) {
+            throw new NullPointerException(ExceptionCodeMsgEnum.NO_TOKEN.getMsg());
+        }
 
         String[] chunk = token.split("\\.");
         Base64.Decoder decoder = Base64.getDecoder();

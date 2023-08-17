@@ -1,4 +1,4 @@
-package com.dejay.framework.common.config;
+package com.dejay.framework.common.filter;
 
 import com.dejay.framework.vo.common.ResultStatusVO;
 import com.fasterxml.jackson.databind.ObjectMapper;
