@@ -2,6 +2,7 @@ package com.dejay.framework.controller.code;
 
 import com.dejay.framework.common.enums.MapKeyStringEnum;
 import com.dejay.framework.common.enums.RequestTypeEnum;
+import com.dejay.framework.common.enums.ResultCodeMsgEnum;
 import com.dejay.framework.common.utils.ObjectHandlingUtil;
 import com.dejay.framework.controller.common.ParentController;
 import com.dejay.framework.domain.code.Code;
@@ -36,7 +37,7 @@ public class CodeController extends ParentController {
 
         List<CodeVO> codeList = getCommonService().getCodeService().pagingCode(searchObject.getSearch().getCodeSearch());
 
-        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setListResultStatusVO(codeList);
+        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setListResultStatusVO(codeList, ResultCodeMsgEnum.NO_DATA);
         List<String> mapKeyList = Arrays.asList(MapKeyStringEnum.PAGING.getKeyString(), MapKeyStringEnum.CODE_LIST.getKeyString());
         Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, searchObject.getSearch().getCodeSearch().getPaging(), codeList);
 
@@ -53,7 +54,7 @@ public class CodeController extends ParentController {
     public ResponseEntity listCode(@RequestBody @Valid SearchObject searchObject) {
         List<CodeVO> codeList = getCommonService().getCodeService().listCode(searchObject.getSearch().getCodeSearch());
 
-        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setListResultStatusVO(codeList);
+        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setListResultStatusVO(codeList, ResultCodeMsgEnum.NO_DATA);
         List<String> mapKeyList = Arrays.asList(MapKeyStringEnum.CODE_LIST.getKeyString());
         Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, codeList);
 
@@ -70,7 +71,7 @@ public class CodeController extends ParentController {
     public ResponseEntity rowCode(@RequestBody @Valid SearchObject searchObject) {
         CodeVO code = getCommonService().getCodeService().rowCode(searchObject.getSearch().getCodeSearch());
 
-        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(code);
+        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(code, ResultCodeMsgEnum.NO_DATA);
         List<String> mapKeyList = Arrays.asList(MapKeyStringEnum.CODE.getKeyString());
         Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, code);
 

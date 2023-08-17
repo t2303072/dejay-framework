@@ -4,6 +4,17 @@
 
 <mapper namespace="com.dejay.framework.mapper.token.TokenMapper">
 
+    <sql id="whereClause">
+        <choose>
+            <when test="reissue = 'Y'">
+                AND REFRESH_TOKEN = #{refreshToken}
+            </when>
+            <otherwise>
+                AND ACCESS_TOKEN = #{accessToken}
+            </otherwise>
+        </choose>
+    </sql>
+
     <select id="isTokenExist">
         SELECT COUNT(1)
           FROM TOKEN
@@ -15,7 +26,7 @@
         SELECT IF(COUNT(1), true, false)
         FROM TOKEN
         WHERE USE_YN = 'Y'
-        AND ACCESS_TOKEN = #{accessToken}
+        <include refid="whereClause"/>
     </select>
 
     <insert id="insert">

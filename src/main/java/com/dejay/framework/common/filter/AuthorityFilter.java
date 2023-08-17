@@ -2,6 +2,7 @@ package com.dejay.framework.common.filter;
 
 import com.dejay.framework.common.enums.AuthorityEnum;
 import com.dejay.framework.common.enums.ExceptionCodeMsgEnum;
+import com.dejay.framework.common.enums.MapKeyStringEnum;
 import com.dejay.framework.common.enums.ResultCodeMsgEnum;
 import com.dejay.framework.common.utils.JwtUtil;
 import com.dejay.framework.service.member.MemberService;
@@ -31,12 +32,14 @@ public class AuthorityFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
     private static final String TOKEN_PREFIX = "Bearer ";
+    private static final String REISSUE = "reissue";
     private final MemberService memberService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         final String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
+        final String reissue = request.getHeader(REISSUE) != null ? request.getHeader(REISSUE) : "N";
 
         // token 전송 여부 확인
         if(authorization == null || !authorization.startsWith(TOKEN_PREFIX)) {
@@ -46,6 +49,7 @@ public class AuthorityFilter extends OncePerRequestFilter {
         }
 
         String token = authorization.split(" ")[1];
+        request.setAttribute(MapKeyStringEnum.TOKEN_REISSUE.getKeyString(), reissue);
 
         // Token expiration status
         try {
@@ -58,7 +62,7 @@ public class AuthorityFilter extends OncePerRequestFilter {
             throw new JwtException(ExceptionCodeMsgEnum.EXPIRED_TOKEN.getMsg());
         } catch (SignatureException ex) {
             log.error(ex.getMessage());
-            throw new JwtException(ExceptionCodeMsgEnum.INVALID_AUTH.getMsg());
+            throw new JwtException(ExceptionCodeMsgEnum.INVALID_TOKEN_SIGNATURE.getMsg());
         }
 
         // Get request user information out of a token

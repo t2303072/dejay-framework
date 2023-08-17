@@ -17,12 +17,13 @@ public class ObjectHandlingUtil {
 
     /**
      * 단건 조회에 대한 결과 객체 생성
-     * @param obj T
+     * @param obj T 대상 객체
+     * @param resultCodeMsgEnum {@link ResultCodeMsgEnum} 응답 에러코드
      * @return ResultStatusVO
      * @param <T>
      */
-    public static <T> ResultStatusVO setSingleObjResultStatusVO(T obj) {
-        return obj == null ? new ResultStatusVO(ResultCodeMsgEnum.NO_DATA.getCode(), ResultCodeMsgEnum.NO_DATA.getMsg()) : new ResultStatusVO();
+    public static <T> ResultStatusVO setSingleObjResultStatusVO(T obj, ResultCodeMsgEnum resultCodeMsgEnum) {
+        return obj == null ? new ResultStatusVO(resultCodeMsgEnum.getCode(), resultCodeMsgEnum.getMsg()) : new ResultStatusVO();
     }
 
     /**
@@ -31,8 +32,8 @@ public class ObjectHandlingUtil {
      * @return ResultStatusVO
      * @param <T>
      */
-    public static <T> ResultStatusVO setListResultStatusVO(List<T> list) {
-        return list.size() > 0 ? new ResultStatusVO() : new ResultStatusVO(ResultCodeMsgEnum.NO_DATA.getCode(), ResultCodeMsgEnum.NO_DATA.getMsg());
+    public static <T> ResultStatusVO setListResultStatusVO(List<T> list, ResultCodeMsgEnum resultCodeMsgEnum) {
+        return list.size() > 0 ? new ResultStatusVO() : new ResultStatusVO(resultCodeMsgEnum.getCode(), resultCodeMsgEnum.getMsg());
     }
 
     /**

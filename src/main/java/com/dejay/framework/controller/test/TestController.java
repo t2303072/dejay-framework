@@ -1,6 +1,7 @@
 package com.dejay.framework.controller.test;
 
 import com.dejay.framework.common.enums.MapKeyStringEnum;
+import com.dejay.framework.common.enums.ResultCodeMsgEnum;
 import com.dejay.framework.common.utils.JwtUtil;
 import com.dejay.framework.common.utils.MapUtil;
 import com.dejay.framework.common.utils.ObjectHandlingUtil;
@@ -76,7 +77,7 @@ public class TestController extends ParentController {
     @GetMapping("board-list")
     public ResponseEntity boardList() {
         List<BoardVO> boardList = testService.getBoardList();
-        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setListResultStatusVO(boardList);
+        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setListResultStatusVO(boardList, ResultCodeMsgEnum.NO_DATA);
         var mapKeyList = Arrays.asList(MapKeyStringEnum.BOARD_LIST.getKeyString());
         Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, boardList);
 

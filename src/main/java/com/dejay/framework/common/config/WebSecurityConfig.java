@@ -35,7 +35,7 @@ public class WebSecurityConfig {
     private final UserDetailsService userDetailsService;
 
     private static final String[] NO_AUTH_REQUIRED_URL = {"/index/**", "/test/**", "/member/sign-up", "/login", "/error"};
-    private static final String[] AUTHORITY_REQUIRED_URL = {"/token/authentication-info", "/test/authorized-only"};
+    private static final String[] AUTHORITY_REQUIRED_URL = {"/token/**", "/test/authorized-only"};
     private static final String[] AUTHENTICATION_REQUIRED_URL = {"/member/**"};
 
     @Bean
@@ -49,7 +49,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(ahr -> ahr
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers(NO_AUTH_REQUIRED_URL).permitAll()
-                        .requestMatchers(AUTHORITY_REQUIRED_URL).hasAnyAuthority(AuthorityEnum.DEVELOPMENT.name(), AuthorityEnum.BUSINESS_SUPPORT.name())
+                        .requestMatchers(AUTHORITY_REQUIRED_URL).hasAnyAuthority(AuthorityEnum.DEVELOPMENT.getDeptCode(), AuthorityEnum.BUSINESS_SUPPORT.getDeptCode())
                         .requestMatchers(AUTHENTICATION_REQUIRED_URL).authenticated()
                         .anyRequest().permitAll()
                 )

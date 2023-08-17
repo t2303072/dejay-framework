@@ -133,7 +133,7 @@ public class MemberService {
                 .password(bCryptPasswordEncoder.encode(signUpRequest.getPassword()))
                 .name(signUpRequest.getName())
                 .email(signUpRequest.getEmail())
-                .deptCode(signUpRequest.getAuthority().stream().toList().get(0).getDeptCode()) // TODO: IJ 테스트 부서코드 추후 변경
+                .deptCode(signUpRequest.getAuthority().stream().toList().get(0).getDeptCode())
                 .build();
 
         validationUtil.parameterValidator(target, User.class);
