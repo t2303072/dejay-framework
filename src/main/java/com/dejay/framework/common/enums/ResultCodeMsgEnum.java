@@ -19,7 +19,7 @@ public enum ResultCodeMsgEnum {
     , CREATE_DATA_FAIL(7, "데이터 생성에 실패 했습니다.")
     , UPDATE_DATA_FAIL(8, "데이터 변경에 실패 했습니다.")
     , DELETE_DATA_FAIL(9, "데이터 삭제에 실패 했습니다.")
-    ;
+    , EXIST_CODE(10, "이미 존재하는 코드 입니다.");
 
     private int code;
     private String msg;

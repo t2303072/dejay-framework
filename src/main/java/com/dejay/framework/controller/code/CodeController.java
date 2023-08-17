@@ -88,7 +88,7 @@ public class CodeController extends ParentController {
     public ResponseEntity insertCode(@RequestBody @Valid DataObject dataObject) throws Exception {
 
         Code inserted =  getCommonService().getCodeService().insertCode(dataObject.getData().getCode());
-        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(inserted, RequestTypeEnum.CREATE);
+        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(inserted, ResultCodeMsgEnum.EXIST_CODE);
         Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(resultMap);
