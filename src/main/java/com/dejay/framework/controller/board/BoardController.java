@@ -2,6 +2,7 @@ package com.dejay.framework.controller.board;
 
 import com.dejay.framework.common.enums.MapKeyStringEnum;
 import com.dejay.framework.common.enums.RequestTypeEnum;
+import com.dejay.framework.common.enums.ResultCodeMsgEnum;
 import com.dejay.framework.common.utils.ObjectHandlingUtil;
 import com.dejay.framework.controller.common.ParentController;
 import com.dejay.framework.domain.board.Board;
@@ -38,7 +39,7 @@ public class BoardController extends ParentController {
     public ResponseEntity pagingBoard(@RequestBody @Valid SearchObject searchObject){
         List<BoardVO> boardList = getCommonService().getBoardService().pagingBoard(searchObject.getSearch().getBoardSearch());
 
-        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setListResultStatusVO(boardList);
+        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setListResultStatusVO(boardList, ResultCodeMsgEnum.NO_DATA);
         List<String> mapKeyList = Arrays.asList(MapKeyStringEnum.PAGING.getKeyString(), MapKeyStringEnum.BOARD_LIST.getKeyString());
         Map<String,Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList,  searchObject.getSearch().getBoardSearch().getPaging() ,boardList);
 
@@ -53,7 +54,7 @@ public class BoardController extends ParentController {
     @GetMapping(value="/row")
     public ResponseEntity rowBoard(@RequestBody @Valid SearchObject searchObject){
         BoardVO board = getCommonService().getBoardService().rowBoard(searchObject.getSearch().getBoardSearch());
-        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(board);
+        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(board, ResultCodeMsgEnum.NO_DATA);
         List<String> mapKeyList = Arrays.asList(MapKeyStringEnum.BOARD.getKeyString());
         Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, board);
 
@@ -67,7 +68,7 @@ public class BoardController extends ParentController {
      */
     @PostMapping(value="/insert")
     public ResponseEntity insertBoard(@RequestBody @Valid DataObject dataObject) throws Exception {
-        Board inserted = getCommonService().getBoardService().insertBoard(dataObject.getData().getBoard());
+        Integer inserted = getCommonService().getBoardService().insertBoard(dataObject.getData().getBoard());
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(inserted, RequestTypeEnum.CREATE);
         Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO);
 
@@ -77,19 +78,12 @@ public class BoardController extends ParentController {
     /**
      * 게시판 수정
      * @param dataObject
+     *
      * @return
      */
     @PostMapping(value="/update")
     public ResponseEntity updateBoard(@RequestBody @Valid DataObject dataObject){
-        BoardVO board  = getCommonService().getBoardService().rowByKey(dataObject.getData().getBoard().getBoardSeq());
-
-        if(board==null){
-            ResultStatusVO nullResultStatus = ObjectHandlingUtil.setSingleObjResultStatusVO(board);
-            Map<String,Object> nullResultMap = getMapUtil().responseEntityBodyWrapper(nullResultStatus);
-            return ResponseEntity.ok(nullResultMap);
-        }
-
-        Board inserted = getCommonService().getBoardService().updateBoard(dataObject.getData().getBoard());
+        Integer inserted = getCommonService().getBoardService().updateBoard(dataObject.getData().getBoard());
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(inserted, RequestTypeEnum.UPDATE);
         Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO);
 
@@ -103,16 +97,8 @@ public class BoardController extends ParentController {
      */
     @PostMapping(value="/delete")
     public ResponseEntity deleteBoard(@RequestBody @Valid DataObject dataObject){
-        BoardVO board  = getCommonService().getBoardService().rowByKey(dataObject.getData().getBoard().getBoardSeq());
-
-        if(board==null){
-            ResultStatusVO nullResultStatus = ObjectHandlingUtil.setSingleObjResultStatusVO(board);
-            Map<String,Object> nullResultMap = getMapUtil().responseEntityBodyWrapper(nullResultStatus);
-            return ResponseEntity.ok(nullResultMap);
-        }
-
-        Board deleted = getCommonService().getBoardService().deleteBoard(dataObject.getData().getBoard());
-        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(deleted);
+        Integer deleted = getCommonService().getBoardService().deleteBoard(dataObject.getData().getBoard());
+        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(deleted,RequestTypeEnum.DELETE);
         Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO);
 
         return ResponseEntity.ok(resultMap);
