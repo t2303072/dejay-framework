@@ -44,7 +44,7 @@ public class LoggerInterceptor implements HandlerInterceptor {
                     .httpMethod(request.getMethod())
 //                    .resultJson(reqParam)
                     .status(response.getStatus())
-                    .regId("ijzone")
+                    .regId("SYSTEM")
                     .build();
             log.info(restApi.toString());
 

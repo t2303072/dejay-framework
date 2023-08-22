@@ -51,7 +51,7 @@ public class TokenController extends ParentController {
      * @return
      */
     @PostMapping("/authentication-info")
-    public ResponseEntity authentication(HttpServletRequest request, Authentication authentication) {
+    public ResponseEntity getAuthentication(HttpServletRequest request, Authentication authentication) {
         log.info("Authentication: userName => {}", authentication.getName());
         authentication.getAuthorities().forEach(a -> log.info("권한: {}", a.getAuthority()));
         TokenVO tokenVO = ObjectHandlingUtil.extractTokenInfo(request);

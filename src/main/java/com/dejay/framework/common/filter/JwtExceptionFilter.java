@@ -1,5 +1,6 @@
 package com.dejay.framework.common.filter;
 
+import com.dejay.framework.common.exception.CustomJwtException;
 import com.dejay.framework.vo.common.ResultStatusVO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.JwtException;
@@ -24,7 +25,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
         log.info("JwtExceptionFilter");
         try {
             filterChain.doFilter(request, response);
-        } catch (JwtException ex) {
+        } catch (CustomJwtException ex) {
             jwtExceptionResponse(response, HttpStatus.FORBIDDEN, ex);
         }
     }
@@ -33,7 +34,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
         response.setStatus(status.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setCharacterEncoding("UTF-8");
-        String json = new ObjectMapper().writeValueAsString(new ResultStatusVO(status.value(), ex.getMessage()));
+        String json = new ObjectMapper().writeValueAsString(new ResultStatusVO(((CustomJwtException)ex).getCode(), ((CustomJwtException)ex).getMsg()));
         response.getWriter().write(json);
     }
 }

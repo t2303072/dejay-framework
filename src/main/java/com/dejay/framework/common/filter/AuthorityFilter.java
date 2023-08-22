@@ -53,10 +53,8 @@ public class AuthorityFilter extends OncePerRequestFilter {
 
         // Token expiration status
         try {
-            if(jwtUtil.isExpired(token) || jwtUtil.isInvalidToken(token, reissue)) {
-                filterChain.doFilter(request, response);
-                return;
-            }
+            jwtUtil.isExpired(token);
+            jwtUtil.isInvalidToken(token, reissue);
         } catch (ExpiredJwtException ex) {
             log.error(ex.getMessage());
             throw new JwtException(ExceptionCodeMsgEnum.EXPIRED_TOKEN.getMsg());

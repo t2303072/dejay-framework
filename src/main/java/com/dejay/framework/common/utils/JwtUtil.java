@@ -2,6 +2,7 @@ package com.dejay.framework.common.utils;
 
 import com.dejay.framework.common.enums.ExceptionCodeMsgEnum;
 import com.dejay.framework.common.enums.MapKeyStringEnum;
+import com.dejay.framework.common.exception.CustomJwtException;
 import com.dejay.framework.domain.common.TokenObjectVO;
 import com.dejay.framework.domain.token.Token;
 import com.dejay.framework.mapper.token.TokenMapper;
@@ -9,6 +10,7 @@ import com.dejay.framework.vo.common.TokenVO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.annotation.PostConstruct;
@@ -92,9 +94,12 @@ public class JwtUtil {
      * @param token {@link String}
      * @return
      */
-    public boolean isExpired(String token) {
-        return Jwts.parserBuilder().setSigningKey(secretKey).build()
+    public void isExpired(String token) {
+        boolean isExpired = Jwts.parserBuilder().setSigningKey(secretKey).build()
                 .parseClaimsJws(token).getBody().getExpiration().before(new Date());
+        if (isExpired) {
+            throw new CustomJwtException(ExceptionCodeMsgEnum.EXPIRED_TOKEN);
+        }
     }
 
     /**
@@ -104,12 +109,11 @@ public class JwtUtil {
      * @param reissue
      * @return
      */
-    public boolean isInvalidToken(String token, String reissue) {
+    public void isInvalidToken(String token, String reissue) {
         boolean validToken = tokenMapper.isValidToken(token, reissue);
         if(!validToken) {
-            return true;
+            throw new CustomJwtException(ExceptionCodeMsgEnum.INVALID_TOKEN);
         }
-        return false;
     }
 
     /**
