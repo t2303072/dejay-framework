@@ -2,7 +2,6 @@ package com.dejay.framework.common.config;
 
 import com.dejay.framework.common.interceptor.MyBatisInterceptor;
 import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.logging.slf4j.Slf4jImpl;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.type.JdbcType;
 import org.mybatis.spring.SqlSessionFactoryBean;

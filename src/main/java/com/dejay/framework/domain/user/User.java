@@ -1,18 +1,20 @@
 package com.dejay.framework.domain.user;
 
 import com.dejay.framework.common.enums.AuthorityEnum;
+import com.dejay.framework.domain.common.BaseEntity;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.sql.Timestamp;
 import java.util.Set;
 
 @ToString(callSuper = false)
 @Getter
 @EqualsAndHashCode(of = {"id", "name"})
-public class User {
+public class User extends BaseEntity {
 
     private long seq;
     @NotNull(message = "아이디는 필수 값 입니다.")
@@ -26,8 +28,14 @@ public class User {
     private Set<AuthorityEnum> authority;
     private String deptCode;
 
+
     @Builder
-    public User(String id, String password, String name, String email, String picture, Set<AuthorityEnum> authority, String deptCode) {
+    public User(String id, String password, String name, String email, String picture, Set<AuthorityEnum> authority, String deptCode, String logId1, String logId2, String remark, String regId, Timestamp regDttm) {
+        super.setLogId1(logId1);
+        super.setLogId2(logId2);
+        super.setRemark(remark);
+        super.setRegId(regId);
+        super.setRegDttm(regDttm);
         this.id = id;
         this.password = password;
         this.name = name;

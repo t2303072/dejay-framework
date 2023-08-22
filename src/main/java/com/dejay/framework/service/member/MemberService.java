@@ -32,7 +32,6 @@ import java.util.Set;
 @Service
 public class MemberService extends ParentService {
 // TODO: IJ NPE 위험코드 Optional로 변경
-    private final MemberMapper memberMapper;
     private final ValidationUtil validationUtil;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final TokenFactory tokenFactory;
@@ -72,7 +71,7 @@ public class MemberService extends ParentService {
      * @return
      */
     public MemberVO findMemberById(int id) {
-        return memberMapper.findMemberById(id);
+        return getCommonMapper().getMemberMapper().findMemberById(id);
     }
 
     /**
@@ -81,7 +80,7 @@ public class MemberService extends ParentService {
      * @return
      */
     public MemberVO findMemberByUserName(String userName) {
-        return memberMapper.findMemberByUserName(userName);
+        return getCommonMapper().getMemberMapper().findMemberByUserName(userName);
     }
 
     /**
@@ -98,7 +97,7 @@ public class MemberService extends ParentService {
                 .build();
 
         validationUtil.parameterValidator(target, Member.class);
-        memberMapper.insertMember(target);
+        getCommonMapper().getMemberMapper().insertMember(target);
 
         return target;
     }
@@ -117,7 +116,7 @@ public class MemberService extends ParentService {
                 .build();
 
         validationUtil.parameterValidator(target, User.class);
-        memberMapper.insert(target);
+        getCommonMapper().getMemberMapper().insert(target);
 
         return target;
     }
@@ -134,10 +133,13 @@ public class MemberService extends ParentService {
                 .name(signUpRequest.getName())
                 .email(signUpRequest.getEmail())
                 .deptCode(signUpRequest.getAuthority().stream().toList().get(0).getDeptCode())
+                .logId1(signUpRequest.getId())
+                .logId2(null)
+                .regId(signUpRequest.getId())
                 .build();
 
         validationUtil.parameterValidator(target, User.class);
-        long inserted = memberMapper.insert(target);
+        long inserted = getCommonMapper().getMemberMapper().insert(target);
 
         if(inserted > 0) {
             TokenObjectVO tokenObjectVO = tokenFactory.createJWT(signUpRequest.getId(), signUpRequest.getPassword(), signUpRequest.getAuthority());
