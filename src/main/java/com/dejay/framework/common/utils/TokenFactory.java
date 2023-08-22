@@ -25,9 +25,11 @@ public class TokenFactory {
     private Long refreshExpiresAt = 1000L * 60 * 60 * 24 * 14; // 14 days
     /**
      * JWT 생성
-     * @param userName
-     * @param password
+     * @param userName {@link String}
+     * @param password {@link String}
+     * @param auth {@link Set}
      * @return
+     * @apiNote password 매개변수는 현재 사용 X
      */
     public TokenObjectVO createJWT(String userName, String password, Set<?> auth) {
         TokenObjectVO tokenObjectVO = jwtUtil.createTokenObject(userName, accessExpiresAt, refreshExpiresAt, auth);

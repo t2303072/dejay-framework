@@ -4,6 +4,7 @@ import com.dejay.framework.common.enums.AuthorityEnum;
 import com.dejay.framework.common.enums.ExceptionCodeMsgEnum;
 import com.dejay.framework.common.enums.MapKeyStringEnum;
 import com.dejay.framework.common.enums.ResultCodeMsgEnum;
+import com.dejay.framework.common.exception.CustomJwtException;
 import com.dejay.framework.common.utils.JwtUtil;
 import com.dejay.framework.service.member.MemberService;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -57,10 +58,10 @@ public class AuthorityFilter extends OncePerRequestFilter {
             jwtUtil.isInvalidToken(token, reissue);
         } catch (ExpiredJwtException ex) {
             log.error(ex.getMessage());
-            throw new JwtException(ExceptionCodeMsgEnum.EXPIRED_TOKEN.getMsg());
+            throw new CustomJwtException(ExceptionCodeMsgEnum.EXPIRED_TOKEN);
         } catch (SignatureException ex) {
             log.error(ex.getMessage());
-            throw new JwtException(ExceptionCodeMsgEnum.INVALID_TOKEN_SIGNATURE.getMsg());
+            throw new CustomJwtException(ExceptionCodeMsgEnum.INVALID_TOKEN_SIGNATURE);
         }
 
         // Get request user information out of a token
