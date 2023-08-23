@@ -55,17 +55,30 @@ public class ObjectHandlingUtil {
     }
 
     /**
-     * 데이터 관련 처리 결과 객체 생성
+     * 데이터 처리 결과 객체 생성
      * @param obj T
      * @param key {@link RequestTypeEnum}
      * @return
      * @param <T>
      */
     public static <T> ResultStatusVO setDataManipulationResultStatusVO(T obj, RequestTypeEnum key) {
-        if(obj != null) {
-            return new ResultStatusVO();
+
+        if(obj != null && (obj.getClass().equals(Integer.class) && ((Integer) obj).intValue() < 1)) {
+            return failedDataSetter(key);
+        }
+        if (obj == null) {
+            return failedDataSetter(key);
         }
 
+        return new ResultStatusVO();
+    }
+
+    /**
+     * 데이터 처리 실패 건에 대한 응답객체 setter
+     * @param key
+     * @return
+     */
+    private static ResultStatusVO failedDataSetter(RequestTypeEnum key) {
         var result = switch(key) {
             case CREATE -> new ResultStatusVO(ResultCodeMsgEnum.CREATE_DATA_FAIL.getCode(), ResultCodeMsgEnum.CREATE_DATA_FAIL.getMsg());
             case UPDATE -> new ResultStatusVO(ResultCodeMsgEnum.UPDATE_DATA_FAIL.getCode(), ResultCodeMsgEnum.UPDATE_DATA_FAIL.getMsg());
@@ -104,6 +117,5 @@ public class ObjectHandlingUtil {
                 .displayRow(search.getPaging().getDisplayRow())
                 .build();
     }
-
 
 }
