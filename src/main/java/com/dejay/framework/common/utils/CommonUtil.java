@@ -11,15 +11,15 @@ public class CommonUtil {
     private final SessionFactory sessionFactory;
     private final CookieFactory cookieFactory;
 
-    public TokenFactory tokenFactory() {
+    public TokenFactory getTokenFactory() {
         return this.tokenFactory;
     }
 
-    public SessionFactory sessionFactory() {
+    public SessionFactory getSessionFactory() {
         return this.sessionFactory;
     }
 
-    public CookieFactory cookieFactory() {
+    public CookieFactory getCookieFactory() {
         return this.cookieFactory;
     }
 }

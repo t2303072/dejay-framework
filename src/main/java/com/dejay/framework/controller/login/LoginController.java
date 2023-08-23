@@ -30,7 +30,7 @@ public class LoginController extends ParentController {
         MemberVO loginInfo = getCommonService().getMemberService().getLoginInfo(loginRequest);
         Map<String, Object> resultMap;
         if(loginInfo != null) {
-            TokenObjectVO tokenObjectVO = getCommonUtil().tokenFactory().createJWT(loginInfo.getMemberId(), null, loginInfo.getAuthority());
+            TokenObjectVO tokenObjectVO = getCommonUtil().getTokenFactory().createJWT(loginInfo.getMemberId(), null, loginInfo.getAuthority());
             ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(tokenObjectVO, ResultCodeMsgEnum.NO_DATA);
             var mapKeyList = Arrays.asList(MapKeyStringEnum.TOKEN_OBJECT.getKeyString());
             resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, tokenObjectVO);

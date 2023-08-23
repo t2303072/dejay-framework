@@ -29,6 +29,12 @@
         <include refid="whereClause"/>
     </select>
 
+    <select id="findTokenSeq" resultType="java.lang.String">
+        SELECT TOKEN_SEQ
+          FROM TOKEN
+         WHERE MEMBER_ID = #{memberId}
+    </select>
+
     <insert id="insert">
         INSERT INTO TOKEN(MEMBER_ID, ACCESS_TOKEN, REFRESH_TOKEN, TOKEN_TYPE)
         VALUES (#{memberId}, #{accessToken}, #{refreshToken}, #{tokenType})

@@ -54,7 +54,7 @@ public class MemberController extends ParentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(resultMap);
     }
 
-    @PostMapping(value = "insert")
+    /*@PostMapping(value = "insert")
     public ResponseEntity insertMember(@RequestBody @Valid User user) {
         User inserted = getCommonService().getMemberService().insert(user);
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(inserted, ResultCodeMsgEnum.NO_DATA);
@@ -63,7 +63,7 @@ public class MemberController extends ParentController {
         var resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, inserted);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(resultMap);
-    }
+    }*/
 
     @PostMapping("sign-up")
     public ResponseEntity signUp(@RequestBody @Valid SignUpRequest signUpRequest) {
@@ -73,7 +73,7 @@ public class MemberController extends ParentController {
         var mapKeyList = Arrays.asList(MapKeyStringEnum.TOKEN_OBJECT.getKeyString());
         var resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, tokenObjectVO);
 
-        return ResponseEntity.ok(resultMap);
+        return ResponseEntity.status(HttpStatus.CREATED).body(resultMap);
     }
 
     @GetMapping("{id}")

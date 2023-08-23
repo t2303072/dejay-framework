@@ -9,4 +9,5 @@ public interface TokenMapper extends GeneralMapper {
 
     int isTokenExist(String memberId);
     boolean isValidToken(@Param("token") String token, @Param("reissue") String reissue);
+    String findTokenSeq(String memberId);
 }

@@ -1,18 +1,12 @@
 package com.dejay.framework.common.interceptor;
 
 import com.dejay.framework.common.enums.RequestTypeEnum;
-import com.dejay.framework.common.utils.StringUtil;
 import com.dejay.framework.domain.common.BaseEntity;
-import com.dejay.framework.domain.user.User;
-import com.dejay.framework.mapper.common.TableMapper;
-import com.dejay.framework.service.common.TableService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.MappedStatement;
-import org.apache.ibatis.mapping.ResultMapping;
 import org.apache.ibatis.mapping.SqlCommandType;
 import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.plugin.*;
@@ -22,12 +16,11 @@ import org.springframework.util.StringUtils;
 
 /**
  * TODO: IJ 인터셉터를 통한 table 관련 logging은 추후에 설계가 명확하게 잡히면 진행
- * (미사용 인터셉터)
  */
 @Slf4j
 @Intercepts({
-        @Signature(type = Executor.class, method = "update", args = {MappedStatement.class, Object.class})
-//      , @Signature(type = Executor.class, method = "query", args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class})
+        @Signature(type = Executor.class, method = "update", args = {MappedStatement.class, Object.class}),
+//        @Signature(type = Executor.class, method = "query", args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class})
 })
 public class MyBatisInterceptor implements Interceptor {
 

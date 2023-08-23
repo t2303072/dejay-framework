@@ -1,5 +1,6 @@
 package com.dejay.framework.mapper.common;
 
+import com.dejay.framework.common.annotation.EntityLog;
 import com.dejay.framework.vo.search.SearchVO;
 
 import java.util.List;
@@ -51,6 +52,7 @@ public interface GeneralMapper {
      * @param obj
      * @return
      */
+    @EntityLog
     int insert(Object obj);
 
     /**
@@ -58,6 +60,7 @@ public interface GeneralMapper {
      * @param obj
      * @return
      */
+    @EntityLog
     int update(Object obj);
 
     /**
@@ -72,5 +75,6 @@ public interface GeneralMapper {
      * @param key
      * @return
      */
+    @EntityLog
     int delete(Object key);
 }

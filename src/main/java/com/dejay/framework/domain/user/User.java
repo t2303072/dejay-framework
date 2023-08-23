@@ -1,6 +1,7 @@
 package com.dejay.framework.domain.user;
 
 import com.dejay.framework.common.enums.AuthorityEnum;
+import com.dejay.framework.common.enums.RequestTypeEnum;
 import com.dejay.framework.domain.common.BaseEntity;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -8,7 +9,6 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.sql.Timestamp;
 import java.util.Set;
 
 @ToString(callSuper = false)
@@ -28,14 +28,9 @@ public class User extends BaseEntity {
     private Set<AuthorityEnum> authority;
     private String deptCode;
 
-
     @Builder
-    public User(String id, String password, String name, String email, String picture, Set<AuthorityEnum> authority, String deptCode, String logId1, String logId2, String remark, String regId, Timestamp regDttm) {
-        super.setLogId1(logId1);
-        super.setLogId2(logId2);
-        super.setRemark(remark);
-        super.setRegId(regId);
-        super.setRegDttm(regDttm);
+    public User(String id, String password, String name, String email, String picture, Set<AuthorityEnum> authority, String deptCode, String tableName, String logId1, String logId2, String logType, String logJson, String remark, String regId) {
+        super(tableName, logId1, logId2, logType, logJson, remark, regId);
         this.id = id;
         this.password = password;
         this.name = name;

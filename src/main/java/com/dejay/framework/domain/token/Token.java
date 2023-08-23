@@ -1,11 +1,12 @@
 package com.dejay.framework.domain.token;
 
+import com.dejay.framework.domain.common.BaseEntity;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter
 @EqualsAndHashCode(of = "id")
-public class Token {
+public class Token extends BaseEntity {
 
     @NotNull(message = "memberId는 필수 값 입니다.")
     private String memberId;
@@ -16,7 +17,8 @@ public class Token {
     private String tokenType;
 
     @Builder
-    public Token(String memberId, String accessToken, String refreshToken) {
+    public Token(String memberId, String accessToken, String refreshToken, String tableName, String logId1, String logId2, String logType, String logJson, String remark, String regId) {
+        super(tableName, logId1, logId2, logType, logJson, remark, regId);
         this.memberId = memberId;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;

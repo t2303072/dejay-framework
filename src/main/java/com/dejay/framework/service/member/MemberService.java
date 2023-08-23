@@ -1,6 +1,9 @@
 package com.dejay.framework.service.member;
 
+import com.dejay.framework.common.annotation.EntityLog;
 import com.dejay.framework.common.enums.ExceptionCodeMsgEnum;
+import com.dejay.framework.common.enums.RequestTypeEnum;
+import com.dejay.framework.common.enums.TableNameEnum;
 import com.dejay.framework.common.exception.CustomLoginException;
 import com.dejay.framework.common.utils.ObjectHandlingUtil;
 import com.dejay.framework.common.utils.TokenFactory;
@@ -103,11 +106,11 @@ public class MemberService extends ParentService {
     }
 
     /**
-     * 사용자 등록
+     * 사용자 등록(미사용)
      * @param user
      * @return
      */
-    public User insert(User user) {
+    /*public User insert(User user) {
         var target = User.builder()
                 .id(user.getId())
                 .password(bCryptPasswordEncoder.encode(user.getPassword()))
@@ -119,7 +122,7 @@ public class MemberService extends ParentService {
         getCommonMapper().getMemberMapper().insert(target);
 
         return target;
-    }
+    }*/
 
     /**
      * 사용자 등록(w/ token)
@@ -133,14 +136,19 @@ public class MemberService extends ParentService {
                 .name(signUpRequest.getName())
                 .email(signUpRequest.getEmail())
                 .deptCode(signUpRequest.getAuthority().stream().toList().get(0).getDeptCode())
-                .logId1(signUpRequest.getId())
+                .tableName(TableNameEnum.MEMBER.name())
+                .logId1("")
                 .logId2(null)
+                .logType(RequestTypeEnum.CREATE.getRequestType())
+                .logJson(null)
+                .remark(null)
                 .regId(signUpRequest.getId())
                 .build();
 
-        validationUtil.parameterValidator(target, User.class);
-        long inserted = getCommonMapper().getMemberMapper().insert(target);
+//        saveUserInfo(target);
 
+        validationUtil.parameterValidator(target, User.class);
+        int inserted = getCommonMapper().getMemberMapper().insert(target);
         if(inserted > 0) {
             TokenObjectVO tokenObjectVO = tokenFactory.createJWT(signUpRequest.getId(), signUpRequest.getPassword(), signUpRequest.getAuthority());
             return tokenObjectVO;
@@ -172,4 +180,10 @@ public class MemberService extends ParentService {
             throw new RuntimeException(e);
         }
     }
+
+    // ----------------------------------------------------------------------------------------------------
+//    public void saveUserInfo(User target) {
+//        validationUtil.parameterValidator(target, User.class);
+//        getCommonMapper().getMemberMapper().insert(target);
+//    }
 }

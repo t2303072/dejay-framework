@@ -1,5 +1,6 @@
 package com.dejay.framework.mapper.member;
 
+import com.dejay.framework.common.annotation.EntityLog;
 import com.dejay.framework.domain.member.LoginRequest;
 import com.dejay.framework.domain.member.Member;
 import com.dejay.framework.domain.user.User;
@@ -17,7 +18,10 @@ public interface MemberMapper extends GeneralMapper {
     int memberListSearchCount(SearchVO search);
     List<MemberVO> getMemberList(SearchVO searchObject);
     MemberVO findMemberById(int id);
-    long insertMember(Member member);
+    int insertMember(Member member);
     MemberVO findMemberByUserName(String userName);
     MemberVO getLoginInfo(LoginRequest loginRequest);
+
+    @EntityLog
+    int signUp(User user);
 }

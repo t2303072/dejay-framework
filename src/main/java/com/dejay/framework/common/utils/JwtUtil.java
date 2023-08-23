@@ -2,6 +2,8 @@ package com.dejay.framework.common.utils;
 
 import com.dejay.framework.common.enums.ExceptionCodeMsgEnum;
 import com.dejay.framework.common.enums.MapKeyStringEnum;
+import com.dejay.framework.common.enums.RequestTypeEnum;
+import com.dejay.framework.common.enums.TableNameEnum;
 import com.dejay.framework.common.exception.CustomJwtException;
 import com.dejay.framework.domain.common.TokenObjectVO;
 import com.dejay.framework.domain.token.Token;
@@ -57,6 +59,12 @@ public class JwtUtil {
                 .memberId(userName)
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
+                .tableName(TableNameEnum.TOKEN.name())
+                .logId1(tokenMapper.findTokenSeq(userName))
+//                .logId2()
+                .logType(RequestTypeEnum.CREATE.getRequestType())
+//                .remark()
+                .regId("SYSTEM")
                 .build();
         validationUtil.parameterValidator(target, Token.class);
 
@@ -67,7 +75,14 @@ public class JwtUtil {
             tokenMapper.update(target);
         }
 
-        return TokenObjectVO.builder().accessToken(accessToken).refreshToken(refreshToken).key(userName).build();
+        return TokenObjectVO.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .key(userName)
+                .logId1(userName)
+                .tableName(TableNameEnum.TOKEN.name())
+                .regId(userName)
+                .build();
     }
 
     /**

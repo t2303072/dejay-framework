@@ -40,7 +40,7 @@ public class TokenController extends ParentController {
      */
     @PostMapping(value = {"", "/"})
     public ResponseEntity createJWT(@RequestBody @Valid LoginRequest loginRequest) {
-        TokenObjectVO tokenObjectVO = getCommonUtil().tokenFactory().createJWT(loginRequest.getUserName(), loginRequest.getPassword(), loginRequest.getAuthority());
+        TokenObjectVO tokenObjectVO = getCommonUtil().getTokenFactory().createJWT(loginRequest.getUserName(), loginRequest.getPassword(), loginRequest.getAuthority());
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(tokenObjectVO, ResultCodeMsgEnum.NO_DATA);
         var mapKeyList = Arrays.asList(MapKeyStringEnum.TOKEN_OBJECT.getKeyString());
         Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, tokenObjectVO);
@@ -72,7 +72,7 @@ public class TokenController extends ParentController {
             status = HttpStatus.BAD_REQUEST;
         } else {
             Set<String> authoritySet = Set.of(authentication.getAuthorities().stream().toArray()[0].toString());
-            tokenObjectVO = getCommonUtil().tokenFactory().createJWT(authentication.getPrincipal().toString(), null, authoritySet);
+            tokenObjectVO = getCommonUtil().getTokenFactory().createJWT(authentication.getPrincipal().toString(), null, authoritySet);
         }
 
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(tokenObjectVO, ResultCodeMsgEnum.INVALID_HEADER);
