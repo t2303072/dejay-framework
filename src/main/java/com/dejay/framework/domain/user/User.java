@@ -30,12 +30,11 @@ public class User extends BaseEntity {
 
 
     @Builder
-    public User(String id, String password, String name, String email, String picture, Set<AuthorityEnum> authority, String deptCode, String logId1, String logId2, String remark, String regId, Timestamp regDttm) {
+    public User(String id, String password, String name, String email, String picture, Set<AuthorityEnum> authority, String deptCode, String logId1, String logId2, String remark, String regId) {
         super.setLogId1(logId1);
         super.setLogId2(logId2);
         super.setRemark(remark);
         super.setRegId(regId);
-        super.setRegDttm(regDttm);
         this.id = id;
         this.password = password;
         this.name = name;

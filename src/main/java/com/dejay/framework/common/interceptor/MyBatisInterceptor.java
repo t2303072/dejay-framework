@@ -4,8 +4,6 @@ import com.dejay.framework.common.enums.RequestTypeEnum;
 import com.dejay.framework.common.utils.StringUtil;
 import com.dejay.framework.domain.common.BaseEntity;
 import com.dejay.framework.domain.user.User;
-import com.dejay.framework.mapper.common.TableMapper;
-import com.dejay.framework.service.common.TableService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
