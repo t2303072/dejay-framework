@@ -63,7 +63,7 @@ public class BoardController extends ParentController {
 
     /**
      * 게시판 저장
-     * @param dataObjectGET
+     * @param dataObject
      * @return
      */
     @PostMapping(value="/insert")
