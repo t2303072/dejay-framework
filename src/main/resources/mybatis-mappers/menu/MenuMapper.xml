@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dejay.framework.mapper.menu.MenuMapper">
+    <!-- 공통 [[ -->
+
+    <!-- column [[ -->
+
+    <sql id="menuColumn">
+            ${alias}MENU_SEQ, ${alias}P_MENU_SEQ
+            , ${alias}MENU_TYPE, ${alias}MENU_ID
+            , ${alias}MENU_DEPTH, ${alias}MENU_TITLE
+            , ${alias}MENU_URL, ${alias}MENU_ORD
+            , ${alias}DISPLAY_YN, ${alias}USE_YN
+    </sql>
+
+
+    <!-- column ]] -->
+
+    <!-- whereClause [[ -->
+    <sql id="whereClause">
+        <if test="menuTitle != null and menuTitle != '' ">
+            AND ${alias}MENU_TITLE = #{menuTitle}
+        </if>
+        <if test="menuId != null and menuId != '' ">
+            AND ${alias}MENU_ID = #{menuId}
+        </if>
+        <if test="menuUrl != null and menuUrl != '' ">
+            AND ${alias}MENU_URL = #{menuUrl}
+        </if>
+    </sql>
+
+    <sql id= "whereClausePSeq">
+        <choose>
+            <when test="pMenuSeq != null and  pMenuSeq != '' ">
+                ${alias}P_MENU_SEQ = #{pMenuSeq}
+            </when>
+            <otherwise> P_MENU_SEQ IS NULL </otherwise>
+        </choose>
+    </sql>
+
+    <sql id = "whereClauseId">
+        AND ${alias}MENU_ID = #{menuId}
+    </sql>
+
+
+
+    <!-- whereClause ]] -->
+
+    <!-- orderClause [[ -->
+
+
+
+    <!-- orderClause ]] -->
+
+    <!-- 공통 ]] -->
+
+    <!-- 조회 [[ -->
+
+    <select id="getSmMenuList" resultType="MenuVO" parameterType="MenuSearchVO">
+        /* 소메뉴 조회 - MenuMapper.getSmMenuList */
+        WITH SRCH_MENU AS(
+            SELECT MN.MENU_SEQ
+            FROM MENU MN
+            <where>
+                <include refid="whereClauseId"><property name="alias" value="MN."/></include>
+            </where>
+        )
+        SELECT
+            <include refid="menuColumn"><property name="alias" value="MN."/></include>
+        FROM MENU MN
+        INNER JOIN SRCH_MENU SMN
+                ON MN.P_MENU_SEQ = SMN.MENU_SEQ
+                ORDER BY MENU_ORD ASC
+        </select>
+
+    <select id="getLgMenuList" resultType="MenuVO">
+        /* 대메뉴 조회 - MenuMapper.getLgMenuList */
+        SELECT
+            <include refid="menuColumn"><property name="alias" value="MN."/></include>
+        FROM MENU MN
+        WHERE
+            MN.P_MENU_SEQ IS NULL
+        ORDER BY MENU_ORD ASC
+    </select>
+
+    <select id="getOrdMax" resultType="Long" parameterType="Long">
+        /* 최대 메뉴 순서 조회 - MenuMapper.getOrdMax*/
+        SELECT MAX(MN.MENU_ORD) + 1 AS MO
+        FROM MENU MN
+        <where>
+            <include refid="whereClausePSeq"><property name="alias" value="MN."/></include>
+        </where>
+    </select>
+
+    <select id = "rowBySearch" resultType="MenuVO" parameterType="MenuSearchVO">
+        /* 게시판 단 건 조회 */
+        SELECT
+            <include refid="menuColumn"><property name="alias" value="MN."/></include>
+            ,(SELECT TMN.MENU_TITLE FROM MENU TMN WHERE MN.P_MENU_SEQ = TMN.MENU_SEQ) AS P_TITLE
+        FROM MENU MN
+        <where>
+            <include refid="whereClause"><property name="alias" value="MN."/></include>
+        </where>
+    </select>
+    <!-- 조회 ]] -->
+
+
+    <!-- 저장/수정/삭제 [[ -->
+
+    <insert id="insert">
+        /* 메뉴 삽입 - MenuMapper.insertMenu*/
+        INSERT INTO MENU
+            (P_MENU_SEQ,
+             MENU_TYPE,
+             MENU_ID,
+             MENU_DEPTH,
+             MENU_TITLE,
+             MENU_URL,
+             MENU_ORD,
+             DISPLAY_YN,
+             USE_YN )
+        VALUES ( #{pMenuSeq},
+                 #{menuType},
+                 #{menuId},
+                 #{menuDepth},
+                 #{menuTitle},
+                 #{menuUrl},
+                 #{menuOrd},
+                 #{displayYn},
+                 #{useYn} )
+        </insert>
+
+    <update id="update">
+        /* 메뉴 업데이트 MenuMapper.update*/
+        UPDATE MENU MN
+        <set>
+            <if test="menuTitle != null and menuTitle != '' ">MN.MENU_TITLE = #{menuTitle},</if>
+            <if test="menuUrl != null and menuUrl != '' ">MN.MENU_URL = #{menuUrl},</if>
+            <if test="displayYn != null and displayYn != '' ">MN.DISPLAY_YN = #{displayYn}</if>
+        </set>
+        <where>
+            <include refid="whereClauseId"><property name="alias" value="MN."/></include>
+        </where>
+    </update>
+
+    <update id="updateOrd">
+        /* 순서 업데이트 MenuMapper.updateOrd */
+        UPDATE MENU MN
+        <set>
+            <if test="menuOrd != null and menuOrd != '' "> MN.MENU_ORD = #{menuOrd} </if>
+        </set>
+        WHERE
+            <include refid="whereClausePSeq"><property name="alias" value="MN."/></include>
+            AND MN.MENU_ID = #{menuId}
+    </update>
+
+    <!-- 저장/수정/삭제 [[ -->
+
+</mapper>

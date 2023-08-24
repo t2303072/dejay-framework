@@ -4,6 +4,7 @@ package com.dejay.framework.mapper.common;
 import com.dejay.framework.mapper.board.BoardMapper;
 import com.dejay.framework.mapper.code.CodeMapper;
 import com.dejay.framework.mapper.member.MemberMapper;
+import com.dejay.framework.mapper.menu.MenuMapper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,4 +23,6 @@ public class CommonMapper {
     private final MemberMapper memberMapper;
 
     private final BoardMapper boardMapper;
+
+    private final MenuMapper menuMapper;
 }

@@ -3,6 +3,7 @@ package com.dejay.framework.domain.common;
 import com.dejay.framework.domain.board.Board;
 import com.dejay.framework.domain.code.Code;
 import com.dejay.framework.domain.member.Member;
+import com.dejay.framework.domain.menu.Menu;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,5 +30,9 @@ public class DataObject {
         private Board board;
 
         private List<Board> boardList;
+
+        private Menu menu;
+
+        private List<Menu> menuList;
     }
 }
