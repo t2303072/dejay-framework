@@ -1,13 +1,13 @@
 package com.dejay.framework.domain.menu;
 
+import com.dejay.framework.domain.common.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 @Getter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Menu {
+public class Menu extends BaseEntity {
     // 메뉴 SEQ
     @JsonProperty("menuSeq")
     private Long menuSeq;
@@ -40,4 +40,18 @@ public class Menu {
     // 사용 여부
     private String useYn;
 
+    @Builder
+    public Menu(String tableName, String logId1, String logId2, String logType, String logJson, String remark, String regId, Long menuSeq, Long pMenuSeq, String menuType, String menuId, Long menuDepth, String menuTitle, String menuUrl, Long menuOrd, String displayYn, String useYn){
+        super(tableName, logId1, logId2, logType,logJson, remark, regId);
+        this.menuSeq = menuSeq;
+        this.pMenuSeq = pMenuSeq;
+        this.menuType = menuType;
+        this.menuId = menuId;
+        this.menuDepth = menuDepth;
+        this.menuTitle = menuTitle;
+        this.menuUrl = menuUrl;
+        this.menuOrd = menuOrd;
+        this.displayYn = displayYn;
+        this.useYn = useYn;
+    }
 }

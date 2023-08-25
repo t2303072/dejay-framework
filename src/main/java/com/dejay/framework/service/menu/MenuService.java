@@ -1,5 +1,7 @@
 package com.dejay.framework.service.menu;
 
+import com.dejay.framework.common.enums.RequestTypeEnum;
+import com.dejay.framework.common.enums.TableNameEnum;
 import com.dejay.framework.common.utils.StringUtil;
 import com.dejay.framework.domain.menu.Menu;
 import com.dejay.framework.service.common.ParentService;
@@ -22,7 +24,7 @@ public class MenuService extends ParentService {
      * @param menu
      * @return 삽입 성공 1, 삽입 실패 0
      */
-    public int insertMenu(Menu menu){
+    public int insertMenu(Menu menu, MemberVO member){
         Menu target = Menu.builder()
                 .pMenuSeq(menu.getPMenuSeq())
                 .menuId(menu.getMenuId())
@@ -33,6 +35,13 @@ public class MenuService extends ParentService {
                 .menuOrd(getOrdMax(menu.getPMenuSeq()))
                 .displayYn(menu.getDisplayYn())
                 .useYn(menu.getUseYn())
+                .tableName(TableNameEnum.MENU.name())
+                .logId1("")
+                .logType(RequestTypeEnum.CREATE.getRequestType())
+                .logId2(null)
+                .logJson(null)
+                .remark(null)
+                .regId(member.getMemberId())
                 .build();
 
         int iAffectedRows = getCommonMapper().getMenuMapper().insert(target);
@@ -85,12 +94,23 @@ public class MenuService extends ParentService {
      * @param menu
      * @return 수정 성공 1, 수정 실패 0
      */
-    public int updateMenu(Menu menu) {
+    public int updateMenu(Menu menu, MemberVO member) {
+
+        // menuId에 해당하는 menuSeq 조회
+        Long menuSeq = (Long) getCommonMapper().getMenuMapper().rowByKey(menu.getMenuId());
+
          Menu target = Menu.builder()
                             .menuTitle(menu.getMenuTitle())
                             .menuId(menu.getMenuId())
                             .menuUrl(menu.getMenuUrl())
                             .displayYn(menu.getDisplayYn())
+                            .tableName(TableNameEnum.MENU.name())
+                            .logId1(String.valueOf(menuSeq))
+                            .logType(RequestTypeEnum.UPDATE.getRequestType())
+                            .logId2(null)
+                            .logJson(null)
+                            .remark(null)
+                            .regId(member.getMemberId())
                             .build();
 
          int iAffectedRows = getCommonMapper().getMenuMapper().update(target);
@@ -103,15 +123,28 @@ public class MenuService extends ParentService {
      * @param menuList
      * @return 변경 성공 1 , 변경 실패 0
      */
-    public Integer updateOrd(List<Menu> menuList){
+    public Integer updateOrd(List<Menu> menuList, MemberVO member){
 
         Iterator<Menu> iter = menuList.iterator();
 
         int iAffectedRows=0;
         while(iter.hasNext()) {
             Menu menu = iter.next();
+            Long menuSeq = (Long) getCommonMapper().getMenuMapper().rowByKey(menu.getMenuId());
+            Menu target = Menu.builder()
+                                .menuId(menu.getMenuId())
+                                .menuOrd(menu.getMenuOrd())
+                                .pMenuSeq(menu.getPMenuSeq())
+                                .tableName(TableNameEnum.MENU.name())
+                                .logId1(String.valueOf(menuSeq))
+                                .logType(RequestTypeEnum.UPDATE.getRequestType())
+                                .logId2(null)
+                                .logJson(null)
+                                .remark(null)
+                                .regId(member.getMemberId())
+                                .build();
 
-            iAffectedRows = getCommonMapper().getMenuMapper().updateOrd(menu);
+            iAffectedRows = getCommonMapper().getMenuMapper().updateOrd(target);
             if(iAffectedRows<=0) break;
         }
 

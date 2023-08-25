@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 public class MenuSearchVO extends SearchVO {
     // 메뉴 Seq
-    private int menuSeq;
+    private Long menuSeq;
     // 메뉴 ID
     private String menuId;
 

@@ -12,6 +12,7 @@ import com.dejay.framework.vo.board.BoardVO;
 import com.dejay.framework.vo.common.ResultStatusVO;
 import com.dejay.framework.vo.member.MemberVO;
 import com.dejay.framework.vo.menu.MenuVO;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -77,8 +78,9 @@ public class MenuController extends ParentController {
      * @return
      */
     @PostMapping("/insert")
-    public ResponseEntity insertMenu(@RequestBody @Valid DataObject dataObject){
-        int inserted = getCommonService().getMenuService().insertMenu(dataObject.getData().getMenu());
+    public ResponseEntity insertMenu(@RequestBody @Valid DataObject dataObject, HttpServletRequest request){
+        MemberVO member = ObjectHandlingUtil.extractLoginInfo(request);
+        int inserted = getCommonService().getMenuService().insertMenu(dataObject.getData().getMenu(), member);
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(inserted, RequestTypeEnum.CREATE);
         Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO);
 
@@ -91,8 +93,9 @@ public class MenuController extends ParentController {
      * @return
      */
     @PostMapping("/update")
-    public ResponseEntity updateMenu(@RequestBody @Valid DataObject dataObject){
-        int inserted = getCommonService().getMenuService().updateMenu(dataObject.getData().getMenu());
+    public ResponseEntity updateMenu(@RequestBody @Valid DataObject dataObject, HttpServletRequest request){
+        MemberVO member = ObjectHandlingUtil.extractLoginInfo(request);
+        int inserted = getCommonService().getMenuService().updateMenu(dataObject.getData().getMenu(), member);
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(inserted, RequestTypeEnum.UPDATE);
         Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO);
 
@@ -105,8 +108,9 @@ public class MenuController extends ParentController {
      * @return
      */
     @PostMapping("/updateOrd")
-    public ResponseEntity updateOrd(@RequestBody @Valid DataObject dataObject){
-        int inserted = getCommonService().getMenuService().updateOrd(dataObject.getData().getMenuList());
+    public ResponseEntity updateOrd(@RequestBody @Valid DataObject dataObject, HttpServletRequest request){
+        MemberVO member = ObjectHandlingUtil.extractLoginInfo(request);
+        int inserted = getCommonService().getMenuService().updateOrd(dataObject.getData().getMenuList(), member);
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(inserted, RequestTypeEnum.UPDATE);
         Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO);
 
