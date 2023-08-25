@@ -4,6 +4,7 @@ import com.dejay.framework.service.authority.AuthorityService;
 import com.dejay.framework.service.board.BoardService;
 import com.dejay.framework.service.code.CodeService;
 import com.dejay.framework.service.member.MemberService;
+import com.dejay.framework.service.menu.MenuService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -20,4 +21,5 @@ public class CommonService {
     private final MemberService memberService;
     private final AuthorityService authorityService;
     private final BoardService boardService;
+    private final MenuService menuService;
 }

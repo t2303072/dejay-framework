@@ -24,11 +24,13 @@ public enum MapKeyStringEnum {
     , BOARD("board")
     , BOARD_VO("boardVO")
     , USER("user")
+    , MENU("menu")
 
     // Collection
     , MEMBER_LIST("memberList")
     , CODE_LIST("codeList")
     , BOARD_LIST("boardList")
+    , MENU_LIST("menuList")
 
     // Token
     , JWT_USERNAME("userName")

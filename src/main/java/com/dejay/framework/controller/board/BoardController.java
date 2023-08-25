@@ -68,7 +68,7 @@ public class BoardController extends ParentController {
      */
     @PostMapping(value="/insert")
     public ResponseEntity insertBoard(@RequestBody @Valid DataObject dataObject) throws Exception {
-        Integer inserted = getCommonService().getBoardService().insertBoard(dataObject.getData().getBoard());
+        int inserted = getCommonService().getBoardService().insertBoard(dataObject.getData().getBoard());
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(inserted, RequestTypeEnum.CREATE);
         Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO);
 
@@ -83,7 +83,7 @@ public class BoardController extends ParentController {
      */
     @PostMapping(value="/update")
     public ResponseEntity updateBoard(@RequestBody @Valid DataObject dataObject){
-        Integer inserted = getCommonService().getBoardService().updateBoard(dataObject.getData().getBoard());
+        int inserted = getCommonService().getBoardService().updateBoard(dataObject.getData().getBoard());
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(inserted, RequestTypeEnum.UPDATE);
         Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO);
 
@@ -97,7 +97,7 @@ public class BoardController extends ParentController {
      */
     @PostMapping(value="/delete")
     public ResponseEntity deleteBoard(@RequestBody @Valid DataObject dataObject){
-        Integer deleted = getCommonService().getBoardService().deleteBoard(dataObject.getData().getBoard());
+        int deleted = getCommonService().getBoardService().deleteBoard(dataObject.getData().getBoard());
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(deleted,RequestTypeEnum.DELETE);
         Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO);
 

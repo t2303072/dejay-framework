@@ -22,7 +22,7 @@ public class BoardService extends ParentService {
      * @return
      * @throws Exception
      */
-    public Integer insertBoard(Board board) throws Exception{
+    public int insertBoard(Board board) throws Exception{
         Board target = Board.builder()
                             .boardCd(board.getBoardCd())
                             .title(board.getTitle())
@@ -31,10 +31,10 @@ public class BoardService extends ParentService {
                             .displayYn(board.getDisplayYn())
                             .useYn(board.getUseYn())
                             .build();
-        boolean isValidated = getValidationUtil().parameterValidator(target, Board.class);
+
         int iAffectedRows = getCommonMapper().getBoardMapper().insert(target);
 
-        return iAffectedRows <= 0 ? null : iAffectedRows;
+        return iAffectedRows;
     }
 
     /**
@@ -64,7 +64,7 @@ public class BoardService extends ParentService {
      * @param board
      * @return
      */
-    public Integer updateBoard(Board board){
+    public int updateBoard(Board board){
         Board target = Board.builder()
                             .boardSeq(board.getBoardSeq())
                             .title(board.getTitle())
@@ -77,7 +77,7 @@ public class BoardService extends ParentService {
         // Mapper Update
         int iAffectedRows = getCommonMapper().getBoardMapper().update(target);
 
-        return iAffectedRows <= 0 ? null : iAffectedRows;
+        return iAffectedRows;
     }
 
     /**
@@ -97,7 +97,7 @@ public class BoardService extends ParentService {
 
         int iAffectedRows = getCommonMapper().getBoardMapper().delete(target);
 
-        return iAffectedRows <= 0 ? null : iAffectedRows ;
+        return iAffectedRows;
     }
 
 }
