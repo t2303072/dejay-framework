@@ -1,12 +1,13 @@
 package com.dejay.framework.domain.board;
 
+import com.dejay.framework.domain.common.BaseEntity;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter
-@Builder
 @AllArgsConstructor
-public class Board {
+@NoArgsConstructor
+public class Board extends BaseEntity {
     // 게시판 SEQ
     private Long boardSeq;
 
@@ -32,4 +33,16 @@ public class Board {
     // 사용 여부
     @NotNull(message="사용 여부는 필수값 입니다.")
     private String useYn;
+
+    @Builder
+    public Board(String tableName, String logId1, String logId2, String logType, String logJson, String remark, String regId,Long boardSeq,String boardCd, String title, String contents, String fixYn, String displayYn, String useYn){
+        super(tableName, logId1, logId2, logType, logJson, remark, regId);
+        this.boardSeq = boardSeq;
+        this.boardCd = boardCd;
+        this.title = title;
+        this.contents = contents;
+        this.fixYn = fixYn;
+        this.displayYn = displayYn;
+        this.useYn =useYn;
+    }
 }

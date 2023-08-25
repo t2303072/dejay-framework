@@ -1,10 +1,14 @@
 package com.dejay.framework.service.board;
 
+import com.dejay.framework.common.enums.RequestTypeEnum;
+import com.dejay.framework.common.enums.TableNameEnum;
+import com.dejay.framework.common.utils.CommonUtil;
 import com.dejay.framework.common.utils.ObjectHandlingUtil;
 import com.dejay.framework.domain.board.Board;
 import com.dejay.framework.domain.common.Paging;
 import com.dejay.framework.service.common.ParentService;
 import com.dejay.framework.vo.board.BoardVO;
+import com.dejay.framework.vo.member.MemberVO;
 import com.dejay.framework.vo.search.board.BoardSearchVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,7 +26,8 @@ public class BoardService extends ParentService {
      * @return
      * @throws Exception
      */
-    public int insertBoard(Board board) throws Exception{
+    public int insertBoard(Board board, MemberVO member) throws Exception{
+
         Board target = Board.builder()
                             .boardCd(board.getBoardCd())
                             .title(board.getTitle())
@@ -30,6 +35,13 @@ public class BoardService extends ParentService {
                             .fixYn(board.getFixYn())
                             .displayYn(board.getDisplayYn())
                             .useYn(board.getUseYn())
+                            .tableName(TableNameEnum.BOARD.name())
+                            .logId1("")
+                            .logType(RequestTypeEnum.CREATE.getRequestType())
+                            .logId2(null)
+                            .logJson(null)
+                            .remark(null)
+                            .regId(member.getMemberName())
                             .build();
 
         int iAffectedRows = getCommonMapper().getBoardMapper().insert(target);
@@ -64,7 +76,7 @@ public class BoardService extends ParentService {
      * @param board
      * @return
      */
-    public int updateBoard(Board board){
+    public int updateBoard(Board board, MemberVO member){
         Board target = Board.builder()
                             .boardSeq(board.getBoardSeq())
                             .title(board.getTitle())
@@ -72,6 +84,13 @@ public class BoardService extends ParentService {
                             .fixYn(board.getFixYn())
                             .displayYn(board.getDisplayYn())
                             .useYn(board.getUseYn())
+                            .tableName(TableNameEnum.BOARD.name())
+                            .logId1(String.valueOf(board.getBoardSeq()))
+                            .logType(RequestTypeEnum.UPDATE.getRequestType())
+                            .logId2(null)
+                            .logJson(null)
+                            .remark(null)
+                            .regId(member.getMemberName())
                             .build();
 
         // Mapper Update
@@ -85,7 +104,7 @@ public class BoardService extends ParentService {
      * @param board
      * @return
      */
-    public Integer deleteBoard(Board board){
+    public int deleteBoard(Board board, MemberVO member){
         Board target = Board.builder()
                             .boardSeq(board.getBoardSeq())
                             .title(board.getTitle())
@@ -93,6 +112,13 @@ public class BoardService extends ParentService {
                             .fixYn(board.getFixYn())
                             .displayYn(board.getDisplayYn())
                             .useYn(board.getUseYn())
+                            .tableName(TableNameEnum.BOARD.name())
+                            .logId1(String.valueOf(board.getBoardSeq()))
+                            .logType(RequestTypeEnum.DELETE.getRequestType())
+                            .logId2(null)
+                            .logJson(null)
+                            .remark(null)
+                            .regId(member.getMemberName())
                             .build();
 
         int iAffectedRows = getCommonMapper().getBoardMapper().delete(target);

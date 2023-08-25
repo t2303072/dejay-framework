@@ -10,10 +10,14 @@ import com.dejay.framework.domain.common.DataObject;
 import com.dejay.framework.domain.common.SearchObject;
 import com.dejay.framework.vo.board.BoardVO;
 import com.dejay.framework.vo.common.ResultStatusVO;
+import com.dejay.framework.vo.member.MemberVO;
 import com.dejay.framework.vo.search.board.BoardSearchVO;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,8 +71,10 @@ public class BoardController extends ParentController {
      * @return
      */
     @PostMapping(value="/insert")
-    public ResponseEntity insertBoard(@RequestBody @Valid DataObject dataObject) throws Exception {
-        int inserted = getCommonService().getBoardService().insertBoard(dataObject.getData().getBoard());
+    public ResponseEntity insertBoard(@RequestBody @Valid DataObject dataObject, HttpServletRequest request) throws Exception {
+        MemberVO member = ObjectHandlingUtil.extractLoginInfo(request);
+
+        int inserted = getCommonService().getBoardService().insertBoard(dataObject.getData().getBoard(),member);
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(inserted, RequestTypeEnum.CREATE);
         Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO);
 
@@ -78,12 +84,13 @@ public class BoardController extends ParentController {
     /**
      * 게시판 수정
      * @param dataObject
-     *
      * @return
      */
     @PostMapping(value="/update")
-    public ResponseEntity updateBoard(@RequestBody @Valid DataObject dataObject){
-        int inserted = getCommonService().getBoardService().updateBoard(dataObject.getData().getBoard());
+    public ResponseEntity updateBoard(@RequestBody @Valid DataObject dataObject, HttpServletRequest request){
+        MemberVO member = ObjectHandlingUtil.extractLoginInfo(request);
+
+        int inserted = getCommonService().getBoardService().updateBoard(dataObject.getData().getBoard(), member);
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(inserted, RequestTypeEnum.UPDATE);
         Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO);
 
@@ -96,8 +103,10 @@ public class BoardController extends ParentController {
      * @return
      */
     @PostMapping(value="/delete")
-    public ResponseEntity deleteBoard(@RequestBody @Valid DataObject dataObject){
-        int deleted = getCommonService().getBoardService().deleteBoard(dataObject.getData().getBoard());
+    public ResponseEntity deleteBoard(@RequestBody @Valid DataObject dataObject,HttpServletRequest request){
+        MemberVO member = ObjectHandlingUtil.extractLoginInfo(request);
+
+        int deleted = getCommonService().getBoardService().deleteBoard(dataObject.getData().getBoard(), member);
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(deleted,RequestTypeEnum.DELETE);
         Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO);
 

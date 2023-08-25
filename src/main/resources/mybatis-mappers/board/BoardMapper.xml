@@ -100,7 +100,7 @@
 
     <!-- 저장/수정/삭제 [[ -->
 
-    <insert id="insert" >
+    <insert id="insert" useGeneratedKeys="true">
         /* 게시판 저장 - BoardMapper.insert */
         INSERT INTO BOARD
         (
@@ -114,6 +114,9 @@
            #{contents}, #{fixYn},
             #{displayYn}, #{useYn}
         )
+        <selectKey keyProperty="logId1" resultType="String">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
     </insert>
 
     <update id="update">
@@ -129,6 +132,7 @@
         <where>
             <include refid="whereClauseSeq"><property name="alias" value="BD."/></include>
         </where>
+
     </update>
 
     <delete id="delete">
