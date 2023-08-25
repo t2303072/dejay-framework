@@ -15,8 +15,9 @@ import org.apache.ibatis.scripting.xmltags.TextSqlNode;
 import org.springframework.util.StringUtils;
 
 /**
- * TODO: IJ 인터셉터를 통한 table 관련 logging은 추후에 설계가 명확하게 잡히면 진행
+ * 테이블 데이터 변경 이력 저장 인터셉터 (미사용)
  */
+@Deprecated
 @Slf4j
 @Intercepts({
         @Signature(type = Executor.class, method = "update", args = {MappedStatement.class, Object.class}),
@@ -54,7 +55,6 @@ public class MyBatisInterceptor implements Interceptor {
         log.info("paramList: {}", paramList);
 
 //        String resultMapId = sql.substring(sql.indexOf("(") + 1, sql.indexOf(")"));
-
         SqlCommandType sqlCommandType = mappedStatement.getSqlCommandType();
         log.info("sqlCommandType: {}", sqlCommandType);
         if(sqlCommandType.equals(SqlCommandType.INSERT)) {
@@ -119,7 +119,6 @@ public class MyBatisInterceptor implements Interceptor {
         return builder.build();
     }
 
-
     /**
      * 저장 쿼리 실행
      * @param tableName
@@ -173,8 +172,8 @@ public class MyBatisInterceptor implements Interceptor {
         }
 
         sb.append(", ").append("\"").append(obj.getRegId()).append("\"");
-
         sb.append(", ").append("NOW()");
+
         return sb;
     }
 

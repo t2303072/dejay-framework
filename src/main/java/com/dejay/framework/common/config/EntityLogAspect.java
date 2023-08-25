@@ -1,72 +1,120 @@
 package com.dejay.framework.common.config;
 
-import com.dejay.framework.common.utils.CommonUtil;
-import com.dejay.framework.common.utils.CookieFactory;
-import com.dejay.framework.common.utils.SessionFactory;
-import com.dejay.framework.common.utils.TokenFactory;
+import com.dejay.framework.common.utils.*;
 import com.dejay.framework.domain.common.BaseEntity;
-import com.dejay.framework.domain.common.EntityLog;
 import com.dejay.framework.mapper.common.EntityLogMapper;
+import com.dejay.framework.vo.member.MemberVO;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
+
+@Slf4j
 @Aspect
 @Component
 public class EntityLogAspect extends CommonUtil {
 
     private final EntityLogMapper entityLogMapper;
     private final ObjectMapper objectMapper;
+    private final ValidationUtil validationUtil;
 
-    public EntityLogAspect(TokenFactory tokenFactory, SessionFactory sessionFactory, CookieFactory cookieFactory, EntityLogMapper entityLogMapper, ObjectMapper objectMapper) {
+    public EntityLogAspect(TokenFactory tokenFactory, SessionFactory sessionFactory, CookieFactory cookieFactory, EntityLogMapper entityLogMapper, ObjectMapper objectMapper, ValidationUtil validationUtil) {
         super(tokenFactory, sessionFactory, cookieFactory);
         this.entityLogMapper = entityLogMapper;
         this.objectMapper = objectMapper;
+        this.validationUtil = validationUtil;
     }
-
-//    @Around("execution(* com.dejay.framework..*.*Service.*(..))")
-//    public Object elapsedTimeLog(ProceedingJoinPoint pjp) throws Throwable {
-//        long start = System.currentTimeMillis();
-//        System.out.println("Start: " + start);
-//        Object proceed = pjp.proceed();
-//        System.out.println("End: " + (System.currentTimeMillis() - start));
-//
-//        return proceed;
-//    }
-
-    @Pointcut("execution(public void com.dejay.framework.service.member.MemberService.*(com.dejay.framework.domain.user.User))")
-    public void saveEntityLog() {}
 
     @AfterReturning(value = "@annotation(com.dejay.framework.common.annotation.EntityLog)", returning = "retVal")
     public void saveEntityLog(JoinPoint joinPoint, Object retVal) throws Throwable {
-        System.out.println("###################### @@AFTER RETURNING@@  ######################## ");
-
         Object[] args = joinPoint.getArgs();
-        String parameterName = args[0].getClass().getSimpleName();
+//        String parameterName = args[0].getClass().getSimpleName();
 //        String methodName = joinPoint.getSignature().getName();
-        String tablePrimaryKey = entityLogMapper.getTablePrimaryKey(((BaseEntity) args[0]).getTableName());
+//        String tablePrimaryKey = entityLogMapper.getTablePrimaryKey(((BaseEntity) args[0]).getTableName());
 
-        /** TODO: IJ
-         * 1. 파라미터 세팅
-         * 2. entity_log 저장
+        /**
+         * 1. ENTITY_LOG 저장 대상 객체 세팅
+         * 2. ENTITY_LOG & ENTITY_HISTORY 저장
+         * 3. 처리 유형(logType) 별 분기 처리
          * */
-        if(retVal.getClass().equals(Integer.class) && ((Integer) retVal).intValue() > 0) {
-            BaseEntity castObj = (BaseEntity) args[0];
-            BaseEntity target = new BaseEntity(castObj.getTableName()
-                                             , castObj.getLogId1()
-                                             , castObj.getLogId2()
-                                             , castObj.getLogType()
-                                             , objectMapper.writeValueAsString(castObj)
-                                             , castObj.getRemark()
-                                             , castObj.getRegId());
-
-            int insert = entityLogMapper.saveEntityLogData(target);
+        // LOGIN
+        if(retVal != null && retVal.getClass().equals(MemberVO.class)) {
+            MemberVO castObj = (MemberVO) retVal;
+            BaseEntity target = entitySaveTargetSetter(castObj);
+            storeEntityLog(target);
         }
 
-        System.out.println("==============================");
+        // CREATE, UPDATE, DELETE(RequestTypeEnum)
+        if((retVal.getClass().equals(Integer.class) && ((Integer) retVal).intValue() > 0)) {
+            BaseEntity castObj = (BaseEntity) args[0];
+            BaseEntity target = entitySaveTargetSetter(castObj);
+            storeEntityLog(target);
+        }
+
+    }
+
+    /**
+     * ENTITY_LOG & ENTITY_HISTORY 저장 대상 객체 Setter
+     * @param castObj
+     * @return
+     * @param <T>
+     * @throws JsonProcessingException
+     */
+    private BaseEntity entitySaveTargetSetter(BaseEntity castObj) throws JsonProcessingException {
+        BaseEntity target = new BaseEntity(castObj.getTableName()
+                , castObj.getLogId1()
+                , castObj.getLogId2()
+                , castObj.getLogType()
+                , objectMapper.writeValueAsString(castObj)
+                , castObj.getRemark()
+                , castObj.getRegId());
+
+        validationUtil.parameterValidator(target, BaseEntity.class);
+
+        return target;
+    }
+
+    /**
+     * ENTITY_LOG & ENTITY_HISTORY 저장
+     * @param target {@link BaseEntity}
+     */
+    private void storeEntityLog(BaseEntity target) {
+        boolean isEntityLogExist = entityLogMapper.isEntityLogExist(target);
+
+        switch(target.getLogType()) {
+            // CREATE
+            case "02" -> {
+                if(!isEntityLogExist) {
+                    int insert = entityLogMapper.insertEntityLogData(target);
+                    log.info("ENTITY_LOG INSERT: {}", insert);
+                    if(insert > 0) {
+                        entityLogMapper.insertEntityHistoryData(target);
+                    }
+                }
+                log.info("ENTITY_LOG TARGET: {}", target);
+            }
+            // LOGIN, UPDATE, DELETE
+            case "00", "03", "04" -> {
+                if(isEntityLogExist) {
+                    int update = entityLogMapper.updateEntityLogData(target);
+                    log.info("ENTITY_LOG UPDATE: {}", update);
+                    if(update > 0) {
+                        entityLogMapper.insertEntityHistoryData(target);
+                    }
+                }else {
+                    int insert = entityLogMapper.insertEntityLogData(target);
+                    log.info("ENTITY_LOG INSERT: {}", insert);
+                    if(insert > 0) {
+                        entityLogMapper.insertEntityHistoryData(target);
+                    }
+                }
+                log.info("ENTITY_LOG TARGET: {}", target);
+            }
+            default -> log.info("ENTITY_LOG DEFAULT: {}", target);
+        }
     }
 }

@@ -11,7 +11,15 @@
            AND table_name = #{tableName}
     </select>
 
-    <insert id="saveEntityLogData">
+    <select id="isEntityLogExist">
+        SELECT IF(COUNT(1), true, false)
+          FROM ENTITY_LOG
+         WHERE ENTITY_NAME = #{tableName}
+           AND LOG_ID1 = #{logId1}
+           AND LOG_TYPE = #{logType}
+    </select>
+
+    <insert id="insertEntityLogData">
         INSERT INTO ENTITY_LOG (ENTITY_NAME, LOG_ID1, LOG_TYPE
                             <if test="logId2 != null">
                               , LOG_ID2
@@ -35,4 +43,31 @@
                 </if>
                    , #{regId}, NOW())
     </insert>
+
+    <insert id="insertEntityHistoryData">
+        INSERT INTO ENTITY_HISTORY (ENTITY_NAME, LOG_ID1, LOG_TYPE
+                              <if test="logId2 != null">
+                                  , LOG_ID2
+                              </if>
+                              <if test="remark != null">
+                                  , REMARK
+                              </if>
+                                  , REG_ID, REG_DTTM)
+             VALUES (#{tableName}, #{logId1}, #{logType}
+               <if test="logId2 != null">
+                   , #{logId2}
+               </if>
+               <if test="remark != null">
+                   , #{remark}
+               </if>
+               , #{regId}, NOW())
+    </insert>
+
+    <update id="updateEntityLogData">
+        UPDATE ENTITY_LOG
+        SET LOG_ID2 = #{logId2}, LOG_JSON = #{logJson}, REMARK = #{remark}, REG_ID = #{regId}, REG_DTTM = NOW()
+        WHERE ENTITY_NAME = #{tableName}
+          AND LOG_ID1 = #{logId1}
+          AND LOG_TYPE = #{logType}
+    </update>
 </mapper>

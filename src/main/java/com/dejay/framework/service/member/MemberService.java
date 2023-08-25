@@ -1,6 +1,5 @@
 package com.dejay.framework.service.member;
 
-import com.dejay.framework.common.annotation.EntityLog;
 import com.dejay.framework.common.enums.ExceptionCodeMsgEnum;
 import com.dejay.framework.common.enums.RequestTypeEnum;
 import com.dejay.framework.common.enums.TableNameEnum;
@@ -12,10 +11,9 @@ import com.dejay.framework.domain.common.Paging;
 import com.dejay.framework.domain.common.SearchObject;
 import com.dejay.framework.domain.common.TokenObjectVO;
 import com.dejay.framework.domain.member.LoginRequest;
+import com.dejay.framework.domain.member.Member;
 import com.dejay.framework.domain.user.SignUpRequest;
 import com.dejay.framework.domain.user.User;
-import com.dejay.framework.mapper.member.MemberMapper;
-import com.dejay.framework.domain.member.Member;
 import com.dejay.framework.service.common.ParentService;
 import com.dejay.framework.vo.common.CollectionPagingVO;
 import com.dejay.framework.vo.member.MemberVO;
@@ -106,25 +104,6 @@ public class MemberService extends ParentService {
     }
 
     /**
-     * 사용자 등록(미사용)
-     * @param user
-     * @return
-     */
-    /*public User insert(User user) {
-        var target = User.builder()
-                .id(user.getId())
-                .password(bCryptPasswordEncoder.encode(user.getPassword()))
-                .name(user.getName())
-                .email(user.getEmail())
-                .build();
-
-        validationUtil.parameterValidator(target, User.class);
-        getCommonMapper().getMemberMapper().insert(target);
-
-        return target;
-    }*/
-
-    /**
      * 사용자 등록(w/ token)
      * @param signUpRequest {@link SignUpRequest}
      * @return
@@ -138,14 +117,12 @@ public class MemberService extends ParentService {
                 .deptCode(signUpRequest.getAuthority().stream().toList().get(0).getDeptCode())
                 .tableName(TableNameEnum.MEMBER.name())
                 .logId1("")
-                .logId2(null)
                 .logType(RequestTypeEnum.CREATE.getRequestType())
+                .logId2(null)
                 .logJson(null)
                 .remark(null)
                 .regId(signUpRequest.getId())
                 .build();
-
-//        saveUserInfo(target);
 
         validationUtil.parameterValidator(target, User.class);
         int inserted = getCommonMapper().getMemberMapper().insert(target);
@@ -163,7 +140,8 @@ public class MemberService extends ParentService {
      * @return
      */
     public MemberVO getLoginInfo(LoginRequest loginRequest) {
-        MemberVO target = findMemberByUserName(loginRequest.getUserName());
+
+        MemberVO target = getCommonMapper().getMemberMapper().getLoginInfo(loginRequest.getUserName());
         if (bCryptPasswordEncoder.matches(loginRequest.getPassword(), target.getPassword())) {
             return MemberVO.builder()
                     .memberId(target.getMemberId())
@@ -171,6 +149,13 @@ public class MemberService extends ParentService {
                     .email(target.getEmail())
                     .authority(Set.of(target.getDeptCode()))
                     .deptCode(target.getDeptCode())
+                    .tableName(TableNameEnum.LOGIN.name())
+                    .logId1(String.valueOf(target.getMemberSeq()))
+                    .logType(RequestTypeEnum.LOGIN.getRequestType())
+                    .logId2(null)
+                    .logJson(null)
+                    .remark(null)
+                    .regId(target.getMemberId())
                     .build();
         }
 
@@ -181,9 +166,4 @@ public class MemberService extends ParentService {
         }
     }
 
-    // ----------------------------------------------------------------------------------------------------
-//    public void saveUserInfo(User target) {
-//        validationUtil.parameterValidator(target, User.class);
-//        getCommonMapper().getMemberMapper().insert(target);
-//    }
 }

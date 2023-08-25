@@ -20,8 +20,7 @@ public interface MemberMapper extends GeneralMapper {
     MemberVO findMemberById(int id);
     int insertMember(Member member);
     MemberVO findMemberByUserName(String userName);
-    MemberVO getLoginInfo(LoginRequest loginRequest);
-
     @EntityLog
-    int signUp(User user);
+    MemberVO getLoginInfo(String userName);
+
 }

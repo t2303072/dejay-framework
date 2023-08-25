@@ -12,7 +12,6 @@ import com.dejay.framework.vo.common.TokenVO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.annotation.PostConstruct;
@@ -22,7 +21,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.Date;
+import java.util.Set;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -55,19 +57,26 @@ public class JwtUtil {
         String refreshToken = this.generateJwt(userName, refreshExpiresAt, auth);
 
         // 토큰정보 생성 및 저장
+        String tokenSeq = tokenMapper.findTokenSeq(userName);
+        String logType;
+        if(!StringUtils.hasText(tokenSeq)) {
+            tokenSeq = "0";
+            logType = RequestTypeEnum.CREATE.getRequestType();
+        }else {
+            logType = RequestTypeEnum.UPDATE.getRequestType();
+        }
+
         Token target = Token.builder()
                 .memberId(userName)
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .tableName(TableNameEnum.TOKEN.name())
-                .logId1(tokenMapper.findTokenSeq(userName))
-//                .logId2()
-                .logType(RequestTypeEnum.CREATE.getRequestType())
-//                .remark()
-                .regId("SYSTEM")
+                .logId1(tokenSeq)
+                .logType(logType)
+                .regId(userName)
                 .build();
-        validationUtil.parameterValidator(target, Token.class);
 
+        validationUtil.parameterValidator(target, Token.class);
         int isTokenExist = tokenMapper.isTokenExist(userName);
         if(isTokenExist < 1) {
             tokenMapper.insert(target);

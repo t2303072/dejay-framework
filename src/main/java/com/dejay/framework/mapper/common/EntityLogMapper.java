@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Mapper;
 public interface EntityLogMapper extends GeneralMapper {
 
     String getTablePrimaryKey(String tableName);
-
-    int saveEntityLogData(BaseEntity baseEntity);
+    boolean isEntityLogExist(BaseEntity baseEntity);
+    int insertEntityLogData(BaseEntity baseEntity);
+    int updateEntityLogData(BaseEntity baseEntity);
+    int insertEntityHistoryData(BaseEntity baseEntity);
 }

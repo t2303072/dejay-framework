@@ -24,20 +24,21 @@
 
     <select id="isValidToken">
         SELECT IF(COUNT(1), true, false)
-        FROM TOKEN
-        WHERE USE_YN = 'Y'
+          FROM TOKEN
+         WHERE USE_YN = 'Y'
         <include refid="whereClause"/>
     </select>
 
     <select id="findTokenSeq" resultType="java.lang.String">
         SELECT TOKEN_SEQ
           FROM TOKEN
-         WHERE MEMBER_ID = #{memberId}
+         WHERE USE_YN = 'Y'
+           AND MEMBER_ID = #{memberId}
     </select>
 
-    <insert id="insert">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="logId1">
         INSERT INTO TOKEN(MEMBER_ID, ACCESS_TOKEN, REFRESH_TOKEN, TOKEN_TYPE)
-        VALUES (#{memberId}, #{accessToken}, #{refreshToken}, #{tokenType})
+             VALUES (#{memberId}, #{accessToken}, #{refreshToken}, #{tokenType})
     </insert>
 
     <update id="update">

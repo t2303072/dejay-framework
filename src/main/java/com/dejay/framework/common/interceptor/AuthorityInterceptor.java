@@ -83,23 +83,33 @@ public class AuthorityInterceptor implements HandlerInterceptor {
 
         switch(action) {
             case READ -> {
-                if(menuAuthorityVO.isRead()) return true;
+                if(menuAuthorityVO.isRead()) {
+                    return true;
+                }
                 authException(ExceptionCodeMsgEnum.NO_AUTHORITY.getMsg());
             }
             case CREATE -> {
-                if(menuAuthorityVO.isCreate()) return true;
+                if(menuAuthorityVO.isCreate()) {
+                    return true;
+                }
                 authException(ExceptionCodeMsgEnum.NO_AUTHORITY.getMsg());
             }
             case UPDATE -> {
-                if(menuAuthorityVO.isUpdate()) return true;
+                if(menuAuthorityVO.isUpdate()) {
+                    return true;
+                }
                 authException(ExceptionCodeMsgEnum.NO_AUTHORITY.getMsg());
             }
             case DELETE -> {
-                if(menuAuthorityVO.isDelete()) return true;
+                if(menuAuthorityVO.isDelete()) {
+                    return true;
+                }
                 authException(ExceptionCodeMsgEnum.NO_AUTHORITY.getMsg());
             }
             case DOWNLOAD -> {
-                if(menuAuthorityVO.isDownload()) return true;
+                if(menuAuthorityVO.isDownload()) {
+                    return true;
+                }
                 authException(ExceptionCodeMsgEnum.NO_AUTHORITY.getMsg());
             }
             default -> authException(ExceptionCodeMsgEnum.NO_AUTHORITY.getMsg());
@@ -119,7 +129,9 @@ public class AuthorityInterceptor implements HandlerInterceptor {
         boolean isDelete = !Arrays.stream(deletePrefix).filter(p -> obj.startsWith(p)).findAny().isEmpty();
         boolean isDownload = !Arrays.stream(downloadPrefix).filter(p -> obj.startsWith(p)).findAny().isEmpty();
 
-        if(!isRead && !isCreate && !isUpdate && !isDelete && !isDownload) throw new ServerErrorException(ExceptionCodeMsgEnum.INVALID_METHOD_NAMING.getMsg(), null);
+        if(!isRead && !isCreate && !isUpdate && !isDelete && !isDownload) {
+            throw new ServerErrorException(ExceptionCodeMsgEnum.INVALID_METHOD_NAMING.getMsg(), null);
+        }
 
         if(isRead && !isCreate && !isUpdate && !isDelete) {
             action = RequestTypeEnum.READ;

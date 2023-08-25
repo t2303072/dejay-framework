@@ -12,6 +12,7 @@ import java.util.Set;
 
 @ToString
 @Getter
+@NoArgsConstructor
 public class TokenVO extends BaseEntity {
     private String sub;
     private String userName;
@@ -25,7 +26,7 @@ public class TokenVO extends BaseEntity {
     }
 
     @Builder
-    public TokenVO(String sub, String userName, String iss, long iat, long exp, Set<AuthorityEnum> authority, String tableName, String logId1, String logId2, String logType, String logJson, String remark, String regId) {
+    public TokenVO(String tableName, String logId1, String logId2, String logType, String logJson, String remark, String regId, String sub, String userName, String iss, long iat, long exp, Set<AuthorityEnum> authority) {
         super(tableName, logId1, logId2, logType, logJson, remark, regId);
         this.sub = sub;
         this.userName = userName;

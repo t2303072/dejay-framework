@@ -19,9 +19,7 @@
     </select>
 
     <select id="getMemberList" resultType="MemberVO">
-        SELECT MEMBER_SEQ, MEMBER_ID, MEMBER_NAME, EMAIL FROM MEMBER
-        <where></where>
-        ORDER BY MEMBER_SEQ DESC
+        SELECT MEMBER_SEQ, MEMBER_ID, MEMBER_NAME, EMAIL FROM MEMBER ORDER BY MEMBER_SEQ DESC
         <include refid="mapper.paging.pagingQuery"/>
     </select>
 
@@ -32,22 +30,26 @@
     <select id="findMemberByUserName" resultType="MemberVO">
                  SELECT M.MEMBER_SEQ, M.MEMBER_ID, M.PASSWORD, M.MEMBER_NAME, M.EMAIL, M.DEPT_CODE
                    FROM MEMBER M
-        LEFT OUTER JOIN CODE C
-                     ON M.DEPT_CODE = C.CODE
+                   LEFT OUTER JOIN CODE C
+                                ON M.DEPT_CODE = C.CODE
                   WHERE MEMBER_ID = #{userName}
     </select>
 
+    <!-- 최근 로그인 이력 저장을 위한 정보 조회 -->
     <select id="getLoginInfo" resultType="MemberVO">
-        SELECT MEMBER_ID, PASSWORD, MEMBER_NAME
-          FROM MEMBER
-         WHERE MEMBER_ID = #{userName}
+                 SELECT M.MEMBER_SEQ, M.MEMBER_ID, M.PASSWORD, M.MEMBER_NAME, M.EMAIL, M.DEPT_CODE
+                      , 'LOGIN' AS TABLE_NAME, M.MEMBER_SEQ AS LOG_ID1, '00' AS LOG_TYPE, M.MEMBER_ID AS REG_ID
+                   FROM MEMBER M
+                   LEFT OUTER JOIN CODE C
+                                ON M.DEPT_CODE = C.CODE
+                  WHERE MEMBER_ID = #{userName}
     </select>
 
     <insert id="insertMember" useGeneratedKeys="true">
         INSERT INTO MEMBER(MEMBER_ID, MEMBER_NAME, EMAIL)
              VALUES (#{memberId}, #{memberName}, #{email})
         <selectKey keyProperty="id" resultType="long">
-            SELECT LAST_INSERT_ID()
+             SELECT LAST_INSERT_ID()
         </selectKey>
     </insert>
 
@@ -55,7 +57,7 @@
         INSERT INTO MEMBER(MEMBER_ID, PASSWORD, DEPT_CODE, MEMBER_NAME, EMAIL)
              VALUES (#{id}, #{password}, #{deptCode}, #{name}, #{email})
         <selectKey keyProperty="logId1" resultType="String">
-            SELECT LAST_INSERT_ID()
+             SELECT LAST_INSERT_ID()
         </selectKey>
     </insert>
 </mapper>

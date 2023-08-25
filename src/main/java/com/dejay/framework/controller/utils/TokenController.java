@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 public class TokenController extends ParentController {
 
     /**
-     * JWT 생성
+     * 토큰(JWT) 생성
      * @param loginRequest
      * @return
      */
@@ -61,6 +61,12 @@ public class TokenController extends ParentController {
         return ResponseEntity.ok(tokenVO.toString());
     }
 
+    /**
+     * 토큰(JWT) 재발행
+     * @param request
+     * @param authentication
+     * @return
+     */
     @PostMapping("/reissue-token")
     public ResponseEntity modifyToken(HttpServletRequest request, Authentication authentication) {
         log.info(authentication.toString());

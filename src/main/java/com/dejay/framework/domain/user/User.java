@@ -29,7 +29,7 @@ public class User extends BaseEntity {
     private String deptCode;
 
     @Builder
-    public User(String id, String password, String name, String email, String picture, Set<AuthorityEnum> authority, String deptCode, String tableName, String logId1, String logId2, String logType, String logJson, String remark, String regId) {
+    public User(String tableName, String logId1, String logId2, String logType, String logJson, String remark, String regId, String id, String password, String name, String email, String picture, Set<AuthorityEnum> authority, String deptCode) {
         super(tableName, logId1, logId2, logType, logJson, remark, regId);
         this.id = id;
         this.password = password;
