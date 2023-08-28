@@ -72,7 +72,22 @@ public class MemberService extends ParentService {
      * @return
      */
     public MemberVO findMemberById(int id) {
-        return getCommonMapper().getMemberMapper().findMemberById(id);
+        MemberVO memberVO = getCommonMapper().getMemberMapper().findMemberById(id);
+
+        if(memberVO == null) {
+            return null;
+        }
+
+        MemberVO target = MemberVO.builder()
+                .memberSeq(memberVO.getMemberSeq())
+                .memberId(memberVO.getMemberId())
+                .deptCode(memberVO.getDeptCode())
+                .authority(Set.of(memberVO.getDeptCode()))
+                .memberName(memberVO.getMemberName())
+                .email(memberVO.getEmail())
+                .build();
+
+        return target;
     }
 
     /**

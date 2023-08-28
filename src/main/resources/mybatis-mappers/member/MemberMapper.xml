@@ -24,7 +24,7 @@
     </select>
 
     <select id="findMemberById" resultType="MemberVO">
-        SELECT * FROM MEMBER WHERE MEMBER_SEQ = #{id}
+        SELECT MEMBER_SEQ, MEMBER_ID, DEPT_CODE, MEMBER_NAME, EMAIL FROM MEMBER WHERE MEMBER_SEQ = #{id}
     </select>
 
     <select id="findMemberByUserName" resultType="MemberVO">

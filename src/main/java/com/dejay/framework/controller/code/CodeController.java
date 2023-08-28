@@ -11,6 +11,8 @@ import com.dejay.framework.domain.common.Paging;
 import com.dejay.framework.domain.common.SearchObject;
 import com.dejay.framework.vo.code.CodeVO;
 import com.dejay.framework.vo.common.ResultStatusVO;
+import com.dejay.framework.vo.member.MemberVO;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -100,8 +102,9 @@ public class CodeController extends ParentController {
      * @return
      */
     @PostMapping("/update")
-    public ResponseEntity updateCode(@RequestBody @Valid DataObject dataObject) throws Exception {
-        Code inserted =  getCommonService().getCodeService().updateCode(dataObject.getData().getCode());
+    public ResponseEntity updateCode(@RequestBody @Valid DataObject dataObject, HttpServletRequest request) throws Exception {
+        MemberVO memberVO = ObjectHandlingUtil.extractLoginInfo(request);
+        int inserted =  getCommonService().getCodeService().updateCode(dataObject.getData().getCode(), memberVO.getMemberId());
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(inserted, RequestTypeEnum.UPDATE);
         Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO);
 

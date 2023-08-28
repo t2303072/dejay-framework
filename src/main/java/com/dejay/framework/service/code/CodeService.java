@@ -1,5 +1,7 @@
 package com.dejay.framework.service.code;
 
+import com.dejay.framework.common.enums.RequestTypeEnum;
+import com.dejay.framework.common.enums.TableNameEnum;
 import com.dejay.framework.common.utils.ObjectHandlingUtil;
 import com.dejay.framework.domain.code.Code;
 import com.dejay.framework.domain.common.Paging;
@@ -54,7 +56,7 @@ public class CodeService extends ParentService {
      * @return
      * @throws Exception
      */
-    public Code updateCode(Code code) throws Exception {
+    public int updateCode(Code code, String regId) throws Exception {
 
         Code target = Code.builder()
                 .code(code.getCode())
@@ -65,11 +67,18 @@ public class CodeService extends ParentService {
                 .value2(code.getValue2())
                 .codeOrd(code.getCodeOrd())
                 .useYn(code.getUseYn())
+                .tableName(TableNameEnum.CODE.name())
+                .logId1(code.getCode())
+                .logType(RequestTypeEnum.UPDATE.getRequestType())
+                .logId2(null)
+                .logJson(null)
+                .remark(null)
+                .regId(regId)
                 .build();
-        boolean isValidated = getValidationUtil().parameterValidator(target, Code.class);
+        getValidationUtil().parameterValidator(target, Code.class);
         int iAffectedRows = getCommonMapper().getCodeMapper().update(target);
 
-        return code;
+        return iAffectedRows;
     }
 
     /**
