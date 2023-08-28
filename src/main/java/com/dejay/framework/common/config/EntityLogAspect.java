@@ -42,18 +42,24 @@ public class EntityLogAspect extends CommonUtil {
          * 3. 처리 유형(logType) 별 분기 처리
          * */
         // LOGIN
-        if(retVal != null && retVal.getClass().equals(MemberVO.class)) {
-            MemberVO castObj = (MemberVO) retVal;
-            BaseEntity target = entitySaveTargetSetter(castObj);
-            storeEntityLog(target);
+        if(retVal != null) {
+            BaseEntity target = null;
+            if(retVal.getClass().equals(MemberVO.class)) {
+                MemberVO castObj = (MemberVO) retVal;
+                target = entitySaveTargetSetter(castObj);
+            }
+
+            // CREATE, UPDATE, DELETE(RequestTypeEnum)
+            if((retVal.getClass().equals(Integer.class) && ((Integer) retVal).intValue() > 0)) {
+                BaseEntity castObj = (BaseEntity) args[0];
+                target = entitySaveTargetSetter(castObj);
+            }
+
+            if(target != null) {
+                storeEntityLog(target);
+            }
         }
 
-        // CREATE, UPDATE, DELETE(RequestTypeEnum)
-        if((retVal.getClass().equals(Integer.class) && ((Integer) retVal).intValue() > 0)) {
-            BaseEntity castObj = (BaseEntity) args[0];
-            BaseEntity target = entitySaveTargetSetter(castObj);
-            storeEntityLog(target);
-        }
 
     }
 

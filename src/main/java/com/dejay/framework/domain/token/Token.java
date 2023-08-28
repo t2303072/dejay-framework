@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "memberId", callSuper = false)
 public class Token extends BaseEntity {
 
     @NotNull(message = "memberId는 필수 값 입니다.")

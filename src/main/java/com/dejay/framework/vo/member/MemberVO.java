@@ -6,7 +6,7 @@ import lombok.*;
 import java.util.Set;
 
 @ToString
-@EqualsAndHashCode(of = {"memberSeq", "memberId"})
+@EqualsAndHashCode(of = {"memberSeq", "memberId"}, callSuper = false)
 @NoArgsConstructor
 @Getter
 public class MemberVO extends BaseEntity {

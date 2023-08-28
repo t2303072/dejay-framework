@@ -13,7 +13,7 @@ import java.util.Set;
 
 @ToString(callSuper = false)
 @Getter
-@EqualsAndHashCode(of = {"id", "name"})
+@EqualsAndHashCode(of = {"id", "name"}, callSuper = false)
 public class User extends BaseEntity {
 
     private long seq;

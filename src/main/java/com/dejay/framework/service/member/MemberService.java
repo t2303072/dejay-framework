@@ -157,6 +157,14 @@ public class MemberService extends ParentService {
     public MemberVO getLoginInfo(LoginRequest loginRequest) {
 
         MemberVO target = getCommonMapper().getMemberMapper().getLoginInfo(loginRequest.getUserName());
+        if(target == null) {
+            try {
+                throw new CustomLoginException(ExceptionCodeMsgEnum.ACCOUNT_NOT_EXISTS.getCode(), ExceptionCodeMsgEnum.ACCOUNT_NOT_EXISTS.getMsg());
+            } catch (CustomLoginException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         if (bCryptPasswordEncoder.matches(loginRequest.getPassword(), target.getPassword())) {
             return MemberVO.builder()
                     .memberId(target.getMemberId())
@@ -172,13 +180,14 @@ public class MemberService extends ParentService {
                     .remark(null)
                     .regId(target.getMemberId())
                     .build();
+        }else {
+            try {
+                throw new CustomLoginException(ExceptionCodeMsgEnum.INVALID_PASSWORD.getCode(), ExceptionCodeMsgEnum.INVALID_PASSWORD.getMsg());
+            } catch (CustomLoginException e) {
+                throw new RuntimeException(e);
+            }
         }
 
-        try {
-            throw new CustomLoginException(ExceptionCodeMsgEnum.INVALID_PASSWORD.getCode(), ExceptionCodeMsgEnum.INVALID_PASSWORD.getMsg());
-        } catch (CustomLoginException e) {
-            throw new RuntimeException(e);
-        }
     }
 
 }

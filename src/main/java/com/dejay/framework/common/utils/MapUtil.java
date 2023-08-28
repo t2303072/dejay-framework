@@ -29,8 +29,9 @@ public class MapUtil {
         resultMap.put(MapKeyStringEnum.RESULT_STATUS.getKeyString(), resultStatusVO);
 
         //Http Method : POST, PUT, DELETE인 경우만 사용
-        if (StringUtil.isEmpty(mapKeyList) && StringUtil.isEmpty(objects))
+        if (StringUtil.isEmpty(mapKeyList) && StringUtil.isEmpty(objects)) {
             return resultMap;
+        }
 
         var dataList = Arrays.asList(objects);
         if(mapKeyList.size() != dataList.size()) {

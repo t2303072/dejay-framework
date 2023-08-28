@@ -30,6 +30,7 @@ public enum ExceptionCodeMsgEnum {
     , INVALID_PASSWORD(979, "비밀번호가 맞지 않습니다.")
     , INVALID_TOKEN(978, "유효하지 않은 토큰 입니다.")
     , INVALID_TOKEN_SIGNATURE(977, "유효하지 않은 토큰 서명 정보 입니다.")
+    , ACCOUNT_NOT_EXISTS(976, "없는 계정 정보 입니다.")
     ;
 
     private int code;
