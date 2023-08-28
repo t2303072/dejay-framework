@@ -54,6 +54,10 @@ public class Paging {
     }
 
     private void setTotalPage() {
-        this.totalPage = (int)Math.ceil(Float.valueOf(getTotalCount()) / Float.valueOf(getDisplayRow()));
+        if(getTotalCount() == 0 || getDisplayRow() == 0) {
+            this.totalPage = 1;
+        }else {
+            this.totalPage = (int)Math.ceil(Float.valueOf(getTotalCount()) / Float.valueOf(getDisplayRow()));
+        }
     }
 }
