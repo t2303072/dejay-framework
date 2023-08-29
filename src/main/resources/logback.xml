@@ -19,7 +19,7 @@
             <fileNamePattern>${LOG_DIR}/%d{yyyy-MM}/${LOG_FILE_NAME}_%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxHistory>30</maxHistory>
             <maxFileSize>50MB</maxFileSize>
-            <totalSizeCap>50MB</totalSizeCap>
+            <totalSizeCap>1GB</totalSizeCap>
         </rollingPolicy>
 
         <encoder>
