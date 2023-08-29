@@ -87,9 +87,9 @@ public class CodeController extends ParentController {
      * @return
      */
     @PostMapping("/insert")
-    public ResponseEntity insertCode(@RequestBody @Valid DataObject dataObject) throws Exception {
-
-        Code inserted =  getCommonService().getCodeService().insertCode(dataObject.getData().getCode());
+    public ResponseEntity insertCode(@RequestBody @Valid DataObject dataObject, HttpServletRequest request) throws Exception {
+        MemberVO memberVO = ObjectHandlingUtil.extractLoginInfo(request);
+        Code inserted =  getCommonService().getCodeService().insertCode(dataObject.getData().getCode(), memberVO.getMemberId());
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(inserted, ResultCodeMsgEnum.EXIST_CODE);
         Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO);
 

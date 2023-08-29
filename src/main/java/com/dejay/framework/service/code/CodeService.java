@@ -23,7 +23,7 @@ public class CodeService extends ParentService {
      * @return
      * @throws Exception
      */
-    public Code insertCode(Code code) throws Exception {
+    public Code insertCode(Code code, String regId) throws Exception {
 
         Code target = Code.builder()
                 .code(code.getCode())
@@ -34,6 +34,13 @@ public class CodeService extends ParentService {
                 .value2(code.getValue2())
                 .codeOrd(code.getCodeOrd())
                 .useYn(code.getUseYn())
+                .tableName(TableNameEnum.CODE.name())
+                .logId1(code.getCode())
+                .logType(RequestTypeEnum.UPDATE.getRequestType())
+                .logId2(null)
+                .logJson(null)
+                .remark(null)
+                .regId(regId)
                 .build();
         getValidationUtil().parameterValidator(target, Code.class);
 
