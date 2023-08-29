@@ -16,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.server.resource.InvalidBearerTokenException;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -25,7 +24,6 @@ import org.springframework.web.server.ServerErrorException;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.security.auth.login.LoginException;
 import java.util.Arrays;
 
 @Slf4j
@@ -41,7 +39,7 @@ public class AuthorityInterceptor implements HandlerInterceptor {
     private String[] createPrefix = {"insert", "save"};
     private String[] updatePrefix = {"update", "modify"};
     private String[] deletePrefix = {"delete", "remove"};
-    private String[] downloadPrefix = {"download", "fileDownload"};
+    private String[] filePrefix = {"download", "fileDownload", "upload", "fileUpload"};
     private RequestTypeEnum action = null;
 
     @Override
@@ -127,9 +125,9 @@ public class AuthorityInterceptor implements HandlerInterceptor {
         boolean isCreate = !Arrays.stream(createPrefix).filter(p -> obj.startsWith(p)).findAny().isEmpty();
         boolean isUpdate = !Arrays.stream(updatePrefix).filter(p -> obj.startsWith(p)).findAny().isEmpty();
         boolean isDelete = !Arrays.stream(deletePrefix).filter(p -> obj.startsWith(p)).findAny().isEmpty();
-        boolean isDownload = !Arrays.stream(downloadPrefix).filter(p -> obj.startsWith(p)).findAny().isEmpty();
+        boolean isFile = !Arrays.stream(filePrefix).filter(p -> obj.startsWith(p)).findAny().isEmpty();
 
-        if(!isRead && !isCreate && !isUpdate && !isDelete && !isDownload) {
+        if(!isRead && !isCreate && !isUpdate && !isDelete && !isFile) {
             throw new ServerErrorException(ExceptionCodeMsgEnum.INVALID_METHOD_NAMING.getMsg(), null);
         }
 
@@ -145,9 +143,9 @@ public class AuthorityInterceptor implements HandlerInterceptor {
         } else if (!isRead && !isCreate && !isUpdate && isDelete) {
             action = RequestTypeEnum.DELETE;
             return deletePrefix;
-        } else if (isDownload) {
+        } else if (isFile) {
             action = RequestTypeEnum.DOWNLOAD;
-            return downloadPrefix;
+            return filePrefix;
         } else {
             return null;
         }

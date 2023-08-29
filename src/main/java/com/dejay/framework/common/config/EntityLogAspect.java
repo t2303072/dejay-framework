@@ -41,9 +41,10 @@ public class EntityLogAspect extends CommonUtil {
          * 2. ENTITY_LOG & ENTITY_HISTORY 저장
          * 3. 처리 유형(logType) 별 분기 처리
          * */
-        // LOGIN
         if(retVal != null) {
             BaseEntity target = null;
+
+            // LOGIN
             if(retVal.getClass().equals(MemberVO.class)) {
                 MemberVO castObj = (MemberVO) retVal;
                 target = entitySaveTargetSetter(castObj);
