@@ -1,6 +1,5 @@
 package com.dejay.framework.vo.board;
 
-import com.dejay.framework.vo.file.FileVO;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
