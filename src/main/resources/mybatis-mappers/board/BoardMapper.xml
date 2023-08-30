@@ -16,6 +16,7 @@
     </sql>
 
 
+
     <!-- column ]] -->
 
     <!-- whereClause [[ -->
@@ -63,6 +64,7 @@
 
 
     <!-- 조회 [[ -->
+
     <select id="pagingCountBySearch" resultType="Integer" parameterType="BoardSearchVO">
         /* 게시판 총 개수 조회 - BoarderMapper.pagingCountBySearch */
         SELECT COUNT(*)
@@ -77,24 +79,33 @@
         /*게시판 페이징 조회 - BoarderMapper.pagingBySearch */
         SELECT
             <include refid="boardColumn"><property name="alias" value="BD."/></include>
+            ,MAX(ENTITY.REG_DTTM) AS REG_DTTM , REG_ID
         FROM BOARD BD
+        INNER JOIN ENTITY_LOG ENTITY
+                ON BD.BOARD_SEQ = ENTITY.LOG_ID1
         <where>
             <include refid="whereClause"><property name="alias" value="BD."/></include>
         </where>
 
         <include refid="orderClause"><property name="alias" value="BD."/></include>
+        GROUP BY BOARD_SEQ
     </select>
 
     <select id="rowBySearch" resultType="BoardVO" parameterType="BoardSearchVO">
         /*게시판 단 건 조회 - BoarderMapper.pagingBySearch */
         SELECT
             <include refid="boardColumn"><property name="alias" value="BD."/></include>
+            ,MAX(ENTITY.REG_DTTM) AS REG_DTTM , REG_ID
         FROM BOARD BD
+        INNER JOIN ENTITY_LOG ENTITY
+                ON BD.BOARD_SEQ = ENTITY.LOG_ID1
         <where>
             <include refid="whereClauseSeq"><property name="alias" value="BD."/></include>
         </where>
+        GROUP BY BOARD_SEQ
     </select>
 
+   
     <!-- 조회 ]] -->
 
 
