@@ -33,7 +33,7 @@ public class MenuController extends ParentController {
      * 대메뉴 조회
      * @return
      */
-    @GetMapping("/getLgMenuList")
+    @PostMapping("/getLgMenuList")
     public ResponseEntity getLgMenuList(){
         List<MenuVO> menuList = getCommonService().getMenuService().getLgMenuList();
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setListResultStatusVO(menuList, ResultCodeMsgEnum.NO_DATA);
@@ -48,7 +48,7 @@ public class MenuController extends ParentController {
      * @param searchObject
      * @return
      */
-    @GetMapping("/getSmMenuList")
+    @PostMapping("/getSmMenuList")
     public ResponseEntity getSmMenuList(@RequestBody @Valid SearchObject searchObject){
         List<MenuVO> menuList = getCommonService().getMenuService().getSmMenuList(searchObject.getSearch().getMenuSearch());
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setListResultStatusVO(menuList, ResultCodeMsgEnum.NO_DATA);
