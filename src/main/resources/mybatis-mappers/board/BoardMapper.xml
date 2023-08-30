@@ -99,13 +99,13 @@
         FROM BOARD BD
         INNER JOIN ENTITY_LOG ENTITY
                 ON BD.BOARD_SEQ = ENTITY.LOG_ID1
-        GROUP BY BOARD_SEQ
         <where>
             <include refid="whereClauseSeq"><property name="alias" value="BD."/></include>
         </where>
-
+        GROUP BY BOARD_SEQ
     </select>
-    
+
+   
     <!-- 조회 ]] -->
 
 
