@@ -1,11 +1,17 @@
 package com.dejay.framework.vo.board;
 
+import com.dejay.framework.vo.file.FileVO;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
+
+import java.util.Date;
+import java.util.List;
 
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 public class BoardVO {
@@ -34,4 +40,12 @@ public class BoardVO {
     // 사용 여부
     @NotNull(message = "사용 여부는 필수 값 입니다.")
     private String useYn;
+
+    // 처리 일시
+    private Date regDttm;
+    
+    // 처리 ID
+    private String regId;
+    
+
 }

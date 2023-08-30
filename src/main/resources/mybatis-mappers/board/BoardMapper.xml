@@ -86,9 +86,9 @@
         <where>
             <include refid="whereClause"><property name="alias" value="BD."/></include>
         </where>
-
-        <include refid="orderClause"><property name="alias" value="BD."/></include>
         GROUP BY BOARD_SEQ
+        <include refid="orderClause"><property name="alias" value="BD."/></include>
+
     </select>
 
     <select id="rowBySearch" resultType="BoardVO" parameterType="BoardSearchVO">
@@ -99,13 +99,13 @@
         FROM BOARD BD
         INNER JOIN ENTITY_LOG ENTITY
                 ON BD.BOARD_SEQ = ENTITY.LOG_ID1
+        GROUP BY BOARD_SEQ
         <where>
             <include refid="whereClauseSeq"><property name="alias" value="BD."/></include>
         </where>
-        GROUP BY BOARD_SEQ
-    </select>
 
-   
+    </select>
+    
     <!-- 조회 ]] -->
 
 
