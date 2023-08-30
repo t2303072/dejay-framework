@@ -39,7 +39,7 @@ public class BoardController extends ParentController {
      * @param searchObject
      * @return
      */
-    @GetMapping(value="/paging")
+    @PostMapping(value="/paging")
     public ResponseEntity pagingBoard(@RequestBody @Valid SearchObject searchObject){
         List<BoardVO> boardList = getCommonService().getBoardService().pagingBoard(searchObject.getSearch().getBoardSearch());
 
@@ -55,7 +55,7 @@ public class BoardController extends ParentController {
      * @param searchObject
      * @return
      */
-    @GetMapping(value="/row")
+    @PostMapping(value="/row")
     public ResponseEntity rowBoard(@RequestBody @Valid SearchObject searchObject){
         BoardVO board = getCommonService().getBoardService().rowBoard(searchObject.getSearch().getBoardSearch());
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(board, ResultCodeMsgEnum.NO_DATA);
