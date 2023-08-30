@@ -1,0 +1,81 @@
+=== 토큰
+[NOTE]
+====
+토큰 관련 API
+====
+
+==== 토큰 재발행
+|===
+|요청 URL | 메서드 | 응답 형식 | 비고
+
+|/token/reissue-token
+|POST
+|JSON
+|
+|===
+
+|====
+| 헤더 | 설명 | 필수 여부
+
+| `Authorization` | Bearer 토큰 값 | Y
+| `reissue` | 재발행 여부 | N
+|====
+
+==== 성공
+[NOTE]
+====
+토큰 재발행 성공
+====
+[discrete]
+===== 요청
+include::{snippets}/post-token-reissue-ok/http-request.adoc[]
+===== Request Body
+```
+No Request Body
+```
+
+[discrete]
+===== 응답
+include::{snippets}/post-token-reissue-ok/http-response.adoc[]
+===== Response Body
+include::{snippets}/post-token-reissue-ok/response-body.adoc[]
+
+==== 잘못된 헤더값(Authorization)
+[CAUTION]
+====
+잘못된 헤더값 전달 시 실패(유효하지 않은 Bearer 토큰)
+====
+
+[discrete]
+===== 요청
+include::{snippets}/post-token-bearer-header-fail/http-request.adoc[]
+===== Request Body
+```
+No Request Body
+```
+
+[discrete]
+===== 응답
+include::{snippets}/post-token-bearer-header-fail/http-response.adoc[]
+===== Response Body
+include::{snippets}/post-token-bearer-header-fail/response-body.adoc[]
+
+==== 잘못된 헤더값(reissue)
+[CAUTION]
+====
+잘못된 헤더값 전달 시 실패(reissue=N)
+====
+
+[discrete]
+===== 요청
+include::{snippets}/post-token-reissue-header-fail/http-request.adoc[]
+===== Request Body
+```
+No Request Body
+```
+
+[discrete]
+===== 응답
+include::{snippets}/post-token-reissue-header-fail/http-response.adoc[]
+===== Response Body
+include::{snippets}/post-token-reissue-header-fail/response-body.adoc[]

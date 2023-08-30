@@ -13,6 +13,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -119,10 +120,14 @@ public class JwtUtil {
      * @return
      */
     public void isExpired(String token) {
-        boolean isExpired = Jwts.parserBuilder().setSigningKey(secretKey).build()
-                .parseClaimsJws(token).getBody().getExpiration().before(new Date());
-        if (isExpired) {
-            throw new CustomJwtException(ExceptionCodeMsgEnum.EXPIRED_TOKEN);
+        try {
+            boolean isExpired = Jwts.parserBuilder().setSigningKey(secretKey).build()
+                    .parseClaimsJws(token).getBody().getExpiration().before(new Date());
+            if (isExpired) {
+                throw new CustomJwtException(ExceptionCodeMsgEnum.EXPIRED_TOKEN);
+            }
+        } catch (MalformedJwtException ex) {
+            throw new CustomJwtException(ExceptionCodeMsgEnum.MALFORMED_TOKEN);
         }
     }
 
@@ -134,9 +139,13 @@ public class JwtUtil {
      * @return
      */
     public void isInvalidToken(String token, String reissue) {
-        boolean validToken = tokenMapper.isValidToken(token, reissue);
-        if(!validToken) {
-            throw new CustomJwtException(ExceptionCodeMsgEnum.INVALID_TOKEN);
+        try {
+            boolean validToken = tokenMapper.isValidToken(token, reissue);
+            if(!validToken) {
+                throw new CustomJwtException(ExceptionCodeMsgEnum.INVALID_TOKEN);
+            }
+        } catch (MalformedJwtException ex) {
+            throw new CustomJwtException(ExceptionCodeMsgEnum.MALFORMED_TOKEN);
         }
     }
 
