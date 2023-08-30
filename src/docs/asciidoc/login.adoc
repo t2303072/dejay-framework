@@ -1,0 +1,76 @@
+=== 로그인(Login)
+[NOTE]
+====
+로그인 관련 API
+====
+
+|===
+|요청 URL | 메서드 | 응답 형식 | 비고
+
+|/login
+|POST
+|JSON
+|
+|===
+
+==== 요청 속성 값
+|====
+| 속성 | 설명 | 필수 여부
+
+| `userName` | 사용자 ID | Y
+| `password` | 비밀번호 | Y
+|====
+
+
+==== 성공
+[NOTE]
+====
+로그인 성공
+====
+[discrete]
+===== 요청
+include::{snippets}/post-login-ok/http-request.adoc[]
+===== Request Body
+include::{snippets}/post-login-ok/request-body.adoc[]
+
+[discrete]
+===== 응답
+include::{snippets}/post-login-ok/http-response.adoc[]
+===== Response Body
+include::{snippets}/post-login-ok/response-body.adoc[]
+
+==== 로그인 ID 누락
+[CAUTION]
+====
+로그인 ID 필수 값 누락
+====
+
+[discrete]
+===== 요청
+include::{snippets}/post-no-login-id-fail/http-request.adoc[]
+===== Request Body
+include::{snippets}/post-no-login-id-fail/request-body.adoc[]
+
+[discrete]
+===== 응답
+include::{snippets}/post-no-login-id-fail/http-response.adoc[]
+===== Response Body
+include::{snippets}/post-no-login-id-fail/response-body.adoc[]
+
+==== 비밀번호 불일치
+[CAUTION]
+====
+비밀번호 불일치
+====
+
+[discrete]
+===== 요청
+include::{snippets}/post-login-wrong-password-fail/http-request.adoc[]
+===== Request Body
+include::{snippets}/post-login-wrong-password-fail/request-body.adoc[]
+
+[discrete]
+===== 응답
+include::{snippets}/post-login-wrong-password-fail/http-response.adoc[]
+===== Response Body
+include::{snippets}/post-login-wrong-password-fail/response-body.adoc[]
