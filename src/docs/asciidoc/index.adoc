@@ -1,5 +1,5 @@
 = FRAMEWORK REST API 문서
-이익주(시스템개발본부), <ijzone@dejay.co.kr>
+이익주(시스템개발본부) <ijzone@dejay.co.kr>
 v1.0.0, 2023-08-29
 :doctype: book
 :icons: font
@@ -13,16 +13,6 @@ v1.0.0, 2023-08-29
 == 개요
 이 API문서는 'Framework REST API 가이드 문서' 입니다.
 
-=== API 서버 경로
-[cols="2,5,3"]
-|====
-|환경         |DNS |비고
-
-|로컬(local)  | link:[http://localhost:8080]     |API 문서 제공
-|개발(dev)    | link:[http://10.34.220.168:3030] |API 문서 제공
-|운영(prod)   | link:[] |API 문서 미제공
-|====
-
 [NOTE]
 ====
 ...
@@ -33,101 +23,14 @@ v1.0.0, 2023-08-29
 ...
 ====
 
-=== 응답 형식
-API는 다음과 같은 응답 형식을 제공합니다.
+// 서버 정보
+include::server-info.adoc[]
 
+// 요청
+include::request.adoc[]
 
-====
-Here's a sample AsciiDoc document:
-
-----
-= Document Title
-Author Name
-
-Content goes here.
-----
-
-The document header is useful, but not required.
-====
-
-==== 상태코드(Response Body에 전달)
-응답 시, 다음과 같은 응답 상태 코드 및 응답 메시지를 제공합니다.
-
-[cols="3,1,3,3"]
-|====
-|HttpStatus |코드 |메시지 |설명
-
-| `REQUEST_SUCCESS` | `200` | "요청에 성공 했습니다." | 정상 응답
-| `BAD_REQUEST` | `400` | "잘못된 요청 입니다." | 유효하지 않은 요청 값
-| `UNAUTHORIZED` | `401` | "유효하지 않은 인증 정보 입니다." | 미인증
-| `FORBIDDEN` | `403` | "권한이 없어 요청이 거부 되었습니다." | 권한 없음
-| `INTERNAL_SERVER_ERROR` | `500` | "에러가 발생 했습니다. 관리자에게 문의 하세요." | 서버 내부 오류
-| `REQUEST_FAIL` | `404` | "요청에 실패 했습니다." | 유효하지 않은 요청 값 혹은 리소스 없음
-| `NO_DATA` | `1` | "조회된 데이터가 없습니다." | 리소스 없음
-| `NOT_LOGGED_IN` | `2` | "로그인 정보가 없습니다." | 미 로그인
-| `NO_COOKIE` | `3` | "해당 쿠키 정보가 없습니다." | 쿠키 없음
-| `NO_HEADER_AUTHORIZATION` | `4` | "NO AUTHORIZATION HEADER" | 요청 필수 헤더 값 없음
-| `INVALID_HEADER` | `5` | "잘못된 헤더 값 입니다." | 유효하지 않은 헤더 값
-| `EXPIRED_TOKEN` | `6` | "만료된 토큰 입니다." | 토큰 만료
-| `CREATE_DATA_FAIL` | `7` | "데이터 생성에 실패 했습니다." | 생성 실패
-| `UPDATE_DATA_FAIL` | `8` | "데이터 변경에 실패 했습니다." | 변경 실패
-| `DELETE_DATA_FAIL` | `9` | "데이터 삭제에 실패 했습니다." | 삭제 실패
-| `EXIST_CODE` |`10` | "이미 존재하는 코드 입니다." | 공통코드 중복 등록
-
-|====
-
-==== 정상(200, OK)
-응답 헤더와 별개로 resultStatus로 응답 상태 제공
-
-|====
-|응답데이터가 있는 경우|응답데이터가 없는 경우
-
-a|[source,json]
-----
-{
-    "resultStatus": {
-        "code": 200,
-        "message": "요청에 성공 했습니다.",
-        "specificMsg": null,
-        "fieldErrors": null
-    },
-    "data": {
-        "member": {
-            "tableName": null,
-            "logId1": null,
-            "logId2": null,
-            "logType": null,
-            "logJson": null,
-            "remark": null,
-            "regId": null,
-            "memberSeq": 96,
-            "memberId": "ijzone",
-            "password": null,
-            "memberName": "이익주",
-            "email": "ijzone@dejay.co.kr",
-            "authority": [
-                "00020001"
-            ],
-            "deptCode": "00020001"
-        }
-    }
-}
-----
-a|[source,json]
-----
-{
-    "resultStatus": {
-        "code": 1,
-        "message": "조회된 데이터가 없습니다.",
-        "specificMsg": null,
-        "fieldErrors": null
-    },
-    "data": {
-        "member": null
-    }
-}
-----
-|====
+// 응답
+include::response.adoc[]
 
 == API
 // 로그인

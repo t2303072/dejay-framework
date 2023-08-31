@@ -1,0 +1,9 @@
+=== API 서버 경로
+[cols="1,3,3"]
+|====
+|환경         |IP |비고
+
+|로컬(local)  | link:[http://localhost:8080]     |API 문서 제공
+|개발(dev)    | link:[http://10.34.220.168:3030] |API 문서 제공
+|운영(prod)   | link:[] |API 문서 미제공
+|====

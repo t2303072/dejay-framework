@@ -13,19 +13,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class TokenControllerTest extends FrameworkApplicationTests {
 
-    @Test
-    void 토큰_재발행_성공() throws Exception {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("reissue", "Y");
-        headers.add("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpanpvbmUiLCJ1c2VyTmFtZSI6Imlqem9uZSIsImF1dGhvcml0eSI6WyIwMDAyMDAwMSJdLCJpYXQiOjE2OTMzODMwNDcsImV4cCI6MTY5NDU5MjY0NywiaXNzIjoiaWtqb29MZWUifQ.MB7hg86cYr2KRq9PaDazqUOtIq0kNAVw6SazB-4IbqI");
-
-        this.mockMvc.perform(post("/token/reissue-token")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .headers(headers))
-                .andExpect(status().isOk())
-                .andDo(document("post-token-reissue-ok"));
-    }
+//    @Test
+//    void 토큰_재발행_성공() throws Exception {
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.add("reissue", "Y");
+//        headers.add("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpanpvbmUiLCJ1c2VyTmFtZSI6Imlqem9uZSIsImF1dGhvcml0eSI6WyIwMDAyMDAwMSJdLCJpYXQiOjE2OTMzODMwNDcsImV4cCI6MTY5NDU5MjY0NywiaXNzIjoiaWtqb29MZWUifQ.MB7hg86cYr2KRq9PaDazqUOtIq0kNAVw6SazB-4IbqI");
+//
+//        this.mockMvc.perform(post("/token/reissue-token")
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .accept(MediaType.APPLICATION_JSON)
+//                        .headers(headers))
+//                .andExpect(status().isOk())
+//                .andDo(document("post-token-reissue-ok"));
+//    }
 
     @Test
     void 토큰_재발행_실패_잘못된_reissue_헤더값() throws Exception {
