@@ -27,6 +27,7 @@ import java.util.*;
 @RequestMapping("/session")
 public class SessionController extends ParentController {
 
+    @Deprecated
     @GetMapping({"", "/"})
     public ResponseEntity createSession(HttpServletRequest request, HttpServletResponse response) {
         Member loginInfo = Member.builder()
@@ -38,12 +39,14 @@ public class SessionController extends ParentController {
         return ResponseEntity.ok().build();
     }
 
+    @Deprecated
     @GetMapping("/expire")
     public ResponseEntity expireSession(HttpServletRequest request, HttpServletResponse response) {
         getCommonUtil().getSessionFactory().removeSession(request);
         return ResponseEntity.ok().build();
     }
 
+    @Deprecated
     @GetMapping("/login-test")
     public ResponseEntity sessionLogin(HttpServletRequest request, HttpSession session) {
         ResultStatusVO resultStatusVO = new ResultStatusVO();

@@ -28,6 +28,7 @@ public class TestController extends ParentController {
      * Index test
      * @return
      */
+    @Deprecated
     @GetMapping({"", "/"})
     public ResponseEntity index() {
         return ResponseEntity.ok(testService.getTest());
@@ -40,6 +41,7 @@ public class TestController extends ParentController {
      * @param totalCount
      * @return
      */
+    @Deprecated
     @GetMapping("paging")
     public ResponseEntity paging(@RequestParam int currentPage, @RequestParam int displayRow, @RequestParam(required = false) int totalCount) {
         PagingVO paging = testService.paging(currentPage, displayRow, totalCount);
@@ -53,12 +55,14 @@ public class TestController extends ParentController {
      * 비밀번호 암호화 test
      * @return
      */
+    @Deprecated
     @PostMapping("password-encode")
     public ResponseEntity passwordEncode(@RequestBody @Valid LoginRequest loginRequest) {
         testService.passwordEncode(loginRequest);
         return ResponseEntity.ok().build();
     }
 
+    @Deprecated
     @PostMapping("authorized-only")
     public ResponseEntity authorizedOnlyAccess(Authentication authentication) {
         log.info("Authentication: {}", authentication.toString());

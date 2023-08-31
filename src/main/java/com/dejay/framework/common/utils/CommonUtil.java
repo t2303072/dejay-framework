@@ -3,6 +3,9 @@ package com.dejay.framework.common.utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+/**
+ * 공통적으로 사용되는 각종 유틸 팩토리 모음
+ */
 @RequiredArgsConstructor
 @Component
 public class CommonUtil {

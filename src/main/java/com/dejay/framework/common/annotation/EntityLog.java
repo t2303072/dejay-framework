@@ -8,7 +8,8 @@ import com.dejay.framework.common.enums.RequestTypeEnum;
 
 /**
  * 데이터 변경이 일어나는 로직 실행 시, 애노테이션 추가 <br>
- * ex) LOGIN, CREATE, UPDATE, DELETE (참고 -> {@link RequestTypeEnum})
+ * ex) LOGIN, CREATE, UPDATE, DELETE
+ * @see RequestTypeEnum
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

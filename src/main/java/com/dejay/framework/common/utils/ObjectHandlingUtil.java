@@ -19,7 +19,7 @@ public class ObjectHandlingUtil {
      * 단건 객체에 대한 결과 객체 생성
      * @param obj T 대상 객체
      * @param resultCodeMsgEnum {@link ResultCodeMsgEnum} 응답 에러코드
-     * @return ResultStatusVO
+     * @return {@link ResultStatusVO}
      * @param <T>
      */
     public static <T> ResultStatusVO setSingleObjResultStatusVO(T obj, ResultCodeMsgEnum resultCodeMsgEnum) {
@@ -29,7 +29,7 @@ public class ObjectHandlingUtil {
     /**
      * 다건 객체에 대한 결과 객체 생성
      * @param list {@link List}
-     * @return ResultStatusVO
+     * @return {@link ResultStatusVO}
      * @param <T>
      */
     public static <T> ResultStatusVO setListResultStatusVO(List<T> list, ResultCodeMsgEnum resultCodeMsgEnum) {
@@ -39,7 +39,7 @@ public class ObjectHandlingUtil {
     /**
      * API 요청: HttpServletRequest 유효 토큰 정보 추출
      * @param request
-     * @return
+     * @return {@link TokenVO}
      */
     public static TokenVO extractTokenInfo(HttpServletRequest request) {
         return (TokenVO) request.getAttribute(MapKeyStringEnum.TOKEN_VO.getKeyString());
@@ -48,7 +48,7 @@ public class ObjectHandlingUtil {
     /**
      * API 요청: HttpServletRequest 로그인 정보 추출
      * @param request
-     * @return
+     * @return {@link MemberVO}
      */
     public static MemberVO extractLoginInfo(HttpServletRequest request) {
         return (MemberVO) request.getAttribute(MapKeyStringEnum.MEMBER_VO.getKeyString());
@@ -58,7 +58,7 @@ public class ObjectHandlingUtil {
      * 데이터 처리 결과 객체 생성
      * @param obj T
      * @param key {@link RequestTypeEnum}
-     * @return
+     * @return {@link ResultStatusVO}
      * @param <T>
      */
     public static <T> ResultStatusVO setDataManipulationResultStatusVO(T obj, RequestTypeEnum key) {
@@ -76,7 +76,7 @@ public class ObjectHandlingUtil {
     /**
      * 데이터 처리 실패 건에 대한 응답객체 setter
      * @param key
-     * @return
+     * @return {@link ResultStatusVO}
      */
     private static ResultStatusVO failedDataSetter(RequestTypeEnum key) {
         var result = switch(key) {
@@ -93,7 +93,7 @@ public class ObjectHandlingUtil {
      * Paging 연산기
      * @param searchObject {@link SearchObject}
      * @param totalCount {@link Integer}
-     * @return
+     * @return {@link Paging}
      */
     public static Paging pagingOperator(SearchObject searchObject, int totalCount) {
         return Paging.builder()
@@ -108,7 +108,7 @@ public class ObjectHandlingUtil {
      * Paging 연산기
      * @param search {@link SearchVO}
      * @param totalCount {@link Integer}
-     * @return
+     * @return {@link Paging}
      */
     public static Paging pagingOperatorBySearch(SearchVO search, int totalCount) {
         return Paging.builder()

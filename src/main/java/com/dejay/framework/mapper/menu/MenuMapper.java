@@ -3,7 +3,6 @@ package com.dejay.framework.mapper.menu;
 import com.dejay.framework.common.annotation.EntityLog;
 import com.dejay.framework.domain.menu.Menu;
 import com.dejay.framework.mapper.common.GeneralMapper;
-import com.dejay.framework.vo.member.MemberVO;
 import com.dejay.framework.vo.menu.MenuVO;
 import com.dejay.framework.vo.search.menu.MenuSearchVO;
 import org.apache.ibatis.annotations.Mapper;

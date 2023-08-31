@@ -4,7 +4,6 @@ import com.dejay.framework.common.utils.CryptoUtil;
 import com.dejay.framework.common.utils.JwtUtil;
 import com.dejay.framework.domain.common.Paging;
 import com.dejay.framework.domain.member.LoginRequest;
-import com.dejay.framework.mapper.test.TestMapper;
 import com.dejay.framework.vo.common.PagingVO;
 import com.dejay.framework.vo.test.TestVO;
 import jakarta.validation.Valid;
@@ -23,7 +22,6 @@ public class TestService {
 
     private final JwtUtil jwtUtil;
     private final CryptoUtil cryptoUtil;
-    private final TestMapper testMapper;
 
     private Long expiredMs = 1000 * 60 * 60l;
 
@@ -54,8 +52,6 @@ public class TestService {
                 .build();
     }
 
-    // TODO: IJ 암호화 알고리즘 확인
-
     /**
      * 비밀번호 암호화 테스트
      */
@@ -66,16 +62,5 @@ public class TestService {
 //        boolean passwordMatches = cryptoUtil.isPasswordMatches(loginRequest.getPassword(), encodedPassword);
 //        log.info("passwordMatches? {}", passwordMatches);
     }
-
-    /**
-     * 생성된 JWT 반환 테스트
-     * @param userName
-     * @param password
-     * @return
-     */
-    public String loginReturnJwt(String userName, String password, Set<?> authority) {
-        return jwtUtil.generateJwt(userName, expiredMs, authority);
-    }
-
 
 }

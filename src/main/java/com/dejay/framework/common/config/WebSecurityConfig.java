@@ -22,51 +22,35 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
- * Spring Security 7버전부터는 기존에 사용되던 다수의 메서드들이 deprecated 예정이라 해당 메서드는 미사용
+ * Spring Security 7버전부터는 기존에 사용되던 다수의 메서드들이 deprecated 예정이라 대상이 되는 메서드들은 사용 지양
  * @see <a href="https://docs.spring.io/spring-security/reference/migration-7/configuration.html">공식문서 참고</a>
  */
-
 @RequiredArgsConstructor
 @Configuration
 public class WebSecurityConfig {
 
-    private final JwtExceptionFilter jwtExceptionFilter;
     private final JwtUtil jwtUtil;
-    private final MemberService memberService;
-
+    private final JwtExceptionFilter jwtExceptionFilter;
     private final UserDetailsService userDetailsService;
 
     private static final String[] NO_AUTH_REQUIRED_URL = {"/index/**", "/test/**", "/member/sign-up", "/login", "/error"};
     private static final String[] AUTHORITY_REQUIRED_URL = {"/token/**", "/test/authorized-only"};
     private static final String[] AUTHENTICATION_REQUIRED_URL = {"/member/**"};
+    private static final String[] AUTHORITY_LIST = {AuthorityEnum.DEVELOPMENT.getDeptCode(), AuthorityEnum.BUSINESS_SUPPORT.getDeptCode()};
 
     @Bean
     public static BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    @Order(1)
-    @Bean
-    protected SecurityFilterChain exceptionSecurityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
-                .authorizeHttpRequests(ahr -> ahr
-                        .requestMatchers("/static/**").permitAll()
-                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll())
-                .requestCache(cache -> cache.disable())
-                .securityContext(context -> context.disable())
-                .sessionManagement(session -> session.disable());
-
-        return httpSecurity.build();
-    }
-
-    @Order(2)
     @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeHttpRequests(ahr -> ahr
+                        .requestMatchers("/static/**").permitAll()
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers(NO_AUTH_REQUIRED_URL).permitAll()
-                        .requestMatchers(AUTHORITY_REQUIRED_URL).hasAnyAuthority(AuthorityEnum.DEVELOPMENT.getDeptCode(), AuthorityEnum.BUSINESS_SUPPORT.getDeptCode())
+                        .requestMatchers(AUTHORITY_REQUIRED_URL).hasAnyAuthority(AUTHORITY_LIST)
                         .requestMatchers(AUTHENTICATION_REQUIRED_URL).authenticated()
                         .anyRequest().permitAll()
                 )
@@ -75,7 +59,7 @@ public class WebSecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(hb -> hb.disable())
-                .addFilterBefore(new AuthorityFilter(jwtUtil, memberService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new AuthorityFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtExceptionFilter, AuthorityFilter.class)
                 .logout(logout -> logout.permitAll()
                         .deleteCookies("JSESSIONID")

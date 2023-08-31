@@ -27,6 +27,9 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.Set;
 
+/**
+ * JWT 유틸
+ */
 @Slf4j
 @RequiredArgsConstructor
 @Component
@@ -51,7 +54,7 @@ public class JwtUtil {
      * @param accessExpiresAt {@link Long}
      * @param refreshExpiresAt {@link Long}
      * @param auth {@link Arrays}
-     * @return
+     * @return {@link TokenObjectVO}
      */
     public TokenObjectVO createTokenObject(String userName, Long accessExpiresAt, Long refreshExpiresAt, Set<?> auth) {
         String accessToken = this.generateJwt(userName, accessExpiresAt, auth);
@@ -99,7 +102,7 @@ public class JwtUtil {
      * JWT 생성
      * @param userName {@link String}
      * @param expiredMs {@link Long}
-     * @return
+     * @return {@link String}
      */
     public String generateJwt(String userName, Long expiredMs, Set<?> auth) {
         Claims claims = Jwts.claims().setSubject(userName);
@@ -117,7 +120,6 @@ public class JwtUtil {
     /**
      * JWT 만료 여부
      * @param token {@link String}
-     * @return
      */
     public void isExpired(String token) {
         try {
@@ -136,7 +138,6 @@ public class JwtUtil {
      *
      * @param token   {@link String}
      * @param reissue
-     * @return
      */
     public void isInvalidToken(String token, String reissue) {
         try {
@@ -153,7 +154,7 @@ public class JwtUtil {
      * JWT 유저 명 조회
      *
      * @param token {@link String}
-     * @return
+     * @return {@link String}
      */
     public String getUserName(String token) {
         return Jwts.parserBuilder().setSigningKey(secretKey).build()
@@ -163,7 +164,7 @@ public class JwtUtil {
     /**
      * JWT 유저 권한 정보 조회
      * @param token {@link String}
-     * @return
+     * @return {@link String}
      * @throws JsonProcessingException
      */
     public String getUserAuthority(String token) throws JsonProcessingException {
@@ -174,7 +175,7 @@ public class JwtUtil {
     /**
      * JWT decoder
      * @param token {@link String}
-     * @return
+     * @return {@link TokenVO}
      * @throws JsonProcessingException
      */
     public TokenVO decode(String token) throws JsonProcessingException {

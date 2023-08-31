@@ -6,7 +6,6 @@ import lombok.*;
 
 import java.util.Set;
 
-
 @ToString(callSuper = false)
 @Getter
 @EqualsAndHashCode(of = {"id", "name"})

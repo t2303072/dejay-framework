@@ -7,6 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * 권한 체크 컨트롤러 (테스트용)
+ */
 @Slf4j
 @RequiredArgsConstructor
 @RestController

@@ -17,6 +17,9 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * 문자열 유틸
+ */
 @Slf4j
 @Component
 public class StringUtil {

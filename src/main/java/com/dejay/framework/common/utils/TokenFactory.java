@@ -1,6 +1,7 @@
 package com.dejay.framework.common.utils;
 
 import com.dejay.framework.domain.common.TokenObjectVO;
+import com.dejay.framework.vo.common.ResultStatusVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -8,13 +9,12 @@ import org.springframework.stereotype.Component;
 import java.util.Set;
 
 /**
+ * 토큰 팩토리
  * TODO: IJ
- * 1. 만료 전 엑세스 토큰이 있는데 재발급 요청하면 엑세스 & refresh 토큰 둘 다 만료 시키기 => refresh 토큰은 DB에 저장
- * 2. 중복 로그인 처리
- * 3. OAuth 구현
- * 4. http-only 속성이 있는 쿠키에 저장 처리
+ * 1. 중복 로그인 처리
+ * 2. OAuth 구현
+ * 3. http-only 속성이 있는 쿠키에 저장 처리
  */
-
 @Slf4j
 @RequiredArgsConstructor
 @Component
@@ -28,7 +28,7 @@ public class TokenFactory {
      * @param userName {@link String}
      * @param password {@link String}
      * @param auth {@link Set}
-     * @return
+     * @return {@link TokenObjectVO}
      * @apiNote password 매개변수는 현재 사용 X
      */
     public TokenObjectVO createJWT(String userName, String password, Set<?> auth) {

@@ -20,6 +20,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.security.auth.login.LoginException;
 
+/**
+ * 로그인 시 토큰 및 계정 정보 확인용 인터셉터
+ */
 @Slf4j
 @RequiredArgsConstructor
 @Component

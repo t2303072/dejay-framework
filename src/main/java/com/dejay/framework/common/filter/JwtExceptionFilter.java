@@ -16,6 +16,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+/**
+ * JWT 관련 처리 중 exception 발생 시 커스텀 응답 객체 반환
+ */
 @Slf4j
 @Component
 public class JwtExceptionFilter extends OncePerRequestFilter {
