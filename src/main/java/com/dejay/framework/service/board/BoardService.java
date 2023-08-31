@@ -8,6 +8,7 @@ import com.dejay.framework.domain.board.Board;
 import com.dejay.framework.domain.common.Paging;
 import com.dejay.framework.service.common.ParentService;
 import com.dejay.framework.vo.board.BoardVO;
+import com.dejay.framework.vo.file.FileVO;
 import com.dejay.framework.vo.member.MemberVO;
 import com.dejay.framework.vo.search.board.BoardSearchVO;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +30,7 @@ public class BoardService extends ParentService {
     public int insertBoard(Board board, MemberVO member) throws Exception{
 
         Board target = Board.builder()
-                            .boardCd(board.getBoardCd())
+                            .boardCode(board.getBoardCode())
                             .title(board.getTitle())
                             .contents(board.getContents())
                             .fixYn(board.getFixYn())
@@ -98,6 +99,7 @@ public class BoardService extends ParentService {
 
         return iAffectedRows;
     }
+
 
     /**
      * 게시판 삭제
