@@ -5,6 +5,10 @@ spring:
     username: ENC(IczFq75YIzNXTzSMeUHjBkK0Pcf8MXLN)
     password: ENC(TKuGEV/dnva+80V9kwB/gzGn89MyKQxz)
 
+  security:
+    user:
+      password: 0000
+
 ## mapper logging level
 logging:
   level:

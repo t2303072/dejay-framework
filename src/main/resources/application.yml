@@ -17,6 +17,10 @@ spring:
 #      path: /h2-console
 #      settings:
 #        trace: false
+
+  security:
+    user:
+      password: 0000
 server:
   port: 8080
   context-path: /

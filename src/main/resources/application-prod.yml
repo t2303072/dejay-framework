@@ -9,6 +9,10 @@ spring:
       maximum-pool-size: 10
       connection-test-query: SELECT NOW() FROM DUAL
 
+  security:
+    user:
+      password: 0000
+
 ## mapper logging level
 logging:
   level:
