@@ -2,13 +2,11 @@ package com.dejay.framework.service.board;
 
 import com.dejay.framework.common.enums.RequestTypeEnum;
 import com.dejay.framework.common.enums.TableNameEnum;
-import com.dejay.framework.common.utils.CommonUtil;
 import com.dejay.framework.common.utils.ObjectHandlingUtil;
 import com.dejay.framework.domain.board.Board;
 import com.dejay.framework.domain.common.Paging;
 import com.dejay.framework.service.common.ParentService;
 import com.dejay.framework.vo.board.BoardVO;
-import com.dejay.framework.vo.file.FileVO;
 import com.dejay.framework.vo.member.MemberVO;
 import com.dejay.framework.vo.search.board.BoardSearchVO;
 import lombok.extern.slf4j.Slf4j;
