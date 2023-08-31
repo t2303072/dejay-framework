@@ -21,7 +21,7 @@ public class MapUtil {
      * @param resultStatusVO {@link ResultStatusVO} 응답상태 객체
      * @param mapKeyList {@link List} Map 키값 List 컬렉션
      * @param objects Objects[] 데이터 객체
-     * @return
+     * @return {@link Map}
      */
     public Map<String, Object> responseEntityBodyWrapper(ResultStatusVO resultStatusVO, List<String> mapKeyList, Object... objects) {
 
@@ -48,7 +48,7 @@ public class MapUtil {
     /**
      * ResponseEntity 응답데이터 Wrapper (POST, PUT, DELETE시 사용)
      * @param resultStatusVO {@link ResultStatusVO} 응답상태 객체
-     * @return
+     * @return {@link Map}
      */
     public Map<String, Object> responseEntityBodyWrapper(ResultStatusVO resultStatusVO) {
         Map<String, Object> resultMap = new HashMap<>();

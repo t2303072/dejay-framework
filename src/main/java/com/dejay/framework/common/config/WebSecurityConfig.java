@@ -22,18 +22,15 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
- * Spring Security 7버전부터는 기존에 사용되던 다수의 메서드들이 deprecated 예정이라 해당 메서드는 미사용
+ * Spring Security 7버전부터는 기존에 사용되던 다수의 메서드들이 deprecated 예정이라 대상이 되는 메서드들은 사용 지양
  * @see <a href="https://docs.spring.io/spring-security/reference/migration-7/configuration.html">공식문서 참고</a>
  */
-
 @RequiredArgsConstructor
 @Configuration
 public class WebSecurityConfig {
 
-    private final JwtExceptionFilter jwtExceptionFilter;
     private final JwtUtil jwtUtil;
-    private final MemberService memberService;
-
+    private final JwtExceptionFilter jwtExceptionFilter;
     private final UserDetailsService userDetailsService;
 
     private static final String[] NO_AUTH_REQUIRED_URL = {"/index/**", "/test/**", "/member/sign-up", "/login", "/error"};
@@ -62,7 +59,7 @@ public class WebSecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(hb -> hb.disable())
-                .addFilterBefore(new AuthorityFilter(jwtUtil, memberService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new AuthorityFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtExceptionFilter, AuthorityFilter.class)
                 .logout(logout -> logout.permitAll()
                         .deleteCookies("JSESSIONID")

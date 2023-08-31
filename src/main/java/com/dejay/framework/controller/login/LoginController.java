@@ -24,11 +24,16 @@ import java.util.Map;
 @RequestMapping("/login")
 public class LoginController extends ParentController {
 
+    /**
+     * 로그인 요청 API
+     * @param loginRequest
+     * @return
+     */
     @PostMapping({"", "/"})
     public ResponseEntity login(@RequestBody @Valid LoginRequest loginRequest) {
-
         MemberVO loginInfo = getCommonService().getMemberService().getLoginInfo(loginRequest);
         Map<String, Object> resultMap;
+
         if(loginInfo != null) {
             TokenObjectVO tokenObjectVO = getCommonUtil().getTokenFactory().createJWT(loginInfo.getMemberId(), null, loginInfo.getAuthority());
             ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(tokenObjectVO, ResultCodeMsgEnum.NO_DATA);

@@ -34,7 +34,6 @@ public class AuthorityFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
     private static final String TOKEN_PREFIX = "Bearer ";
     private static final String REISSUE = "reissue";
-    private final MemberService memberService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

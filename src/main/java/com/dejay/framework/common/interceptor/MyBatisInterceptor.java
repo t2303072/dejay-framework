@@ -33,8 +33,8 @@ public class MyBatisInterceptor implements Interceptor {
 
         Object parameterObject = args[1];
         String requestObjName = parameterObject.getClass().getSimpleName();
-        // TODO: IJ 메뉴 접근 이력 제외 (주석 제거 할 것)
-//        if(requestObjName.equals(RestApi.builder().build().getClass().getSimpleName())) {
+        // 메뉴 접근 이력 제외 (주석 제거 할 것)
+//        if(requestObjName.equals(RestAPI.builder().build().getClass().getSimpleName())) {
 //            return invocation.proceed();
 //        }
 

@@ -60,15 +60,12 @@ public class EntityLogAspect extends CommonUtil {
                 storeEntityLog(target);
             }
         }
-
-
     }
 
     /**
      * ENTITY_LOG & ENTITY_HISTORY 저장 대상 객체 Setter
      * @param castObj
-     * @return
-     * @param <T>
+     * @return {@link BaseEntity}
      * @throws JsonProcessingException
      */
     private BaseEntity entitySaveTargetSetter(BaseEntity castObj) throws JsonProcessingException {

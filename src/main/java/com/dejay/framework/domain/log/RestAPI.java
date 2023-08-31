@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @Builder
 @Getter
-public class RestApi {
+public class RestAPI {
 
     private long logSeq;
     private String requestUri;

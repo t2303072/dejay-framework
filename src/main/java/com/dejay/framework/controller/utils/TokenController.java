@@ -27,6 +27,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * 토큰 API
+ */
 @Slf4j
 @RequiredArgsConstructor
 @RestController
@@ -34,9 +37,9 @@ import java.util.stream.Collectors;
 public class TokenController extends ParentController {
 
     /**
-     * 토큰(JWT) 생성
+     * 토큰(JWT) 생성 API
      * @param loginRequest
-     * @return
+     * @return {@link ResponseEntity}
      */
     @PostMapping(value = {"", "/"})
     public ResponseEntity createJWT(@RequestBody @Valid LoginRequest loginRequest) {
@@ -49,9 +52,9 @@ public class TokenController extends ParentController {
     }
 
     /**
-     * 인증 정보 확인
+     * 인증 정보 확인 API
      * @param authentication
-     * @return
+     * @return {@link ResponseEntity}
      */
     @PostMapping("/authentication-info")
     public ResponseEntity getAuthentication(HttpServletRequest request, Authentication authentication) {
@@ -62,10 +65,10 @@ public class TokenController extends ParentController {
     }
 
     /**
-     * 토큰(JWT) 재발행
+     * 토큰(JWT) 재발행 API
      * @param request
      * @param authentication
-     * @return
+     * @return {@link ResponseEntity}
      */
     @PostMapping("/reissue-token")
     public ResponseEntity modifyToken(HttpServletRequest request, Authentication authentication) {

@@ -26,6 +26,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Arrays;
 
+/**
+ * 권한 체크 인터셉터
+ */
 @Slf4j
 @RequiredArgsConstructor
 @Component

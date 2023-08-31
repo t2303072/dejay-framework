@@ -24,6 +24,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 전역 Exception<br/>
+ * 1. 애플리케이션 실행 중 예외가 발생하는 경우에 해당 exception 클래스 호출
+ */
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {

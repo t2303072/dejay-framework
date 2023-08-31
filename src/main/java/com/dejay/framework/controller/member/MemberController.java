@@ -25,15 +25,23 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 
+/**
+ * 회원 API
+ */
 @Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/member")
 public class MemberController extends ParentController {
 
+    /**
+     * 회원 목록 조회 API
+     * @param request
+     * @param searchObject
+     * @return {@link ResponseEntity}
+     */
     @GetMapping(value = {"", "/"})
     public ResponseEntity memberList(HttpServletRequest request, @RequestBody @Valid SearchObject searchObject) {
-
         CollectionPagingVO collectionPagingVO = getCommonService().getMemberService().getMemberList(searchObject);
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setListResultStatusVO(collectionPagingVO.getObjects().stream().toList(), ResultCodeMsgEnum.NO_DATA);
         
@@ -43,28 +51,11 @@ public class MemberController extends ParentController {
         return ResponseEntity.ok(resultMap);
     }
 
-    @PostMapping({"", "/"})
-    public ResponseEntity insertMember(@RequestBody @Valid Member member) {
-        Member inserted = getCommonService().getMemberService().insertMember(member);
-        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(inserted, ResultCodeMsgEnum.NO_DATA);
-
-        var mapKeyList = Arrays.asList(MapKeyStringEnum.MEMBER.getKeyString());
-        var resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, inserted);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(resultMap);
-    }
-
-    /*@PostMapping(value = "insert")
-    public ResponseEntity insertMember(@RequestBody @Valid User user) {
-        User inserted = getCommonService().getMemberService().insert(user);
-        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(inserted, ResultCodeMsgEnum.NO_DATA);
-
-        var mapKeyList = Arrays.asList(MapKeyStringEnum.USER.getKeyString());
-        var resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, inserted);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(resultMap);
-    }*/
-
+    /**
+     * 회원가입 API
+     * @param signUpRequest
+     * @return {@link ResponseEntity}
+     */
     @PostMapping("sign-up")
     public ResponseEntity signUp(@RequestBody @Valid SignUpRequest signUpRequest) {
         TokenObjectVO tokenObjectVO = getCommonService().getMemberService().signUp(signUpRequest);
@@ -76,6 +67,11 @@ public class MemberController extends ParentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(resultMap);
     }
 
+    /**
+     * 회원 상세 조회 API
+     * @param id
+     * @return {@link ResponseEntity}
+     */
     @GetMapping("{id}")
     public ResponseEntity findMemberById(@PathVariable int id) {
         MemberVO memberVO = getCommonService().getMemberService().findMemberById(id);
@@ -87,6 +83,21 @@ public class MemberController extends ParentController {
         return ResponseEntity.ok(resultMap);
     }
 
+
+//    -----
+    @Deprecated
+    @PostMapping({"", "/"})
+    public ResponseEntity insertMember(@RequestBody @Valid Member member) {
+        Member inserted = getCommonService().getMemberService().insertMember(member);
+        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(inserted, ResultCodeMsgEnum.NO_DATA);
+
+        var mapKeyList = Arrays.asList(MapKeyStringEnum.MEMBER.getKeyString());
+        var resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, inserted);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(resultMap);
+    }
+
+    @Deprecated
     @PostMapping("request-param-validity")
     public ResponseEntity requestParamTest(@RequestBody @Valid Member member) {
         getCommonService().getMemberService().insertMember(member);

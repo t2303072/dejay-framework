@@ -2,6 +2,7 @@ package com.dejay.framework.controller.utils;
 
 import com.dejay.framework.common.utils.CookieFactory;
 import com.dejay.framework.controller.common.ParentController;
+import com.dejay.framework.vo.common.ResultStatusVO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/cookie")
 public class CookieController extends ParentController {
 
+    /**
+     * 쿠키 세팅
+     * @param request
+     * @param response
+     * @return {@link ResponseEntity}
+     */
     @GetMapping("/set-cookie")
     public ResponseEntity setCookie(HttpServletRequest request, HttpServletResponse response) {
         getCommonUtil().getCookieFactory().setCookie(response, "localhost", "/", "res-cookie1", "cookie-test1", true, false, 0);
@@ -25,6 +32,12 @@ public class CookieController extends ParentController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * 쿠키 정보 조회
+     * @param request
+     * @param response
+     * @return {@link ResponseEntity}
+     */
     @GetMapping("/get-cookie")
     public ResponseEntity getCookie(HttpServletRequest request, HttpServletResponse response) {
         getCommonUtil().getCookieFactory().getCookieList(request);
@@ -32,6 +45,13 @@ public class CookieController extends ParentController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * 쿠키 만료
+     * @param request
+     * @param response
+     * @param key
+     * @return {@link ResponseEntity}
+     */
     @GetMapping("/remove/{key}")
     public ResponseEntity removeCookie(HttpServletRequest request, HttpServletResponse response, @PathVariable String key/*, @CookieValue(value = "res-cookie2", required = false) String cookie*/) {
 //        String key = Arrays.stream(request.getCookies()).filter(c -> c.getName().equals("res-cookie2")).findAny().get().getName();

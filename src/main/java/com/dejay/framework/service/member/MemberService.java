@@ -20,6 +20,7 @@ import com.dejay.framework.vo.member.MemberVO;
 import com.dejay.framework.vo.search.SearchVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +41,7 @@ public class MemberService extends ParentService {
     /**
      * 멤버 목록 조회
      * @param searchObject {@link SearchObject}
-     * @return
+     * @return {@link CollectionPagingVO}
      */
     public CollectionPagingVO getMemberList(SearchObject searchObject) {
 
@@ -69,7 +70,7 @@ public class MemberService extends ParentService {
     /**
      * 멤버 상세 조회
      * @param id int
-     * @return
+     * @return {@link MemberVO}
      */
     public MemberVO findMemberById(int id) {
         MemberVO memberVO = getCommonMapper().getMemberMapper().findMemberById(id);
@@ -93,7 +94,7 @@ public class MemberService extends ParentService {
     /**
      * 멤버 상세 조회
      * @param userName String
-     * @return
+     * @return {@link MemberVO}
      */
     public MemberVO findMemberByUserName(String userName) {
         return getCommonMapper().getMemberMapper().findMemberByUserName(userName);
@@ -102,7 +103,7 @@ public class MemberService extends ParentService {
     /**
      * 멤버 등록
      * @param member {@link Member}
-     * @return
+     * @return {@link Member}
      */
     public Member insertMember(Member member) {
         var target = Member.builder()
@@ -121,7 +122,7 @@ public class MemberService extends ParentService {
     /**
      * 사용자 등록(w/ token)
      * @param signUpRequest {@link SignUpRequest}
-     * @return
+     * @return {@link TokenObjectVO}
      */
     public TokenObjectVO signUp(SignUpRequest signUpRequest) {
         var target = User.builder()
@@ -152,7 +153,7 @@ public class MemberService extends ParentService {
     /**
      * 로그인 정보 조회
      * @param loginRequest {@link LoginRequest}
-     * @return
+     * @return {@link MemberVO}
      */
     public MemberVO getLoginInfo(LoginRequest loginRequest) {
 

@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
+/**
+ * 객체 검증 유틸
+ */
 @Slf4j
 @Component
 public class ValidationUtil {
@@ -39,7 +42,7 @@ public class ValidationUtil {
             for (ConstraintViolation<T> violation : validate) {
                 log.error("[parameterValidator] {}", violation.getMessage());
             }
-            // TODO: IJ 공통 토큰 익셉션 개발
+
             throw new IllegalArgumentException(ExceptionCodeMsgEnum.SERVER_DATA_ERROR.getMsg());
         }
 
