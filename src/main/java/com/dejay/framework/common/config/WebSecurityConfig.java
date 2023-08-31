@@ -39,34 +39,21 @@ public class WebSecurityConfig {
     private static final String[] NO_AUTH_REQUIRED_URL = {"/index/**", "/test/**", "/member/sign-up", "/login", "/error"};
     private static final String[] AUTHORITY_REQUIRED_URL = {"/token/**", "/test/authorized-only"};
     private static final String[] AUTHENTICATION_REQUIRED_URL = {"/member/**"};
+    private static final String[] AUTHORITY_LIST = {AuthorityEnum.DEVELOPMENT.getDeptCode(), AuthorityEnum.BUSINESS_SUPPORT.getDeptCode()};
 
     @Bean
     public static BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    @Order(1)
-    @Bean
-    protected SecurityFilterChain exceptionSecurityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
-                .authorizeHttpRequests(ahr -> ahr
-                        .requestMatchers("/static/**").permitAll()
-                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll())
-                .requestCache(cache -> cache.disable())
-                .securityContext(context -> context.disable())
-                .sessionManagement(session -> session.disable());
-
-        return httpSecurity.build();
-    }
-
-    @Order(2)
     @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeHttpRequests(ahr -> ahr
+                        .requestMatchers("/static/**").permitAll()
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers(NO_AUTH_REQUIRED_URL).permitAll()
-                        .requestMatchers(AUTHORITY_REQUIRED_URL).hasAnyAuthority(AuthorityEnum.DEVELOPMENT.getDeptCode(), AuthorityEnum.BUSINESS_SUPPORT.getDeptCode())
+                        .requestMatchers(AUTHORITY_REQUIRED_URL).hasAnyAuthority(AUTHORITY_LIST)
                         .requestMatchers(AUTHENTICATION_REQUIRED_URL).authenticated()
                         .anyRequest().permitAll()
                 )
