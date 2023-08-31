@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -44,6 +45,21 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    @Order(1)
+    @Bean
+    protected SecurityFilterChain exceptionSecurityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity
+                .authorizeHttpRequests(ahr -> ahr
+                        .requestMatchers("/static/**").permitAll()
+                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll())
+                .requestCache(cache -> cache.disable())
+                .securityContext(context -> context.disable())
+                .sessionManagement(session -> session.disable());
+
+        return httpSecurity.build();
+    }
+
+    @Order(2)
     @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
@@ -69,11 +85,6 @@ public class WebSecurityConfig {
         ;
 
         return httpSecurity.build();
-    }
-
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
     @Autowired
