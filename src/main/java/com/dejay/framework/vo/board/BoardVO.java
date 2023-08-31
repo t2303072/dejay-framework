@@ -18,7 +18,7 @@ public class BoardVO {
     private Long boardSeq;
 
     // 게시판 코드
-    private String boardCd;
+    private String boardCode;
 
     // 제목
     @NotNull(message = "제목은 필수 값 입니다.")

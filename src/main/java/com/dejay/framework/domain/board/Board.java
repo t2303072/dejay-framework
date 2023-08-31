@@ -12,7 +12,7 @@ public class Board extends BaseEntity {
     private Long boardSeq;
 
     // 게시판 코드
-    private String boardCd;
+    private String boardCode;
 
     // 제목
     @NotNull(message="제목은 필수값 입니다.")
@@ -35,10 +35,10 @@ public class Board extends BaseEntity {
     private String useYn;
 
     @Builder
-    public Board(String tableName, String logId1, String logId2, String logType, String logJson, String remark, String regId,Long boardSeq,String boardCd, String title, String contents, String fixYn, String displayYn, String useYn){
+    public Board(String tableName, String logId1, String logId2, String logType, String logJson, String remark, String regId,Long boardSeq,String boardCode, String title, String contents, String fixYn, String displayYn, String useYn){
         super(tableName, logId1, logId2, logType, logJson, remark, regId);
         this.boardSeq = boardSeq;
-        this.boardCd = boardCd;
+        this.boardCode = boardCode;
         this.title = title;
         this.contents = contents;
         this.fixYn = fixYn;

@@ -105,7 +105,8 @@
         GROUP BY BOARD_SEQ
     </select>
 
-   
+
+
     <!-- 조회 ]] -->
 
 
@@ -121,7 +122,7 @@
         )
         VALUES
         (
-            #{boardCd}, #{title},
+            #{boardCode}, #{title},
            #{contents}, #{fixYn},
             #{displayYn}, #{useYn}
         )
