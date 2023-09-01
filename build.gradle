@@ -76,12 +76,12 @@ dependencies {
 	testAnnotationProcessor 'org.projectlombok:lombok'
 }
 
-test {
-	outputs.dir 'snippetsDir'
-}
-
 ext {
 	set('snippetsDir', file('build/generated-snippets'))
+}
+
+test {
+	outputs.dir 'snippetsDir'
 }
 
 asciidoctor {

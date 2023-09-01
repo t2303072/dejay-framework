@@ -31,12 +31,16 @@
 ===== 요청
 include::{snippets}/post-login-ok/http-request.adoc[]
 ===== Request Body
+include::{snippets}/post-login-ok/request-fields.adoc[]
+===== Example
 include::{snippets}/post-login-ok/request-body.adoc[]
 
 [discrete]
 ===== 응답
 include::{snippets}/post-login-ok/http-response.adoc[]
 ===== Response Body
+include::{snippets}/post-login-ok/response-fields.adoc[]
+===== Example
 include::{snippets}/post-login-ok/response-body.adoc[]
 
 ==== 로그인 ID 누락
@@ -49,12 +53,16 @@ include::{snippets}/post-login-ok/response-body.adoc[]
 ===== 요청
 include::{snippets}/post-no-login-id-fail/http-request.adoc[]
 ===== Request Body
+include::{snippets}/post-no-login-id-fail/request-fields.adoc[]
+===== Example
 include::{snippets}/post-no-login-id-fail/request-body.adoc[]
 
 [discrete]
 ===== 응답
 include::{snippets}/post-no-login-id-fail/http-response.adoc[]
 ===== Response Body
+include::{snippets}/post-no-login-id-fail/response-fields.adoc[]
+===== Example
 include::{snippets}/post-no-login-id-fail/response-body.adoc[]
 
 ==== 비밀번호 불일치
@@ -67,10 +75,14 @@ include::{snippets}/post-no-login-id-fail/response-body.adoc[]
 ===== 요청
 include::{snippets}/post-login-wrong-password-fail/http-request.adoc[]
 ===== Request Body
+include::{snippets}/post-login-wrong-password-fail/request-fields.adoc[]
+===== Example
 include::{snippets}/post-login-wrong-password-fail/request-body.adoc[]
 
 [discrete]
 ===== 응답
 include::{snippets}/post-login-wrong-password-fail/http-response.adoc[]
 ===== Response Body
+include::{snippets}/post-login-wrong-password-fail/response-fields.adoc[]
+===== Example
 include::{snippets}/post-login-wrong-password-fail/response-body.adoc[]
