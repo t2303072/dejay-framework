@@ -82,7 +82,7 @@
             <if test="searchWord1 != null and searchWord1 != '' ">
                 <choose>
                     <when test="type1 eq 'ti'">AND BD.TITLE LIKE CONCAT('%', #{searchWord1}, '%')</when>
-                    <when test="type1 eq 'ct'">AND BD.CONTENTS CONCAT('%', #{searchWord1}, '%')</when>
+                    <when test="type1 eq 'ct'">AND BD.CONTENTS LIKE CONCAT('%', #{searchWord1}, '%')</when>
                     <when test="type1 eq 're'">AND ENTITY.REG_ID LIKE CONCAT('%', #{searchWord1}, '%')</when>
                     <when test="type1 == null or type1 eq '' ">AND ( BD.TITLE LIKE CONCAT('%', #{searchWord1}, '%') OR BD.CONTENTS LIKE CONCAT('%', #{searchWord1}, '%')  OR ENTITY.REG_ID LIKE CONCAT('%', #{searchWord1}, '%'))</when>
                     <otherwise></otherwise>
