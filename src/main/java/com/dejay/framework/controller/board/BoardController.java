@@ -71,10 +71,9 @@ public class BoardController extends ParentController {
      * @return
      */
     @PostMapping(value="/insert")
-    public ResponseEntity insertBoard(@RequestBody @Valid DataObject dataObject, HttpServletRequest request) throws Exception {
-        MemberVO member = ObjectHandlingUtil.extractLoginInfo(request);
+    public ResponseEntity insertBoard(@RequestBody @Valid DataObject dataObject) throws Exception {
+        int inserted = getCommonService().getBoardService().insertBoard(dataObject.getData().getBoard(), getLoginVO());
 
-        int inserted = getCommonService().getBoardService().insertBoard(dataObject.getData().getBoard(),member);
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(inserted, RequestTypeEnum.CREATE);
         Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO);
 
@@ -87,10 +86,9 @@ public class BoardController extends ParentController {
      * @return
      */
     @PostMapping(value="/update")
-    public ResponseEntity updateBoard(@RequestBody @Valid DataObject dataObject, HttpServletRequest request){
-        MemberVO member = ObjectHandlingUtil.extractLoginInfo(request);
+    public ResponseEntity updateBoard(@RequestBody @Valid DataObject dataObject){
+        int inserted = getCommonService().getBoardService().updateBoard(dataObject.getData().getBoard(), getLoginVO());
 
-        int inserted = getCommonService().getBoardService().updateBoard(dataObject.getData().getBoard(), member);
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(inserted, RequestTypeEnum.UPDATE);
         Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO);
 
@@ -103,10 +101,9 @@ public class BoardController extends ParentController {
      * @return
      */
     @PostMapping(value="/delete")
-    public ResponseEntity deleteBoard(@RequestBody @Valid DataObject dataObject,HttpServletRequest request){
-        MemberVO member = ObjectHandlingUtil.extractLoginInfo(request);
-
-        int deleted = getCommonService().getBoardService().deleteBoard(dataObject.getData().getBoard(), member);
+    public ResponseEntity deleteBoard(@RequestBody @Valid DataObject dataObject){
+        int deleted = getCommonService().getBoardService().deleteBoard(dataObject.getData().getBoard(), getLoginVO());
+        
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(deleted,RequestTypeEnum.DELETE);
         Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO);
 
