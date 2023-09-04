@@ -19,4 +19,6 @@ public class BoardSearchVO extends SearchVO{
     private String fixYn;
     // 노출 여부
     private String displayYn;
+    // 테이블 이름
+    private String entityName;
 }

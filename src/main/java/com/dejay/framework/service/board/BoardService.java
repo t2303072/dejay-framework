@@ -54,6 +54,8 @@ public class BoardService extends ParentService {
      * @return
      */
     public List<BoardVO> pagingBoard(BoardSearchVO search){
+        search.setEntityName(TableNameEnum.BOARD.name());
+
         int totalCount = getCommonMapper().getBoardMapper().pagingCountBySearch(search);
         Paging paging = ObjectHandlingUtil.pagingOperatorBySearch(search, totalCount);
         search.setPaging(paging);
@@ -67,6 +69,8 @@ public class BoardService extends ParentService {
      * @return
      */
     public BoardVO rowBoard(BoardSearchVO search){
+        search.setEntityName(TableNameEnum.BOARD.name());
+
         return (BoardVO) getCommonMapper().getBoardMapper().rowBySearch(search);
     }
 

@@ -78,6 +78,7 @@
                 ON BD.BOARD_SEQ = ENTITY.LOG_ID1
         <where>
             <include refid="whereClause"><property name="alias" value="BD."/></include>
+            AND ENTITY.ENTITY_NAME = #{entityName}
             <if test="searchWord1 != null and searchWord1 != '' ">
                 <choose>
                     <when test="type1 eq 'ti'">AND BD.TITLE LIKE CONCAT('%', #{searchWord1}, '%')</when>
@@ -106,6 +107,7 @@
                 ON BD.BOARD_SEQ = ENTITY.LOG_ID1
         <where>
             <include refid="whereClauseSeq"><property name="alias" value="BD."/></include>
+            AND ENTITY.ENTITY_NAME = #{entityName}
         </where>
         GROUP BY BOARD_SEQ
     </select>
