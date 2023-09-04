@@ -22,14 +22,6 @@
     <!-- whereClause [[ -->
 
     <sql id = "whereClause">
-        <if test="title != null and title != '' ">
-            AND ${alias}TITLE LIKE CONCAT('%',#{title},'%')
-        </if>
-
-        <if test="contents != null and contents != '' ">
-            AND ${alias}CONTENTS LIKE CONCAT('%',#{contents},'%')
-        </if>
-
         <if test="fixYn != null and fixYn != '' ">
             AND ${alias}FIX_YN = #{fixYn}
         </if>
@@ -37,6 +29,7 @@
         <if test="displayYn != null and displayYn != '' ">
             AND  ${alias}DISPLAY_YN = #{displayYn}
         </if>
+
     </sql>
 
     <sql id = "whereClauseSeq">
@@ -75,20 +68,31 @@
 
     </select>
 
-    <select id="pagingBySearch"  resultType="BoardVO" parameterType="BoardSearchVO">
+    <select id="pagingBySearch"  resultType="hashMap" parameterType="BoardSearchVO">
         /*게시판 페이징 조회 - BoarderMapper.pagingBySearch */
         SELECT
             <include refid="boardColumn"><property name="alias" value="BD."/></include>
             ,MAX(ENTITY.REG_DTTM) AS REG_DTTM , REG_ID
-            ,ROW_NUMBER() OVER() AS RNUM
         FROM BOARD BD
         INNER JOIN ENTITY_LOG ENTITY
                 ON BD.BOARD_SEQ = ENTITY.LOG_ID1
         <where>
             <include refid="whereClause"><property name="alias" value="BD."/></include>
+            <if test="searchWord1 != null and searchWord1 != '' ">
+                <choose>
+                    <when test="type1 eq 'ti'">AND BD.TITLE LIKE CONCAT('%', #{searchWord1}, '%')</when>
+                    <when test="type1 eq 'ct'">AND BD.CONTENTS CONCAT('%', #{searchWord1}, '%')</when>
+                    <when test="type1 eq 're'">AND ENTITY.REG_ID LIKE CONCAT('%', #{searchWord1}, '%')</when>
+                    <when test="type1 == null or type1 eq '' ">AND ( BD.TITLE LIKE CONCAT('%', #{searchWord1}, '%') OR BD.CONTENTS LIKE CONCAT('%', #{searchWord1}, '%')  OR ENTITY.REG_ID LIKE CONCAT('%', #{searchWord1}, '%'))</when>
+                    <otherwise></otherwise>
+                </choose>
+            </if>
         </where>
         GROUP BY BOARD_SEQ
         <include refid="orderClause"><property name="alias" value="BD."/></include>
+        <if test="paging.displayRow > 0">
+            LIMIT #{paging.offset} , #{paging.displayRow}
+        </if>
 
     </select>
 
@@ -107,7 +111,7 @@
     </select>
 
 
-    
+
     <!-- 조회 ]] -->
 
 

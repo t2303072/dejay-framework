@@ -46,7 +46,4 @@ public class BoardVO {
     // 처리 ID
     private String regId;
     
-    // 게시판 행 번호
-    private String rNUm;
-
 }
