@@ -131,7 +131,7 @@ class LoginControllerTest extends FrameworkApplicationTests {
                 .userName("ijzone")
                 .password("123456")
                 .build();
-        String content = objectMapper.writeValueAsString(target);
+        String content = convertObjectToJsonString(target);
 
         this.mockMvc.perform(post("/login")
                         .accept(MediaType.APPLICATION_JSON)
