@@ -206,7 +206,7 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<ResultStatusVO> handleCustomFileException(CustomFileException ex) {
         this.printIOExceptionLog(ex);
         resultStatusVO = new ResultStatusVO(ex.getCode(), ex.getMessage(), ex.getMessage(), null);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultStatusVO);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultStatusVO);
     }
 
     // ----------------------------------------------------------------------------------------------------
