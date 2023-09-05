@@ -38,7 +38,7 @@ public class ObjectHandlingUtil {
 
     /**
      * API 요청: HttpServletRequest 유효 토큰 정보 추출
-     * @param request
+     * @param request {@link HttpServletRequest}
      * @return {@link TokenVO}
      */
     public static TokenVO extractTokenInfo(HttpServletRequest request) {
@@ -47,7 +47,7 @@ public class ObjectHandlingUtil {
 
     /**
      * API 요청: HttpServletRequest 로그인 정보 추출
-     * @param request
+     * @param request {@link HttpServletRequest}
      * @return {@link MemberVO}
      */
     public static MemberVO extractLoginInfo(HttpServletRequest request) {
@@ -55,7 +55,7 @@ public class ObjectHandlingUtil {
     }
 
     /**
-     * 데이터 처리 결과 객체 생성
+     * 데이터 변경 처리 결과 건에 대한 객체 생성
      * @param obj T
      * @param key {@link RequestTypeEnum}
      * @return {@link ResultStatusVO}

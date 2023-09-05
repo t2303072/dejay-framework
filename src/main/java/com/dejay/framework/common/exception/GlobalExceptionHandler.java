@@ -36,7 +36,7 @@ public class GlobalExceptionHandler {
 
     /**
      * @param ex
-     * @return ResultStatusVO
+     * @return ResponseEntity
      * @implNote @RequestBody, @RequestPart Exception handling
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -48,7 +48,7 @@ public class GlobalExceptionHandler {
 
     /**
      * @param ex
-     * @return ResultStatusVO
+     * @return ResponseEntity
      * @implNote @ModelAttribute Exception handling
      */
     @ExceptionHandler(BindException.class)
@@ -61,8 +61,8 @@ public class GlobalExceptionHandler {
     /**
      *
      * @param ex
-     * @return ResultStatusVO
-     * @implNote
+     * @return ResponseEntity
+     * @implNote Argument error handling
      */
     @ExceptionHandler(IllegalArgumentException.class)
     protected ResponseEntity<ResultStatusVO> handleIllegalArgumentException(IllegalArgumentException ex) {
@@ -74,8 +74,8 @@ public class GlobalExceptionHandler {
     /**
      *
      * @param ex
-     * @return ResultStatusVO
-     * @implNote
+     * @return ResponseEntity
+     * @implNote NumberFormat error handling
      */
     @ExceptionHandler(NumberFormatException.class)
     protected ResponseEntity<ResultStatusVO> handleNumberFormatException(NumberFormatException ex) {
@@ -87,8 +87,8 @@ public class GlobalExceptionHandler {
     /**
      *
      * @param ex
-     * @return ResultStatusVO
-     * @implNote
+     * @return ResponseEntity
+     * @implNote Null pointer error handling
      */
     @ExceptionHandler(NullPointerException.class)
     protected ResponseEntity<ResultStatusVO> handleNullPointerException(NullPointerException ex) {
@@ -100,8 +100,8 @@ public class GlobalExceptionHandler {
     /**
      *
      * @param ex
-     * @return ResultStatusVO
-     * @implNote
+     * @return ResponseEntity
+     * @implNote Class not found error handling
      */
     @ExceptionHandler(ClassNotFoundException.class)
     protected ResponseEntity<ResultStatusVO> handleClassNotFoundException(ClassNotFoundException ex) {
@@ -112,7 +112,7 @@ public class GlobalExceptionHandler {
 
     /**
      * @param ex
-     * @return ResultStatusVO
+     * @return ResponseEntity
      * @implNote HttpMethod error handling
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
@@ -124,7 +124,7 @@ public class GlobalExceptionHandler {
 
     /**
      * @param ex
-     * @return ResultStatusVO
+     * @return ResponseEntity
      * @implNote SQL error handling
      */
     @ExceptionHandler(SQLException.class)
@@ -136,7 +136,7 @@ public class GlobalExceptionHandler {
 
     /**
      * @param ex
-     * @return ResultStatusVO
+     * @return ResponseEntity
      * @implNote Encoding error handling
      */
     @ExceptionHandler(UnsupportedEncodingException.class)
@@ -148,13 +148,13 @@ public class GlobalExceptionHandler {
 
     /**
      * @param ex
-     * @return ResultStatusVO
+     * @return ResponseEntity
      * @implNote Login related handling
      */
     @ExceptionHandler(CustomLoginException.class)
     protected ResponseEntity<ResultStatusVO> handleCustomLoginException(CustomLoginException ex) {
         this.printGeneralSecurityExceptionLog(ex);
-        resultStatusVO = new ResultStatusVO(ex.getCode(), ex.getMsg(), null, null);
+        resultStatusVO = new ResultStatusVO(ex.getCode(), ex.getMsg(), ex.getMessage(), null);
         if(ex.getCode() == 979) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultStatusVO);
         }
@@ -163,7 +163,7 @@ public class GlobalExceptionHandler {
 
     /**
      * @param ex
-     * @return ResultStatusVO
+     * @return ResponseEntity
      * @implNote Authority error handling
      */
     @ExceptionHandler(AccessDeniedException.class)
@@ -175,7 +175,7 @@ public class GlobalExceptionHandler {
 
     /**
      * @param ex
-     * @return ResultStatusVO
+     * @return ResponseEntity
      * @implNote json error handling
      */
     @ExceptionHandler(JacksonException.class)
@@ -187,13 +187,25 @@ public class GlobalExceptionHandler {
 
     /**
      * @param ex
-     * @return ResultStatusVO
+     * @return ResponseEntity
      * @implNote Server error handling
      */
     @ExceptionHandler(ServerErrorException.class)
     protected ResponseEntity<ResultStatusVO> handleServerErrorException(ServerErrorException ex) {
         this.printRuntimeErrorLog(ex);
         resultStatusVO = new ResultStatusVO(ExceptionCodeMsgEnum.SERVER_ERROR.getCode(), ExceptionCodeMsgEnum.SERVER_ERROR.getMsg(), ex.getMessage(), null);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultStatusVO);
+    }
+
+    /**
+     * @param ex
+     * @return ResponseEntity
+     * @implNote File error handling
+     */
+    @ExceptionHandler(CustomFileException.class)
+    protected ResponseEntity<ResultStatusVO> handleCustomFileException(CustomFileException ex) {
+        this.printIOExceptionLog(ex);
+        resultStatusVO = new ResultStatusVO(ex.getCode(), ex.getMessage(), ex.getMessage(), null);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resultStatusVO);
     }
 
@@ -228,11 +240,11 @@ public class GlobalExceptionHandler {
         log.error("[printGeneralSecurityExceptionLog] ", ex);
     }
 
-    private <T extends AuthenticationException> void printAuthenticationException(T ex) {
-        log.error("[printAuthenticationExceptionLog] ", ex);
-    }
-
     private <T extends JacksonException> void printJacksonException(T ex) {
         log.error("[printJacksonException] ", ex);
+    }
+
+    private <T extends AuthenticationException> void printAuthenticationException(T ex) {
+        log.error("[printAuthenticationExceptionLog] ", ex);
     }
 }

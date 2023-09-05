@@ -69,7 +69,7 @@ public class MemberService extends ParentService {
 
     /**
      * 멤버 상세 조회
-     * @param id int
+     * @param id int {@link Integer}
      * @return {@link MemberVO}
      */
     public MemberVO findMemberById(int id) {
@@ -93,7 +93,7 @@ public class MemberService extends ParentService {
 
     /**
      * 멤버 상세 조회
-     * @param userName String
+     * @param userName {@link String}
      * @return {@link MemberVO}
      */
     public MemberVO findMemberByUserName(String userName) {
