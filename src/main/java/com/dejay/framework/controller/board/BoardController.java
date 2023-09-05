@@ -3,6 +3,7 @@ package com.dejay.framework.controller.board;
 import com.dejay.framework.common.enums.MapKeyStringEnum;
 import com.dejay.framework.common.enums.RequestTypeEnum;
 import com.dejay.framework.common.enums.ResultCodeMsgEnum;
+import com.dejay.framework.common.enums.TableNameEnum;
 import com.dejay.framework.common.utils.ObjectHandlingUtil;
 import com.dejay.framework.controller.common.ParentController;
 import com.dejay.framework.domain.board.Board;
@@ -10,6 +11,7 @@ import com.dejay.framework.domain.common.DataObject;
 import com.dejay.framework.domain.common.SearchObject;
 import com.dejay.framework.vo.board.BoardVO;
 import com.dejay.framework.vo.common.ResultStatusVO;
+import com.dejay.framework.vo.file.FileVO;
 import com.dejay.framework.vo.member.MemberVO;
 import com.dejay.framework.vo.search.board.BoardSearchVO;
 import jakarta.servlet.http.HttpServlet;
@@ -58,9 +60,12 @@ public class BoardController extends ParentController {
     @PostMapping(value="/row")
     public ResponseEntity rowBoard(@RequestBody @Valid SearchObject searchObject){
         BoardVO board = getCommonService().getBoardService().rowBoard(searchObject.getSearch().getBoardSearch());
+        // 게시판에 물린 파일 목록 가져오기
+        List<FileVO> fileList = getCommonService().getBoardService().boardFileSearch(searchObject.getSearch().getBoardSearch());
+
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(board, ResultCodeMsgEnum.NO_DATA);
-        List<String> mapKeyList = Arrays.asList(MapKeyStringEnum.BOARD.getKeyString());
-        Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, board);
+        List<String> mapKeyList = Arrays.asList(MapKeyStringEnum.BOARD.getKeyString(), MapKeyStringEnum.FILE_LIST.getKeyString());
+        Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, board, fileList);
 
         return ResponseEntity.ok(resultMap);
     }
@@ -74,6 +79,9 @@ public class BoardController extends ParentController {
     public ResponseEntity insertBoard(@RequestBody @Valid DataObject dataObject) throws Exception {
         int inserted = getCommonService().getBoardService().insertBoard(dataObject.getData().getBoard(), getLoginVO());
 
+        //파일 저장
+        getCommonService().getFileService().saveFile(dataObject.getData().getFileList(), TableNameEnum.BOARD.name());
+
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(inserted, RequestTypeEnum.CREATE);
         Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO);
 
@@ -86,9 +94,10 @@ public class BoardController extends ParentController {
      * @return
      */
     @PostMapping(value="/update")
-    public ResponseEntity updateBoard(@RequestBody @Valid DataObject dataObject){
-        int inserted = getCommonService().getBoardService().updateBoard(dataObject.getData().getBoard(), getLoginVO());
+    public ResponseEntity updateBoard(@RequestBody @Valid DataObject dataObject) throws Exception {
+        int inserted = getCommonService().getBoardService().updateBoard(dataObject.getData().getBoard(),getLoginVO());
 
+        getCommonService().getFileService().updateFile(dataObject.getData().getFileList(), TableNameEnum.BOARD.name(), dataObject.getData().getBoard().getBoardSeq());
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(inserted, RequestTypeEnum.UPDATE);
         Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO);
 
@@ -103,7 +112,7 @@ public class BoardController extends ParentController {
     @PostMapping(value="/delete")
     public ResponseEntity deleteBoard(@RequestBody @Valid DataObject dataObject){
         int deleted = getCommonService().getBoardService().deleteBoard(dataObject.getData().getBoard(), getLoginVO());
-        
+
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(deleted,RequestTypeEnum.DELETE);
         Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO);
 

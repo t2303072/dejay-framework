@@ -26,3 +26,7 @@ logging:
 server:
   port: 3030
 
+# file
+file:
+  tempPath: C:\temp
+  realPath: C:\upload

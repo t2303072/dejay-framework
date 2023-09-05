@@ -55,7 +55,6 @@
     <!-- 공통 ]] -->
 
 
-
     <!-- 조회 [[ -->
 
     <select id="pagingCountBySearch" resultType="Integer" parameterType="BoardSearchVO">
@@ -110,6 +109,16 @@
             AND ENTITY.ENTITY_NAME = #{entityName}
         </where>
         GROUP BY BOARD_SEQ
+    </select>
+
+    <select id="boardFileSearch" resultType="FileVO" parameterType="BoardSearchVO">
+        SELECT FE.*
+        FROM BOARD BD
+                 INNER JOIN FILE FE
+                            ON BD.BOARD_SEQ = FE.ENTITY_SEQ
+        WHERE
+            FE.ENTITY_SEQ = #{boardSeq}
+          AND FE.ENTITY_NAME IN('BOARD')
     </select>
 
     <!-- 조회 ]] -->

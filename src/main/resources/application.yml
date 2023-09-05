@@ -46,3 +46,8 @@ properties:
 jwt:
   secret: frameworkspringsecurityjwtsecretkeytestijzone
   issuer: ikjooLee
+
+# file
+file:
+  tempPath: C:\temp
+  realPath: C:\upload

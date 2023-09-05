@@ -1,12 +1,12 @@
 package com.dejay.framework.controller.common;
 
 import com.dejay.framework.common.utils.CommonUtil;
+import com.dejay.framework.common.utils.FileUtil;
 import com.dejay.framework.common.utils.MapUtil;
 import com.dejay.framework.common.utils.ObjectHandlingUtil;
 import com.dejay.framework.service.common.CommonService;
 import com.dejay.framework.vo.common.TokenVO;
 import com.dejay.framework.vo.member.MemberVO;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +26,8 @@ public class ParentController {
     private CommonUtil commonUtil;
     @Autowired
     private HttpServletRequest request;
+    @Autowired
+    private FileUtil fileUtil;
 
     /**
      * 토근 관련 VO

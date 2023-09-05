@@ -25,3 +25,8 @@ logging:
           mapper: trace
 ## Log Level Setting(default info)
     root: info
+
+# file
+file:
+  tempPath: C:\temp
+  realPath: C:\upload

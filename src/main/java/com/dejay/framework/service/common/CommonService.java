@@ -3,6 +3,7 @@ package com.dejay.framework.service.common;
 import com.dejay.framework.service.authority.AuthorityService;
 import com.dejay.framework.service.board.BoardService;
 import com.dejay.framework.service.code.CodeService;
+import com.dejay.framework.service.file.FileService;
 import com.dejay.framework.service.member.MemberService;
 import com.dejay.framework.service.menu.MenuService;
 import lombok.Getter;
@@ -22,4 +23,5 @@ public class CommonService {
     private final AuthorityService authorityService;
     private final BoardService boardService;
     private final MenuService menuService;
+    private final FileService fileService;
 }

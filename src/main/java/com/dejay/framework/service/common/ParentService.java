@@ -1,9 +1,6 @@
 package com.dejay.framework.service.common;
 
-import com.dejay.framework.common.utils.DateUtil;
-import com.dejay.framework.common.utils.PropertiesUtil;
-import com.dejay.framework.common.utils.StringUtil;
-import com.dejay.framework.common.utils.ValidationUtil;
+import com.dejay.framework.common.utils.*;
 import com.dejay.framework.mapper.common.CommonMapper;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +20,8 @@ public class ParentService {
     private DateUtil dateUtil;
     @Autowired
     private ValidationUtil validationUtil;
+    @Autowired
+    private FileUtil fileUtil;
     /** Util ]] **/
 
     /** Mapper [[ **/

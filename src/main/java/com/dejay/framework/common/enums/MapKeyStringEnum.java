@@ -31,7 +31,7 @@ public enum MapKeyStringEnum {
     , CODE_LIST("codeList")
     , BOARD_LIST("boardList")
     , MENU_LIST("menuList")
-
+    , FILE_LIST("fileList")
     // Token
     , JWT_USERNAME("userName")
     , JWT_ROLES("roles")

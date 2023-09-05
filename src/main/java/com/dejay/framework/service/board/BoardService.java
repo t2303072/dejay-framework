@@ -7,6 +7,7 @@ import com.dejay.framework.domain.board.Board;
 import com.dejay.framework.domain.common.Paging;
 import com.dejay.framework.service.common.ParentService;
 import com.dejay.framework.vo.board.BoardVO;
+import com.dejay.framework.vo.file.FileVO;
 import com.dejay.framework.vo.member.MemberVO;
 import com.dejay.framework.vo.search.board.BoardSearchVO;
 import lombok.extern.slf4j.Slf4j;
@@ -75,6 +76,15 @@ public class BoardService extends ParentService {
     }
 
     /**
+     *  단 건 게시판 파일 조회
+     * @param search
+     * @return
+     */
+    public List<FileVO> boardFileSearch(BoardSearchVO search){
+        return  getCommonMapper().getBoardMapper().boardFileSearch(search);
+    }
+
+    /**
      * 게시판 수정
      * @param board
      * @return
@@ -101,7 +111,6 @@ public class BoardService extends ParentService {
 
         return iAffectedRows;
     }
-
 
     /**
      * 게시판 삭제
