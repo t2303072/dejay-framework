@@ -8,9 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +24,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     // Logging
     private final List<String> loggerIncludePattern = Arrays.asList("/**");
-    private final List<String> loggerExcludePattern = Arrays.asList("/error");
+    private final List<String> loggerExcludePattern = Arrays.asList("/error", "/resources/**");
 
     // Login
     private final List<String> loginIncludePattern = Arrays.asList("/login/**", "/member/**", "/token/authentication-info");
@@ -34,7 +32,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     // Authority
     private final List<String> authorityIncludePattern = Arrays.asList("/auth/**", "/test/authorized-only");
-    private final List<String> authorityExcludePattern = Arrays.asList("/login", "/member/**", "/test/**", "/error");
+    private final List<String> authorityExcludePattern = Arrays.asList("/login", "/member/**", "/test/**", "/error", "/jsp/**");
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -68,4 +66,5 @@ public class WebMvcConfig implements WebMvcConfigurer {
         firewall.setAllowedHttpMethods(Arrays.asList(HttpMethod.GET.name(), HttpMethod.POST.name()));
         return firewall;
     }
+
 }

@@ -11,6 +11,14 @@ spring:
   security:
     user:
       password: 0000
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+
+  devtools:
+    livereload:
+      enabled: true
 
 ## mapper logging level
 logging:

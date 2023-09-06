@@ -21,6 +21,11 @@ spring:
   security:
     user:
       password: 0000
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+
 server:
   port: 8080
   context-path: /

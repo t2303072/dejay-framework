@@ -4,13 +4,11 @@ import com.dejay.framework.common.enums.AuthorityEnum;
 import com.dejay.framework.common.filter.AuthorityFilter;
 import com.dejay.framework.common.filter.JwtExceptionFilter;
 import com.dejay.framework.common.utils.JwtUtil;
-import com.dejay.framework.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -33,7 +31,7 @@ public class WebSecurityConfig {
     private final JwtExceptionFilter jwtExceptionFilter;
     private final UserDetailsService userDetailsService;
 
-    private static final String[] NO_AUTH_REQUIRED_URL = {"/index/**", "/test/**", "/member/sign-up", "/login", "/error"};
+    private static final String[] NO_AUTH_REQUIRED_URL = {"/index/**", "/test/**", "/member/sign-up", "/login", "/error", "/jsp/**"};
     private static final String[] AUTHORITY_REQUIRED_URL = {"/token/**", "/test/authorized-only"};
     private static final String[] AUTHENTICATION_REQUIRED_URL = {"/member/**"};
     private static final String[] AUTHORITY_LIST = {AuthorityEnum.DEVELOPMENT.getDeptCode(), AuthorityEnum.BUSINESS_SUPPORT.getDeptCode()};
@@ -47,7 +45,6 @@ public class WebSecurityConfig {
     protected SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeHttpRequests(ahr -> ahr
-                        .requestMatchers("/static/**").permitAll()
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                         .requestMatchers(NO_AUTH_REQUIRED_URL).permitAll()
                         .requestMatchers(AUTHORITY_REQUIRED_URL).hasAnyAuthority(AUTHORITY_LIST)
@@ -59,8 +56,8 @@ public class WebSecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .httpBasic(hb -> hb.disable())
-                .addFilterBefore(new AuthorityFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(jwtExceptionFilter, AuthorityFilter.class)
+//                .addFilterBefore(new AuthorityFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
+//                .addFilterBefore(jwtExceptionFilter, AuthorityFilter.class)
                 .logout(logout -> logout.permitAll()
                         .deleteCookies("JSESSIONID")
                         .invalidateHttpSession(true)
@@ -75,4 +72,5 @@ public class WebSecurityConfig {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
     }
+
 }
