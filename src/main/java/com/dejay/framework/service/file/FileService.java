@@ -65,13 +65,9 @@ public class FileService extends ParentService {
         final String tablePath = getFileUtil().targetTableFilePath(realPath,tableName);
 
         for (File file : files) {
-            log.info("target fileName >> " + file.getFileNm());
             // temp db 조회
             FileVO targetFile = getTempFile(file.getFileNm());
-            log.info("targetEntityName >> " + targetFile.getEntityNm());
-            log.info("targetEntityType >> " +targetFile.getEntityType());
-            log.info("targetOriginNm >> " +targetFile.getOrgFileNm());
-            log.info("targetFileNm >> " + targetFile.getFileNm());
+
             String filePath = tablePath+"\\"+targetFile.getFileNm();
 
             File target = File.builder()
