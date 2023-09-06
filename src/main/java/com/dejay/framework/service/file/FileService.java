@@ -1,22 +1,16 @@
 package com.dejay.framework.service.file;
 
-import com.dejay.framework.common.enums.RequestTypeEnum;
-import com.dejay.framework.common.enums.TableNameEnum;
-import com.dejay.framework.common.utils.FileUtil;
+
 import com.dejay.framework.common.utils.StringUtil;
 import com.dejay.framework.domain.file.File;
 import com.dejay.framework.service.common.ParentService;
 import com.dejay.framework.vo.file.FileVO;
-import com.dejay.framework.vo.member.MemberVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -33,48 +27,30 @@ public class FileService extends ParentService {
      * @return
      * @throws Exception
      */
-    public List<FileVO> uploadFile(List<MultipartFile> files, String entityType) throws Exception {
-        getFileUtil().fileExtensionLimit(files, entityType);
-        return getFileUtil().uploadFiles(files, tempPath);
+    public List<FileVO> uploadFile(List<MultipartFile> files, String entityName, String entityType) throws Exception {
+        List<FileVO> fileList= getFileUtil().uploadFiles(files, tempPath);
+        saveTempFile(fileList, entityName, entityType);
+        return fileList;
     }
 
-    /**
-     * 파일 저장
-     * @param files
-     * @param tableName
-     * @param maxSeq
-     * @return
-     */
-    public int saveFile(List<File> files, String tableName) throws Exception {
-        Long maxSeq = getCommonMapper().getFileMapper().getMaxSeq(tableName);
+    public int saveTempFile(List<FileVO> files, String entityName, String entityType){
+        int iAffectedRows = 0;
 
-        int iAffectedRows=0;
-
-        final String tablePath = getFileUtil().targetTableFilePath(realPath,tableName);
-
-        for (File file : files) {
-            String filePath = tablePath+"\\"+file.getFileNm();
-
+        for(FileVO file: files){
             File target = File.builder()
-                    .entityNm(tableName)
-                    .entitySeq(maxSeq)
-                    .entityType(file.getEntityType())
-                    .filePath(filePath)
-                    .fileNm(file.getFileNm())
-                    .orgFileNm(file.getOrgFileNm())
-                    .fileType(getFileUtil().checkFileType(file.getOrgFileNm()))
-                    .fileSize(file.getFileSize())
-                    .build();
+                            .fileNm(file.getFileNm())
+                            .entityNm(entityName)
+                            .entityType(entityType)
+                            .orgFileNm(file.getOrgFileNm())
+                            .fileSize(file.getFileSize())
+                            .build();
+            iAffectedRows = getCommonMapper().getFileMapper().saveTempFile(target);
 
-            iAffectedRows = getCommonMapper().getFileMapper().save(target);
-
-            if (iAffectedRows <= 0) break;
-            // temp -> real folder로 이동
-            getFileUtil().moveFile(file.getFileNm(), tempPath, tablePath);
+            if(iAffectedRows<=0) break;
         }
-
         return iAffectedRows;
     }
+
     /**
      * 파일 저장 (파일 업데이트 신규 파일 인 경우 사용)
      * @param files
@@ -82,24 +58,31 @@ public class FileService extends ParentService {
      * @param seq
      * @return
      */
-    public int saveFile(List<File> files, String tableName, Long seq) throws Exception {
+    public int saveFile(List<File> files, String tableName,Long seq) throws Exception {
 
         int iAffectedRows=0;
 
         final String tablePath = getFileUtil().targetTableFilePath(realPath,tableName);
 
         for (File file : files) {
-            String filePath = tablePath+"\\"+file.getFileNm();
+            log.info("target fileName >> " + file.getFileNm());
+            // temp db 조회
+            FileVO targetFile = getTempFile(file.getFileNm());
+            log.info("targetEntityName >> " + targetFile.getEntityNm());
+            log.info("targetEntityType >> " +targetFile.getEntityType());
+            log.info("targetOriginNm >> " +targetFile.getOrgFileNm());
+            log.info("targetFileNm >> " + targetFile.getFileNm());
+            String filePath = tablePath+"\\"+targetFile.getFileNm();
 
             File target = File.builder()
                     .entityNm(tableName)
                     .entitySeq(seq)
-                    .entityType(file.getEntityType())
+                    .entityType(targetFile.getEntityType())
                     .filePath(filePath)
-                    .fileNm(file.getFileNm())
-                    .orgFileNm(file.getOrgFileNm())
+                    .fileNm(targetFile.getFileNm())
+                    .orgFileNm(targetFile.getOrgFileNm())
                     .fileType(getFileUtil().checkFileType(file.getFileNm()))
-                    .fileSize(file.getFileSize())
+                    .fileSize(targetFile.getFileSize())
                     .build();
 
             iAffectedRows = getCommonMapper().getFileMapper().save(target);
@@ -112,7 +95,7 @@ public class FileService extends ParentService {
     }
     /**
      * 파일 삭제
-     * @param files
+     * @param fileSeq
      * @return
      */
     public int deleteFile(Long fileSeq){
@@ -145,42 +128,42 @@ public class FileService extends ParentService {
     /**
      * 파일 업데이트
      * @param newFiles
-     * @param seq
+     * @param tableName
+     * @param entitySeq
      * @return
+     * @throws Exception
      */
-    public int updateFile(List<File> newFiles, String tableName ,Long seq) throws Exception {
-        List<FileVO> originFiles = getFiles(seq);
+    public int updateFile(List<File> newFiles, String tableName ,Long entitySeq) throws Exception {
+        List<FileVO> originFiles = getFiles(entitySeq, tableName);
 
-        Map<Long,String> map = new HashMap<>();
+        // 제거할 파일 리스트
+        Map<String,FileVO> originMap = new HashMap<>();
 
         // 원본 FileVO를 map 안에 넣어 준다.
         for(FileVO file: originFiles){
-            map.put(file.getFileSeq(), file.getFileNm());
+            originMap.put(file.getFileNm(),file);
         }
 
-
-        // newFile에 해당 FileSeq값이 있을 경우, remove
         for(File file : newFiles){
-            int index = 0;
-            if(map.containsKey(file.getFileSeq()) ){
-                Long fileSeq = file.getFileSeq();
-                String FileNm = map.get(fileSeq);
-                if(FileNm.equals(file.getFileNm()) ) {
-                    map.remove(file.getFileSeq());
-                    newFiles.remove(index);
-                }
+            // 새로운 파일리스트에 있는 경우 originList에서 제거
+            if(originMap.containsKey(file.getFileNm())){
+                originMap.remove(file.getFileNm());
+                newFiles.remove(file);
             }
-            index++;
         }
+
+        Iterator<Map.Entry<String,FileVO>> itr = originMap.entrySet().iterator();
 
         int delete = 0;
         // 수정 시 기존 파일이 없으면 삭제
-        for (Long key : map.keySet()) {
+        while (itr.hasNext()) {
+            Map.Entry<String,FileVO> entry = itr.next();
+            Long key = entry.getValue().getFileSeq();
             delete = deleteFile(key);
             if(delete<=0) return delete;
         }
         int insert = 0;
-        if(StringUtil.isNotEmpty(newFiles))  insert = saveFile(newFiles, tableName, seq);
+        if(StringUtil.isNotEmpty(newFiles))  insert = saveFile(newFiles, tableName, entitySeq);
 
         return delete > 0 && insert > 0 ? 1 : 0;
     }
@@ -193,11 +176,23 @@ public class FileService extends ParentService {
     public FileVO getFile(Long fileSeq) { return getCommonMapper().getFileMapper().getFile(fileSeq); }
 
     /**
+     * 단 건 TempFile 조회
+     */
+    public FileVO getTempFile(String fileNm) {return getCommonMapper().getFileMapper().getTempFile(fileNm);}
+
+    /**
      * 해당 seq에 물린 File 목록 조회
      * @param entitySeq
      * @return FileVO List
      */
-    public List<FileVO> getFiles(Long entitySeq){
-        return getCommonMapper().getFileMapper().getFiles(entitySeq);
+    public List<FileVO> getFiles(Long entitySeq, String tableName){
+        File file = File.builder()
+                        .entitySeq(entitySeq)
+                        .entityNm(tableName)
+                        .build();
+
+        log.info("file EntitySeq "+file.getEntitySeq());
+        log.info("file dataType "+file.getEntityNm());
+        return getCommonMapper().getFileMapper().getFiles(file);
     }
 }

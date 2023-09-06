@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @Getter
 public enum FileEntityType {
 
-    BASIC("01", new FileTypeEnum[]{FileTypeEnum.IMAGE, FileTypeEnum.VIDEO, FileTypeEnum.EXCEL, FileTypeEnum.WORD})
-    ,VIDEO("02", new FileTypeEnum[]{FileTypeEnum.VIDEO})
-    ,TEXT("03", new FileTypeEnum[]{FileTypeEnum.EXCEL, FileTypeEnum.WORD, FileTypeEnum.HANGEUL});
+      BOARD_NOTICE("BOARD",new String[] {"01", "02", "03"}, "BOARD_NOTICE") // CODE "003001" , 01 : 기본 , 02: 그 외
+    , BOARD_FAQ("BOARD", new String[]{"01", "02"}, "BOARD_FAQ"); // CODE "003002" , 01 : 기본 , 02: 그 외
 
-    private String entityType;
-    private FileTypeEnum[] fileTypes;
+    private String targetTable;
+    private Object[] entityType;
+    private String entityId;
 
 }

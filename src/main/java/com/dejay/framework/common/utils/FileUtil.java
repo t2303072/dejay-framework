@@ -2,11 +2,8 @@ package com.dejay.framework.common.utils;
 
 import com.dejay.framework.common.enums.FileEntityType;
 import com.dejay.framework.common.enums.FileTypeEnum;
-import com.dejay.framework.common.exception.CustomFileException;
 import com.dejay.framework.vo.file.FileVO;
-import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,7 +12,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Component
@@ -95,6 +94,7 @@ public class FileUtil {
     }
 
     /**
+     *
      * 업로드 파일 확장자 타입
      * @param fileName
      * @return String 파일 타입
@@ -147,8 +147,8 @@ public class FileUtil {
         Path moveFile = Paths.get(afterFilePath);
 
         try{
-           Path newFile = Files.move(file, moveFile);
-           log.info("newFiles : { " + newFile + " }");
+            Path newFile = Files.move(file, moveFile);
+            log.info("newFiles : { " + newFile + " }");
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -193,47 +193,18 @@ public class FileUtil {
         return fileNm.substring(index);
     }
 
-    /** 해당 FileEntity 가져 온다.
-     * @param entityType
-     * @return
-     */
-    public FileEntityType getFileEntity(String entityType){
-        FileEntityType fileEntityType=null;
-
-        switch (entityType) {
-            case "01" -> { fileEntityType = FileEntityType.BASIC; }
-            case "02" -> { fileEntityType = FileEntityType.VIDEO; }
-            case "03" -> { fileEntityType = FileEntityType.TEXT; }
-        }
-        return fileEntityType;
-    }
-
     /**
-     * 파일 확장자 제한
-     * @param entityType
-     * @param fileList
+     * 알맞은 파일 테이블 형식을 반환
+     * @param targetTable
+     * @param entityId
      * @return
      */
-     public String fileExtensionLimit(List<MultipartFile> fileList, String entityType ) throws CustomFileException {
-                 FileEntityType fileEntityType= getFileEntity(entityType);
+    public Optional<FileEntityType> getFileEntityType(String targetTable, String entityId){
+       Optional<FileEntityType> any = Arrays.stream(FileEntityType.values())
+                .filter(v -> v.getTargetTable().equals(targetTable))
+                .filter(v-> v.getEntityId().equals(entityId))
+                .findAny();
 
-                 // 파일 리스트 값 중 유효하지 않은 파일 형식 확인
-                 for(MultipartFile file : fileList){
-                     boolean flag = false;
-                     String targetTypeEnum= checkFileType(file.getOriginalFilename());
-
-                     for( FileTypeEnum typeEnum: fileEntityType.getFileTypes()){
-                         if (typeEnum.getFileType().equals(targetTypeEnum)) {
-                             flag = true;
-                             break;
-                         }
-                     }
-
-                     if(!flag){
-                         throw new CustomFileException();
-                     }
-                 }
-
-            return entityType;
-     }
+        return any;
+    }
 }

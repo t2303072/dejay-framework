@@ -29,43 +29,30 @@ import java.util.Map;
 @RestController
 @RequestMapping("/file")
 public class FileController extends ParentController {
-
+    /**
+     * 파일 업로드
+     * @param files
+     * @return 
+     * @throws Exception
+     */
     @PostMapping("/upload")
-    public ResponseEntity uploadFile(List<MultipartFile> files,String entityType) throws Exception {
-        List<FileVO> fileList = getCommonService().getFileService().uploadFile(files, entityType);
-         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setListResultStatusVO(fileList, ResultCodeMsgEnum.NO_DATA);
-         var mapKeyString = Arrays.asList( MapKeyStringEnum.FILE_LIST.getKeyString());
+    public ResponseEntity uploadFile(List<MultipartFile> files,@RequestParam(required = true) String entityId,@RequestParam(required = true) String entityType) throws Exception {
+        List<FileVO> fileList = getCommonService().getFileService().uploadFile(files, entityId, entityType);
 
-         var resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyString, fileList);
-
-         return ResponseEntity.ok(resultMap);
-    }
-
-    // 임시 테스트를 위한 Controller (추후 사용 X)
-    // File을 저장해야하는 해당 Contoller에서 파일 저장
-    @PostMapping("/save")
-    public ResponseEntity save(@RequestBody @Valid DataObject dataObject) throws Exception {
-        int inserted = getCommonService().getFileService().saveFile(dataObject.getData().getFileList(), TableNameEnum.BOARD.name());
-        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(inserted,  RequestTypeEnum.CREATE);
-
-        Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(resultMap);
-    }
-
-    // 임시 테스트를 위한 Update Controller (추후 사용 X)
-    // File을 수정해야하는 해당 Contoller에서 파일 수정
-    @PostMapping("/update")
-    public ResponseEntity update(){
-        List<FileVO> fileList = getCommonService().getFileService().getFiles(10L);
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setListResultStatusVO(fileList, ResultCodeMsgEnum.NO_DATA);
-        var mapKeyString = Arrays.asList(MapKeyStringEnum.FILE_LIST.getKeyString());
+        var mapKeyString = Arrays.asList( MapKeyStringEnum.FILE_LIST.getKeyString());
+
         var resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyString, fileList);
 
         return ResponseEntity.ok(resultMap);
     }
 
 
+    /**
+     * 파일 삭제 단 건
+     * @param dataObject
+     * @return
+     */
     @PostMapping("/delete")
     public ResponseEntity deleteFile(@RequestBody DataObject dataObject) {
         int deleted = getCommonService().getFileService().deleteFile(dataObject.getData().getFile().getFileSeq());
@@ -76,6 +63,11 @@ public class FileController extends ParentController {
         return ResponseEntity.ok(resultMap);
     }
 
+    /**
+     * 파일 리스트 삭제
+     * @param dataObject
+     * @return
+     */
     @PostMapping("/deleteList")
     public ResponseEntity deleteFiles(@RequestBody DataObject dataObject){
         int deleted = getCommonService().getFileService().deleteFiles(dataObject.getData().getFileList());

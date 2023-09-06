@@ -8,9 +8,10 @@ import java.util.List;
 
 @Mapper
 public interface FileMapper extends GeneralMapper {
-    List<FileVO> getFiles(Long entitySeq);
+    List<FileVO> getFiles(Object obj);
     FileVO getFile(Long fileSeq);
-    Long getMaxSeq(String tableName);
+    FileVO getTempFile(String fileNm);
+    int saveTempFile(Object obj);
     int save(Object obj);
     int deleteFile(Object obj);
 }

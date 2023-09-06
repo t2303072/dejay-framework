@@ -158,7 +158,6 @@ public class SearchVO {
     private CodeSearchVO codeSearch;
     private BoardSearchVO boardSearch;
     private MenuSearchVO menuSearch;
-
     /** 그룹별 search 모델 ]] **/
 
 }

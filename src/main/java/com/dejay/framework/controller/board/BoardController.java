@@ -35,7 +35,6 @@ import java.util.Map;
 @RequestMapping("/board")
 public class BoardController extends ParentController {
 
-
     /**
      * 게시판 페이징 조회
      * @param searchObject
@@ -60,12 +59,10 @@ public class BoardController extends ParentController {
     @PostMapping(value="/row")
     public ResponseEntity rowBoard(@RequestBody @Valid SearchObject searchObject){
         BoardVO board = getCommonService().getBoardService().rowBoard(searchObject.getSearch().getBoardSearch());
-        // 게시판에 물린 파일 목록 가져오기
-        List<FileVO> fileList = getCommonService().getBoardService().boardFileSearch(searchObject.getSearch().getBoardSearch());
 
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setSingleObjResultStatusVO(board, ResultCodeMsgEnum.NO_DATA);
-        List<String> mapKeyList = Arrays.asList(MapKeyStringEnum.BOARD.getKeyString(), MapKeyStringEnum.FILE_LIST.getKeyString());
-        Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, board, fileList);
+        List<String> mapKeyList = Arrays.asList(MapKeyStringEnum.BOARD.getKeyString());
+        Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO, mapKeyList, board);
 
         return ResponseEntity.ok(resultMap);
     }
@@ -77,10 +74,7 @@ public class BoardController extends ParentController {
      */
     @PostMapping(value="/insert")
     public ResponseEntity insertBoard(@RequestBody @Valid DataObject dataObject) throws Exception {
-        int inserted = getCommonService().getBoardService().insertBoard(dataObject.getData().getBoard(), getLoginVO());
-
-        //파일 저장
-        getCommonService().getFileService().saveFile(dataObject.getData().getFileList(), TableNameEnum.BOARD.name());
+        int inserted = getCommonService().getBoardService().insertBoard(dataObject.getData().getBoard(), dataObject.getData().getFileList(), getLoginVO());
 
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(inserted, RequestTypeEnum.CREATE);
         Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO);
@@ -95,9 +89,8 @@ public class BoardController extends ParentController {
      */
     @PostMapping(value="/update")
     public ResponseEntity updateBoard(@RequestBody @Valid DataObject dataObject) throws Exception {
-        int inserted = getCommonService().getBoardService().updateBoard(dataObject.getData().getBoard(),getLoginVO());
+        int inserted = getCommonService().getBoardService().updateBoard(dataObject.getData().getBoard(), dataObject.getData().getFileList(), getLoginVO());
 
-        getCommonService().getFileService().updateFile(dataObject.getData().getFileList(), TableNameEnum.BOARD.name(), dataObject.getData().getBoard().getBoardSeq());
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(inserted, RequestTypeEnum.UPDATE);
         Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO);
 

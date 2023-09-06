@@ -1,10 +1,9 @@
 package com.dejay.framework.vo.board;
 
+import com.dejay.framework.domain.file.File;
+import com.dejay.framework.vo.file.FileVO;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 import java.util.List;
@@ -13,6 +12,7 @@ import java.util.List;
 @Setter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class BoardVO {
     // 게시판 SEQ
     private Long boardSeq;
@@ -45,5 +45,7 @@ public class BoardVO {
     
     // 처리 ID
     private String regId;
-    
+
+    // 파일 리스트
+    private List<FileVO> fileList;
 }

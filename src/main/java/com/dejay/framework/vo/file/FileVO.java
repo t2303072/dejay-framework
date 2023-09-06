@@ -1,11 +1,11 @@
 package com.dejay.framework.vo.file;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class FileVO {
     // 파일 SEQ

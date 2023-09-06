@@ -2,15 +2,21 @@ package com.dejay.framework.service.board;
 
 import com.dejay.framework.common.enums.RequestTypeEnum;
 import com.dejay.framework.common.enums.TableNameEnum;
+import com.dejay.framework.common.utils.FileUtil;
 import com.dejay.framework.common.utils.ObjectHandlingUtil;
+import com.dejay.framework.common.utils.StringUtil;
 import com.dejay.framework.domain.board.Board;
 import com.dejay.framework.domain.common.Paging;
+import com.dejay.framework.domain.file.File;
+import com.dejay.framework.service.common.CommonService;
 import com.dejay.framework.service.common.ParentService;
+import com.dejay.framework.service.file.FileService;
 import com.dejay.framework.vo.board.BoardVO;
 import com.dejay.framework.vo.file.FileVO;
 import com.dejay.framework.vo.member.MemberVO;
 import com.dejay.framework.vo.search.board.BoardSearchVO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +24,8 @@ import java.util.List;
 @Slf4j
 @Service
 public class BoardService extends ParentService {
-
+    @Autowired
+    private FileService fileService;
 
     /**
      * 게시판 저장
@@ -26,7 +33,7 @@ public class BoardService extends ParentService {
      * @return
      * @throws Exception
      */
-    public int insertBoard(Board board, MemberVO member) throws Exception{
+    public int insertBoard(Board board, List<File> files, MemberVO member) throws Exception{
 
         Board target = Board.builder()
                             .boardCode(board.getBoardCode())
@@ -45,6 +52,11 @@ public class BoardService extends ParentService {
                             .build();
 
         int iAffectedRows = getCommonMapper().getBoardMapper().insert(target);
+
+
+
+        //파일 저장
+        if(StringUtil.isNotEmpty(files)) fileService.saveFile(files, TableNameEnum.BOARD.name(), Long.valueOf(target.getLogId1()));
 
         return iAffectedRows;
     }
@@ -72,7 +84,12 @@ public class BoardService extends ParentService {
     public BoardVO rowBoard(BoardSearchVO search){
         search.setEntityName(TableNameEnum.BOARD.name());
 
-        return (BoardVO) getCommonMapper().getBoardMapper().rowBySearch(search);
+        BoardVO board = (BoardVO) getCommonMapper().getBoardMapper().rowBySearch(search);
+
+        // 게시판에 물린 파일 목록 가져오기
+        board.setFileList(boardFileSearch(search));
+
+        return board;
     }
 
     /**
@@ -89,7 +106,7 @@ public class BoardService extends ParentService {
      * @param board
      * @return
      */
-    public int updateBoard(Board board, MemberVO member){
+    public int updateBoard(Board board, List<File> fileList, MemberVO member) throws Exception {
         Board target = Board.builder()
                             .boardSeq(board.getBoardSeq())
                             .title(board.getTitle())
@@ -108,6 +125,9 @@ public class BoardService extends ParentService {
 
         // Mapper Update
         int iAffectedRows = getCommonMapper().getBoardMapper().update(target);
+
+        //File Update
+        fileService.updateFile(fileList, TableNameEnum.BOARD.name(), target.getBoardSeq());
 
         return iAffectedRows;
     }
@@ -135,6 +155,12 @@ public class BoardService extends ParentService {
                             .build();
 
         int iAffectedRows = getCommonMapper().getBoardMapper().delete(target);
+
+        // Board에 물린 File삭제
+        List<FileVO> fileList = fileService.getFiles(board.getBoardSeq(), target.getTableName());
+        for(FileVO file : fileList){
+            fileService.deleteFile(file.getFileSeq());
+        }
 
         return iAffectedRows;
     }
