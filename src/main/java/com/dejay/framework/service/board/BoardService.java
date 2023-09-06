@@ -54,7 +54,6 @@ public class BoardService extends ParentService {
         int iAffectedRows = getCommonMapper().getBoardMapper().insert(target);
 
 
-
         //파일 저장
         if(StringUtil.isNotEmpty(files)) fileService.saveFile(files, TableNameEnum.BOARD.name(), Long.valueOf(target.getLogId1()));
 

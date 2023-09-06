@@ -1,6 +1,8 @@
 package com.dejay.framework.service.file;
 
 
+import com.dejay.framework.common.enums.FileEntityType;
+import com.dejay.framework.common.exception.CustomFileException;
 import com.dejay.framework.common.utils.StringUtil;
 import com.dejay.framework.domain.file.File;
 import com.dejay.framework.service.common.ParentService;
@@ -33,8 +35,21 @@ public class FileService extends ParentService {
         return fileList;
     }
 
-    public int saveTempFile(List<FileVO> files, String entityName, String entityType){
+    public int saveTempFile(List<FileVO> files, String entityName, String entityType) throws CustomFileException {
         int iAffectedRows = 0;
+
+        FileEntityType fileEntityType = getFileUtil().getFileEntityType(entityName,entityType).get();
+
+        // 테이블 별 "01", "02" , "03" 형식 확인
+        boolean correctType = false;
+        for(String type : fileEntityType.getEntityType()){
+            if(StringUtil.equals(type, entityType)) {
+                correctType = true;
+                break;
+            }
+        }
+        if(!correctType) throw new CustomFileException();
+
 
         for(FileVO file: files){
             File target = File.builder()
@@ -59,26 +74,25 @@ public class FileService extends ParentService {
      * @return
      */
     public int saveFile(List<File> files, String tableName,Long seq) throws Exception {
-
         int iAffectedRows=0;
 
         final String tablePath = getFileUtil().targetTableFilePath(realPath,tableName);
 
         for (File file : files) {
             // temp db 조회
-            FileVO targetFile = getTempFile(file.getFileNm());
+            FileVO tempFile = getTempFile(file.getFileNm());
 
-            String filePath = tablePath+"\\"+targetFile.getFileNm();
+            String filePath = tablePath+"\\"+tempFile.getFileNm();
 
             File target = File.builder()
                     .entityNm(tableName)
                     .entitySeq(seq)
-                    .entityType(targetFile.getEntityType())
+                    .entityType(tempFile.getEntityType())
                     .filePath(filePath)
-                    .fileNm(targetFile.getFileNm())
-                    .orgFileNm(targetFile.getOrgFileNm())
+                    .fileNm(tempFile.getFileNm())
+                    .orgFileNm(tempFile.getOrgFileNm())
                     .fileType(getFileUtil().checkFileType(file.getFileNm()))
-                    .fileSize(targetFile.getFileSize())
+                    .fileSize(tempFile.getFileSize())
                     .build();
 
             iAffectedRows = getCommonMapper().getFileMapper().save(target);

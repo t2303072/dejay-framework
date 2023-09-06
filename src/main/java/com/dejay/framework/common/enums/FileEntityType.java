@@ -13,7 +13,7 @@ public enum FileEntityType {
     , BOARD_FAQ("BOARD", new String[]{"01", "02"}, "BOARD_FAQ"); // CODE "003002" , 01 : 기본 , 02: 그 외
 
     private String targetTable;
-    private Object[] entityType;
+    private String[] entityType;
     private String entityId;
 
 }
