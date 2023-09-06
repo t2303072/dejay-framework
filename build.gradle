@@ -8,6 +8,9 @@ group = 'com.dejay'
 version = '1.0.0-RELEASE'
 sourceCompatibility = '17'
 
+// JSP 적용 시, WAR build
+//apply plugin: 'war'
+
 sourceSets {
 	main {
 		resources {
@@ -61,6 +64,15 @@ dependencies {
 	implementation (group: 'org.springframework.security', name: 'spring-security-oauth2-jose', version: '6.1.1')
 	implementation (group: 'org.springframework.security', name: 'spring-security-oauth2-resource-server', version: '6.1.1')
 	implementation (group: 'org.springframework.security', name: 'spring-security-web', version: '6.1.1')
+
+	// devtools
+	compileOnly('org.springframework.boot:spring-boot-devtools')
+	// JSP
+	compileOnly 'org.apache.tomcat.embed:tomcat-embed-jasper'
+	compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+	//jstl
+	implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.0'
+	implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.1'
 
 	testCompileOnly 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'
