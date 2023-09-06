@@ -10,6 +10,14 @@ spring:
   security:
     user:
       password: 0000
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+
+  devtools:
+    livereload:
+      enabled: true
 
 ## mapper logging level
 logging:
@@ -26,7 +34,7 @@ logging:
     root: info
 
 server:
-  port: 3030
+  port: 8080
 
 # file
 file:
