@@ -5,17 +5,17 @@
     <!-- 공통 [[ -->
     <!-- column [[ -->
     <sql id="fileColumn">
-        ${alias}FILE_SEQ AS fileSeq, ${alias}ENTITY_NAME AS entityNm,
-        ${alias}ENTITY_SEQ AS entitySeq, ${alias}ENTITY_TYPE AS entityType,
-        ${alias}FILE_PATH AS filePath, ${alias}FILE_NAME AS fileNm,
-        ${alias}ORIGIN_FILE_NAME AS orgFileName, ${alias}FILE_TYPE AS fileType,
-        ${alias}FILE_SIZE AS fileSize
+        ${alias}FILE_SEQ, ${alias}ENTITY_NAME
+        , ${alias}ENTITY_SEQ, ${alias}ENTITY_TYPE
+        , ${alias}FILE_PATH, ${alias}FILE_NAME
+        , ${alias}ORIGIN_FILE_NAME, ${alias}FILE_TYPE
+        , ${alias}FILE_SIZE
     </sql>
 
     <sql id="tempFileColumn">
-          ${alias}ENTITY_NAME AS entityNm
-        , ${alias}ENTITY_TYPE AS entityType, ${alias}FILE_NAME AS fileNm
-        , ${alias}ORIGIN_FILE_NAME AS orgFileNm, ${alias}FILE_SIZE AS fileSize
+          ${alias}ENTITY_NAME
+        , ${alias}ENTITY_TYPE, ${alias}FILE_NAME
+        , ${alias}ORIGIN_FILE_NAME, ${alias}FILE_SIZE
     </sql>
 
     <!-- column ]] -->
