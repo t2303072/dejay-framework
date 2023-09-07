@@ -12,17 +12,17 @@ public class JSPServiceImpl implements JSPService {
 
     @Override
     public SampleVO getSample() {
-        return new SampleVO("00", "singleObject", "email value");
+        return new SampleVO("00", "singleObject", "email value", new String[]{"workout", "tennis", "baseball"}, "N");
     }
 
     @Override
     public Collection<SampleVO> getSampleList() {
         List<SampleVO> list = Arrays.asList(
-                  new SampleVO("1", "ikjoo1", "ijzone@dejay.co.kr")
-                , new SampleVO("2", "ikjoo2", "ijzone@dejay.co.kr")
-                , new SampleVO("3", "ikjoo3", "ijzone@dejay.co.kr")
-                , new SampleVO("4", "ikjoo4", "ijzone@dejay.co.kr")
-                , new SampleVO("5", "ikjoo5", "ijzone@dejay.co.kr")
+                  new SampleVO("1", "ikjoo1", "ijzone@dejay.co.kr", null, "Y")
+                , new SampleVO("2", "ikjoo2", "ijzone@dejay.co.kr", null, "N")
+                , new SampleVO("3", "ikjoo3", "ijzone@dejay.co.kr", null, "N")
+                , new SampleVO("4", "ikjoo4", "ijzone@dejay.co.kr", null, "Y")
+                , new SampleVO("5", "ikjoo5", "ijzone@dejay.co.kr", null, "Y")
         );
 
         return list;
