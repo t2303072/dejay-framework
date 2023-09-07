@@ -9,6 +9,12 @@ import java.util.List;
 
 @Service
 public class JSPServiceImpl implements JSPService {
+
+    @Override
+    public SampleVO getSample() {
+        return new SampleVO("00", "singleObject", "email value");
+    }
+
     @Override
     public Collection<SampleVO> getSampleList() {
         List<SampleVO> list = Arrays.asList(

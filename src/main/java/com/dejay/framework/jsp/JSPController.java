@@ -23,8 +23,9 @@ public class JSPController {
 
     @GetMapping({"", "/"})
     public String view(Model model) {
-        Collection<SampleVO> sampleList = JSPService.getSampleList();
-        model.addAttribute("sample", sampleList);
+//        Collection<SampleVO> sampleList = JSPService.getSampleList();
+        SampleVO sample = JSPService.getSample();
+        model.addAttribute("sample", sample);
         return "sample/view-sample";
     }
 
@@ -36,7 +37,7 @@ public class JSPController {
 
     @PostMapping("/addRedirect")
     public RedirectView addRedirect(@ModelAttribute("sample") SampleVO sampleVO, RedirectAttributes redirectAttributes) {
-        final RedirectView redirectView = new RedirectView("index", true);
+        final RedirectView redirectView = new RedirectView("", true);
         SampleVO savedSampleVO = JSPService.addSample(sampleVO);
         redirectAttributes.addFlashAttribute("savedBook", savedSampleVO);
         redirectAttributes.addFlashAttribute("addBookSuccess", true);

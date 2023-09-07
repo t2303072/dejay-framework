@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%--<c:set var="contextPath" value="${pageContext.request.contextPath}" />--%>
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
     <title>View Sample</title>
@@ -17,23 +17,20 @@
     </style>
 </head>
 <body>
-    <table>
-        <thead>
-        <tr>
-            <th>Seq</th>
-            <th>Name</th>
-            <th>Email</th>
-        </tr>
-        </thead>
-        <tbody>
-            <c:forEach items="${sample}" var="sample">
-                <tr>
-                    <td>${sample.seq}</td>
-                    <td>${sample.name}</td>
-                    <td>${sample.email}</td>
-                </tr>
-            </c:forEach>
-        </tbody>
-    </table>
+
+    <form:form action="/jsp/addRedirect" onsubmit="valueSetter()" modelAttribute="sample">
+        <form:input id="seq" path="seq"/>
+        <form:input id="name" path="name"/>
+        <form:input id="email" path="email"/>
+        <input type="submit" value="submit">
+    </form:form>
+
+<script>
+    let valueSetter = () => {
+        document.getElementById("seq").value = "1111";
+        document.getElementById("name").value = "new name";
+        document.getElementById("email").value = "new email";
+    }
+</script>
 </body>
 </html>
