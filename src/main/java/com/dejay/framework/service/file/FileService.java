@@ -108,13 +108,14 @@ public class FileService extends ParentService {
         File srchFile = File.builder()
                         .fileSeq(fileSeq)
                         .build();
+
         // 삭제할 File 조회
         FileVO file = getCommonMapper().getFileMapper().getFile(srchFile);
         int iAffectedRows = getCommonMapper().getFileMapper().deleteFile(fileSeq);
 
         // 실제 Directory 삭제
         if(StringUtil.isNotEmpty(file)) {
-            getFileUtil().deleteFile(file.getFilePath());
+            getFileUtil().deleteFile(file.getFilePath()+"/"+file.getFileNm());
         }
         return iAffectedRows;
     }
@@ -207,5 +208,5 @@ public class FileService extends ParentService {
 
         return getCommonMapper().getFileMapper().getFiles(file);
     }
-
+    
 }

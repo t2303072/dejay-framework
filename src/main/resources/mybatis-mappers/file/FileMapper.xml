@@ -33,7 +33,7 @@
             AND ${alias}FILE_NAME = #{fileNm}
         </if>
         <if test="fileSeq != null and fileSeq != ''">
-            AND ${alias}FILE_NAME = #{fileSeq}
+            AND ${alias}FILE_SEQ = #{fileSeq}
         </if>
     </sql>
 
@@ -58,8 +58,9 @@
         SELECT
             <include refid="fileColumn"><property name="alias" value="FE."/></include>
         FROM FILE FE
-        WHERE
-            FE.FILE_SEQ = #{fileSeq}
+        <where>
+            <include refid="whereClause"><property name="alias" value="FE."/></include>
+        </where>
     </select>
 
     <select id="getTempFile" parameterType="String" resultType="FileVO">
