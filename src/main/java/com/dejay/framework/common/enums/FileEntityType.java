@@ -9,11 +9,18 @@ import lombok.NoArgsConstructor;
 @Getter
 public enum FileEntityType {
 
-      BOARD_NOTICE("BOARD",new String[] {"01", "02", "03"}, "BOARD_NOTICE") // CODE "003001" , 01 : 기본 , 02: 그 외
-    , BOARD_FAQ("BOARD", new String[]{"01", "02"}, "BOARD_FAQ"); // CODE "003002" , 01 : 기본 , 02: 그 외
+
+    BOARD("BOARD",new String[] {"01", "02", "03"}, EntityTypeDir.BOARD_DIR); // CODE "003001" , 01 : 기본 , 02: 그 외
 
     private String targetTable;
     private String[] entityType;
-    private String entityId;
+    private String entityDir;
+
+
+    private static class EntityTypeDir{
+        // board
+        private static final String BOARD_DIR = "/board";
+
+    }
 
 }

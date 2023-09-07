@@ -1,6 +1,5 @@
 package com.dejay.framework.common.utils;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,5 +29,15 @@ public class PropertiesUtil {
         private String password;
     }
     /** jasypt ]] **/
+
+    /** File [[ **/
+    private File file;
+    @Getter
+    @Setter
+    public static class File{
+        private String tempPath;
+        private String realPath;
+    }
+    /** File ]] **/
 
 }

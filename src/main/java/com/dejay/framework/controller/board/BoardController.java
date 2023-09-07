@@ -3,28 +3,18 @@ package com.dejay.framework.controller.board;
 import com.dejay.framework.common.enums.MapKeyStringEnum;
 import com.dejay.framework.common.enums.RequestTypeEnum;
 import com.dejay.framework.common.enums.ResultCodeMsgEnum;
-import com.dejay.framework.common.enums.TableNameEnum;
 import com.dejay.framework.common.utils.ObjectHandlingUtil;
 import com.dejay.framework.controller.common.ParentController;
-import com.dejay.framework.domain.board.Board;
 import com.dejay.framework.domain.common.DataObject;
 import com.dejay.framework.domain.common.SearchObject;
 import com.dejay.framework.vo.board.BoardVO;
 import com.dejay.framework.vo.common.ResultStatusVO;
-import com.dejay.framework.vo.file.FileVO;
-import com.dejay.framework.vo.member.MemberVO;
-import com.dejay.framework.vo.search.board.BoardSearchVO;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -111,4 +101,5 @@ public class BoardController extends ParentController {
 
         return ResponseEntity.ok(resultMap);
     }
+
 }

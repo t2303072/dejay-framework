@@ -3,11 +3,14 @@ package com.dejay.framework.common.utils;
 import com.dejay.framework.common.enums.FileEntityType;
 import com.dejay.framework.common.enums.FileTypeEnum;
 import com.dejay.framework.vo.file.FileVO;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -44,8 +47,9 @@ public class FileUtil {
     public FileVO uploadFile(MultipartFile multipartFile, String filePath) throws Exception {
        String fileNm = createFileName(multipartFile.getOriginalFilename());
        String nowDay = DateUtil.getUtcNowDateFormat("yyMM");
-       String uploadPath = getUploadPath(nowDay, filePath) + "\\" + fileNm;
+       String uploadPath = getUploadPath(nowDay, filePath) + "/" + fileNm;
        log.info(uploadPath);
+
        File uploadFile = new File(uploadPath);
 
        try{
@@ -77,7 +81,7 @@ public class FileUtil {
      * @return 업로드 경로
      */
     private String getUploadPath(final String addPath, String filePath){
-        return makeDirectories(filePath+ "\\" + addPath);
+        return makeDirectories(filePath+ "/" + addPath);
     }
 
     /**
@@ -90,7 +94,7 @@ public class FileUtil {
         if(!dir.exists()){
             dir.mkdirs();
         }
-        return dir.getPath();
+        return path;
     }
 
     /**
@@ -140,8 +144,8 @@ public class FileUtil {
     public void moveFile(final String fileName, String fromFilePath, String toFilePath) throws Exception {
         String nowDay = DateUtil.getUtcNowDateFormat("yyMM");
 
-        String beforeFilePath = getUploadPath(nowDay, fromFilePath)+ "\\" + fileName;
-        String afterFilePath = toFilePath + "\\" + fileName;
+        String beforeFilePath = getUploadPath(nowDay, fromFilePath)+ "/" + fileName;
+        String afterFilePath = makeDirectories(toFilePath)+ "/" + fileName;
 
         Path file = Paths.get(beforeFilePath);
         Path moveFile = Paths.get(afterFilePath);
@@ -174,16 +178,6 @@ public class FileUtil {
     }
 
     /**
-     * 테이블 이름에  해당하는 FilePath 디렉토리 저장
-     * @param path
-     * @param tableName
-     * @return
-     */
-    public String targetTableFilePath(String path, String tableName){
-        return path + "\\" + tableName;
-    }
-
-    /**
      * 파일 확장자 이름
      * @param fileNm
      * @return 파일 확장자 이름
@@ -196,15 +190,14 @@ public class FileUtil {
     /**
      * 알맞은 파일 테이블 형식을 반환
      * @param targetTable
-     * @param entityId
      * @return
      */
-    public Optional<FileEntityType> getFileEntityType(String targetTable, String entityId){
-       Optional<FileEntityType> any = Arrays.stream(FileEntityType.values())
-                .filter(v -> v.getTargetTable().equals(targetTable))
-                .filter(v-> v.getEntityId().equals(entityId))
-                .findAny();
-
+    public Optional<FileEntityType> getFileEntityType(String entityNm){
+        Optional<FileEntityType> any = Arrays.stream(FileEntityType.values())
+                                            .filter(v -> v.getTargetTable().equals(entityNm))
+                                            .findAny();
         return any;
     }
+
+
 }

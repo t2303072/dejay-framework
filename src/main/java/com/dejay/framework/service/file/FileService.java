@@ -8,20 +8,14 @@ import com.dejay.framework.domain.file.File;
 import com.dejay.framework.service.common.ParentService;
 import com.dejay.framework.vo.file.FileVO;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.util.*;
 
 @Slf4j
 @Service
 public class FileService extends ParentService {
-    @Value("${file.tempPath}")
-    private String tempPath;
 
-    @Value("${file.realPath}")
-    private String realPath;
 
     /**
      * 업로드 파일
@@ -30,7 +24,7 @@ public class FileService extends ParentService {
      * @throws Exception
      */
     public List<FileVO> uploadFile(List<MultipartFile> files, String entityName, String entityType) throws Exception {
-        List<FileVO> fileList= getFileUtil().uploadFiles(files, tempPath);
+        List<FileVO> fileList= getFileUtil().uploadFiles(files, getPropertiesUtil().getFile().getTempPath());
         saveTempFile(fileList, entityName, entityType);
         return fileList;
     }
@@ -38,8 +32,7 @@ public class FileService extends ParentService {
     public int saveTempFile(List<FileVO> files, String entityName, String entityType) throws CustomFileException {
         int iAffectedRows = 0;
 
-        FileEntityType fileEntityType = getFileUtil().getFileEntityType(entityName,entityType).get();
-
+        FileEntityType fileEntityType = getFileUtil().getFileEntityType(entityName).get();
         // 테이블 별 "01", "02" , "03" 형식 확인
         boolean correctType = false;
         for(String type : fileEntityType.getEntityType()){
@@ -78,19 +71,18 @@ public class FileService extends ParentService {
     public int saveFile(List<File> files, String tableName,Long seq) throws Exception {
         int iAffectedRows=0;
 
-        final String tablePath = getFileUtil().targetTableFilePath(realPath,tableName);
-
         for (File file : files) {
             // temp db 조회
             FileVO tempFile = getTempFile(file.getFileNm());
 
-            String filePath = tablePath+"\\"+tempFile.getFileNm();
-
+            FileEntityType fileEntityType = getFileUtil().getFileEntityType(tempFile.getEntityNm()).get();
+            String realPath = getPropertiesUtil().getFile().getRealPath() + fileEntityType.getEntityDir();
+            log.info(realPath);
             File target = File.builder()
                     .entityNm(tableName)
                     .entitySeq(seq)
                     .entityType(tempFile.getEntityType())
-                    .filePath(filePath)
+                    .filePath(realPath)
                     .fileNm(tempFile.getFileNm())
                     .orgFileNm(tempFile.getOrgFileNm())
                     .fileType(getFileUtil().checkFileType(file.getFileNm()))
@@ -100,7 +92,7 @@ public class FileService extends ParentService {
             iAffectedRows = getCommonMapper().getFileMapper().save(target);
 
             if (iAffectedRows <= 0) break;
-            getFileUtil().moveFile(file.getFileNm(), tempPath, tablePath);
+            getFileUtil().moveFile(file.getFileNm(), getPropertiesUtil().getFile().getTempPath() , realPath);
         }
 
         return iAffectedRows;
@@ -182,10 +174,10 @@ public class FileService extends ParentService {
 
     /**
      * 단 건 File 조회
-     * @param fileSeq
+     * @param file
      * @return FileVO 객체
      */
-    public FileVO getFile(Long fileSeq) { return getCommonMapper().getFileMapper().getFile(fileSeq); }
+    public FileVO getFile(File file) { return getCommonMapper().getFileMapper().getFile(file); }
 
     /**
      * 단 건 TempFile 조회
@@ -203,8 +195,7 @@ public class FileService extends ParentService {
                         .entityNm(tableName)
                         .build();
 
-        log.info("file EntitySeq "+file.getEntitySeq());
-        log.info("file dataType "+file.getEntityNm());
         return getCommonMapper().getFileMapper().getFiles(file);
     }
+
 }

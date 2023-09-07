@@ -41,13 +41,12 @@ properties:
     encryptor:
       bean: jasyptStringEncryptor
       password: ${JASYPT_PASSWORD}
-
+  # file
+  file:
+    tempPath: C:/temp
+    realPath: C:/upload
 # jwt
 jwt:
   secret: frameworkspringsecurityjwtsecretkeytestijzone
   issuer: ikjooLee
 
-# file
-file:
-  tempPath: C:\temp
-  realPath: C:\upload
