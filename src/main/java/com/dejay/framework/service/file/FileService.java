@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 @Slf4j
 @Service
@@ -75,7 +77,7 @@ public class FileService extends ParentService {
             // temp db 조회
             FileVO tempFile = getTempFile(file.getFileNm());
 
-            FileEntityType fileEntityType = getFileUtil().getFileEntityType(tempFile.getEntityNm()).get();
+            FileEntityType fileEntityType = getFileUtil().getFileEntityType(tableName).get();
             String realPath = getPropertiesUtil().getFile().getRealPath() + fileEntityType.getEntityDir();
             log.info(realPath);
             File target = File.builder()
@@ -103,8 +105,11 @@ public class FileService extends ParentService {
      * @return
      */
     public int deleteFile(Long fileSeq){
+        File srchFile = File.builder()
+                        .fileSeq(fileSeq)
+                        .build();
         // 삭제할 File 조회
-        FileVO file = getCommonMapper().getFileMapper().getFile(fileSeq);
+        FileVO file = getCommonMapper().getFileMapper().getFile(srchFile);
         int iAffectedRows = getCommonMapper().getFileMapper().deleteFile(fileSeq);
 
         // 실제 Directory 삭제
@@ -141,33 +146,38 @@ public class FileService extends ParentService {
         List<FileVO> originFiles = getFiles(entitySeq, tableName);
 
         // 제거할 파일 리스트
-        Map<String,FileVO> originMap = new HashMap<>();
+        List<FileVO> originList = new ArrayList<>();
 
-        // 원본 FileVO를 map 안에 넣어 준다.
+
+        // 원본 FileVO를 originList 안에 넣어 준다.
         for(FileVO file: originFiles){
-            originMap.put(file.getFileNm(),file);
+            originList.add(file);
         }
 
+        List<File> newFileList = new ArrayList<>();
         for(File file : newFiles){
             // 새로운 파일리스트에 있는 경우 originList에서 제거
-            if(originMap.containsKey(file.getFileNm())){
-                originMap.remove(file.getFileNm());
-                newFiles.remove(file);
+            newFileList.add(file);
+            for(int index = originList.size()-1; index>=0; index--){
+                String originFileNm = originList.get(index).getFileNm();
+                if(originFileNm.equals(file.getFileNm())) {
+                    newFileList.remove(file);
+                    originList.remove(index);
+                }
             }
         }
 
-        Iterator<Map.Entry<String,FileVO>> itr = originMap.entrySet().iterator();
-
         int delete = 0;
         // 수정 시 기존 파일이 없으면 삭제
-        while (itr.hasNext()) {
-            Map.Entry<String,FileVO> entry = itr.next();
-            Long key = entry.getValue().getFileSeq();
-            delete = deleteFile(key);
-            if(delete<=0) return delete;
+        if(StringUtil.isNotEmpty(originList)){
+            for(FileVO file : originList){
+                delete = deleteFile(file.getFileSeq());
+                if(delete<=0) return delete;
+            }
         }
+
         int insert = 0;
-        if(StringUtil.isNotEmpty(newFiles))  insert = saveFile(newFiles, tableName, entitySeq);
+        if(StringUtil.isNotEmpty(newFileList))  insert = saveFile(newFileList, tableName, entitySeq);
 
         return delete > 0 && insert > 0 ? 1 : 0;
     }
