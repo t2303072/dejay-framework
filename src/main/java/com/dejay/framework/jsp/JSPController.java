@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/jsp")
@@ -25,13 +28,27 @@ public class JSPController {
     public String view(Model model) {
 //        Collection<SampleVO> sampleList = JSPService.getSampleList();
         SampleVO sample = JSPService.getSample();
+
         model.addAttribute("sample", sample);
+
+        var checkboxList = Arrays.asList("Basketball", "Baseball", "Golf");
+        model.addAttribute("checkboxList", checkboxList);
+
+        var radioList = Arrays.asList("Yes", "No", "N/A");
+        model.addAttribute("radioList", radioList);
+
+        Map radioMap = new HashMap();
+        radioMap.put("Y", "받아요");
+        radioMap.put("N", "안 받아요");
+        radioMap.put("N/A", "해당 없어요");
+        model.addAttribute("radioMap", radioMap);
+
         return "sample/view-sample";
     }
 
     @GetMapping("/add")
     public String addView(Model model) {
-        model.addAttribute("sample", new SampleVO("0", "default", "default"));
+        model.addAttribute("sample", new SampleVO("0", "default", "default", null, "Y"));
         return "sample/add-sample";
     }
 
