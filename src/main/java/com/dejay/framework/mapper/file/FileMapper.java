@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper
 public interface FileMapper extends GeneralMapper {
     List<FileVO> getFiles(Object obj);
-    FileVO getFile(Long fileSeq);
+    FileVO getFile(Object obj);
     FileVO getTempFile(String fileNm);
     int saveTempFile(Object obj);
     int save(Object obj);

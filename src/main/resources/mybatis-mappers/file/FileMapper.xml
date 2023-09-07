@@ -5,11 +5,11 @@
     <!-- 공통 [[ -->
     <!-- column [[ -->
     <sql id="fileColumn">
-        ${alias}FILE_SEQ, ${alias}ENTITY_NAME,
-        ${alias}ENTITY_SEQ, ${alias}ENTITY_TYPE,
-        ${alias}FILE_PATH, ${alias}FILE_NAME,
-        ${alias}ORIGIN_FILE_NAME, ${alias}FILE_TYPE,
-        ${alias}FILE_SIZE
+        ${alias}FILE_SEQ AS fileSeq, ${alias}ENTITY_NAME AS entityNm,
+        ${alias}ENTITY_SEQ AS entitySeq, ${alias}ENTITY_TYPE AS entityType,
+        ${alias}FILE_PATH AS filePath, ${alias}FILE_NAME AS fileNm,
+        ${alias}ORIGIN_FILE_NAME AS orgFileName, ${alias}FILE_TYPE AS fileType,
+        ${alias}FILE_SIZE AS fileSize
     </sql>
 
     <sql id="tempFileColumn">
@@ -28,6 +28,12 @@
         </if>
         <if test="entityNm != null and entityNm != ''">
             AND ${alias}ENTITY_NAME = #{entityNm}
+        </if>
+        <if test="fileNm != null and fileNm != ''">
+            AND ${alias}FILE_NAME = #{fileNm}
+        </if>
+        <if test="fileSeq != null and fileSeq != ''">
+            AND ${alias}FILE_NAME = #{fileSeq}
         </if>
     </sql>
 
@@ -48,11 +54,12 @@
     </select>
 
 
-    <select id="getFile" parameterType="Long" resultType="FileVO">
+    <select id="getFile" resultType="FileVO">
         SELECT
             <include refid="fileColumn"><property name="alias" value="FE."/></include>
         FROM FILE FE
-        WHERE FE.FILE_SEQ = #{entitySeq}
+        WHERE
+            FE.FILE_SEQ = #{fileSeq}
     </select>
 
     <select id="getTempFile" parameterType="String" resultType="FileVO">
