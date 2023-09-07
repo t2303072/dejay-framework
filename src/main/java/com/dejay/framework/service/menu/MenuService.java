@@ -145,7 +145,10 @@ public class MenuService extends ParentService {
                                 .build();
 
             iAffectedRows = getCommonMapper().getMenuMapper().updateOrd(target);
-            if(iAffectedRows<=0) break;
+            if(iAffectedRows<=0) {
+                break;
+            }
+            
         }
 
         /* int iAffectedRows  = getCommonMapper().getMenuMapper().updateOrd(menuList); */

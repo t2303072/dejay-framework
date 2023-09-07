@@ -48,7 +48,9 @@ public class FileService extends ParentService {
                 break;
             }
         }
-        if(!correctType) throw new CustomFileException();
+        if(!correctType) {
+            throw new CustomFileException();
+        }
 
 
         for(FileVO file: files){

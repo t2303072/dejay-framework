@@ -55,7 +55,9 @@ public class BoardService extends ParentService {
 
 
         //파일 저장
-        if(StringUtil.isNotEmpty(files)) fileService.saveFile(files, TableNameEnum.BOARD.name(), Long.valueOf(target.getLogId1()));
+        if(StringUtil.isNotEmpty(files)) {
+            fileService.saveFile(files, TableNameEnum.BOARD.name(), Long.valueOf(target.getLogId1()));
+        }
 
         return iAffectedRows;
     }
