@@ -209,7 +209,7 @@ public class FileUtil {
         if(os.contains("win")) {
             fileRootPath = "C:/";
         }else if(os.contains("nix") || os.contains("nux") || os.contains("aix")){
-            fileRootPath = "/home";
+            fileRootPath = "/home/";
         }
 
         return fileRootPath;
