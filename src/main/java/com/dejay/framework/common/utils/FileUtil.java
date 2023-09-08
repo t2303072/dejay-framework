@@ -144,7 +144,7 @@ public class FileUtil {
     public void moveFile(final String fileName, String fromFilePath, String toFilePath) throws Exception {
         String nowDay = DateUtil.getUtcNowDateFormat("yyMM");
         String beforeFilePath = getUploadPath(nowDay, getOsRootDir()+ fromFilePath)+ "/" + fileName;
-        String afterFilePath = makeDirectories(toFilePath)+ "/" + fileName;
+        String afterFilePath = makeDirectories(getOsRootDir() + toFilePath)+ "/" + fileName;
 
         Path file = Paths.get(beforeFilePath);
         Path moveFile = Paths.get(afterFilePath);
@@ -199,13 +199,17 @@ public class FileUtil {
         return any;
     }
 
+    /**
+     * OS별 Root Directory 설정
+     * @return rootDirectory
+     */
     public String getOsRootDir(){
         String os = System.getProperty("os.name").toLowerCase();
         String fileRootPath = "";
         if(os.contains("win")) {
             fileRootPath = "C:/";
         }else if(os.contains("nix") || os.contains("nux") || os.contains("aix")){
-            fileRootPath = "";
+            fileRootPath = "/home";
         }
 
         return fileRootPath;

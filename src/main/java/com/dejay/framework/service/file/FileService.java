@@ -81,7 +81,6 @@ public class FileService extends ParentService {
 
             FileEntityType fileEntityType = getFileUtil().getFileEntityType(tableName).get();
             String realPath = getPropertiesUtil().getFile().getRealDir() + fileEntityType.getEntityDir();
-            String fullRealPath = getFileUtil().getOsRootDir() + realPath;
             log.info(realPath);
 
             File target = File.builder()
@@ -98,7 +97,7 @@ public class FileService extends ParentService {
             iAffectedRows = getCommonMapper().getFileMapper().save(target);
 
             if (iAffectedRows <= 0) break;
-            getFileUtil().moveFile(file.getFileName(), getPropertiesUtil().getFile().getTempDir() , fullRealPath);
+            getFileUtil().moveFile(file.getFileName(), getPropertiesUtil().getFile().getTempDir() , realPath);
         }
 
         return iAffectedRows;
