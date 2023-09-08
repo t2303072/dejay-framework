@@ -43,8 +43,9 @@ properties:
       password: ${JASYPT_PASSWORD}
   # file
   file:
-    tempDir: temp
-    realDir: upload
+    rootDir: /files/dejay_public
+    tempDir: /temp
+    realDir: /upload
 # jwt
 jwt:
   secret: frameworkspringsecurityjwtsecretkeytestijzone

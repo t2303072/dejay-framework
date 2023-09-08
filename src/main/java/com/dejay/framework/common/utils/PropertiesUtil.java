@@ -43,6 +43,7 @@ public class PropertiesUtil {
     @Getter
     @Setter
     public static class File{
+        private String rootDir;
         private String tempDir;
         private String realDir;
     }

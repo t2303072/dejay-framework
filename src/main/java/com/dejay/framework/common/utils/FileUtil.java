@@ -34,6 +34,7 @@ public class FileUtil {
             if(multipartFile.isEmpty()){
                 continue;
             }
+
             files.add(uploadFile(multipartFile,filePath));
         }
         return files;
@@ -92,7 +93,11 @@ public class FileUtil {
     private String makeDirectories(final String path){
         File dir = new File(path);
         if(!dir.exists()){
-            dir.mkdirs();
+            if(dir.mkdirs()) {
+                log.info("폴더 생성 성공");
+            } else{
+                log.info("폴더 생성 실패");
+            }
         }
         return path;
     }
@@ -207,9 +212,9 @@ public class FileUtil {
         String os = System.getProperty("os.name").toLowerCase();
         String fileRootPath = "";
         if(os.contains("win")) {
-            fileRootPath = "C:/";
+            fileRootPath = "C:" ;
         }else if(os.contains("nix") || os.contains("nux") || os.contains("aix")){
-            fileRootPath = "/home/";
+            fileRootPath = "/home";
         }
 
         return fileRootPath;

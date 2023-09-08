@@ -26,9 +26,7 @@ public class FileService extends ParentService {
      * @throws Exception
      */
     public List<FileVO> uploadFile(List<MultipartFile> files, String entityName, String entityType) throws Exception {
-
-        // yml => classpath:/temp => 프로젝트 하위경로 X
-        List<FileVO> fileList= getFileUtil().uploadFiles(files, getPropertiesUtil().getFile().getTempDir());
+        List<FileVO> fileList= getFileUtil().uploadFiles(files, getPropertiesUtil().getFile().getRootDir() + getPropertiesUtil().getFile().getTempDir());
         saveTempFile(fileList, entityName, entityType);
         return fileList;
     }
@@ -80,7 +78,7 @@ public class FileService extends ParentService {
             FileVO tempFile = getTempFile(file.getFileName());
 
             FileEntityType fileEntityType = getFileUtil().getFileEntityType(tableName).get();
-            String realPath = getPropertiesUtil().getFile().getRealDir() + fileEntityType.getEntityDir();
+            String realPath = getPropertiesUtil().getFile().getRootDir() + getPropertiesUtil().getFile().getRealDir() + fileEntityType.getEntityDir();
             log.info(realPath);
 
             File target = File.builder()
@@ -97,14 +95,14 @@ public class FileService extends ParentService {
             iAffectedRows = getCommonMapper().getFileMapper().save(target);
 
             if (iAffectedRows <= 0) break;
-            getFileUtil().moveFile(file.getFileName(), getPropertiesUtil().getFile().getTempDir() , realPath);
+            getFileUtil().moveFile(file.getFileName(), getPropertiesUtil().getFile().getRootDir() + getPropertiesUtil().getFile().getTempDir() , realPath);
         }
 
         return iAffectedRows;
     }
     /**
      * 파일 삭제
-     * @param fileSeq
+     * @param fileName
      * @return
      */
     public int deleteFile(String fileName){

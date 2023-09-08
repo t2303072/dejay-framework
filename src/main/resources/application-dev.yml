@@ -30,5 +30,6 @@ server:
 
 # file
 file:
-  tempDir: temp
-  realDir: upload
+  rootDir: /files/dejay_public
+  tempDir: /temp
+  realDir: /upload
