@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.dejay.framework.mapper.file.FileMapper">
@@ -13,9 +14,9 @@
     </sql>
 
     <sql id="tempFileColumn">
-          ${alias}ENTITY_NAME
-        , ${alias}ENTITY_TYPE, ${alias}FILE_NAME
-        , ${alias}ORIGIN_FILE_NAME, ${alias}FILE_SIZE
+          ${alias}ENTITY_NAME, ${alias}ENTITY_TYPE
+          , ${alias}FILE_NAME, ${alias}ORIGIN_FILE_NAME
+          , ${alias}FILE_SIZE
     </sql>
 
     <!-- column ]] -->
@@ -26,11 +27,11 @@
         <if test="entitySeq != null and entitySeq !=''">
             AND ${alias}ENTITY_SEQ = #{entitySeq}
         </if>
-        <if test="entityNm != null and entityNm != ''">
-            AND ${alias}ENTITY_NAME = #{entityNm}
+        <if test="entityName != null and entityName != ''">
+            AND ${alias}ENTITY_NAME = #{entityName}
         </if>
-        <if test="fileNm != null and fileNm != ''">
-            AND ${alias}FILE_NAME = #{fileNm}
+        <if test="fileName != null and fileName != ''">
+            AND ${alias}FILE_NAME = #{fileName}
         </if>
         <if test="fileSeq != null and fileSeq != ''">
             AND ${alias}FILE_SEQ = #{fileSeq}
@@ -67,7 +68,7 @@
         SELECT
             <include refid="tempFileColumn"><property name="alias" value="FT."/></include>
         FROM FILE_TEMP FT
-        WHERE FT.FILE_NAME = #{fileNm}
+        WHERE FT.FILE_NAME = #{fileName}
     </select>
     <!-- 조회 ]] -->
 
@@ -84,9 +85,9 @@
         )
         VALUES
             (
-                #{entityNm},#{entitySeq},
+                #{entityName},#{entitySeq},
                 #{entityType},#{filePath}
-                ,#{fileNm},#{orgFileNm},
+                ,#{fileName},#{originFileName},
                 #{fileType},#{fileSize}
             )
     </insert>
@@ -100,8 +101,8 @@
         )
         VALUES
             (
-              #{fileNm}, #{entityNm},
-              #{entityType}, #{orgFileNm},
+              #{fileName}, #{entityName},
+              #{entityType}, #{originFileName},
               #{fileSize}
             )
     </insert>

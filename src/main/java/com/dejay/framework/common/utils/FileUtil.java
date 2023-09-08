@@ -45,9 +45,9 @@ public class FileUtil {
      * @return 단일 FileVO 객체 리턴
      */
     public FileVO uploadFile(MultipartFile multipartFile, String filePath) throws Exception {
-       String fileNm = createFileName(multipartFile.getOriginalFilename());
+       String fileName = createFileName(multipartFile.getOriginalFilename());
        String nowDay = DateUtil.getUtcNowDateFormat("yyMM");
-       String uploadPath = getUploadPath(nowDay, filePath) + "/" + fileNm;
+       String uploadPath = getUploadPath(nowDay, filePath) + "/" + fileName;
        log.info(uploadPath);
 
        File uploadFile = new File(uploadPath);
@@ -60,8 +60,8 @@ public class FileUtil {
 
        return FileVO.builder()
                     .filePath(uploadPath)
-                    .fileNm(fileNm.trim())
-                    .orgFileNm(multipartFile.getOriginalFilename())
+                    .fileName(fileName.trim())
+                    .originFileName(multipartFile.getOriginalFilename())
                     .fileSize(multipartFile.getSize())
                     .build();
 
@@ -71,8 +71,8 @@ public class FileUtil {
      * 파일 이름 생성
      * @return 파일 이름 생성
      */
-    public String createFileName(String fileNm) throws Exception {
-        return (DateUtil.getUtcNowDateFormat("yyMMdd") + StringUtil.getRandomStringByUUID() + getFileExtension(fileNm)).replaceAll(" ","");
+    public String createFileName(String fileName) throws Exception {
+        return (DateUtil.getUtcNowDateFormat("yyMMdd") + StringUtil.getRandomStringByUUID() + getFileExtension(fileName)).replaceAll(" ","");
     }
 
     /**
@@ -179,22 +179,22 @@ public class FileUtil {
 
     /**
      * 파일 확장자 이름
-     * @param fileNm
+     * @param fileName
      * @return 파일 확장자 이름
      */
-    public String getFileExtension(String fileNm){
-        int index = fileNm.indexOf(".");
-        return fileNm.substring(index);
+    public String getFileExtension(String fileName){
+        int index = fileName.indexOf(".");
+        return fileName.substring(index);
     }
 
     /**
      * 알맞은 파일 테이블 형식을 반환
-     * @param targetTable
+     * @param entityName
      * @return
      */
-    public Optional<FileEntityType> getFileEntityType(String entityNm){
+    public Optional<FileEntityType> getFileEntityType(String entityName){
         Optional<FileEntityType> any = Arrays.stream(FileEntityType.values())
-                                            .filter(v -> v.getTargetTable().equals(entityNm))
+                                            .filter(v -> v.getTargetTable().equals(entityName))
                                             .findAny();
         return any;
     }

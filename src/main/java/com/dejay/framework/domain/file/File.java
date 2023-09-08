@@ -12,7 +12,7 @@ public class File {
     private  Long fileSeq;
 
     // 테이블 명
-    private String entityNm;
+    private String entityName;
 
     // 테이블 SEQ
     private Long entitySeq;
@@ -24,10 +24,10 @@ public class File {
     private String filePath;
 
     // 파일 이름
-    private String fileNm;
+    private String fileName;
 
     // 기존 파일 명
-    private String orgFileNm;
+    private String originFileName;
 
     // 파일 유형 01:이미지, 02:비디오, 03:엑셀, 04:워드, 05:한글, 06: 그 외 문
     private String fileType;

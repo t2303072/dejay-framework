@@ -10,7 +10,7 @@ import java.util.List;
 public interface FileMapper extends GeneralMapper {
     List<FileVO> getFiles(Object obj);
     FileVO getFile(Object obj);
-    FileVO getTempFile(String fileNm);
+    FileVO getTempFile(String fileName);
     int saveTempFile(Object obj);
     int save(Object obj);
     int deleteFile(Object obj);

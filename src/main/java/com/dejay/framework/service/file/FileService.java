@@ -50,10 +50,10 @@ public class FileService extends ParentService {
 
         for(FileVO file: files){
             File target = File.builder()
-                            .fileNm(file.getFileNm())
-                            .entityNm(entityName)
+                            .fileName(file.getFileName())
+                            .entityName(entityName)
                             .entityType(entityType)
-                            .orgFileNm(file.getOrgFileNm())
+                            .originFileName(file.getOriginFileName())
                             .fileSize(file.getFileSize())
                             .build();
             iAffectedRows = getCommonMapper().getFileMapper().saveTempFile(target);
@@ -72,29 +72,29 @@ public class FileService extends ParentService {
      */
     public int saveFile(List<File> files, String tableName,Long seq) throws Exception {
         int iAffectedRows=0;
-
         for (File file : files) {
+
             // temp db 조회
-            FileVO tempFile = getTempFile(file.getFileNm());
+            FileVO tempFile = getTempFile(file.getFileName());
 
             FileEntityType fileEntityType = getFileUtil().getFileEntityType(tableName).get();
             String realPath = getPropertiesUtil().getFile().getRealPath() + fileEntityType.getEntityDir();
             log.info(realPath);
             File target = File.builder()
-                    .entityNm(tableName)
+                    .entityName(tableName)
                     .entitySeq(seq)
                     .entityType(tempFile.getEntityType())
                     .filePath(realPath)
-                    .fileNm(tempFile.getFileNm())
-                    .orgFileNm(tempFile.getOrgFileNm())
-                    .fileType(getFileUtil().checkFileType(file.getFileNm()))
+                    .fileName(tempFile.getFileName())
+                    .originFileName(tempFile.getOriginFileName())
+                    .fileType(getFileUtil().checkFileType(file.getFileName()))
                     .fileSize(tempFile.getFileSize())
                     .build();
 
             iAffectedRows = getCommonMapper().getFileMapper().save(target);
 
             if (iAffectedRows <= 0) break;
-            getFileUtil().moveFile(file.getFileNm(), getPropertiesUtil().getFile().getTempPath() , realPath);
+            getFileUtil().moveFile(file.getFileName(), getPropertiesUtil().getFile().getTempPath() , realPath);
         }
 
         return iAffectedRows;
@@ -115,7 +115,7 @@ public class FileService extends ParentService {
 
         // 실제 Directory 삭제
         if(StringUtil.isNotEmpty(file)) {
-            getFileUtil().deleteFile(file.getFilePath()+"/"+file.getFileNm());
+            getFileUtil().deleteFile(file.getFilePath()+"/"+file.getFileName());
         }
         return iAffectedRows;
     }
@@ -160,8 +160,8 @@ public class FileService extends ParentService {
             // 새로운 파일리스트에 있는 경우 originList에서 제거
             newFileList.add(file);
             for(int index = originList.size()-1; index>=0; index--){
-                String originFileNm = originList.get(index).getFileNm();
-                if(originFileNm.equals(file.getFileNm())) {
+                String originFileName = originList.get(index).getFileName();
+                if(originFileName.equals(file.getFileName())) {
                     newFileList.remove(file);
                     originList.remove(index);
                 }
@@ -193,7 +193,7 @@ public class FileService extends ParentService {
     /**
      * 단 건 TempFile 조회
      */
-    public FileVO getTempFile(String fileNm) {return getCommonMapper().getFileMapper().getTempFile(fileNm);}
+    public FileVO getTempFile(String fileName) {return getCommonMapper().getFileMapper().getTempFile(fileName);}
 
     /**
      * 해당 seq에 물린 File 목록 조회
@@ -203,7 +203,7 @@ public class FileService extends ParentService {
     public List<FileVO> getFiles(Long entitySeq, String tableName){
         File file = File.builder()
                         .entitySeq(entitySeq)
-                        .entityNm(tableName)
+                        .entityName(tableName)
                         .build();
 
         return getCommonMapper().getFileMapper().getFiles(file);
