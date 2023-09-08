@@ -8,6 +8,7 @@ import com.dejay.framework.domain.file.File;
 import com.dejay.framework.service.common.ParentService;
 import com.dejay.framework.vo.file.FileVO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.*;
@@ -18,7 +19,6 @@ import java.util.concurrent.ConcurrentMap;
 @Service
 public class FileService extends ParentService {
 
-
     /**
      * 업로드 파일
      * @param files
@@ -26,7 +26,9 @@ public class FileService extends ParentService {
      * @throws Exception
      */
     public List<FileVO> uploadFile(List<MultipartFile> files, String entityName, String entityType) throws Exception {
-        List<FileVO> fileList= getFileUtil().uploadFiles(files, getPropertiesUtil().getFile().getTempPath());
+
+        // yml => classpath:/temp => 프로젝트 하위경로 X
+        List<FileVO> fileList= getFileUtil().uploadFiles(files, getPropertiesUtil().getFile().getTempDir());
         saveTempFile(fileList, entityName, entityType);
         return fileList;
     }
@@ -78,8 +80,10 @@ public class FileService extends ParentService {
             FileVO tempFile = getTempFile(file.getFileName());
 
             FileEntityType fileEntityType = getFileUtil().getFileEntityType(tableName).get();
-            String realPath = getPropertiesUtil().getFile().getRealPath() + fileEntityType.getEntityDir();
+            String realPath = getPropertiesUtil().getFile().getRealDir() + fileEntityType.getEntityDir();
+            String fullRealPath = getFileUtil().getOsRootDir() + realPath;
             log.info(realPath);
+
             File target = File.builder()
                     .entityName(tableName)
                     .entitySeq(seq)
@@ -94,7 +98,7 @@ public class FileService extends ParentService {
             iAffectedRows = getCommonMapper().getFileMapper().save(target);
 
             if (iAffectedRows <= 0) break;
-            getFileUtil().moveFile(file.getFileName(), getPropertiesUtil().getFile().getTempPath() , realPath);
+            getFileUtil().moveFile(file.getFileName(), getPropertiesUtil().getFile().getTempDir() , fullRealPath);
         }
 
         return iAffectedRows;
@@ -104,18 +108,18 @@ public class FileService extends ParentService {
      * @param fileSeq
      * @return
      */
-    public int deleteFile(Long fileSeq){
+    public int deleteFile(String fileName){
         File srchFile = File.builder()
-                        .fileSeq(fileSeq)
+                        .fileName(fileName)
                         .build();
 
         // 삭제할 File 조회
         FileVO file = getCommonMapper().getFileMapper().getFile(srchFile);
-        int iAffectedRows = getCommonMapper().getFileMapper().deleteFile(fileSeq);
+        int iAffectedRows = getCommonMapper().getFileMapper().deleteFile(file);
 
         // 실제 Directory 삭제
         if(StringUtil.isNotEmpty(file)) {
-            getFileUtil().deleteFile(file.getFilePath()+"/"+file.getFileName());
+            getFileUtil().deleteFile( file.getFilePath()+"/"+ file.getFileName());
         }
         return iAffectedRows;
     }
@@ -129,7 +133,7 @@ public class FileService extends ParentService {
         int iAffectedRows = 0;
 
         for(File file : files){
-           iAffectedRows = deleteFile(file.getFileSeq());
+           iAffectedRows = deleteFile(file.getFileName());
         }
 
         return iAffectedRows;
@@ -172,7 +176,7 @@ public class FileService extends ParentService {
         // 수정 시 기존 파일이 없으면 삭제
         if(StringUtil.isNotEmpty(originList)){
             for(FileVO file : originList){
-                delete = deleteFile(file.getFileSeq());
+                delete = deleteFile(file.getFileName());
                 if(delete<=0) return delete;
             }
         }
@@ -208,5 +212,8 @@ public class FileService extends ParentService {
 
         return getCommonMapper().getFileMapper().getFiles(file);
     }
-    
+
+    /**
+     * 파일 다운로드
+     */
 }

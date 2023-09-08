@@ -28,5 +28,5 @@ logging:
 
 # file
 file:
-  tempPath: C:\temp
-  realPath: C:\upload
+  tempDir: temp
+  realDir: upload

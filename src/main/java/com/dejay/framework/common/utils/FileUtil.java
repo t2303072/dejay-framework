@@ -44,10 +44,10 @@ public class FileUtil {
      * @param multipartFile
      * @return 단일 FileVO 객체 리턴
      */
-    public FileVO uploadFile(MultipartFile multipartFile, String filePath) throws Exception {
+    public FileVO uploadFile(MultipartFile multipartFile, String fileDir) throws Exception {
        String fileName = createFileName(multipartFile.getOriginalFilename());
        String nowDay = DateUtil.getUtcNowDateFormat("yyMM");
-       String uploadPath = getUploadPath(nowDay, filePath) + "/" + fileName;
+       String uploadPath = getUploadPath(nowDay, getOsRootDir()+fileDir) + "/" + fileName;
        log.info(uploadPath);
 
        File uploadFile = new File(uploadPath);
@@ -143,8 +143,7 @@ public class FileUtil {
      */
     public void moveFile(final String fileName, String fromFilePath, String toFilePath) throws Exception {
         String nowDay = DateUtil.getUtcNowDateFormat("yyMM");
-
-        String beforeFilePath = getUploadPath(nowDay, fromFilePath)+ "/" + fileName;
+        String beforeFilePath = getUploadPath(nowDay, getOsRootDir()+ fromFilePath)+ "/" + fileName;
         String afterFilePath = makeDirectories(toFilePath)+ "/" + fileName;
 
         Path file = Paths.get(beforeFilePath);
@@ -163,13 +162,14 @@ public class FileUtil {
      * @param filePath
      */
     public void deleteFile(String filePath){
+         String realPath = getOsRootDir()+filePath;
         try{
-            File file = new File(filePath);
+            File file = new File(realPath);
 
             if(file.delete()){
-                log.info("파일 삭제 성공 : { " + filePath + " } ");
+                log.info("파일 삭제 성공 : { " + realPath + " } ");
             } else {
-                log.info("파일 삭제 실패 : { " + filePath + " } ");
+                log.info("파일 삭제 실패 : { " + realPath + " } ");
             }
         } catch (Exception e){
             e.printStackTrace();
@@ -199,5 +199,15 @@ public class FileUtil {
         return any;
     }
 
+    public String getOsRootDir(){
+        String os = System.getProperty("os.name").toLowerCase();
+        String fileRootPath = "";
+        if(os.contains("win")) {
+            fileRootPath = "C:/";
+        }else if(os.contains("nix") || os.contains("nux") || os.contains("aix")){
+            fileRootPath = "";
+        }
 
+        return fileRootPath;
+    }
 }

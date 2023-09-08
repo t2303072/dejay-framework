@@ -10,6 +10,7 @@ import com.dejay.framework.vo.common.ResultStatusVO;
 import com.dejay.framework.vo.file.FileVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -31,7 +32,6 @@ public class FileController extends ParentController {
     @PostMapping("/upload")
     public ResponseEntity uploadFile(List<MultipartFile> files,@RequestParam(required = true) String entityId,@RequestParam(required = true) String entityType) throws Exception {
         List<FileVO> fileList = getCommonService().getFileService().uploadFile(files, entityId, entityType);
-
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setListResultStatusVO(fileList, ResultCodeMsgEnum.NO_DATA);
         var mapKeyString = Arrays.asList( MapKeyStringEnum.FILE_LIST.getKeyString());
 
@@ -48,7 +48,7 @@ public class FileController extends ParentController {
      */
     @PostMapping("/delete")
     public ResponseEntity deleteFile(@RequestBody DataObject dataObject) {
-        int deleted = getCommonService().getFileService().deleteFile(dataObject.getData().getFile().getFileSeq());
+        int deleted = getCommonService().getFileService().deleteFile(dataObject.getData().getFile().getFileName());
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(deleted, RequestTypeEnum.DELETE);
 
         Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO);
@@ -70,5 +70,6 @@ public class FileController extends ParentController {
 
         return ResponseEntity.ok(resultMap);
     }
+
 
 }

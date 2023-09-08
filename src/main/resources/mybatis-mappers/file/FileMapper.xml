@@ -108,7 +108,7 @@
     </insert>
     <update id="deleteFile">
         /* 파일 삭제 - FileMapper.delete */
-        DELETE FROM FILE WHERE FILE_SEQ = ${fileSeq}
+        DELETE FROM FILE WHERE FILE_NAME = #{fileName}
     </update>
 
     <!-- 저장/수정/삭제 ]] -->

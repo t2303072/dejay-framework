@@ -160,7 +160,7 @@ public class BoardService extends ParentService {
         // Board에 물린 File삭제
         List<FileVO> fileList = fileService.getFiles(board.getBoardSeq(), target.getTableName());
         for(FileVO file : fileList){
-            fileService.deleteFile(file.getFileSeq());
+            fileService.deleteFile(file.getFileName());
         }
 
         return iAffectedRows;

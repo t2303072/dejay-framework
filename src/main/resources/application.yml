@@ -43,8 +43,8 @@ properties:
       password: ${JASYPT_PASSWORD}
   # file
   file:
-    tempPath: C:/temp
-    realPath: C:/upload
+    tempDir: temp
+    realDir: upload
 # jwt
 jwt:
   secret: frameworkspringsecurityjwtsecretkeytestijzone
