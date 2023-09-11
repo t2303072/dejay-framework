@@ -3,14 +3,17 @@ package com.dejay.framework.common.utils;
 import com.dejay.framework.common.enums.FileEntityType;
 import com.dejay.framework.common.enums.FileTypeEnum;
 import com.dejay.framework.vo.file.FileVO;
+import com.sun.jna.platform.FileUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
+import java.io.*;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -218,5 +221,37 @@ public class FileUtil {
         }
 
         return fileRootPath;
+    }
+
+    public int downloadFile(String originFileName, String filePath, HttpServletResponse response, HttpServletRequest request) throws IOException {
+        File file = new File(filePath);
+        BufferedInputStream in = new BufferedInputStream(new FileInputStream(file));
+
+        // User-Agent : 어떤 운영체제로 어떤 브라우저에 접근하는지 확인함.
+        String browser = request.getHeader("user-Agent");
+        String fileName;
+
+        if((browser.contains("MSID")) || (browser.contains("Trident")) || (browser.contains("Edge"))){
+            // 인터넷 익스플로러 10이하 버전, 11버전, 엣지에서 인코딩
+            fileName = URLEncoder.encode(originFileName, StandardCharsets.UTF_8);
+        } else{
+            // 나머지 브라우저에서 인코딩
+            fileName = new String(originFileName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
+        }
+
+
+        // 형식을 모르는 첨부파일용 contentType
+        response.setContentType("application/octet-stream;charset=UTF-8");
+        //다운로드와 다운로드될 파일이름
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\";");
+        response.setHeader("Content-Transfer-Encoding", "binary");
+
+        // 파일 복사
+        int uploaded =FileCopyUtils.copy(in, response.getOutputStream());
+
+        in.close();
+        response.getOutputStream().flush();
+        response.getOutputStream().close();
+        return uploaded;
     }
 }

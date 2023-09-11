@@ -8,12 +8,19 @@ import com.dejay.framework.controller.common.ParentController;
 import com.dejay.framework.domain.common.DataObject;
 import com.dejay.framework.vo.common.ResultStatusVO;
 import com.dejay.framework.vo.file.FileVO;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.http.HttpResponse;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -71,5 +78,18 @@ public class FileController extends ParentController {
         return ResponseEntity.ok(resultMap);
     }
 
+    /**
+     * 파일 다운로드
+     * @param dataObject
+     */
+    @PostMapping(value = "/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ResponseEntity download(@RequestBody DataObject dataObject, HttpServletResponse response, HttpServletRequest request) throws IOException {
+        int downloaded = getCommonService().getFileService().downloadFiles(dataObject.getData().getFileList(), response, request);
+        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(downloaded, RequestTypeEnum.DOWNLOAD);
+
+        Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO);
+
+        return ResponseEntity.ok(resultMap);
+    }
 
 }

@@ -7,13 +7,15 @@ import com.dejay.framework.common.utils.StringUtil;
 import com.dejay.framework.domain.file.File;
 import com.dejay.framework.service.common.ParentService;
 import com.dejay.framework.vo.file.FileVO;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 @Slf4j
 @Service
@@ -211,6 +213,25 @@ public class FileService extends ParentService {
     }
 
     /**
-     * 파일 다운로드
+     * 파일 목록 다운로드
+     * @param fileList
+     * @param response
+     * @param reqeust
+     * @throws IOException
      */
+    public int downloadFiles(List<File> fileList, HttpServletResponse response, HttpServletRequest reqeust) throws IOException {
+        int downloaded=0;
+
+        for(File file : fileList){
+           FileVO targetFile = getCommonMapper().getFileMapper().getFile(file);
+           String realPath = getFileUtil().getOsRootDir() + targetFile.getFilePath()+ "/" + targetFile.getFileName();
+           String originFileName = targetFile.getOriginFileName();
+           downloaded = getFileUtil().downloadFile(originFileName, realPath,response, reqeust);
+
+           if(downloaded < 0) {
+               return downloaded;
+           }
+        }
+        return downloaded;
+    }
 }
