@@ -7,11 +7,19 @@ import com.sun.jna.platform.FileUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.PathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -223,35 +231,41 @@ public class FileUtil {
         return fileRootPath;
     }
 
-    public int downloadFile(String originFileName, String filePath, HttpServletResponse response, HttpServletRequest request) throws IOException {
+    /**
+     * 파일 다운로드
+     * @param originFileName
+     * @param filePath
+     * @param response
+     * @param request
+     * @return
+     * @throws IOException
+     */
+    public ResponseEntity downloadFile(String originFileName, String filePath, HttpServletRequest request) throws IOException {
         File file = new File(filePath);
-        BufferedInputStream in = new BufferedInputStream(new FileInputStream(file));
+        // 파일 경로 생성
+        InputStream inputStream = new FileInputStream(file);
 
         // User-Agent : 어떤 운영체제로 어떤 브라우저에 접근하는지 확인함.
-        String browser = request.getHeader("user-Agent");
-        String fileName;
+        String userAgent = request.getHeader("User-Agent");
+        String encodedFileName;
 
-        if((browser.contains("MSID")) || (browser.contains("Trident")) || (browser.contains("Edge"))){
-            // 인터넷 익스플로러 10이하 버전, 11버전, 엣지에서 인코딩
-            fileName = URLEncoder.encode(originFileName, StandardCharsets.UTF_8);
-        } else{
-            // 나머지 브라우저에서 인코딩
-            fileName = new String(originFileName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
+        if (userAgent != null && userAgent.contains("MSIE")) {
+            // Internet Explorer에서는 URLEncoder로 한글 파일 이름을 인코딩
+            encodedFileName = URLEncoder.encode(originFileName, StandardCharsets.UTF_8).replace("+", "%20");
+        } else if (userAgent != null && (userAgent.contains("Chrome") || userAgent.contains("Opera"))) {
+            // Chrome 또는 Opera에서는 파일 이름을 그대로 사용하고 한글 부분을 UTF-8로 인코딩
+            encodedFileName = new String(originFileName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
+        } else {
+            // 다른 브라우저에서는 UTF-8로 인코딩
+            encodedFileName = URLEncoder.encode(originFileName, StandardCharsets.UTF_8);
         }
 
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentLength(file.length());
+        headers.setContentType(new MediaType("application", "octet-stream"));
+        headers.setContentDispositionFormData("attachment", encodedFileName);
+        InputStreamResource resource = new InputStreamResource(inputStream);
 
-        // 형식을 모르는 첨부파일용 contentType
-        response.setContentType("application/octet-stream;charset=UTF-8");
-        //다운로드와 다운로드될 파일이름
-        response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\";");
-        response.setHeader("Content-Transfer-Encoding", "binary");
-
-        // 파일 복사
-        int uploaded =FileCopyUtils.copy(in, response.getOutputStream());
-
-        in.close();
-        response.getOutputStream().flush();
-        response.getOutputStream().close();
-        return uploaded;
+        return new ResponseEntity<>(resource, headers, HttpStatus.OK);
     }
 }
