@@ -10,6 +10,7 @@ import com.dejay.framework.vo.file.FileVO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -219,18 +220,14 @@ public class FileService extends ParentService {
      * @param reqeust
      * @throws IOException
      */
-    public int downloadFiles(List<File> fileList, HttpServletResponse response, HttpServletRequest reqeust) throws IOException {
-        int downloaded=0;
+    public ResponseEntity downloadFiles(List<File> fileList, HttpServletRequest reqeust) throws IOException {
+        ResponseEntity downloaded=null;
 
         for(File file : fileList){
            FileVO targetFile = getCommonMapper().getFileMapper().getFile(file);
            String realPath = getFileUtil().getOsRootDir() + targetFile.getFilePath()+ "/" + targetFile.getFileName();
            String originFileName = targetFile.getOriginFileName();
-           downloaded = getFileUtil().downloadFile(originFileName, realPath,response, reqeust);
-
-           if(downloaded < 0) {
-               return downloaded;
-           }
+            downloaded = getFileUtil().downloadFile(originFileName, realPath, reqeust);
         }
         return downloaded;
     }

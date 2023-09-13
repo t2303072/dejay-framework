@@ -79,14 +79,9 @@ public class FileController extends ParentController {
      * 파일 다운로드
      * @param dataObject
      */
-    @PostMapping(value = "/download", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public ResponseEntity download(@RequestBody DataObject dataObject, HttpServletResponse response, HttpServletRequest request) throws IOException {
-        int downloaded = getCommonService().getFileService().downloadFiles(dataObject.getData().getFileList(), response, request);
-        ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(downloaded, RequestTypeEnum.DOWNLOAD);
-
-        Map<String, Object> resultMap = getMapUtil().responseEntityBodyWrapper(resultStatusVO);
-
-        return ResponseEntity.ok(resultMap);
+    @PostMapping(value = "/download")
+    public ResponseEntity download(@RequestBody DataObject dataObject, HttpServletRequest request) throws IOException {
+        return getCommonService().getFileService().downloadFiles(dataObject.getData().getFileList(),  request);
     }
 
 }
