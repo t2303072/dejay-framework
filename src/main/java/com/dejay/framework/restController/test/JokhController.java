@@ -1,4 +1,4 @@
-package com.dejay.framework.controller.test;
+package com.dejay.framework.restController.test;
 
 import com.dejay.framework.common.config.JasyptConfig;
 import lombok.RequiredArgsConstructor;

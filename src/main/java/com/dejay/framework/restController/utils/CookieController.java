@@ -1,8 +1,6 @@
-package com.dejay.framework.controller.utils;
+package com.dejay.framework.restController.utils;
 
-import com.dejay.framework.common.utils.CookieFactory;
-import com.dejay.framework.controller.common.ParentController;
-import com.dejay.framework.vo.common.ResultStatusVO;
+import com.dejay.framework.restController.common.ParentController;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

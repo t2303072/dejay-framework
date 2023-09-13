@@ -1,18 +1,14 @@
-package com.dejay.framework.controller.menu;
+package com.dejay.framework.restController.menu;
 
 import com.dejay.framework.common.enums.MapKeyStringEnum;
 import com.dejay.framework.common.enums.RequestTypeEnum;
 import com.dejay.framework.common.enums.ResultCodeMsgEnum;
 import com.dejay.framework.common.utils.ObjectHandlingUtil;
-import com.dejay.framework.controller.common.ParentController;
+import com.dejay.framework.restController.common.ParentController;
 import com.dejay.framework.domain.common.DataObject;
 import com.dejay.framework.domain.common.SearchObject;
-import com.dejay.framework.domain.menu.Menu;
-import com.dejay.framework.vo.board.BoardVO;
 import com.dejay.framework.vo.common.ResultStatusVO;
-import com.dejay.framework.vo.member.MemberVO;
 import com.dejay.framework.vo.menu.MenuVO;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,6 +1,6 @@
-package com.dejay.framework.controller.authority;
+package com.dejay.framework.restController.authority;
 
-import com.dejay.framework.controller.common.ParentController;
+import com.dejay.framework.restController.common.ParentController;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

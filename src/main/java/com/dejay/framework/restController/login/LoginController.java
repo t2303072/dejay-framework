@@ -1,9 +1,9 @@
-package com.dejay.framework.controller.login;
+package com.dejay.framework.restController.login;
 
 import com.dejay.framework.common.enums.MapKeyStringEnum;
 import com.dejay.framework.common.enums.ResultCodeMsgEnum;
 import com.dejay.framework.common.utils.ObjectHandlingUtil;
-import com.dejay.framework.controller.common.ParentController;
+import com.dejay.framework.restController.common.ParentController;
 import com.dejay.framework.domain.common.TokenObjectVO;
 import com.dejay.framework.domain.member.LoginRequest;
 import com.dejay.framework.vo.common.ResultStatusVO;

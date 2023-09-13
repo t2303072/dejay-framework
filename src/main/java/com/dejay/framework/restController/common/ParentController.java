@@ -1,4 +1,4 @@
-package com.dejay.framework.controller.common;
+package com.dejay.framework.restController.common;
 
 import com.dejay.framework.common.utils.CommonUtil;
 import com.dejay.framework.common.utils.FileUtil;

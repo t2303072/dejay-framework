@@ -1,4 +1,4 @@
-package com.dejay.framework.jsp;
+package com.dejay.framework.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,24 +10,23 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 @Controller
 @RequestMapping("/jsp")
-public class JSPController {
+public class SampleController {
 
-    private final JSPService JSPService;
+    private final SampleService SampleService;
 
-    public JSPController(JSPService JSPService) {
-        this.JSPService = JSPService;
+    public SampleController(SampleService SampleService) {
+        this.SampleService = SampleService;
     }
 
     @GetMapping({"", "/"})
     public String view(Model model) {
-//        Collection<SampleVO> sampleList = JSPService.getSampleList();
-        SampleVO sample = JSPService.getSample();
+//        Collection<SampleVO> sampleList = SampleService.getSampleList();
+        SampleVO sample = SampleService.getSample();
 
         model.addAttribute("sample", sample);
 
@@ -55,7 +54,7 @@ public class JSPController {
     @PostMapping("/addRedirect")
     public RedirectView addRedirect(@ModelAttribute("sample") SampleVO sampleVO, RedirectAttributes redirectAttributes) {
         final RedirectView redirectView = new RedirectView("", true);
-        SampleVO savedSampleVO = JSPService.addSample(sampleVO);
+        SampleVO savedSampleVO = SampleService.addSample(sampleVO);
         redirectAttributes.addFlashAttribute("savedBook", savedSampleVO);
         redirectAttributes.addFlashAttribute("addBookSuccess", true);
         return redirectView;
