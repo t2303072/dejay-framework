@@ -1,10 +1,10 @@
-package com.dejay.framework.controller.board;
+package com.dejay.framework.restController.board;
 
 import com.dejay.framework.common.enums.MapKeyStringEnum;
 import com.dejay.framework.common.enums.RequestTypeEnum;
 import com.dejay.framework.common.enums.ResultCodeMsgEnum;
 import com.dejay.framework.common.utils.ObjectHandlingUtil;
-import com.dejay.framework.controller.common.ParentController;
+import com.dejay.framework.restController.common.ParentController;
 import com.dejay.framework.domain.common.DataObject;
 import com.dejay.framework.domain.common.SearchObject;
 import com.dejay.framework.vo.board.BoardVO;

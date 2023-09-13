@@ -1,6 +1,5 @@
-package com.dejay.framework.jsp;
+package com.dejay.framework.controller;
 
-import lombok.Builder;
 import lombok.Getter;
 
 @Getter

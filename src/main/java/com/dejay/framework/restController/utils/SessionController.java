@@ -1,11 +1,9 @@
-package com.dejay.framework.controller.utils;
+package com.dejay.framework.restController.utils;
 
 import com.dejay.framework.common.enums.MapKeyStringEnum;
 import com.dejay.framework.common.enums.ResultCodeMsgEnum;
-import com.dejay.framework.common.utils.CookieFactory;
-import com.dejay.framework.common.utils.MapUtil;
 import com.dejay.framework.common.utils.SessionFactory;
-import com.dejay.framework.controller.common.ParentController;
+import com.dejay.framework.restController.common.ParentController;
 import com.dejay.framework.domain.member.Member;
 import com.dejay.framework.vo.common.ResultStatusVO;
 import jakarta.servlet.http.Cookie;

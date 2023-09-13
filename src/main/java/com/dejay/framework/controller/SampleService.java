@@ -1,8 +1,8 @@
-package com.dejay.framework.jsp;
+package com.dejay.framework.controller;
 
 import java.util.Collection;
 
-public interface JSPService {
+public interface SampleService {
 
     SampleVO getSample();
     Collection<SampleVO> getSampleList();

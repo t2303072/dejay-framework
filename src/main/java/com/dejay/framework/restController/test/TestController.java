@@ -1,7 +1,7 @@
-package com.dejay.framework.controller.test;
+package com.dejay.framework.restController.test;
 
 import com.dejay.framework.common.enums.MapKeyStringEnum;
-import com.dejay.framework.controller.common.ParentController;
+import com.dejay.framework.restController.common.ParentController;
 import com.dejay.framework.domain.member.LoginRequest;
 import com.dejay.framework.service.test.TestService;
 import com.dejay.framework.vo.common.ResultStatusVO;
