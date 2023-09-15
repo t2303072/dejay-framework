@@ -220,15 +220,12 @@ public class FileService extends ParentService {
      * @param reqeust
      * @throws IOException
      */
-    public ResponseEntity downloadFiles(List<File> fileList, HttpServletRequest reqeust) throws IOException {
-        ResponseEntity downloaded=null;
-
+    public void downloadFiles(List<File> fileList, HttpServletRequest reqeust, HttpServletResponse response) throws IOException {
         for(File file : fileList){
            FileVO targetFile = getCommonMapper().getFileMapper().getFile(file);
            String realPath = getFileUtil().getOsRootDir() + targetFile.getFilePath()+ "/" + targetFile.getFileName();
            String originFileName = targetFile.getOriginFileName();
-            downloaded = getFileUtil().downloadFile(originFileName, realPath, reqeust);
+           getFileUtil().downloadFile(originFileName, realPath, reqeust, response);
         }
-        return downloaded;
     }
 }

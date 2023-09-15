@@ -83,8 +83,8 @@ public class FileController extends ParentController {
      * @param dataObject
      */
     @PostMapping(value = "/download")
-    public ResponseEntity download(@RequestBody DataObject dataObject, HttpServletRequest request) throws IOException {
-        return getCommonService().getFileService().downloadFiles(dataObject.getData().getFileList(),  request);
+    public void download(@RequestBody DataObject dataObject, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        getCommonService().getFileService().downloadFiles(dataObject.getData().getFileList(),  request, response);
     }
 
 }
