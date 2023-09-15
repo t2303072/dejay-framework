@@ -242,35 +242,38 @@ public class FileUtil {
      * @return
      * @throws IOException
      */
-    public ResponseEntity downloadFile(String originFileName, String filePath, HttpServletRequest request) throws IOException {
-        File file = new File(filePath);
-        byte[] fileBytes = readFileToByteArray(filePath);
+    public void downloadFile(String originFileName, String filePath, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        try {
+            File file = new File(filePath);
 
-        log.info("Download FileName : {}",originFileName);
+            log.info("Download FileName : {}", originFileName);
 
-        MediaType mediaType = getMediaType(filePath);
-        log.info("File mediaType : {}", mediaType);
+            MediaType mediaType = getMediaType(filePath);
+            log.info("File mediaType : {}", mediaType);
 
-        // User-Agent : 어떤 운영체제로 어떤 브라우저에 접근하는지 확인함.
-        String userAgent = request.getHeader("User-Agent");
-        log.info("userAgent info : {}", userAgent);
+            // User-Agent : 어떤 운영체제로 어떤 브라우저에 접근하는지 확인함.
+            String userAgent = request.getHeader("User-Agent");
+            log.info("userAgent info : {}", userAgent);
 
-        String fileName = createDownloadFileName(userAgent, originFileName);
+            String fileName = createDownloadFileName(userAgent, originFileName);
 
-        log.info("인코드 파일명 => 디코드로 전환 : {}" , URLDecoder.decode(fileName));
+            log.info("인코드 파일명 => 디코드로 전환 : {}", URLDecoder.decode(fileName));
 
-        log.info("다운로드 파일명 : {} ", fileName);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(mediaType);
-        headers.setContentDispositionFormData("attachment", fileName);
-        headers.setContentLength(file.length());
+            log.info("다운로드 파일명 : {} ", fileName);
+            response.setHeader("Content-Type", String.valueOf(getMediaType(filePath)));
+            response.setHeader("Content-Disposition", "attachment; filename*=utf-8''" + fileName + ";");
 
-        log.info("info header : {}", headers);
-        ByteArrayResource resource = new ByteArrayResource(fileBytes);
+            InputStream is = new FileInputStream(file);
+            OutputStream out = response.getOutputStream();
 
-        return ResponseEntity.ok()
-                .headers(headers)
-                .body(resource);
+            FileCopyUtils.copy(is, out);
+
+            is.close();
+            response.getOutputStream().flush();
+            response.getOutputStream().close();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -292,6 +295,12 @@ public class FileUtil {
         return mediaType;
     }
 
+    /**
+     * 파일을 바이트 배열 Array로 읽어온다.
+     * @param filePath
+     * @return
+     * @throws IOException
+     */
     public byte[] readFileToByteArray(String filePath) throws IOException {
         File file = new File(filePath);
         FileInputStream fis = new FileInputStream(file);
