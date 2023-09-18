@@ -3,20 +3,11 @@
 <%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
-    <title>View Sample</title>
-<%--    <link href="<c:url value="/css/common.css"/>" rel="stylesheet" type="text/css">--%>
-    <style>
-        table {
-            width: 100%;
-            border: 1px solid black;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid black;
-        }
-    </style>
+    <!-- Header Layout include -->
+    <c:import url="../common/header.jsp"></c:import>
 </head>
 <body>
+    <c:import url="../common/left.jsp"></c:import>
 
     <form:form action="/jsp/addRedirect" onsubmit="valueSetter()" modelAttribute="sample">
         <h3>값 세팅</h3>
@@ -47,7 +38,7 @@
         <br><br>
         <input type="submit" value="submit">
     </form:form>
-
+    <c:import url="../common/footer.jsp"></c:import>
 <script>
     let valueSetter = () => {
         document.getElementById("seq").value = "1111";
