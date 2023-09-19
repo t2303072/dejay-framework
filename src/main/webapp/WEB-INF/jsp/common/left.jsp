@@ -38,9 +38,7 @@
                 <li><a href="#">sample4</a></li>
             </ul>
         </li>
-
     </ul>
-
 </aside>
 <!-- End Left Side-Bar -->
 <style>
@@ -83,6 +81,26 @@
      padding-top: 20px;
      padding-bottom : 20px;
      padding-left : 50px;
+ }
+
+ .side-bar > ul > li {
+     position: relative;
+ }
+
+ /* 모든 메뉴가 마우스 인식 시 반응 */
+ .side-bar ul > li:hover > a {
+    background-color: #555;
+     border-bottom : 1px solid #999;
+ }
+
+ /* 1차 메뉴의 항목이 마우스 인식 시에 2차 메뉴 등장 */
+ .side-bar > ul > li:hover > ul {
+     display: block;
+     position: absolute;
+     background-color: #888;
+     top:0;         /* 2차 메뉴의 상단을 1차 메뉴의 상단에 고정 */
+     left:100%;     /* 2차 메뉴를 1차 메뉴의 너비만큼 이동 */
+     width:100%;    /* 1차 메뉴의 너비를 상속 */
  }
 
  .sid-bar_title{
