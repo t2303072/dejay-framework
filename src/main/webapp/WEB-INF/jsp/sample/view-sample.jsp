@@ -38,7 +38,11 @@
         <br><br>
         <input type="submit" value="submit">
     </form:form>
+<<<<<<< HEAD
     <c:import url="../common/footer.jsp"></c:import>
+=======
+
+>>>>>>> 574a99f208e1bbe9c3846ca9d1a99328e7a10a57
 <script>
     let valueSetter = () => {
         document.getElementById("seq").value = "1111";
