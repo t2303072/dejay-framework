@@ -8,6 +8,7 @@ import java.util.Set;
 @ToString
 @EqualsAndHashCode(of = {"memberSeq", "memberId"}, callSuper = false)
 @NoArgsConstructor
+@Setter
 @Getter
 public class MemberVO extends BaseEntity {
     private long memberSeq;
