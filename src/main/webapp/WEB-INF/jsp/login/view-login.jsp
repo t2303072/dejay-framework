@@ -7,28 +7,45 @@
     <c:import url="../common/header.jsp"></c:import>
     <style>
         .main_wrapper {
-            text-align:center;
+            display:flex;
+            justify-content: center;
         }
+        .login_wrapper {
+            background-color: rgb(230 230 230);
+            height:400px;
+            width:500px;
+            text-align:center;
+            margin:100px;
+        }
+
     </style>
 </head>
 <body>
 <div class="main_wrapper">
-    <h3>로그인</h3>
-    <form id="loginForm">
-        <div>
-            <label for="memberId">ID: </label>
-            <input id="memberId" name="memberId" />
-        </div>
-        <div>
-            <label for="password">PASSWORD: </label>
-            <input type="password" id="password" name="password"/>
-        </div>
-        <br>
-        <input type="button" value="login" onclick="login()"/>
-        <input type="button" value="회원가입" onclick="location.href='/member/sign-up'"/>
-    </form>
+    <div class="login_wrapper">
+        <h1>로그인</h1>
+        <form id="loginForm">
+            <div>
+                <label for="memberId">아이디 </label><br>
+                <input id="memberId" name="memberId" />
+            </div>
+            <div>
+                <label for="password">비밀번호 </label><br>
+                <input type="password" id="password" name="password"/>
+            </div>
+            <br>
+            <div id="login">
+                <input type="button" value="로그인" onclick="login()"/>
+            </div>
+            <div id="memberWrapper">
+                <input type="button" value="회원가입" onclick="location.href='/member/sign-up'"/>
+                <input type="button" value="아이디찾기" onclick="location.href='/member/findById'"/>
+                <input type="button" value="비밀번호찾기" onclick="location.href='/member/findByPassword'"/>
+            </div>
+        </form>
 
-    <div id="result"></div>
+        <div id="result"></div>
+    </div>
 </div>
 
 <c:import url="../common/footer.jsp"></c:import>

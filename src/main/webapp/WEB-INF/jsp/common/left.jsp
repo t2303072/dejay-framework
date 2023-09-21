@@ -12,7 +12,7 @@
     </section>
     <ul>
         <li>
-            <a href="#"><i class="fas fa-book"></i>menu1</a>
+            <a href="#">menu1</a>
             <ul>
                 <li><a href="#">sample1</a></li>
                 <li><a href="#">sample2</a></li>
@@ -21,7 +21,7 @@
             </ul>
         </li>
         <li>
-            <a href="#"><i class="fas fa-book"></i>menu2</a>
+            <a href="#">menu2</a>
             <ul>
                 <li><a href="#">sample1</a></li>
                 <li><a href="#">sample2</a></li>
@@ -30,7 +30,7 @@
             </ul>
         </li>
         <li>
-            <a href="#"><i class="fas fa-book"></i>menu3</a>
+            <a href="#">menu3</a>
             <ul>
                 <li><a href="#">sample1</a></li>
                 <li><a href="#">sample2</a></li>

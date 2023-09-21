@@ -3,7 +3,7 @@
 <footer>
     <hr>
     <div id="copy">
-        <p>Copyright &copy; 2023 dejay Inc, all right reserved </p>
+        <p>Copyright 2023 dejay Inc, all right reserved </p>
         <p>contact mail : dejay@gmail.com</p>
         <p>Tel: +82 010-0000-0000</p>
     </div>
