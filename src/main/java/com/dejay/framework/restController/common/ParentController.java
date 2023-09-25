@@ -1,3 +1,4 @@
+/*
 package com.dejay.framework.restController.common;
 
 import com.dejay.framework.common.utils.CommonUtil;
@@ -11,10 +12,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 
+*/
 /**
  * 부모 controller
  * - 모든 controller는 상속받아 사용할 것
- */
+ *//*
+
 @Getter
 public class ParentController {
 
@@ -29,20 +32,25 @@ public class ParentController {
     @Autowired
     private FileUtil fileUtil;
 
-    /**
+    */
+/**
      * 토근 관련 VO
      * @return
-     */
+     *//*
+
     public TokenVO getTokenVO() {
         return ObjectHandlingUtil.extractTokenInfo(request);
     }
 
-    /**
+    */
+/**
      * 회원 관련 VO
      * @return
-     */
+     *//*
+
     public MemberVO getLoginVO() {
         return ObjectHandlingUtil.extractLoginInfo(request);
     }
 
 }
+*/

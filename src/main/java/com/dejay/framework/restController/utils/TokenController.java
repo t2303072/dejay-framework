@@ -1,3 +1,4 @@
+/*
 package com.dejay.framework.restController.utils;
 
 import com.dejay.framework.common.enums.MapKeyStringEnum;
@@ -24,20 +25,24 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 
+*/
 /**
  * 토큰 API
- */
+ *//*
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/token")
 public class TokenController extends ParentController {
 
-    /**
+    */
+/**
      * 토큰(JWT) 생성 API
      * @param loginRequest
      * @return {@link ResponseEntity}
-     */
+     *//*
+
     @PostMapping(value = {"", "/"})
     public ResponseEntity createJWT(@RequestBody @Valid LoginRequest loginRequest) {
         TokenObjectVO tokenObjectVO = getCommonUtil().getTokenFactory().createJWT(loginRequest.getUserName(), loginRequest.getPassword(), loginRequest.getAuthority());
@@ -48,11 +53,13 @@ public class TokenController extends ParentController {
         return ResponseEntity.ok(resultMap);
     }
 
-    /**
+    */
+/**
      * 인증 정보 확인 API
      * @param authentication
      * @return {@link ResponseEntity}
-     */
+     *//*
+
     @PostMapping("/authentication-info")
     public ResponseEntity getAuthentication(HttpServletRequest request, Authentication authentication) {
         log.info("Authentication: userName => {}", authentication.getName());
@@ -61,12 +68,14 @@ public class TokenController extends ParentController {
         return ResponseEntity.ok(tokenVO.toString());
     }
 
-    /**
+    */
+/**
      * 토큰(JWT) 재발행 API
      * @param request
      * @param authentication
      * @return {@link ResponseEntity}
-     */
+     *//*
+
     @PostMapping("/reissue-token")
     public ResponseEntity modifyToken(HttpServletRequest request, Authentication authentication) {
         log.info(authentication.toString());
@@ -88,3 +97,4 @@ public class TokenController extends ParentController {
         return ResponseEntity.status(status).body(resultMap);
     }
 }
+*/

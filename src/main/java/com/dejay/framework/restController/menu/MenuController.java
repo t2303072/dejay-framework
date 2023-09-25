@@ -1,3 +1,4 @@
+/*
 package com.dejay.framework.restController.menu;
 
 import com.dejay.framework.common.enums.MapKeyStringEnum;
@@ -25,10 +26,12 @@ import java.util.Map;
 @RequestMapping("/menu")
 public class MenuController extends ParentController {
 
-    /**
+    */
+/**
      * 대메뉴 조회
      * @return
-     */
+     *//*
+
     @PostMapping("/getLgMenuList")
     public ResponseEntity getLgMenuList(){
         List<MenuVO> menuList = getCommonService().getMenuService().getLgMenuList();
@@ -39,11 +42,13 @@ public class MenuController extends ParentController {
         return ResponseEntity.ok(resultMap);
     }
 
-    /**
+    */
+/**
      * 소메뉴 조회
      * @param searchObject
      * @return
-     */
+     *//*
+
     @PostMapping("/getSmMenuList")
     public ResponseEntity getSmMenuList(@RequestBody @Valid SearchObject searchObject){
         List<MenuVO> menuList = getCommonService().getMenuService().getSmMenuList(searchObject.getSearch().getMenuSearch());
@@ -53,11 +58,13 @@ public class MenuController extends ParentController {
         return ResponseEntity.ok(resultMap);
     }
 
-    /**
+    */
+/**
      * 메뉴 단 건 조회
      * @param searchObject
      * @return
-     */
+     *//*
+
     @GetMapping("/row")
     public ResponseEntity rowMenu(@RequestBody @Valid SearchObject searchObject){
         MenuVO menu = getCommonService().getMenuService().rowMenu(searchObject.getSearch().getMenuSearch());
@@ -68,11 +75,13 @@ public class MenuController extends ParentController {
         return ResponseEntity.ok(resultMap);
     }
 
-    /**
+    */
+/**
      * 메뉴 저장
      * @param dataObject
      * @return
-     */
+     *//*
+
     @PostMapping("/insert")
     public ResponseEntity insertMenu(@RequestBody @Valid DataObject dataObject){
         int inserted = getCommonService().getMenuService().insertMenu(dataObject.getData().getMenu(), getLoginVO());
@@ -82,11 +91,13 @@ public class MenuController extends ParentController {
         return ResponseEntity.ok(resultMap);
     }
 
-    /**
+    */
+/**
      * 메뉴 내용 수정
      * @param dataObject
      * @return
-     */
+     *//*
+
     @PostMapping("/update")
     public ResponseEntity updateMenu(@RequestBody @Valid DataObject dataObject){
         int inserted = getCommonService().getMenuService().updateMenu(dataObject.getData().getMenu(), getLoginVO());
@@ -96,11 +107,13 @@ public class MenuController extends ParentController {
         return ResponseEntity.ok(resultMap);
     }
 
-    /**
+    */
+/**
      * 메뉴 순서 변경 => 같은 Depth끼리만 가능
      * @param dataObject
      * @return
-     */
+     *//*
+
     @PostMapping("/updateOrd")
     public ResponseEntity updateOrd(@RequestBody @Valid DataObject dataObject){
         int inserted = getCommonService().getMenuService().updateOrd(dataObject.getData().getMenuList(), getLoginVO());
@@ -110,3 +123,4 @@ public class MenuController extends ParentController {
         return ResponseEntity.ok(resultMap);
     }
 }
+*/

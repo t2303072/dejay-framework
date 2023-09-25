@@ -1,3 +1,4 @@
+/*
 package com.dejay.framework.restController.login;
 
 import com.dejay.framework.common.enums.MapKeyStringEnum;
@@ -21,14 +22,16 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/login")
-public class LoginController extends ParentController {
+@RequestMapping("/api/login")
+public class RestLoginController extends ParentController {
 
-    /**
+    */
+/**
      * 로그인 요청 API
      * @param loginRequest
      * @return
-     */
+     *//*
+
     @PostMapping({"", "/"})
     public ResponseEntity login(@RequestBody @Valid LoginRequest loginRequest) {
         MemberVO loginInfo = getCommonService().getMemberService().getLoginInfo(loginRequest);
@@ -54,3 +57,4 @@ public class LoginController extends ParentController {
     }
 
 }
+*/

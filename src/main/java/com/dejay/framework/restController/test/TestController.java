@@ -1,3 +1,4 @@
+/*
 package com.dejay.framework.restController.test;
 
 import com.dejay.framework.common.enums.MapKeyStringEnum;
@@ -24,23 +25,27 @@ public class TestController extends ParentController {
 
     private final TestService testService;
 
-    /**
+    */
+/**
      * Index test
      * @return
-     */
+     *//*
+
     @Deprecated
     @GetMapping({"", "/"})
     public ResponseEntity index() {
         return ResponseEntity.ok(testService.getTest());
     }
 
-    /**
+    */
+/**
      * Paging test
      * @param currentPage
      * @param displayRow
      * @param totalCount
      * @return
-     */
+     *//*
+
     @Deprecated
     @GetMapping("paging")
     public ResponseEntity paging(@RequestParam int currentPage, @RequestParam int displayRow, @RequestParam(required = false) int totalCount) {
@@ -51,10 +56,12 @@ public class TestController extends ParentController {
         return ResponseEntity.ok(resultMap);
     }
 
-    /**
+    */
+/**
      * 비밀번호 암호화 test
      * @return
-     */
+     *//*
+
     @Deprecated
     @PostMapping("password-encode")
     public ResponseEntity passwordEncode(@RequestBody @Valid LoginRequest loginRequest) {
@@ -69,3 +76,4 @@ public class TestController extends ParentController {
         return ResponseEntity.ok(authentication);
     }
 }
+*/

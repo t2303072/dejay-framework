@@ -1,3 +1,4 @@
+/*
 package com.dejay.framework.restController.member;
 
 import com.dejay.framework.common.enums.MapKeyStringEnum;
@@ -22,21 +23,25 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 
+*/
 /**
  * 회원 API
- */
+ *//*
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/member")
-public class MemberController extends ParentController {
+@RequestMapping("/api/member")
+public class RestMemberController extends ParentController {
 
-    /**
+    */
+/**
      * 회원 목록 조회 API
      * @param request
      * @param searchObject
      * @return {@link ResponseEntity}
-     */
+     *//*
+
     @GetMapping(value = {"", "/"})
     public ResponseEntity memberList(HttpServletRequest request, @RequestBody @Valid SearchObject searchObject) {
         CollectionPagingVO collectionPagingVO = getCommonService().getMemberService().getMemberList(searchObject);
@@ -48,12 +53,14 @@ public class MemberController extends ParentController {
         return ResponseEntity.ok(resultMap);
     }
 
-    /**
+    */
+/**
      * 회원가입 API
      * @param signUpRequest
      * @return {@link ResponseEntity}
-     */
-    @PostMapping("sign-up")
+     *//*
+
+    @PostMapping("/api/sign-up")
     public ResponseEntity signUp(@RequestBody @Valid SignUpRequest signUpRequest) {
         TokenObjectVO tokenObjectVO = getCommonService().getMemberService().signUp(signUpRequest);
         ResultStatusVO resultStatusVO = ObjectHandlingUtil.setDataManipulationResultStatusVO(tokenObjectVO, RequestTypeEnum.CREATE);
@@ -64,11 +71,13 @@ public class MemberController extends ParentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(resultMap);
     }
 
-    /**
+    */
+/**
      * 회원 상세 조회 API
      * @param id
      * @return {@link ResponseEntity}
-     */
+     *//*
+
     @GetMapping("{id}")
     public ResponseEntity findMemberById(@PathVariable int id) {
         MemberVO memberVO = getCommonService().getMemberService().findMemberById(id);
@@ -106,3 +115,4 @@ public class MemberController extends ParentController {
     }
 
 }
+*/

@@ -1,3 +1,4 @@
+/*
 package com.dejay.framework.restController.authority;
 
 import com.dejay.framework.restController.common.ParentController;
@@ -7,13 +8,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+*/
 /**
  * 권한 체크 컨트롤러 (테스트용)
- */
+ *//*
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class AuthorityController extends ParentController {
 
     @PostMapping(value = {"", "/"})
@@ -46,3 +49,4 @@ public class AuthorityController extends ParentController {
         return ResponseEntity.ok(authentication);
     }
 }
+*/

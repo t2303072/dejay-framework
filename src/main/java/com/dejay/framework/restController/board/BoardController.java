@@ -1,3 +1,4 @@
+/*
 package com.dejay.framework.restController.board;
 
 import com.dejay.framework.common.enums.MapKeyStringEnum;
@@ -22,14 +23,16 @@ import java.util.Map;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/board")
+@RequestMapping("/api/board")
 public class BoardController extends ParentController {
 
-    /**
+    */
+/**
      * 게시판 페이징 조회
      * @param searchObject
      * @return
-     */
+     *//*
+
     @PostMapping(value="/paging")
     public ResponseEntity pagingBoard(@RequestBody @Valid SearchObject searchObject){
         List<BoardVO> boardList = getCommonService().getBoardService().pagingBoard(searchObject.getSearch().getBoardSearch());
@@ -41,11 +44,13 @@ public class BoardController extends ParentController {
         return ResponseEntity.ok(resultMap);
     }
 
-    /**
+    */
+/**
      * 게시판 단 건 조회
      * @param searchObject
      * @return
-     */
+     *//*
+
     @PostMapping(value="/row")
     public ResponseEntity rowBoard(@RequestBody @Valid SearchObject searchObject){
         BoardVO board = getCommonService().getBoardService().rowBoard(searchObject.getSearch().getBoardSearch());
@@ -57,11 +62,13 @@ public class BoardController extends ParentController {
         return ResponseEntity.ok(resultMap);
     }
 
-    /**
+    */
+/**
      * 게시판 저장
      * @param dataObject
      * @return
-     */
+     *//*
+
     @PostMapping(value="/insert")
     public ResponseEntity insertBoard(@RequestBody @Valid DataObject dataObject) throws Exception {
         int inserted = getCommonService().getBoardService().insertBoard(dataObject.getData().getBoard(), dataObject.getData().getFileList(), getLoginVO());
@@ -72,11 +79,13 @@ public class BoardController extends ParentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(resultMap);
     }
 
-    /**
+    */
+/**
      * 게시판 수정
      * @param dataObject
      * @return
-     */
+     *//*
+
     @PostMapping(value="/update")
     public ResponseEntity updateBoard(@RequestBody @Valid DataObject dataObject) throws Exception {
         int inserted = getCommonService().getBoardService().updateBoard(dataObject.getData().getBoard(), dataObject.getData().getFileList(), getLoginVO());
@@ -87,11 +96,13 @@ public class BoardController extends ParentController {
         return ResponseEntity.ok(resultMap);
     }
 
-    /**
+    */
+/**
      * 게시판 삭제
      * @param dataObject
      * @return
-     */
+     *//*
+
     @PostMapping(value="/delete")
     public ResponseEntity deleteBoard(@RequestBody @Valid DataObject dataObject){
         int deleted = getCommonService().getBoardService().deleteBoard(dataObject.getData().getBoard(), getLoginVO());
@@ -103,3 +114,4 @@ public class BoardController extends ParentController {
     }
 
 }
+*/

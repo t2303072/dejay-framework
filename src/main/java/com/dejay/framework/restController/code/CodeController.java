@@ -1,3 +1,4 @@
+/*
 package com.dejay.framework.restController.code;
 
 import com.dejay.framework.common.enums.MapKeyStringEnum;
@@ -24,15 +25,17 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@RequestMapping("/code")
+@RequestMapping("/api/code")
 public class CodeController extends ParentController {
 
 
-    /**
+    */
+/**
      * 코드 페이징 조회
      * @param searchObject
      * @return
-     */
+     *//*
+
     @PostMapping("/paging")
     public ResponseEntity pagingCode(@RequestBody @Valid SearchObject searchObject) {
 
@@ -46,11 +49,13 @@ public class CodeController extends ParentController {
     }
 
 
-    /**
+    */
+/**
      * 코드 목록 조회
      * @param searchObject
      * @return
-     */
+     *//*
+
     @PostMapping("/list")
     public ResponseEntity listCode(@RequestBody @Valid SearchObject searchObject) {
         List<CodeVO> codeList = getCommonService().getCodeService().listCode(searchObject.getSearch().getCodeSearch());
@@ -63,11 +68,13 @@ public class CodeController extends ParentController {
     }
 
 
-    /**
+    */
+/**
      * 코드 한 건 조회
      * @param searchObject
      * @return
-     */
+     *//*
+
     @PostMapping("/row")
     public ResponseEntity rowCode(@RequestBody @Valid SearchObject searchObject) {
         CodeVO code = getCommonService().getCodeService().rowCode(searchObject.getSearch().getCodeSearch());
@@ -80,11 +87,13 @@ public class CodeController extends ParentController {
     }
 
 
-    /**
+    */
+/**
      * 코드 저장
      * @param dataObject
      * @return
-     */
+     *//*
+
     @PostMapping("/insert")
     public ResponseEntity insertCode(@RequestBody @Valid DataObject dataObject, HttpServletRequest request) throws Exception {
         MemberVO memberVO = ObjectHandlingUtil.extractLoginInfo(request);
@@ -95,11 +104,13 @@ public class CodeController extends ParentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(resultMap);
     }
 
-    /**
+    */
+/**
      * 코드 수정
      * @param dataObject
      * @return
-     */
+     *//*
+
     @PostMapping("/update")
     public ResponseEntity updateCode(@RequestBody @Valid DataObject dataObject, HttpServletRequest request) throws Exception {
         MemberVO memberVO = ObjectHandlingUtil.extractLoginInfo(request);
@@ -110,11 +121,13 @@ public class CodeController extends ParentController {
         return ResponseEntity.ok(resultMap);
     }
 
-    /**
+    */
+/**
      * 코드 순서 일괄변경
      * @param dataObject
      * @return
-     */
+     *//*
+
     @PostMapping("/updateCodeOrder")
     public ResponseEntity updateCodeOrder(@RequestBody @Valid DataObject dataObject) throws Exception {
 
@@ -132,3 +145,4 @@ public class CodeController extends ParentController {
 
 
 }
+*/
