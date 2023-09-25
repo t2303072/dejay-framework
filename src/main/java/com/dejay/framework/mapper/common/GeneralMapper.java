@@ -52,7 +52,7 @@ public interface GeneralMapper {
      * @param obj
      * @return
      */
-    @EntityLog
+//    @EntityLog
     int insert(Object obj);
 
     /**
@@ -60,7 +60,7 @@ public interface GeneralMapper {
      * @param obj
      * @return
      */
-    @EntityLog
+//    @EntityLog
     int update(Object obj);
 
     /**
@@ -75,6 +75,6 @@ public interface GeneralMapper {
      * @param key
      * @return
      */
-    @EntityLog
+//    @EntityLog
     int delete(Object key);
 }
