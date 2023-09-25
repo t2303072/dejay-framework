@@ -27,18 +27,19 @@ public class LoggerInterceptor implements HandlerInterceptor {
         String requestURI = request.getRequestURI();
         log.info("[preHandle]: {}", requestURI);
 
+
 //        if(!StringUtils.hasText(reqParam)) {
 //            reqParam = request.getReader().lines().collect(Collectors.joining());
 //        }
 
         if(restApi != null && restApi.getLogSeq() > 0 && request.getRequestURI().equals("/error")) {
-            restApi.setStatus(response.getStatus());
+            //restApi.setStatus(response.getStatus());
             restApiMapper.updateApiAccessLog(restApi);
             restApi = null;
         }else {
             restApi = RestAPI.builder()
-                    .requestUri(request.getRequestURI())
-                    .httpMethod(request.getMethod())
+//                    .requestUri(request.getRequestURI())
+                    .logType(request.getMethod())
 //                    .resultJson(reqParam)
                     .status(response.getStatus())
                     .regId("SYSTEM")
@@ -61,7 +62,7 @@ public class LoggerInterceptor implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
 //        log.info("reqParam => {}", reqParam);
         if(restApi != null && (request.getRequestURI().equals("/error") || restApi.getStatus() != response.getStatus())) {
-            restApi.setStatus(response.getStatus());
+          //restApi.setStatus(response.getStatus());
             log.info(restApi.toString());
             restApiMapper.updateApiAccessLog(restApi);
         }

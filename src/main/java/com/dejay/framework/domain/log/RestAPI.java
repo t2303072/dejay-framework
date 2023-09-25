@@ -11,11 +11,18 @@ import java.sql.Timestamp;
 public class RestAPI {
 
     private long logSeq;
-    private String requestUri;
-    private String httpMethod;
-    private String resultJson;
-    @Setter
+    private long userSeq;
+    private long tokenSeq;
+    private long menuSeq;
+    private String logType;
+    private String logEtc;
+
+    //private String requestUri;
+    //private String httpMethod;
+    //private String resultJson;
+
     private int status;
+    @Setter
     private String regId;
     private Timestamp regDttm;
 }

@@ -4,14 +4,14 @@
 
 <mapper namespace="com.dejay.framework.mapper.log.RestApiMapper">
     <insert id="insertApiAccessLog" useGeneratedKeys="true">
-        INSERT INTO menu_log(MENU_PATH, HTTP_METHOD, REG_ID, REG_DTTM, STATUS)
-        VALUES (#{requestUri}, #{httpMethod}, #{regId}, sysdate(), #{status})
+        INSERT INTO INFO_LOG(TOKEN_SEQ, USER_SEQ, MENU_SEQ, LOG_TYPE, LOG_ETC , REG_DT, REG_ID)
+        VALUES (#{tokenSeq}, #{userSeq}, #{menuSeq}, #{logType}, #{logEtc}, sysdate(), #{regId})
         <selectKey keyProperty="logSeq" resultType="long">
             SELECT LAST_INSERT_ID()
         </selectKey>
     </insert>
 
     <update id="updateApiAccessLog">
-        UPDATE menu_log SET STATUS = #{status}, REG_DTTM = sysdate() WHERE LOG_SEQ = #{logSeq}
+        UPDATE INFO_LOG SET LOG_TYPE = #{status}, REG_DT = sysdate() WHERE LOG_SEQ = #{logSeq}
     </update>
 </mapper>
