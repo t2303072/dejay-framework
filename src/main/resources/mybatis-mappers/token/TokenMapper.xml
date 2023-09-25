@@ -17,34 +17,34 @@
 
     <select id="isTokenExist">
         SELECT COUNT(1)
-          FROM INFO_TOKEN
+          FROM TOKEN
          WHERE USE_YN = 'Y'
-           AND REG_ID = #{memberId}
+           AND MEMBER_ID = #{memberId}
     </select>
 
     <select id="isValidToken">
         SELECT IF(COUNT(1), true, false)
-          FROM INFO_TOKEN
+          FROM TOKEN
          WHERE USE_YN = 'Y'
         <include refid="whereClause"/>
     </select>
 
     <select id="findTokenSeq" resultType="java.lang.String">
         SELECT TOKEN_SEQ
-          FROM INFO_TOKEN
+          FROM TOKEN
          WHERE USE_YN = 'Y'
-           AND REG_ID = #{memberId}
+           AND MEMBER_ID = #{memberId}
     </select>
 
     <insert id="insert" useGeneratedKeys="true" keyProperty="logId1">
-        INSERT INTO INFO_TOKEN(ACCESS_TOKEN, REFRESH_TOKEN, TOKEN_TYPE, REG_ID, REG_DT, LAST_DT, LAST_ID)
-             VALUES (#{accessToken}, #{refreshToken}, #{tokenType}, #{memberId}, sysdate(), sysdate(), #{memberId})
+        INSERT INTO TOKEN(MEMBER_ID, ACCESS_TOKEN, REFRESH_TOKEN, TOKEN_TYPE)
+             VALUES (#{memberId}, #{accessToken}, #{refreshToken}, #{tokenType})
     </insert>
 
     <update id="update">
-        UPDATE INFO_TOKEN
+        UPDATE TOKEN
            SET ACCESS_TOKEN = #{accessToken}, REFRESH_TOKEN = #{refreshToken}
          WHERE USE_YN = 'Y'
-           AND REG_ID = #{memberId}
+           AND MEMBER_ID = #{memberId}
     </update>
 </mapper>
