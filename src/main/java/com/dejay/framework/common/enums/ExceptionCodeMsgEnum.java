@@ -25,6 +25,7 @@ public enum ExceptionCodeMsgEnum {
     , JSON_ERROR(987, "JSON Error")
 
     // ACCOUNT
+    , ACCOUNT_DUPLICATE(987, "이미 있는 회원 아이디 입니다.")
     , LOGIN_REQUIRED(986, "로그인이 필요한 API 입니다.")
     , PASSWORD_VALUE_NOT_PROVIDED(985, "비밀번호 값이 없습니다.")
     , INVALID_PASSWORD(984, "비밀번호가 맞지 않습니다.")

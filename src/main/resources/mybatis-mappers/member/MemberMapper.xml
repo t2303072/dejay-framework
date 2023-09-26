@@ -28,25 +28,21 @@
     </select>
 
     <select id="findMemberByUserName" resultType="MemberVO">
-                 SELECT M.MEMBER_SEQ, M.MEMBER_ID, M.PASSWORD, M.MEMBER_NAME, M.EMAIL, M.DEPT_CODE
-                   FROM MEMBER M
-                   LEFT OUTER JOIN CODE C
-                                ON M.DEPT_CODE = C.CODE
-                  WHERE MEMBER_ID = #{userName}
+                 SELECT U.USER_SEQ, U.USER_ID, U.USER_PWD, U.USER_NM, U.USER_EMAIL, U.DEPT_CD
+                   FROM INFO_USER U
+                 WHERE USER_ID = #{userName}
     </select>
 
     <!-- 최근 로그인 이력 저장을 위한 정보 조회 -->
     <select id="getLoginInfo" resultType="MemberVO">
-                 SELECT M.MEMBER_SEQ, M.MEMBER_ID, M.PASSWORD, M.MEMBER_NAME, M.EMAIL, M.DEPT_CODE
-                      , 'LOGIN' AS TABLE_NAME, M.MEMBER_SEQ AS LOG_ID1, '00' AS LOG_TYPE, M.MEMBER_ID AS REG_ID
-                   FROM MEMBER M
-                   LEFT OUTER JOIN CODE C
-                                ON M.DEPT_CODE = C.CODE
-                  WHERE MEMBER_ID = #{userName}
+                 SELECT U.USER_SEQ, U.USER_ID, U.USER_PWD, U.USER_NM, U.USER_EMAIL, U.DEPT_CD
+                      , 'LOGIN' AS TABLE_NAME, U.USER_SEQ AS USER_SEQ, '00' AS LOG_TYPE, U.USER_ID AS REG_ID
+                   FROM INFO_USER U
+                  WHERE USER_ID = #{userName}
     </select>
 
     <insert id="insertMember" useGeneratedKeys="true">
-        INSERT INTO MEMBER(MEMBER_ID, MEMBER_NAME, EMAIL)
+        INSERT INTO INFO_USER(MEMBER_ID, MEMBER_NAME, EMAIL)
              VALUES (#{memberId}, #{memberName}, #{email})
         <selectKey keyProperty="id" resultType="long">
              SELECT LAST_INSERT_ID()
@@ -54,8 +50,8 @@
     </insert>
 
     <insert id="insert" useGeneratedKeys="true">
-        INSERT INTO MEMBER(MEMBER_ID, PASSWORD, DEPT_CODE, MEMBER_NAME, EMAIL)
-             VALUES (#{id}, #{password}, #{deptCode}, #{name}, #{email})
+        INSERT INTO INFO_USER(USER_TYPE,USER_ID, USER_PWD, DEPT_CD, USER_NM, USER_EMAIL, USER_TEL, APPOINT_CD, POSITION_CD, REG_DT, REG_ID, LAST_DT, LAST_ID)
+             VALUES ('USER0102',#{id}, #{password}, #{deptCode}, #{name}, #{email}, #{tel}, #{appointCode}, #{positionCode}, sysdate() ,'admin', sysdate(), 'admin')
         <selectKey keyProperty="logId1" resultType="String">
              SELECT LAST_INSERT_ID()
         </selectKey>
