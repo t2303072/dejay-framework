@@ -12,7 +12,7 @@
         background-color:black;
         border: 1px solid black;
         width : 100%;
-        height : 5vh;
+        height : 7vh;
         justify-content : space-between;
         display : flex;
     }
