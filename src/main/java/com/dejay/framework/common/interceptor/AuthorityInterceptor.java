@@ -70,7 +70,7 @@ public class AuthorityInterceptor implements HandlerInterceptor {
          * 메뉴 접근 권한 체크
          */
         String menuId = request.getRequestURI().split("/")[1];
-        MenuAuthorityVO menuAuthorityVO = authorityMapper.selectMenuAuthority(memberVO.getMemberId(), menuId);
+        MenuAuthorityVO menuAuthorityVO = authorityMapper.selectMenuAuthority(memberVO.getUserId(), menuId);
         if(menuAuthorityVO == null) {
             authException(ExceptionCodeMsgEnum.NO_MENU_AUTHORITY.getMsg());
         }

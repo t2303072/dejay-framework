@@ -48,7 +48,7 @@ public class BoardService extends ParentService {
                             .logId2(null)
                             .logJson(null)
                             .remark(null)
-                            .regId(member.getMemberId())
+                            .regId(member.getUserId())
                             .build();
 
         int iAffectedRows = getCommonMapper().getBoardMapper().insert(target);
@@ -121,7 +121,7 @@ public class BoardService extends ParentService {
                             .logId2(null)
                             .logJson(null)
                             .remark(null)
-                            .regId(member.getMemberId())
+                            .regId(member.getUserId())
                             .build();
 
         // Mapper Update
@@ -152,7 +152,7 @@ public class BoardService extends ParentService {
                             .logId2(null)
                             .logJson(null)
                             .remark(null)
-                            .regId(member.getMemberId())
+                            .regId(member.getUserId())
                             .build();
 
         int iAffectedRows = getCommonMapper().getBoardMapper().delete(target);

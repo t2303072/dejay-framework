@@ -12,22 +12,27 @@ import java.util.Set;
 @Getter
 public class MemberVO extends BaseEntity {
     private long memberSeq;
-    private String memberId;
-    private String password;
-    private String memberName;
-    private String email;
+    private String userId;
+    private String userPwd;
+    private String userName;
+    private String userTel;
+    private String userEmail;
     private Set<?> authority;
     private String deptCode;
-
+    private String appointCode;
+    private String positionCode;
     @Builder
-    public MemberVO(String tableName, String logId1, String logId2, String logType, String logJson, String remark, String regId, long memberSeq, String memberId, String password, String memberName, String email, Set<?> authority, String deptCode) {
+    public MemberVO(String tableName, String logId1, String logId2, String logType, String logJson, String remark, String regId, long memberSeq, String userId, String userPwd, String userName, String userEmail, Set<?> authority, String deptCode, String appointCode, String positionCode, String userTel) {
         super(tableName, logId1, logId2, logType, logJson, remark, regId);
         this.memberSeq = memberSeq;
-        this.memberId = memberId;
-        this.password = password;
-        this.memberName = memberName;
-        this.email = email;
+        this.userId = userId;
+        this.userPwd = userPwd;
+        this.userName = userName;
+        this.userTel = userTel;
+        this.userEmail = userEmail;
         this.authority = authority;
         this.deptCode = deptCode;
+        this.appointCode = appointCode;
+        this.positionCode = positionCode;
     }
 }

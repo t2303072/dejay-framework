@@ -81,11 +81,11 @@ public class MemberService extends ParentService {
 
         MemberVO target = MemberVO.builder()
                 .memberSeq(memberVO.getMemberSeq())
-                .memberId(memberVO.getMemberId())
+                .userId(memberVO.getUserId())
                 .deptCode(memberVO.getDeptCode())
                 .authority(Set.of(memberVO.getDeptCode()))
-                .memberName(memberVO.getMemberName())
-                .email(memberVO.getEmail())
+                .userName(memberVO.getUserName())
+                .userEmail(memberVO.getUserEmail())
                 .build();
 
         return target;
@@ -119,6 +119,7 @@ public class MemberService extends ParentService {
         return target;
     }
 
+
     /**
      * 사용자 등록(w/ token)
      * @param signUpRequest {@link SignUpRequest}
@@ -129,8 +130,12 @@ public class MemberService extends ParentService {
                 .id(signUpRequest.getId())
                 .password(bCryptPasswordEncoder.encode(signUpRequest.getPassword()))
                 .name(signUpRequest.getName())
+                .tel(signUpRequest.getUserTel())
                 .email(signUpRequest.getEmail())
-                .deptCode(signUpRequest.getAuthority().stream().toList().get(0).getDeptCode())
+//              .deptCode(signUpRequest.getAuthority().stream().toList().get(0).getDeptCode())
+                .deptCode(signUpRequest.getDeptCode())
+                .appointCode(signUpRequest.getAppointCode())
+                .positionCode(signUpRequest.getPositionCode())
                 .tableName(TableNameEnum.MEMBER.name())
                 .logId1("")
                 .logType(RequestTypeEnum.CREATE.getRequestType())
@@ -166,11 +171,11 @@ public class MemberService extends ParentService {
             }
         }
 
-        if (bCryptPasswordEncoder.matches(loginRequest.getPassword(), target.getPassword())) {
+        if (bCryptPasswordEncoder.matches(loginRequest.getPassword(), target.getUserPwd())) {
             return MemberVO.builder()
-                    .memberId(target.getMemberId())
-                    .memberName(target.getMemberName())
-                    .email(target.getEmail())
+                    .userId(target.getUserId())
+                    .userName(target.getUserName())
+                    .userEmail(target.getUserEmail())
                     .authority(Set.of(target.getDeptCode()))
                     .deptCode(target.getDeptCode())
                     .tableName(TableNameEnum.LOGIN.name())
@@ -179,7 +184,7 @@ public class MemberService extends ParentService {
                     .logId2(null)
                     .logJson(null)
                     .remark(null)
-                    .regId(target.getMemberId())
+                    .regId(target.getUserId())
                     .build();
         }else {
             try {

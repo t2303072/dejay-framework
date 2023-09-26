@@ -41,7 +41,7 @@ public class MenuService extends ParentService {
                 .logId2(null)
                 .logJson(null)
                 .remark(null)
-                .regId(member.getMemberId())
+                .regId(member.getUserId())
                 .build();
 
         int iAffectedRows = getCommonMapper().getMenuMapper().insert(target);
@@ -110,7 +110,7 @@ public class MenuService extends ParentService {
                             .logId2(null)
                             .logJson(null)
                             .remark(null)
-                            .regId(member.getMemberId())
+                            .regId(member.getUserId())
                             .build();
 
          int iAffectedRows = getCommonMapper().getMenuMapper().update(target);
@@ -141,7 +141,7 @@ public class MenuService extends ParentService {
                                 .logId2(null)
                                 .logJson(null)
                                 .remark(null)
-                                .regId(member.getMemberId())
+                                .regId(member.getUserId())
                                 .build();
 
             iAffectedRows = getCommonMapper().getMenuMapper().updateOrd(target);

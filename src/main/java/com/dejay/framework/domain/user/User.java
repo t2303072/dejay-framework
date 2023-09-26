@@ -24,20 +24,26 @@ public class User extends BaseEntity {
     @NotNull(message = "이름은 필수 값 입니다.")
     private String name;
     private String email;
+    private String tel;
     private String picture;
     private Set<AuthorityEnum> authority;
     private String deptCode;
+    private String appointCode;
+    private String positionCode;
 
     @Builder
-    public User(String tableName, String logId1, String logId2, String logType, String logJson, String remark, String regId, String id, String password, String name, String email, String picture, Set<AuthorityEnum> authority, String deptCode) {
+    public User(String tableName, String logId1, String logId2, String logType, String logJson, String remark, String regId, String id, String password, String name, String email, String tel, String picture, Set<AuthorityEnum> authority, String deptCode, String appointCode, String positionCode) {
         super(tableName, logId1, logId2, logType, logJson, remark, regId);
         this.id = id;
         this.password = password;
         this.name = name;
         this.email = email;
+        this.tel = tel;
         this.picture = picture;
         this.authority = authority;
         this.deptCode = deptCode;
+        this.appointCode = appointCode;
+        this.positionCode = positionCode;
     }
 
     public User update(String name, String picture) {

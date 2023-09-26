@@ -40,7 +40,7 @@ public class LoginController extends ParentController {
     @PostMapping({"", "/login"})
     public ResponseEntity login(@RequestBody MemberVO member, RedirectView redirectView) {
         // 유저 이름에 해당하는 유저 정보를 가져온다.
-        MemberVO loginInfo = getCommonService().getFileService().getCommonMapper().getMemberMapper().getLoginInfo(member.getMemberName());
+        MemberVO loginInfo = getCommonService().getFileService().getCommonMapper().getMemberMapper().getLoginInfo(member.getUserName());
 
         return new ResponseEntity<>(loginInfo, HttpStatus.OK);
     }
