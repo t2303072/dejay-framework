@@ -21,6 +21,6 @@ public interface MenuMapper extends GeneralMapper {
     List<MenuVO> getSmMenuList(MenuSearchVO searchVO);
 
     // 메뉴 순서 변경
-    @EntityLog
+    //@EntityLog
     int updateOrd(Menu menu);
 }
