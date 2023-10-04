@@ -131,6 +131,7 @@
                     data : JSON.stringify(memberInfo),
                     success: function(result){
                         alert("회원가입 요청이 완료 되었습니다.\n 승인 완료 후 로그인이 가능합니다.");
+                        window.location.href="/login";
                     },
                     error: function(request, status, error){
                         let result = JSON.parse(request.responseText);
