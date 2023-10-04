@@ -6,7 +6,8 @@ import lombok.Getter;
 
 @Getter
 public enum AuthorityEnum {
-    NO_AUTHORITY("00000000"), DEVELOPMENT("00020001"), BUSINESS_SUPPORT("00020002");
+    // 권한 코드 USER Type으로 변경
+    NO_AUTHORITY("USER0000"), DEVELOPMENT("USER0101"), BUSINESS_SUPPORT("USER0102");
 
     private String deptCode;
 
