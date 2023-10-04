@@ -20,7 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Date;
@@ -55,7 +54,7 @@ public class JwtUtil {
      * @param auth {@link Arrays}
      * @return {@link TokenObjectVO}
      */
-    public TokenObjectVO createTokenObject(String userName, Long accessExpiresAt, Long refreshExpiresAt, Set<?> auth) {
+    public TokenObjectVO createTokenObject(String userName, Long accessExpiresAt, Long refreshExpiresAt, String auth) {
         String accessToken = this.generateJwt(userName, accessExpiresAt, auth);
         String refreshToken = this.generateJwt(userName, refreshExpiresAt, auth);
 
@@ -103,7 +102,7 @@ public class JwtUtil {
      * @param expiredMs {@link Long}
      * @return {@link String}
      */
-    public String generateJwt(String userName, Long expiredMs, Set<?> auth) {
+    public String generateJwt(String userName, Long expiredMs, String auth) {
         Claims claims = Jwts.claims().setSubject(userName);
         claims.put(MapKeyStringEnum.JWT_USERNAME.getKeyString(), userName);
         claims.put(MapKeyStringEnum.AUTH.getKeyString(), auth);

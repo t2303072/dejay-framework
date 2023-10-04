@@ -26,13 +26,14 @@ public class User extends BaseEntity {
     private String email;
     private String tel;
     private String picture;
-    private Set<AuthorityEnum> authority;
+    private String userType;
+//    private Set<AuthorityEnum> authority;
     private String deptCode;
     private String appointCode;
     private String positionCode;
 
     @Builder
-    public User(String tableName, String logId1, String logId2, String logType, String logJson, String remark, String regId, String id, String password, String name, String email, String tel, String picture, Set<AuthorityEnum> authority, String deptCode, String appointCode, String positionCode) {
+    public User(String tableName, String logId1, String logId2, String logType, String logJson, String remark, String regId, String id, String password, String name, String email, String tel, String userType ,String picture,String deptCode, String appointCode, String positionCode) {
         super(tableName, logId1, logId2, logType, logJson, remark, regId);
         this.id = id;
         this.password = password;
@@ -40,7 +41,8 @@ public class User extends BaseEntity {
         this.email = email;
         this.tel = tel;
         this.picture = picture;
-        this.authority = authority;
+        this.userType = userType;
+//      this.authority = authority;
         this.deptCode = deptCode;
         this.appointCode = appointCode;
         this.positionCode = positionCode;
@@ -53,7 +55,7 @@ public class User extends BaseEntity {
         return this;
     }
 
-    public String getAuthorityKey() {
-        return String.valueOf(this.authority);
-    }
+//    public String getAuthorityKey() {
+//        return String.valueOf(this.authority);
+//    }
 }

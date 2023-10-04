@@ -23,14 +23,15 @@ public class SignUpRequest {
     private String userTel;
     private String email;
     private String picture;
+    private String userType;
     @NotNull(message = "권한은 필수 값 입니다.")
-    private Set<AuthorityEnum> authority;
+    private String authority; // 권한 임시로 String으로 변경
     private String deptCode;
     private String appointCode;
     private String positionCode;
 
     @Builder
-    public SignUpRequest(long seq, String id, String password, String name, String email, String picture, Set<AuthorityEnum> authority, String deptCode, String appointCode, String positionCode, String userTel) {
+    public SignUpRequest(long seq, String id, String password, String name, String email, String picture, String userType, String authority, String deptCode, String appointCode, String positionCode, String userTel) {
         this.seq = seq;
         this.id = id;
         this.password = password;
@@ -38,6 +39,7 @@ public class SignUpRequest {
         this.email = email;
         this.userTel = userTel;
         this.picture = picture;
+        this.userType = userType;
         this.authority = authority;
         this.deptCode = deptCode;
         this.appointCode = appointCode;

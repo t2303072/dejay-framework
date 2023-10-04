@@ -31,7 +31,7 @@ public class TokenFactory {
      * @return {@link TokenObjectVO}
      * @apiNote password 매개변수는 현재 사용 X
      */
-    public TokenObjectVO createJWT(String userName, String password, Set<?> auth) {
+    public TokenObjectVO createJWT(String userName, String password, String auth) {
         TokenObjectVO tokenObjectVO = jwtUtil.createTokenObject(userName, accessExpiresAt, refreshExpiresAt, auth);
         return tokenObjectVO;
     }

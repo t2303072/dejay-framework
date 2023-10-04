@@ -83,7 +83,7 @@ public class MemberService extends ParentService {
                 .memberSeq(memberVO.getMemberSeq())
                 .userId(memberVO.getUserId())
                 .deptCode(memberVO.getDeptCode())
-                .authority(Set.of(memberVO.getDeptCode()))
+                .authority(memberVO.getDeptCode())
                 .userName(memberVO.getUserName())
                 .userEmail(memberVO.getUserEmail())
                 .build();
@@ -162,7 +162,7 @@ public class MemberService extends ParentService {
      */
     public MemberVO getLoginInfo(LoginRequest loginRequest) {
 
-        MemberVO target = getCommonMapper().getMemberMapper().getLoginInfo(loginRequest.getUserName());
+        MemberVO target = getCommonMapper().getMemberMapper().getLoginInfo(loginRequest.getUserId());
         if(target == null) {
             try {
                 throw new CustomLoginException(ExceptionCodeMsgEnum.ACCOUNT_NOT_EXISTS.getCode(), ExceptionCodeMsgEnum.ACCOUNT_NOT_EXISTS.getMsg());
@@ -176,15 +176,15 @@ public class MemberService extends ParentService {
                     .userId(target.getUserId())
                     .userName(target.getUserName())
                     .userEmail(target.getUserEmail())
-                    .authority(Set.of(target.getDeptCode()))
+                    .authority(target.getDeptCode())
                     .deptCode(target.getDeptCode())
-                    .tableName(TableNameEnum.LOGIN.name())
+                  /*.tableName(TableNameEnum.LOGIN.name())
                     .logId1(String.valueOf(target.getMemberSeq()))
                     .logType(RequestTypeEnum.LOGIN.getRequestType())
                     .logId2(null)
                     .logJson(null)
                     .remark(null)
-                    .regId(target.getUserId())
+                    .regId(target.getUserId())*/
                     .build();
         }else {
             try {
