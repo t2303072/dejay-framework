@@ -26,8 +26,8 @@
         <h1>로그인</h1>
         <form id="loginForm">
             <div>
-                <label for="memberId">아이디 </label><br>
-                <input id="memberId" name="memberId" />
+                <label for="userId">아이디 </label><br>
+                <input id="userId" name="userId" />
             </div>
             <div>
                 <label for="password">비밀번호 </label><br>
@@ -35,7 +35,7 @@
             </div>
             <br>
             <div id="login">
-                <input type="button" value="로그인" onclick="login()"/>
+                <input type="submit" value="로그인" onclick="login()"/>
             </div>
             <div id="memberWrapper">
                 <input type="button" value="회원가입" onclick="location.href='/member/sign-up'"/>
@@ -54,20 +54,20 @@
 <script>
 
     function login(){
-        let memberId = document.getElementById("memberId").value;
+        let userId = document.getElementById("userId").value;
         let password = document.getElementById("password").value;
 
         // 아이디 비밀번호 유효성 검사
-        if(!memberId || !password){
-            document.getElementById("result").innerHTML = "사용자 아이디 또는 비밀번호를 입력해주세요.";
+        if(!userId || !password){
+            alert("사용자 아이디 또는 비밀번호를 입력해주세요.");
             return;
         }
 
         let member = {
-            memberName: memberId,
+            userId: userId,
             password: password
         }
-        console.log(member.memberName+ "  " + member.password);
+
         // 로그인을 위하여 JSON
         $.ajax({
             type : "POST",
@@ -76,7 +76,12 @@
             async:false,
             data: JSON.stringify(member),
             success: function(result){
-                console.log(result);
+                window.location.href="/";
+                alert("로그인 성공하였습니다.");
+            },
+            error: function(request, status, error){
+                let result = JSON.parse(request.responseText);
+                alert(result.message);
             }
         });
 

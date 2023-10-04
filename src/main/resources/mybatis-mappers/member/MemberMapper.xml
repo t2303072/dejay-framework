@@ -36,7 +36,7 @@
     <!-- 최근 로그인 이력 저장을 위한 정보 조회 -->
     <select id="getLoginInfo" resultType="MemberVO">
                  SELECT U.USER_SEQ, U.USER_ID, U.USER_PWD, U.USER_NM, U.USER_EMAIL, U.DEPT_CD
-                      , 'LOGIN' AS TABLE_NAME, U.USER_SEQ AS USER_SEQ, '00' AS LOG_TYPE, U.USER_ID AS REG_ID
+                      , U.USER_TYPE
                    FROM INFO_USER U
                   WHERE USER_ID = #{userName}
     </select>

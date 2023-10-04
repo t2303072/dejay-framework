@@ -1,20 +1,19 @@
 package com.dejay.framework.controller.login;
 
+import com.dejay.framework.common.enums.ExceptionCodeMsgEnum;
+import com.dejay.framework.common.exception.CustomLoginException;
 import com.dejay.framework.controller.common.ParentController;
+import com.dejay.framework.domain.member.LoginRequest;
 import com.dejay.framework.vo.member.MemberVO;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Slf4j
 @Controller
@@ -38,10 +37,22 @@ public class LoginController extends ParentController {
      * @return
      */
     @PostMapping({"", "/login"})
-    public ResponseEntity login(@RequestBody MemberVO member, RedirectView redirectView) {
+    public ResponseEntity login(@RequestBody LoginRequest loginRequest,HttpServletRequest request) throws CustomLoginException{
         // 유저 이름에 해당하는 유저 정보를 가져온다.
-        MemberVO loginInfo = getCommonService().getFileService().getCommonMapper().getMemberMapper().getLoginInfo(member.getUserName());
+        MemberVO loginInfo = getCommonService().getMemberService().getLoginInfo(loginRequest);
+        HttpSession session = request.getSession();
 
-        return new ResponseEntity<>(loginInfo, HttpStatus.OK);
+        if(loginInfo!=null){
+            getCommonUtil().getTokenFactory().createJWT(loginInfo.getUserId(), null, loginInfo.getAuthority()); // token 생성
+            session.setAttribute("loginInfo", loginInfo);
+            log.info("session userInfo : {}", loginInfo);
+
+            return new ResponseEntity(loginInfo, HttpStatus.OK);
+        }else {
+            session.setAttribute("loginInfo", null);
+
+            throw new CustomLoginException(ExceptionCodeMsgEnum.ACCOUNT_NOT_EXISTS.getCode(), ExceptionCodeMsgEnum.ACCOUNT_NOT_EXISTS.getMsg());
+        }
+
     }
 }
