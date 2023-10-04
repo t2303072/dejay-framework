@@ -45,9 +45,9 @@ public class WebSecurityConfig {
         httpSecurity
                 .authorizeHttpRequests(ahr -> ahr
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                        .requestMatchers(NO_AUTH_REQUIRED_URL).permitAll()
-                        .requestMatchers(AUTHORITY_REQUIRED_URL).hasAnyAuthority(AUTHORITY_LIST)
-                        .requestMatchers(AUTHENTICATION_REQUIRED_URL).authenticated()
+//                        .requestMatchers(NO_AUTH_REQUIRED_URL).permitAll()
+//                        .requestMatchers(AUTHORITY_REQUIRED_URL).hasAnyAuthority(AUTHORITY_LIST)
+//                        .requestMatchers(AUTHENTICATION_REQUIRED_URL).authenticated()
                         .anyRequest().permitAll()
                 )
                 .formLogin(formLogin -> formLogin.disable())

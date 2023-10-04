@@ -46,19 +46,19 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns(loginExcludePattern)
                 .order(2);
 
-        registry.addInterceptor(authorityInterceptor)
-                .excludePathPatterns(authorityExcludePattern)
-                .order(3);
+//        registry.addInterceptor(authorityInterceptor)
+//                .excludePathPatterns(authorityExcludePattern)
+//                .order(3);
     }
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/")
-                .allowedMethods(HttpMethod.GET.name(), HttpMethod.POST.name())
-                .allowedHeaders("*")
-                .allowCredentials(true)
-                .maxAge(MAX_AGE_SEC);
-    }
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry) {
+//        registry.addMapping("/")
+//                .allowedMethods(HttpMethod.GET.name(), HttpMethod.POST.name())
+//                .allowedHeaders("*")
+//                .allowCredentials(true)
+//                .maxAge(MAX_AGE_SEC);
+//    }
 
     @Bean
     public StrictHttpFirewall httpFirewall() {
