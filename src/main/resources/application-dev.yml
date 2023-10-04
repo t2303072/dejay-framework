@@ -3,9 +3,9 @@
 spring:
   datasource:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    jdbc-url: ENC(7ArFwzUzPM6PT0CjSdzB1kpmpurrktH+mp5iW40azgtALCopmBQZLZTZRcY4fHLS+1rE5lVepYH3S85RsoOptQ==)
-    username: ENC(IczFq75YIzNXTzSMeUHjBkK0Pcf8MXLN)
-    password: ENC(TKuGEV/dnva+80V9kwB/gzGn89MyKQxz)
+    jdbc-url: ENC(6xq4yg92ePmlii2BBNB/l6cXolGGdt3Ul4zYi95gifdhHaPnq8/WCUsfFTgtJEs2yXdQ4Izc/7kT0sFnKvsUeA==)
+    username: ENC(JDXj698sPbuxrNHAAf4Xwn0KgwXtaOY7)
+    password: ENC(BAGrB5sDgIALDPL6U/ZzUUgBAaQYhqAe)
 
   security:
     user:
@@ -34,7 +34,7 @@ logging:
     root: info
 
 server:
-  port: 8080
+  port: 3030
 
 # file
 file:

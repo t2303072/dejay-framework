@@ -7,6 +7,6 @@
 <%--    <link href="<c:url value="/css/common.css"/>" rel="stylesheet" type="text/css">--%>
 </head>
 <body>
-    <h1>Index page</h1>
+    <h1>Dejay Framework</h1>
 </body>
 </html>
