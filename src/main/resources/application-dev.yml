@@ -14,10 +14,12 @@ spring:
     suffix: .html
     cache: false
 
+  mvc:
+      static-path-pattern: "/static/**"
+
   devtools:
     livereload:
       enabled: true
-
 ## mapper logging level
 logging:
   level:
@@ -37,6 +39,6 @@ server:
 
 # file
 file:
-  rootDir: /files/dejay_public
+  rootDir: classPath:files/dejay_public
   tempDir: /temp
   realDir: /upload

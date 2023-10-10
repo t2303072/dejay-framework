@@ -24,7 +24,8 @@ spring:
     prefix: classpath:templates/
     suffix: .html
     cache: false
-
+  mvc:
+    static-path-pattern: "/static/**"
 server:
   port: 3030
   context-path: /

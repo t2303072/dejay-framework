@@ -76,6 +76,7 @@ dependencies {
 
 	//thymeleaf
 	implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
+	implementation('nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect')
 
 	// JSP
 //	compileOnly 'org.apache.tomcat.embed:tomcat-embed-jasper'

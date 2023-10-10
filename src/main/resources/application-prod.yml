@@ -17,6 +17,9 @@ spring:
     prefix: classpath:templates/
     suffix: .html
     cache: false
+
+  mvc:
+      static-path-pattern: "/static/**"
 ## mapper logging level
 logging:
   level:
