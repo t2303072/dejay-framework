@@ -1,5 +1,6 @@
 spring:
-
+  profiles:
+    active: dev
   datasource:
     hikari:
       minimum-idle: 5 # Connection Pool에 유지 가능한 최소 커넥션 개수
@@ -8,7 +9,6 @@ spring:
       max-lifetime: 200000 # Connection의 최대 유지 가능 시간
       connection-timeout: 30000 #  Pool에서 Connection을 구할 때 대기시간, DB서버에 맞출것
       connection-test-query: SELECT NOW() FROM DUAL
-
 #  autoconfigure:
 #    exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
 #  h2:
@@ -17,14 +17,13 @@ spring:
 #      path: /h2-console
 #      settings:
 #        trace: false
-
   security:
     user:
       password: 0000
-  mvc:
-    view:
-      prefix: /WEB-INF/jsp/
-      suffix: .jsp
+  thymeleaf:
+    prefix: classpath:templates/
+    suffix: .html
+    cache: false
 
 server:
   port: 3030

@@ -11,6 +11,12 @@ sourceCompatibility = '17'
 // JSP 적용 시, WAR build
 //apply plugin: 'war'
 
+bootJar {
+	archiveBaseName = 'framework'
+	archiveFileName = 'app.jar'
+	archiveVersion = '0.0.1'
+}
+
 sourceSets {
 	main {
 		resources {
@@ -66,13 +72,17 @@ dependencies {
 	implementation (group: 'org.springframework.security', name: 'spring-security-web', version: '6.1.1')
 
 	// devtools
-	compileOnly('org.springframework.boot:spring-boot-devtools')
+	compileOnly('org.springframework.boot:spring-boot-devtools')\
+
+	//thymeleaf
+	implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
+
 	// JSP
-	compileOnly 'org.apache.tomcat.embed:tomcat-embed-jasper'
-	compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+//	compileOnly 'org.apache.tomcat.embed:tomcat-embed-jasper'
+//	compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
 	//jstl
-	implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.0'
-	implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.1'
+//	implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.0'
+//	implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.1'
 
 	testCompileOnly 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'

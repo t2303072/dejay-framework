@@ -41,10 +41,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .excludePathPatterns(loggerExcludePattern)
                 .order(1);
 
-        registry.addInterceptor(loginInterceptor)
-                .addPathPatterns(loginIncludePattern)
-                .excludePathPatterns(loginExcludePattern)
-                .order(2);
+//        registry.addInterceptor(loginInterceptor)
+//                .addPathPatterns(loginIncludePattern)
+//                .excludePathPatterns(loginExcludePattern)
+//                .order(2);
 
 //        registry.addInterceptor(authorityInterceptor)
 //                .excludePathPatterns(authorityExcludePattern)

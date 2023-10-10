@@ -1,19 +1,18 @@
-
-
 spring:
   datasource:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
-    jdbc-url: ENC(6xq4yg92ePmlii2BBNB/l6cXolGGdt3Ul4zYi95gifdhHaPnq8/WCUsfFTgtJEs2yXdQ4Izc/7kT0sFnKvsUeA==)
-    username: ENC(JDXj698sPbuxrNHAAf4Xwn0KgwXtaOY7)
-    password: ENC(BAGrB5sDgIALDPL6U/ZzUUgBAaQYhqAe)
+    jdbc-url: jdbc:log4jdbc:mariadb://10.34.220.168:3307/dejay_common
+    username: dejay_was
+    password: 22@dejay
 
   security:
     user:
       password: 0000
-  mvc:
-    view:
-      prefix: /WEB-INF/jsp/
-      suffix: .jsp
+
+  thymeleaf:
+    prefix: classpath:templates/
+    suffix: .html
+    cache: false
 
   devtools:
     livereload:

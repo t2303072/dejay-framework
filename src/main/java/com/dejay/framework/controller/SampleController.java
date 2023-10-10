@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-@RequestMapping("/jsp")
+@RequestMapping("/sample")
 public class SampleController {
 
     private final SampleService SampleService;
@@ -42,7 +42,7 @@ public class SampleController {
         radioMap.put("N/A", "해당 없어요");
         model.addAttribute("radioMap", radioMap);
 
-        return "sample/view-sample";
+        return "sample/index";
     }
 
     @GetMapping("/add")
