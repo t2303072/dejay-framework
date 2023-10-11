@@ -24,6 +24,7 @@ spring:
     prefix: classpath:templates/
     suffix: .html
     cache: false
+    encoding: UTF-8
   mvc:
     static-path-pattern: "/static/**"
 server:
