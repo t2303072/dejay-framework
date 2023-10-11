@@ -4,7 +4,6 @@ import com.dejay.framework.common.enums.ExceptionCodeMsgEnum;
 import com.dejay.framework.common.exception.CustomLoginException;
 import com.dejay.framework.common.utils.StringUtil;
 import com.dejay.framework.controller.common.ParentController;
-import com.dejay.framework.domain.common.TokenObjectVO;
 import com.dejay.framework.domain.user.SignUpRequest;
 import com.dejay.framework.vo.member.MemberVO;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +29,7 @@ public class MemberController extends ParentController {
 
     @PostMapping("/sign-up")
     public ResponseEntity signUp(@RequestBody SignUpRequest signUpRequest) throws CustomLoginException {
-        MemberVO memberVO = getCommonService().getMemberService().getCommonMapper().getMemberMapper().findMemberByUserName(signUpRequest.getId());
+        MemberVO memberVO = getCommonService().getMemberService().findMemberByUserName(signUpRequest.getId());
 
         if(!StringUtil.isEmpty(memberVO)){
             throw new CustomLoginException(ExceptionCodeMsgEnum.ACCOUNT_DUPLICATE.getCode(), ExceptionCodeMsgEnum.ACCOUNT_DUPLICATE.getMsg());
