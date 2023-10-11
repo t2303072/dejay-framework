@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 @Slf4j
 @Controller
@@ -26,9 +27,11 @@ public class LoginController extends ParentController {
      * @return
      */
     @GetMapping({"", "/"})
-    public String login(Model model) {
-        model.addAttribute("member", new MemberVO());
-        return "login/view-login";
+    public ModelAndView login() {
+        ModelAndView mv = new ModelAndView();
+        mv.addObject("member", new MemberVO());
+        mv.setViewName("login/view-login");
+        return mv;
     }
 
     /**

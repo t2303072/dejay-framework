@@ -14,6 +14,9 @@
     <th:block layout:fragment="content"></th:block>
 
     <!-- 공통 하단 -->
-    <th:block th:replace="~{layout/fragments/footer :: footerFragment}"></th:block>
+    <th:block th:replace="layout/fragments/footer :: footerFragment"></th:block>
+
+    <!-- script fragment 사용 -->
+    <th:block layout:fragment="script"></th:block>
 </body>
 </html>
