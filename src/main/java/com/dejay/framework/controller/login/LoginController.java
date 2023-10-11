@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -23,21 +22,19 @@ import org.springframework.web.servlet.ModelAndView;
 public class LoginController extends ParentController {
     /**
      * login view를 가져와 준다.
-     * @param model
      * @return
      */
     @GetMapping({"", "/"})
     public ModelAndView login() {
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("member", new MemberVO());
-        mv.setViewName("login/view-login");
-        return mv;
+        return new ModelAndView("login/view-login", "member", new MemberVO());
     }
 
     /**
      * login
-     * @param member
+     * @param loginRequest
+     * @param request
      * @return
+     * @throws CustomLoginException
      */
     @PostMapping({"", "/login"})
     public ResponseEntity login(@RequestBody LoginRequest loginRequest,HttpServletRequest request) throws CustomLoginException{
