@@ -7,19 +7,15 @@ spring:
     jdbc-url: jdbc:log4jdbc:mariadb://10.34.220.168:3307/dejay_common
     username: dejay_was
     password: 22@dejay
-
   security:
     user:
       password: 0000
-
   thymeleaf:
     prefix: classpath:templates/
     suffix: .html
     cache: false
-
   mvc:
     static-path-pattern: "/static/**"
-
   devtools:
     livereload:
       enabled: true
