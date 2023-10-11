@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
     <!-- 공통 헤드 -->
     <th:block th:replace="~{layout/fragments/head :: headFragment}"></th:block>
-
+    <th:block layout:fragment="css"></th:block>
 <body>
     <!-- 상단바 -->
     <header th:replace="~{layout/fragments/header :: headerFragment}"></header>
