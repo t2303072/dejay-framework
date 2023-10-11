@@ -51,6 +51,7 @@ properties:
     rootDir: /files/dejay_public
     tempDir: /temp
     realDir: /upload
+
 # jwt
 jwt:
   secret: frameworkspringsecurityjwtsecretkeytestijzone

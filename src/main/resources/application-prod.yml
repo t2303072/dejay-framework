@@ -4,22 +4,19 @@ spring:
     jdbc-url: jdbc:log4jdbc:mariadb://10.34.220.168:3307/dejay_common
     username: dejay_was
     password: 22@dejay
-
     hikari:
       maximum-pool-size: 10
       connection-test-query: SELECT NOW() FROM DUAL
-
   security:
     user:
       password: 0000
-
   thymeleaf:
     prefix: classpath:templates/
     suffix: .html
     cache: false
-
   mvc:
-      static-path-pattern: "/static/**"
+    static-path-pattern: "/static/**"
+
 ## mapper logging level
 logging:
   level:
