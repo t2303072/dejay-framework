@@ -16,8 +16,8 @@ public class BoardController extends ParentController {
 
     @GetMapping({"", "/"})
     public ModelAndView board(ModelAndView mv) {
-        mv.addObject("hello", "드제이");
         mv.setViewName("board/list");
+        mv.addObject("hello", "드제이");
 
         return mv;
     }
