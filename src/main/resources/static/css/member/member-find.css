@@ -1,0 +1,20 @@
+#findById-wrapper {
+    height:30px;
+    border:1px solid black;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#findByPassword-wrapper{
+    height:30px;
+    border:1px solid black;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#find-wrapper{
+    font-size:16px;
+    margin-top:10px;
+}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}" lang="ko">
+<th:block layout:fragment="css">
+    <head>
+        <link rel="stylesheet" type="text/css" th:href="@{/static/css/member/member-find.css}"/>
+        <title>아이디 찾기</title>
+    </head>
+</th:block>
+<th:block layout:fragment="content">
+    <div id="main_wrapper">
+        <div class="container">
+            <div id="find-wrapper" class="row">
+                <div id="findById-wrapper" class="col-md-6">
+                    <a id="findById" href="/member/findById"><label> 아이디 찾기 </label></a>
+                </div>
+                <div id="findByPassword-wrapper" class="col-md-6">
+                    <a id="findByPassword" href="/member/findByPwd"><label> 비밀번호 찾기 </label></a>
+                </div>
+            </div><br>
+            <div class="row">
+                <h2>아이디 찾기</h2><br><hr>
+                <div>
+                    <label for="userEmail">이메일 * </label><br>
+                    <input type="text" id="userEmail" path="userEmail"/>
+                    <input class="btn btn-default" type="button" value="인증 번호 받기">
+                </div>
+                <div>
+                    <label>인증 번호 *</label><br>
+                    <input type="text"/>
+                </div><br>
+            </div>
+            <input id="btnCancle" type="button" value="취소" onclick="cancel()"/>
+            <input id="btnNext" type="button" value="다음" onclick="next()"/>
+        </div>
+    </div>
+</th:block>
+
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+        function next() {
+            window.location.href="/member/userId-check";
+        }
+        function cancel() {
+            window.location.href="/login";
+        }
+    </script>
+</th:block>
+</html>

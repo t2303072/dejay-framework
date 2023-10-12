@@ -25,8 +25,10 @@ public class LoginController extends ParentController {
      * @return
      */
     @GetMapping({"", "/"})
-    public ModelAndView login() {
-        return new ModelAndView("login/view-login", "member", new MemberVO());
+    public ModelAndView login(ModelAndView mv) {
+        mv.addObject("member", new MemberVO());
+        mv.setViewName("login/view-login");
+        return mv;
     }
 
     /**

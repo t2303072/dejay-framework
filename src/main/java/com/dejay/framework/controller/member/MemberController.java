@@ -10,11 +10,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 @Slf4j
 @Controller
@@ -22,9 +22,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MemberController extends ParentController {
 
     @GetMapping("/sign-up")
-    public String signUp(Model model){
-        model.addAttribute("member",new MemberVO());
-        return "member/member-sign-up";
+    public ModelAndView signUp(ModelAndView mv){
+        mv.addObject("member", new MemberVO());
+        mv.setViewName("member/member-sign-up");
+        return mv;
+    }
+
+    @GetMapping("/userId-check")
+    public ModelAndView userIdCheck(ModelAndView mv){
+        mv.addObject("member", new MemberVO());
+        mv.setViewName("member/member-info-check");
+        return mv;
+    }
+
+    @GetMapping("/findById")
+    public ModelAndView findById(ModelAndView mv){
+        mv.addObject("member",new MemberVO());
+        mv.setViewName("member/member-find-id");
+        return mv;
+    }
+    @GetMapping("/findByPwd")
+    public ModelAndView findByPassword(ModelAndView mv) {
+        mv.setViewName("member/member-find-password");
+        mv.addObject("member", new MemberVO());
+        return mv;
+    }
+    @GetMapping("/pwdChange")
+    public ModelAndView changePassword(ModelAndView mv){
+        mv.setViewName("member/member-change-password");
+        return mv;
     }
 
     @PostMapping("/sign-up")
@@ -39,6 +65,5 @@ public class MemberController extends ParentController {
         }
 
     }
-
 
 }
