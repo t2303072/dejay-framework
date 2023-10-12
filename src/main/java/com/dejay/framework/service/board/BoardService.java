@@ -2,6 +2,7 @@ package com.dejay.framework.service.board;
 
 import com.dejay.framework.domain.board.Board;
 import com.dejay.framework.domain.file.File;
+import com.dejay.framework.vo.board.BoardPublicVO;
 import com.dejay.framework.vo.board.BoardVO;
 import com.dejay.framework.vo.file.FileVO;
 import com.dejay.framework.vo.member.MemberVO;
@@ -18,6 +19,9 @@ public interface BoardService  {
 
     // 게시판 단 건 조회
     BoardVO rowBoard(BoardSearchVO search);
+    
+    // 공통 게시판 단 건 조회
+    BoardPublicVO findById(BoardSearchVO search);
 
     // 단 건 게시판 파일 조회
     List<FileVO> boardFileSearch(BoardSearchVO search);

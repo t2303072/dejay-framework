@@ -10,4 +10,11 @@ import java.util.List;
 @Mapper
 public interface BoardMapper extends GeneralMapper {
     List<FileVO> boardFileSearch(SearchVO search);
+
+    /**
+     * 공통 게시판 단건 조회
+     * @param search {@link SearchVO}
+     * @return
+     */
+    Object findById(SearchVO search);
 }

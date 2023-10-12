@@ -9,6 +9,7 @@ import com.dejay.framework.domain.common.Paging;
 import com.dejay.framework.domain.file.File;
 import com.dejay.framework.service.common.ParentService;
 import com.dejay.framework.service.file.FileService;
+import com.dejay.framework.vo.board.BoardPublicVO;
 import com.dejay.framework.vo.board.BoardVO;
 import com.dejay.framework.vo.file.FileVO;
 import com.dejay.framework.vo.member.MemberVO;
@@ -90,6 +91,11 @@ public class BoardServiceImpl extends ParentService implements BoardService{
         board.setFileList(boardFileSearch(search));
 
         return board;
+    }
+
+    @Override
+    public BoardPublicVO findById(BoardSearchVO search) {
+        return null;
     }
 
     /**

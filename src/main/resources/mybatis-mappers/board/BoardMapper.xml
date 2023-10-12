@@ -9,10 +9,11 @@
     <!-- column [[ -->
 
     <sql id = "boardColumn">
-        ${alias}BOARD_SEQ, ${alias}BOARD_CODE
+        ${alias}BOARD_SEQ, ${alias}BOARD_CD
         , ${alias}TITLE, ${alias}CONTENTS
-        , ${alias}FIX_YN , ${alias}DISPLAY_YN
-        , ${alias}USE_YN
+        , ${alias}HITS, ${alias}DEL_YN
+        , ${alias}REG_DT, ${alias}REG_ID
+        , ${alias}LAST_DT, ${alias}LAST_ID
     </sql>
 
 
@@ -22,6 +23,9 @@
     <!-- whereClause [[ -->
 
     <sql id = "whereClause">
+        <if test="boardSeq != null and boardSeq != '' ">
+            AND ${alias}BOARD_SEQ = #{boardSeq}
+        </if>
         <if test="fixYn != null and fixYn != '' ">
             AND ${alias}FIX_YN = #{fixYn}
         </if>
@@ -107,6 +111,17 @@
         <where>
             <include refid="whereClauseSeq"><property name="alias" value="BD."/></include>
             AND ENTITY.ENTITY_NAME = #{entityName}
+        </where>
+        GROUP BY BOARD_SEQ
+    </select>
+
+    <select id="findById" resultType="BoardPublicVO" parameterType="BoardSearchVO">
+        /*게시판 단 건 조회 - BoarderMapper.findByBoardSeq */
+        SELECT
+        <include refid="boardColumn"><property name="alias" value="BP."/></include>
+        FROM BOARD_PUBLIC BP
+        <where>
+            <include refid="whereClauseSeq"><property name="alias" value="BP."/></include>
         </where>
         GROUP BY BOARD_SEQ
     </select>
