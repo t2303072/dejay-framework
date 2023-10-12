@@ -19,9 +19,6 @@ public interface BoardService  {
 
     // 게시판 단 건 조회
     BoardVO rowBoard(BoardSearchVO search);
-    
-    // 공통 게시판 단 건 조회
-    BoardPublicVO findById(BoardSearchVO search);
 
     // 단 건 게시판 파일 조회
     List<FileVO> boardFileSearch(BoardSearchVO search);
@@ -32,4 +29,9 @@ public interface BoardService  {
     // 게시판 삭제
     int deleteBoard(Board board, MemberVO member);
 
+    // 공통 게시판 단 건 조회
+    BoardPublicVO findById(BoardSearchVO search);
+
+    // 공통 게시판 목록 조회
+    List<BoardPublicVO> getList();
 }

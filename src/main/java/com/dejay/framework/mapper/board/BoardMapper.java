@@ -1,6 +1,7 @@
 package com.dejay.framework.mapper.board;
 
 import com.dejay.framework.mapper.common.GeneralMapper;
+import com.dejay.framework.vo.board.BoardPublicVO;
 import com.dejay.framework.vo.file.FileVO;
 import com.dejay.framework.vo.search.SearchVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -16,5 +17,11 @@ public interface BoardMapper extends GeneralMapper {
      * @param search {@link SearchVO}
      * @return
      */
-    Object findById(SearchVO search);
+    BoardPublicVO findById(SearchVO search);
+
+    /**
+     * 공통 게시판 목록 조회
+     * @return
+     */
+    List<BoardPublicVO> getList();
 }

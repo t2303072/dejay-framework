@@ -37,7 +37,7 @@ public class BoardPublicServiceImpl extends ParentService implements BoardServic
     public BoardPublicVO findById(BoardSearchVO search) {
 //        search.setEntityName(TableNameEnum.BOARD.name());
 
-        BoardPublicVO rowData = (BoardPublicVO) getCommonMapper().getBoardMapper().findById(search);
+        BoardPublicVO rowData = getCommonMapper().getBoardMapper().findById(search);
         rowData.setRegDtStr(DateUtil.convertLocalDateTimeToString(rowData.getRegDt(), "yyyy-MM-dd"));
         rowData.setLastDtStr(DateUtil.convertLocalDateTimeToString(rowData.getLastDt(), "yyyy-MM-dd"));
 
@@ -45,6 +45,17 @@ public class BoardPublicServiceImpl extends ParentService implements BoardServic
 //        board.setFileList(boardFileSearch(search));
 
         return rowData;
+    }
+
+    @Override
+    public List<BoardPublicVO> getList() {
+        List<BoardPublicVO> list = getCommonMapper().getBoardMapper().getList();
+        list.forEach(ele -> {
+            ele.setRegDtStr(DateUtil.convertLocalDateTimeToString(ele.getRegDt(), "yyyy-MM-dd"));
+            ele.setLastDtStr(DateUtil.convertLocalDateTimeToString(ele.getLastDt(), "yyyy-MM-dd"));
+        });
+
+        return list;
     }
 
     @Override

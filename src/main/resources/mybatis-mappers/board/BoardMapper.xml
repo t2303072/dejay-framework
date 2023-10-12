@@ -126,6 +126,14 @@
         GROUP BY BOARD_SEQ
     </select>
 
+    <select id="getList" resultType="BoardPublicVO">
+        /*게시판 목록 조회 - BoarderMapper.getList */
+        SELECT
+        <include refid="boardColumn"><property name="alias" value="BP."/></include>
+        FROM BOARD_PUBLIC BP
+        GROUP BY BOARD_SEQ
+    </select>
+
     <select id="boardFileSearch" resultType="FileVO" parameterType="BoardSearchVO">
         SELECT FE.*
         FROM BOARD BD

@@ -27,10 +27,18 @@ public class BoardController extends ParentController {
 
         BoardSearchVO boardSearchVO = new BoardSearchVO();
         boardSearchVO.setBoardSeq(seq);
-
         BoardPublicVO rowData = getCommonService().getBoardService().findById(boardSearchVO);
         mv.addObject("rowData", rowData);
-        mv.addObject("hello", "드제이");
+
+        return mv;
+    }
+
+    @GetMapping({"", "/"})
+    public ModelAndView list(ModelAndView mv) {
+        mv.setViewName("board/list");
+
+        List<BoardPublicVO> list = getCommonService().getBoardService().getList();
+        mv.addObject("list", list);
 
         return mv;
     }

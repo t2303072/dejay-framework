@@ -98,6 +98,11 @@ public class BoardServiceImpl extends ParentService implements BoardService{
         return null;
     }
 
+    @Override
+    public List<BoardPublicVO> getList() {
+        return null;
+    }
+
     /**
      *  단 건 게시판 파일 조회
      * @param search
