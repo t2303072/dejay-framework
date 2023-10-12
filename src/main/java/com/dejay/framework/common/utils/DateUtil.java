@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -313,5 +314,15 @@ public class DateUtil {
             throw e;
         }
         return r;
+    }
+
+    /**
+     * 날짜 문자열 포맷
+     * @param tgt {@link LocalDateTime}
+     * @param pattern {@link String}
+     * @return
+     */
+    public static String convertLocalDateTimeToString(LocalDateTime tgt, String pattern) {
+        return tgt.format(DateTimeFormatter.ofPattern(pattern));
     }
 }
