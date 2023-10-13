@@ -6,6 +6,7 @@ import com.dejay.framework.common.utils.ObjectHandlingUtil;
 import com.dejay.framework.domain.code.Code;
 import com.dejay.framework.domain.common.Paging;
 import com.dejay.framework.service.common.ParentService;
+import com.dejay.framework.vo.code.CodePublicVO;
 import com.dejay.framework.vo.code.CodeVO;
 import com.dejay.framework.vo.search.code.CodeSearchVO;
 import lombok.extern.slf4j.Slf4j;
@@ -124,8 +125,8 @@ public class CodeServiceImpl extends ParentService implements CodeService{
      * @param search
      * @return
      */
-    public List<CodeVO> listCode(CodeSearchVO search) {
-        return (List<CodeVO>) getCommonMapper().getCodeMapper().listBySearch(search);
+    public List<CodePublicVO> listCode() {
+       return null;
     }
 
     /**

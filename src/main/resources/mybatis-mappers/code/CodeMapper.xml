@@ -18,9 +18,11 @@
     <!-- column [[ -->
 
     <sql id="codeColumn">
-        ${alias}CODE, ${alias}CODE_NAME
-        , ${alias}REMARK1, ${alias}VALUE1, ${alias}REMARK2, ${alias}VALUE2
-        , ${alias}CODE_ORD, ${alias}USE_YN
+        ${alias}CODE_SEQ, ${alias}CODE_CD
+        , ${alias}CODE_NM, ${alias}CODE_DESC
+        , ${alias}CODE_ETC, ${alias}USE_YN
+        , ${alias}DEL_YN, ${alias}REG_DT
+        , ${alias}REG_ID, ${alias}LAST_DT
     </sql>
 
 
@@ -137,6 +139,12 @@
         WHERE CD.CODE = #{code}
     </select>
 
+    <select id="listCode" resultType="CodePublicVO">
+        SELECT
+            <include refid="codeColumn"><property name="alias" value="CD."/></include>
+        FROM INFO_COMMON_CD CD
+        WHERE CD.CODE_CD LIKE 'MENU%';
+    </select>
     <!-- 조회 ]] -->
 
 
