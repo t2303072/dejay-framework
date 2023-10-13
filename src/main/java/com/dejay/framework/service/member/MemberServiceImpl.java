@@ -81,9 +81,9 @@ public class MemberServiceImpl extends ParentService implements MemberService{
         MemberVO target = MemberVO.builder()
                 .memberSeq(memberVO.getMemberSeq())
                 .userId(memberVO.getUserId())
-                .deptCode(memberVO.getDeptCode())
-                .authority(memberVO.getDeptCode())
-                .userName(memberVO.getUserName())
+                .deptCd(memberVO.getDeptCd())
+                .authority(memberVO.getDeptCd())
+                .userNm(memberVO.getUserNm())
                 .userEmail(memberVO.getUserEmail())
                 .build();
 
@@ -131,20 +131,12 @@ public class MemberServiceImpl extends ParentService implements MemberService{
                 .name(signUpRequest.getName())
                 .tel(signUpRequest.getUserTel())
                 .email(signUpRequest.getEmail())
-//              .deptCode(signUpRequest.getAuthority().stream().toList().get(0).getDeptCode())
                 .deptCode(signUpRequest.getDeptCode())
                 .appointCode(signUpRequest.getAppointCode())
                 .positionCode(signUpRequest.getPositionCode())
-                .tableName(TableNameEnum.MEMBER.name())
-                .logId1("")
-                .logType(RequestTypeEnum.CREATE.getRequestType())
-                .logId2(null)
-                .logJson(null)
-                .remark(null)
                 .regId(signUpRequest.getId())
                 .build();
 
-        validationUtil.parameterValidator(target, User.class);
         int inserted = getCommonMapper().getMemberMapper().insert(target);
         if(inserted > 0) {
             TokenObjectVO tokenObjectVO = tokenFactory.createJWT(signUpRequest.getId(), signUpRequest.getPassword(), signUpRequest.getAuthority());
@@ -173,10 +165,10 @@ public class MemberServiceImpl extends ParentService implements MemberService{
         if (bCryptPasswordEncoder.matches(loginRequest.getPassword(), target.getUserPwd())) {
             return MemberVO.builder()
                     .userId(target.getUserId())
-                    .userName(target.getUserName())
+                    .userNm(target.getUserNm())
                     .userEmail(target.getUserEmail())
-                    .authority(target.getDeptCode())
-                    .deptCode(target.getDeptCode())
+                    .authority(target.getDeptCd())
+                    .deptCd(target.getDeptCd())
                     /*.tableName(TableNameEnum.LOGIN.name())
                       .logId1(String.valueOf(target.getMemberSeq()))
                       .logType(RequestTypeEnum.LOGIN.getRequestType())

@@ -80,9 +80,9 @@ public class RestMemberServiceImpl extends ParentService implements MemberServic
         MemberVO target = MemberVO.builder()
                 .memberSeq(memberVO.getMemberSeq())
                 .userId(memberVO.getUserId())
-                .deptCode(memberVO.getDeptCode())
-                .authority(memberVO.getDeptCode())
-                .userName(memberVO.getUserName())
+                .deptCd(memberVO.getDeptCd())
+                .authority(memberVO.getDeptCd())
+                .userNm(memberVO.getUserNm())
                 .userEmail(memberVO.getUserEmail())
                 .build();
 
@@ -172,10 +172,10 @@ public class RestMemberServiceImpl extends ParentService implements MemberServic
         if (bCryptPasswordEncoder.matches(loginRequest.getPassword(), target.getUserPwd())) {
             return MemberVO.builder()
                     .userId(target.getUserId())
-                    .userName(target.getUserName())
+                    .userNm(target.getUserNm())
                     .userEmail(target.getUserEmail())
-                    .authority(target.getDeptCode())
-                    .deptCode(target.getDeptCode())
+                    .authority(target.getDeptCd())
+                    .deptCd(target.getDeptCd())
                   /*.tableName(TableNameEnum.LOGIN.name())
                     .logId1(String.valueOf(target.getMemberSeq()))
                     .logType(RequestTypeEnum.LOGIN.getRequestType())
