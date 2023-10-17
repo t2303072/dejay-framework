@@ -62,7 +62,7 @@
                 type : "POST",
                 url  : "/login",
                 contentType: "application/json",
-                async:true, //비동기 처리
+                async:false, //동기 처리
                 data: JSON.stringify(member),
                 success: function(result){
                     window.location.href="/";

@@ -150,7 +150,7 @@
                 type : "POST",
                 url : "/member/sign-up",
                 contentType:"application/json",
-                async : true, //비동기 처리
+                async : false, //동기 처리
                 data : JSON.stringify(memberInfo),
                 success: function(result){
                     alert("회원가입 요청이 완료 되었습니다.\n 승인 완료 후 로그인이 가능합니다.");
