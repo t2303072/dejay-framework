@@ -4,13 +4,15 @@ import com.dejay.framework.vo.search.SearchVO;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 public class BoardSearchVO extends SearchVO{ 
     //게시판 SEQ
     private Long boardSeq;
     //게시판 boardCode
-    private String boardCode;
+    private String boardCd;
     //제목
     private String title;
     //내용
@@ -21,4 +23,12 @@ public class BoardSearchVO extends SearchVO{
     private String displayYn;
     // 테이블 이름
     private String entityName;
+    // 조회 수
+    private String hits;
+    // 삭제 여부
+    private String delYn;
+    // 검색 날짜 유형
+    private String searchDateType;
+    // 검색 키워드 유형
+    private String searchKeywordType;
 }

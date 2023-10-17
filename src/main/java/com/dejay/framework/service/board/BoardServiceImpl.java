@@ -13,6 +13,7 @@ import com.dejay.framework.vo.board.BoardPublicVO;
 import com.dejay.framework.vo.board.BoardVO;
 import com.dejay.framework.vo.file.FileVO;
 import com.dejay.framework.vo.member.MemberVO;
+import com.dejay.framework.vo.search.SearchVO;
 import com.dejay.framework.vo.search.board.BoardSearchVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,7 +100,7 @@ public class BoardServiceImpl extends ParentService implements BoardService{
     }
 
     @Override
-    public List<BoardPublicVO> getList() {
+    public List<BoardPublicVO> findAll(BoardSearchVO boardSearchVO) {
         return null;
     }
 

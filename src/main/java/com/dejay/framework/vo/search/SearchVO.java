@@ -160,4 +160,13 @@ public class SearchVO {
     private MenuSearchVO menuSearch;
     /** 그룹별 search 모델 ]] **/
 
+    /**
+     * 검색 날짜 유형
+     */
+    private String searchDateType;
+
+    /**
+     * 검색 키워드 유형
+     */
+    private String searchKeywordType;
 }

@@ -6,6 +6,7 @@ import com.dejay.framework.vo.board.BoardPublicVO;
 import com.dejay.framework.vo.board.BoardVO;
 import com.dejay.framework.vo.file.FileVO;
 import com.dejay.framework.vo.member.MemberVO;
+import com.dejay.framework.vo.search.SearchVO;
 import com.dejay.framework.vo.search.board.BoardSearchVO;
 
 import java.util.List;
@@ -30,8 +31,8 @@ public interface BoardService  {
     int deleteBoard(Board board, MemberVO member);
 
     // 공통 게시판 단 건 조회
-    BoardPublicVO findById(BoardSearchVO search);
+    BoardPublicVO findById(BoardSearchVO boardSearchVO);
 
     // 공통 게시판 목록 조회
-    List<BoardPublicVO> getList();
+    List<BoardPublicVO> findAll(BoardSearchVO boardSearchVO);
 }

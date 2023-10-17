@@ -1,25 +1,134 @@
 package com.dejay.framework.controller.board;
 
+import com.dejay.framework.common.enums.MapKeyStringEnum;
+import com.dejay.framework.common.enums.ResultCodeMsgEnum;
+import com.dejay.framework.common.utils.ObjectHandlingUtil;
 import com.dejay.framework.controller.common.ParentController;
+import com.dejay.framework.domain.common.Paging;
 import com.dejay.framework.vo.board.BoardPublicVO;
-import com.dejay.framework.vo.board.BoardVO;
+import com.dejay.framework.vo.common.ResultStatusVO;
+import com.dejay.framework.vo.search.SearchVO;
 import com.dejay.framework.vo.search.board.BoardSearchVO;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/board")
 public class BoardController extends ParentController {
+
+    @GetMapping({"", "/"})
+    public ModelAndView findAll(ModelAndView mv) {
+        mv.setViewName("board/list");
+
+        // [검색옵션] 날짜
+        var searchDateRangeOptionList = getCommonService().getBoardPublicServiceImpl().getSearchDateRangeOptionList();
+        mv.addObject("searchDateRangeOptionList", searchDateRangeOptionList);
+
+        // [검색옵션] 키워드
+        var searchKeywordTypeOptionList = getCommonService().getBoardPublicServiceImpl().getSearchKeywordTypeList();
+        mv.addObject("searchKeywordTypeOptionList", searchKeywordTypeOptionList);
+
+        // 전체 게시물 수
+        int totalCount = getCommonService().getBoardPublicServiceImpl().totalCount(null);
+        mv.addObject("totalCount", totalCount);
+
+        BoardSearchVO boardSearchVO = new BoardSearchVO();
+        boardSearchVO.setPaging(Paging.builder()
+                .currentPage(1)
+                .displayRow(10)
+                .build()
+        );
+        // 목록 조회
+        List<BoardPublicVO> list = getCommonService().getBoardPublicServiceImpl().findAll(boardSearchVO);
+        mv.addObject("list", list);
+
+        // paging
+        SearchVO searchVO = new SearchVO();
+        searchVO.setPaging(Paging.builder()
+                .currentPage(1)
+                .displayRow(10)
+                .build()
+        );
+        Paging paging = ObjectHandlingUtil.pagingOperatorBySearch(searchVO, totalCount);
+        mv.addObject("paging", paging);
+
+        return mv;
+    }
+
+    @PostMapping("/api/list")
+    public String findAll(Model model, @RequestBody Map<String, Object> paramMap
+//            , @RequestParam(value = "searchDateType", required = false) String searchDateType
+//            , @RequestParam(value = "startDt", required = false) String startDt
+//            , @RequestParam(value = "endDt", required = false) String endDt
+//            , @RequestParam(value = "searchKeywordType", required = false) String searchKeywordType
+//            , @RequestParam(value = "searchWord1", required = false) String searchWord1
+//            , @RequestParam(value = "currentPage", defaultValue = "1") int currentPage
+//            , @RequestParam(value = "displayRow", defaultValue = "10") int displayRow
+//            , @RequestParam(value = "totalCount") int totalCount
+    ) {
+
+        ObjectMapper om = new ObjectMapper();
+        BoardSearchVO boardSearchVO = om.convertValue(paramMap.get("boardPublicVO"), BoardSearchVO.class);
+        Paging pagingParam = om.convertValue(paramMap.get("paging"), Paging.class);
+        boardSearchVO.setPaging(Paging.builder()
+                .currentPage(pagingParam.getCurrentPage())
+                .displayRow(pagingParam.getDisplayRow())
+                .totalCount(pagingParam.getTotalCount())
+                .build()
+        );
+
+//        BoardSearchVO boardSearchVO = new BoardSearchVO();
+//        boardSearchVO.setPaging(Paging.builder()
+//                .currentPage(currentPage)
+//                .displayRow(displayRow)
+//                .totalCount(totalCount)
+//                .build()
+//        );
+//        boardSearchVO.setSearchDateType(searchDateType);
+//        boardSearchVO.setStartDt(startDt);
+//        boardSearchVO.setEndDt(endDt);
+//        boardSearchVO.setSearchKeywordType(searchKeywordType);
+//        boardSearchVO.setSearchWord1(searchWord1);
+
+        // 전체 게시물 수
+        int totalListCount = getCommonService().getBoardPublicServiceImpl().totalCount(boardSearchVO);
+        model.addAttribute("totalCount", totalListCount);
+//
+//        // 목록 조회
+        List<BoardPublicVO> list = getCommonService().getBoardPublicServiceImpl().findAll(boardSearchVO);
+        model.addAttribute("list", list);
+
+        // paging
+        Paging paging = Paging.builder()
+                .currentPage(boardSearchVO.getPaging().getCurrentPage())
+                .displayRow(boardSearchVO.getPaging().getDisplayRow())
+                .totalCount(totalListCount)
+                .build();
+        model.addAttribute("paging", paging);
+
+        return "board/list :: #list_wrapper";
+    }
+
+    @ResponseBody
+    @DeleteMapping("/api/delete")
+    public ResponseEntity deleteBoard(Model model, @RequestParam(value = "checkedList[]") List<Integer> checkedList) {
+        Map<String, Object> result = getCommonService().getBoardPublicServiceImpl().deleteBySeq(checkedList);
+
+        return ResponseEntity.ok(result);
+    }
 
     @GetMapping("/{seq}")
     public ModelAndView findById(ModelAndView mv, @PathVariable long seq) {
@@ -33,13 +142,4 @@ public class BoardController extends ParentController {
         return mv;
     }
 
-    @GetMapping({"", "/"})
-    public ModelAndView list(ModelAndView mv) {
-        mv.setViewName("board/list");
-
-        List<BoardPublicVO> list = getCommonService().getBoardService().getList();
-        mv.addObject("list", list);
-
-        return mv;
-    }
 }

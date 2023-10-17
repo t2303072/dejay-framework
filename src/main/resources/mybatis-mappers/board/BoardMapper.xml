@@ -23,17 +23,31 @@
     <!-- whereClause [[ -->
 
     <sql id = "whereClause">
+        AND BP.DEL_YN = 'N'
         <if test="boardSeq != null and boardSeq != '' ">
             AND ${alias}BOARD_SEQ = #{boardSeq}
         </if>
         <if test="fixYn != null and fixYn != '' ">
             AND ${alias}FIX_YN = #{fixYn}
         </if>
-
         <if test="displayYn != null and displayYn != '' ">
             AND  ${alias}DISPLAY_YN = #{displayYn}
         </if>
-
+        <if test="(startDt != null and startDt != '') and (endDt != null and endDt != '')">
+            <if test="searchDateType == 'REG_DT'">
+                AND ${alias}REG_DT BETWEEN DATE(#{startDt}) AND DATE(#{endDt})+1
+            </if>
+        </if>
+        <if test="searchWord1 != null and searchWord1 != ''">
+            <choose>
+                <when test="searchKeywordType == 'TITLE'">
+                    AND LOWER(${alias}TITLE) LIKE LOWER(CONCAT('%', #{searchWord1}, '%'))
+                </when>
+                <when test="searchKeywordType == 'REG_ID'">
+                    AND LOWER(${alias}REG_ID) LIKE LOWER(CONCAT('%', #{searchWord1}, '%'))
+                </when>
+            </choose>
+        </if>
     </sql>
 
     <sql id = "whereClauseSeq">
@@ -48,7 +62,7 @@
             <when test="orderBy eq 'bs'">${alias}BOARD_SEQ</when>
             <when test="orderBy eq 'ti' ">${alias}TITLE</when>
             <when test="orderBy eq 'ct' ">${alias}CONTENTS</when>
-            <otherwise>${alias}BOARD_SEQ</otherwise>
+            <otherwise>${alias}REG_DT</otherwise>
         </choose>
         <choose>
             <when test="descAsc != null and descAsc.equalsIgnoreCase('ASC') ">ASC</when>
@@ -115,25 +129,6 @@
         GROUP BY BOARD_SEQ
     </select>
 
-    <select id="findById" resultType="BoardPublicVO" parameterType="BoardSearchVO">
-        /*게시판 단 건 조회 - BoarderMapper.findByBoardSeq */
-        SELECT
-        <include refid="boardColumn"><property name="alias" value="BP."/></include>
-        FROM BOARD_PUBLIC BP
-        <where>
-            <include refid="whereClauseSeq"><property name="alias" value="BP."/></include>
-        </where>
-        GROUP BY BOARD_SEQ
-    </select>
-
-    <select id="getList" resultType="BoardPublicVO">
-        /*게시판 목록 조회 - BoarderMapper.getList */
-        SELECT
-        <include refid="boardColumn"><property name="alias" value="BP."/></include>
-        FROM BOARD_PUBLIC BP
-        GROUP BY BOARD_SEQ
-    </select>
-
     <select id="boardFileSearch" resultType="FileVO" parameterType="BoardSearchVO">
         SELECT FE.*
         FROM BOARD BD
@@ -142,6 +137,39 @@
         WHERE
             FE.ENTITY_SEQ = #{boardSeq}
           AND FE.ENTITY_NAME IN('BOARD')
+    </select>
+
+    <select id="findAllTotalCount" resultType="int">
+        /*게시판 목록 갯수 조회 - BoarderMapper.findAllTotalCount */
+          SELECT COUNT(1)
+            FROM BOARD_PUBLIC BP
+        <where>
+            <include refid="whereClause"><property name="alias" value="BP."/></include>
+        </where>
+    </select>
+
+    <select id="findAll" resultType="BoardPublicVO">
+        /*게시판 목록 조회 - BoarderMapper.findAll */
+          SELECT <include refid="boardColumn"><property name="alias" value="BP."/></include>
+            FROM BOARD_PUBLIC BP
+        <where>
+            <include refid="whereClause"><property name="alias" value="BP."/></include>
+        </where>
+        GROUP BY BOARD_SEQ
+        <include refid="orderClause"><property name="alias" value="BP."/></include>
+        <if test="paging.displayRow > 0">
+            LIMIT #{paging.displayRow} OFFSET #{paging.offset}
+        </if>
+    </select>
+
+    <select id="findById" resultType="BoardPublicVO" parameterType="BoardSearchVO">
+        /*게시판 단 건 조회 - BoarderMapper.findByBoardSeq */
+          SELECT <include refid="boardColumn"><property name="alias" value="BP."/></include>
+            FROM BOARD_PUBLIC BP
+        <where>
+            <include refid="whereClauseSeq"><property name="alias" value="BP."/></include>
+        </where>
+        GROUP BY BOARD_SEQ
     </select>
 
     <!-- 조회 ]] -->
@@ -185,10 +213,20 @@
     </update>
 
     <delete id="delete">
-        /* 게시판 수정 - BoardMapper.delete */
+        /* 게시판 단 건 삭제 - BoardMapper.delete */
         DELETE FROM BOARD
         WHERE
             BOARD_SEQ = #{boardSeq}
+    </delete>
+
+    <delete id="deleteList">
+        /* 게시판 다 건 삭제 - BoardMapper.deleteList */
+        UPDATE BOARD_PUBLIC
+        SET DEL_YN = 'Y'
+        WHERE BOARD_SEQ IN
+        <foreach collection="boardSeqList" item="seq" index="idx" separator="," open="(" close=")">
+            #{seq}
+        </foreach>
     </delete>
 
     <!-- 저장/수정/삭제 [[ -->

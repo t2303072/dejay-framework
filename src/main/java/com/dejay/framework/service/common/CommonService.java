@@ -1,6 +1,7 @@
 package com.dejay.framework.service.common;
 
 import com.dejay.framework.service.authority.AuthorityService;
+import com.dejay.framework.service.board.BoardPublicServiceImpl;
 import com.dejay.framework.service.board.BoardService;
 import com.dejay.framework.service.code.CodeService;
 import com.dejay.framework.service.file.FileService;
@@ -22,6 +23,7 @@ public class CommonService {
     private final MemberService memberService;
     private final AuthorityService authorityService;
     private final BoardService boardService;
+    private final BoardPublicServiceImpl boardPublicServiceImpl;
     private final MenuService menuService;
     private final FileService fileService;
 }
