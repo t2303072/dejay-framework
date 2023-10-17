@@ -63,7 +63,13 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Bean
     public StrictHttpFirewall httpFirewall() {
         StrictHttpFirewall firewall = new StrictHttpFirewall();
-        firewall.setAllowedHttpMethods(Arrays.asList(HttpMethod.GET.name(), HttpMethod.POST.name()));
+        firewall.setAllowedHttpMethods(Arrays.asList(
+                  HttpMethod.GET.name()
+                , HttpMethod.POST.name()
+                , HttpMethod.DELETE.name()
+                , HttpMethod.PUT.name()
+                , HttpMethod.PATCH.name())
+        );
         return firewall;
     }
 
