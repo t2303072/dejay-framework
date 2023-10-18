@@ -1,5 +1,6 @@
 package com.dejay.framework.mapper.board;
 
+import com.dejay.framework.domain.board.Board;
 import com.dejay.framework.mapper.common.GeneralMapper;
 import com.dejay.framework.vo.board.BoardPublicVO;
 import com.dejay.framework.vo.file.FileVO;
@@ -40,4 +41,11 @@ public interface BoardMapper extends GeneralMapper {
      * @return
      */
     int deleteList(Map<String, Object> list);
+
+    /**
+     * 공통 게시판 수정
+     * @param board {@link Board}
+     * @return {@link Integer}
+     */
+    int updateBoard(Board board);
 }

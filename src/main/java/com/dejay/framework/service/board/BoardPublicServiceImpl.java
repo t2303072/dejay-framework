@@ -126,19 +126,41 @@ public class BoardPublicServiceImpl extends ParentService implements BoardServic
         return getCommonMapper().getBoardMapper().findAllTotalCount(boardSearchVO);
     }
 
-    public Map<String, Object> deleteBySeq(List<Integer> tgtList) {
+    /**
+     * 게시판 삭제
+     * @param lastId {@link String}
+     * @param tgtList {@link Map}
+     * @return
+     */
+    public Map<String, Object> deleteBySeq(String lastId, List<Integer> tgtList) {
         var result = new HashMap<String, Object>();
         result.put("code", 200);
 
-        var list = new HashMap<String, Object>();
-        list.put("boardSeqList", tgtList);
-        int deleteCount = getCommonMapper().getBoardMapper().deleteList(list);
+        var paramMap = new HashMap<String, Object>();
+        paramMap.put("lastId", lastId);
+        paramMap.put("boardSeqList", tgtList);
+        int deleteCount = getCommonMapper().getBoardMapper().deleteList(paramMap);
         if(deleteCount < 1) {
             result.put("code", 204);
             result.put("message", "삭제할 대상이 없습니다.");
             return result;
         }
         result.put("message", "삭제 되었습니다.");
+
+        return result;
+    }
+
+    public Map<String, Object> updateBoard(Board board) {
+        var result = new HashMap<String, Object>();
+        result.put("code", 200);
+
+        int updateCount = getCommonMapper().getBoardMapper().updateBoard(board);
+        if(updateCount < 1) {
+            result.put("code", 204);
+            result.put("message", "수정할 대상이 없습니다.");
+            return result;
+        }
+        result.put("message", "수정 되었습니다.");
 
         return result;
     }

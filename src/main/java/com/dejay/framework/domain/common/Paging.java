@@ -15,7 +15,7 @@ public class Paging {
     private int totalCount; // 전체 게시물
     private int totalPage; // 전체페이지 수
 
-    private int displayRow; // 한 페이지에 보여줄 로우 수
+    private int displayRow = 10; // 한 페이지에 보여줄 로우 수
     private int displayPage = 10; // 한 페이지에 보여줄 페이지 수
 
     private int beginPage; // 시작 페이지
@@ -26,13 +26,13 @@ public class Paging {
     private int offset; // 검색 로우
 
     public Paging() {
-        setDefaultPaging(1, 0);
+        setDefaultPaging(1, this.displayRow, 0);
     }
 
     @Builder
     public Paging(int currentPage, int displayRow, int totalCount) {
         if(totalCount < 1) {
-            setDefaultPaging(currentPage, displayRow);
+            setDefaultPaging(currentPage, displayRow, totalCount);
         }else {
             this.currentPage = currentPage;
             this.displayRow = displayRow;
@@ -44,12 +44,12 @@ public class Paging {
         }
     }
 
-    private void setDefaultPaging(int currentPage, int displayRow) {
+    private void setDefaultPaging(int currentPage, int displayRow, int totalCount) {
         this.currentPage = currentPage;
         this.displayRow = displayRow;
-        this.totalCount = 0;
-        this.offset = 0;
+        this.totalCount = totalCount;
         this.totalPage = 1;
+        this.offset = 0;
         this.prevPage = 1;
         this.nextPage = this.displayPage;
     }

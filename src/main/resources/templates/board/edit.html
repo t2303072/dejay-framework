@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:input="http://www.w3.org/1999/html"
+      layout:decorate="~{layout/layout}" lang="ko">
+
+<th:block layout:fragment="css">
+    <head>
+        <link rel="stylesheet" type="text/css" th:href="@{/static/css/board/common.css}"/>
+        <title>공통 게시판 수정</title>
+    </head>
+</th:block>
+
+<th:block layout:fragment="content">
+    <div id="main_wrapper">
+        <h1>공통 게시판 수정</h1>
+    </div>
+
+    <form th:object="${rowData}">
+        <div id="content_wrapper">
+            <div id="info_wrapper" class="bg-secondary p-sm-2">
+                <p>
+                    <span>작성자</span>
+                    <span>name</span>
+                </p>
+                <p>
+                    <span>제목<span class="glyphicon-asterisk"></span></span>
+                    <span><input type="text" th:field="*{title}"></span>
+                </p>
+                <p>
+                    <span>썸네일 이미지</span>
+                    <span>THUMBNAIL IMAGE</span>
+                </p>
+            </div>
+            <div id="detail_wrapper" class="p-sm-2">
+                <textarea th:field="*{contents}"></textarea>
+            </div>
+            <div id="file_wrapper"></div>
+            <div id="button_wrapper">
+                <input type="button" th:value="삭제" th:onclick="'fnDeleteBoard(' + *{boardSeq} + ')'" />
+                <input type="button" th:value="수정" th:onclick="'fnUpdateBoard(' + *{boardSeq} + ')'"  />
+            </div>
+        </div>
+    </form>
+</th:block>
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+        // 게시글 삭제
+        let fnDeleteBoard = (seq) => {
+            if(!confirm('삭제 하시겠습니까?')) {
+                return false;
+            }
+            let checkedList = [];
+            checkedList.push(seq);
+            $.ajax({
+                url: '/board/api/delete',
+                type: 'delete',
+                data: {lastId: 'ij', checkedList: checkedList}
+            })
+                .done(function(data) {
+
+                    console.log(data);
+                    window.location.href = '/board';
+                })
+                .fail(function(jqXHR) {
+                    console.log(jqXHR);
+                });
+        }
+
+        let fnUpdateBoard = (seq) => {
+            if(!confirm('수정 하시겠습니까?')) {
+                return false;
+            }
+
+            if($('input[name=title]').val() === '') {
+                alert('필수 정보를 입력해주세요.');
+                return false;
+            }
+            const data = {
+                boardSeq: seq,
+                title: $('input[name=title]').val(),
+                contents: $('#contents').val(),
+                lastId: 'ij'
+                // thumbnail image file
+                // ck editor
+                // multiple file upload
+            }
+
+            $.ajax({
+                url: `/board/api/update/${seq}`,
+                type: 'patch',
+                dataType: 'json',
+                contentType: 'application/json; charset=UTF-8',
+                data: JSON.stringify(data)
+            })
+            .done(function(data) {
+                console.log(data);
+                window.location.href = `/board/${seq}`;
+            })
+            .fail(function(jqXHR) {
+                console.log(jqXHR);
+            });
+        }
+    </script>
+</th:block>
+</html>

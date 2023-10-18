@@ -14,17 +14,54 @@
     <div id="main_wrapper">
         <h1>공통 게시판 상세</h1>
     </div>
+
     <div id="content_wrapper">
-        <span th:text="${rowData.getBoardSeq()}">게시글 ID</span> <br>
-        <span th:text="${rowData.getBoardCd()}">게시글 코드</span> <br>
-        <span th:text="${rowData.getTitle()}">타이틀</span> <br>
-<!--            <span th:text="${rowData.getContents()}">내용</span> <br>-->
-            <span th:text="${rowData.getHits()}">조회수</span> <br>
-            <span th:text="${rowData.getDelYn()}">삭제여부</span> <br>
-            <span th:text="${rowData.getRegDtStr()}">등록일</span> <br>
-        <span th:text="${rowData.getRegId()}">등록자</span> <br>
-            <span th:text="${rowData.getLastDtStr()}">수정일</span> <br>
-            <span th:text="${rowData.getLastId()}">수정자</span>
+        <div id="info_wrapper" class="bg-secondary">
+            <p>
+                <span th:text="${rowData.getTitle()}">제목</span>
+            </p>
+            <p>
+                <span th:text="'작성자: ' + ${rowData.getRegId()} + ' | 등록일: ' + ${rowData.getRegDtStr()} + ' | 조회수:' + ${rowData.getHits()}"></span> <br>
+            </p>
+        </div>
+        <div id="file_wrapper"></div>
+        <div id="detail_wrapper">
+            <p>
+                <span th:text="${rowData.getContents()}"></span>
+            </p>
+        </div>
+        <div id="button_wrapper">
+            <input type="button" th:value="삭제" th:onclick="'fnDeleteBoard(' + ${rowData.getBoardSeq()} + ')'" />
+            <input type="button" th:value="수정" th:onclick="'fnEditBoard(' + ${rowData.getBoardSeq()} + ')'" />
+        </div>
     </div>
+</th:block>
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+        // 게시글 삭제
+        let fnDeleteBoard = (seq) => {
+            if(!confirm('삭제 하시겠습니까?')) {
+                return false;
+            }
+            let checkedList = [];
+            checkedList.push(seq);
+            $.ajax({
+                url: '/board/api/delete',
+                type: 'delete',
+                data: {lastId: 'ij', checkedList: checkedList}
+            })
+            .done(function(data) {
+             console.log(data);
+                window.location.href = '/board';
+            })
+            .fail(function(jqXHR) {
+                console.log(jqXHR);
+            });
+        }
+
+        let fnEditBoard = (seq) => {
+            window.location.href = `/board/edit/${seq}`;
+        }
+    </script>
 </th:block>
 </html>
