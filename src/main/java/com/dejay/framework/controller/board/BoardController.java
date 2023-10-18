@@ -69,16 +69,7 @@ public class BoardController extends ParentController {
     }
 
     @PostMapping("/api/list")
-    public String findAll(Model model, @RequestBody Map<String, Object> paramMap
-//            , @RequestParam(value = "searchDateType", required = false) String searchDateType
-//            , @RequestParam(value = "startDt", required = false) String startDt
-//            , @RequestParam(value = "endDt", required = false) String endDt
-//            , @RequestParam(value = "searchKeywordType", required = false) String searchKeywordType
-//            , @RequestParam(value = "searchWord1", required = false) String searchWord1
-//            , @RequestParam(value = "currentPage", defaultValue = "1") int currentPage
-//            , @RequestParam(value = "displayRow", defaultValue = "10") int displayRow
-//            , @RequestParam(value = "totalCount") int totalCount
-    ) {
+    public String findAll(Model model, @RequestBody Map<String, Object> paramMap) {
 
         ObjectMapper om = new ObjectMapper();
         BoardSearchVO boardSearchVO = om.convertValue(paramMap.get("boardPublicVO"), BoardSearchVO.class);
@@ -89,19 +80,6 @@ public class BoardController extends ParentController {
                 .totalCount(pagingParam.getTotalCount())
                 .build()
         );
-
-//        BoardSearchVO boardSearchVO = new BoardSearchVO();
-//        boardSearchVO.setPaging(Paging.builder()
-//                .currentPage(currentPage)
-//                .displayRow(displayRow)
-//                .totalCount(totalCount)
-//                .build()
-//        );
-//        boardSearchVO.setSearchDateType(searchDateType);
-//        boardSearchVO.setStartDt(startDt);
-//        boardSearchVO.setEndDt(endDt);
-//        boardSearchVO.setSearchKeywordType(searchKeywordType);
-//        boardSearchVO.setSearchWord1(searchWord1);
 
         // 전체 게시물 수
         int totalListCount = getCommonService().getBoardPublicServiceImpl().totalCount(boardSearchVO);

@@ -43,8 +43,8 @@ public class BoardPublicServiceImpl extends ParentService implements BoardServic
 //        search.setEntityName(TableNameEnum.BOARD.name());
 
         BoardPublicVO rowData = getCommonMapper().getBoardMapper().findById(search);
-        rowData.setRegDtStr(DateUtil.convertLocalDateTimeToString(rowData.getRegDt(), "yyyy-MM-dd"));
-        rowData.setLastDtStr(DateUtil.convertLocalDateTimeToString(rowData.getLastDt(), "yyyy-MM-dd"));
+        rowData.setRegDtStr(DateUtil.convertLocalDateTimeToString(rowData.getRegDt(), "yyyy-MM-dd HH:mm"));
+        rowData.setLastDtStr(DateUtil.convertLocalDateTimeToString(rowData.getLastDt(), "yyyy-MM-dd HH:mm"));
 
         // 게시판에 물린 파일 목록 가져오기
 //        board.setFileList(boardFileSearch(search));
@@ -61,8 +61,8 @@ public class BoardPublicServiceImpl extends ParentService implements BoardServic
 
         List<BoardPublicVO> list = getCommonMapper().getBoardMapper().findAll(boardSearchVO);
         list.forEach(ele -> {
-            ele.setRegDtStr(DateUtil.convertLocalDateTimeToString(ele.getRegDt(), "yyyy-MM-dd"));
-            ele.setLastDtStr(DateUtil.convertLocalDateTimeToString(ele.getLastDt(), "yyyy-MM-dd"));
+            ele.setRegDtStr(DateUtil.convertLocalDateTimeToString(ele.getRegDt(), "yyyy-MM-dd HH:mm"));
+            ele.setLastDtStr(DateUtil.convertLocalDateTimeToString(ele.getLastDt(), "yyyy-MM-dd HH:mm"));
         });
 
         return list;
