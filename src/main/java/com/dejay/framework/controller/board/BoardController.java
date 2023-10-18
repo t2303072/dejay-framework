@@ -1,12 +1,10 @@
 package com.dejay.framework.controller.board;
 
-import com.dejay.framework.common.enums.MapKeyStringEnum;
-import com.dejay.framework.common.enums.ResultCodeMsgEnum;
 import com.dejay.framework.common.utils.ObjectHandlingUtil;
 import com.dejay.framework.controller.common.ParentController;
+import com.dejay.framework.domain.board.Board;
 import com.dejay.framework.domain.common.Paging;
 import com.dejay.framework.vo.board.BoardPublicVO;
-import com.dejay.framework.vo.common.ResultStatusVO;
 import com.dejay.framework.vo.search.SearchVO;
 import com.dejay.framework.vo.search.board.BoardSearchVO;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,8 +16,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,6 +36,8 @@ public class BoardController extends ParentController {
         // [검색옵션] 키워드
         var searchKeywordTypeOptionList = getCommonService().getBoardPublicServiceImpl().getSearchKeywordTypeList();
         mv.addObject("searchKeywordTypeOptionList", searchKeywordTypeOptionList);
+
+        // TODO: [노출 게시물 갯수 옵션]
 
         // 전체 게시물 수
         int totalCount = getCommonService().getBoardPublicServiceImpl().totalCount(null);
@@ -102,8 +100,8 @@ public class BoardController extends ParentController {
 
     @ResponseBody
     @DeleteMapping("/api/delete")
-    public ResponseEntity deleteBoard(Model model, @RequestParam(value = "checkedList[]") List<Integer> checkedList) {
-        Map<String, Object> result = getCommonService().getBoardPublicServiceImpl().deleteBySeq(checkedList);
+    public ResponseEntity deleteBoard(Model model, @RequestParam(value = "lastId") String lastId, @RequestParam(value = "checkedList[]") List<Integer> checkedList) {
+        Map<String, Object> result = getCommonService().getBoardPublicServiceImpl().deleteBySeq(lastId, checkedList);
 
         return ResponseEntity.ok(result);
     }
@@ -120,4 +118,30 @@ public class BoardController extends ParentController {
         return mv;
     }
 
+    @GetMapping("/edit/{seq}")
+    public ModelAndView editForm(ModelAndView mv, @PathVariable long seq) {
+        mv.setViewName("board/edit");
+
+        BoardSearchVO boardSearchVO = new BoardSearchVO();
+        boardSearchVO.setBoardSeq(seq);
+        BoardPublicVO rowData = getCommonService().getBoardService().findById(boardSearchVO);
+        mv.addObject("rowData", rowData);
+
+        return mv;
+    }
+
+    @ResponseBody
+    @PatchMapping("/api/update/{seq}")
+    public ResponseEntity deleteBoard(Model model, @RequestBody Board board) {
+        log.info(board.toString());
+        Map<String, Object> result = getCommonService().getBoardPublicServiceImpl().updateBoard(board);
+
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/registration")
+    public String registration(ModelAndView mv) {
+//        mv.setViewName("board/registration");
+        return "board/registration";
+    }
 }

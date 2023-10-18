@@ -34,6 +34,9 @@ public class Board extends BaseEntity {
     @NotNull(message="사용 여부는 필수값 입니다.")
     private String useYn;
 
+    // 수정자 ID
+    private String lastId;
+
     @Builder
     public Board(String tableName, String logId1, String logId2, String logType, String logJson, String remark, String regId,Long boardSeq,String boardCode, String title, String contents, String fixYn, String displayYn, String useYn){
         super(tableName, logId1, logId2, logType, logJson, remark, regId);
