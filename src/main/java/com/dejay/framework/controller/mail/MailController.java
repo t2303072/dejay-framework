@@ -3,7 +3,6 @@ package com.dejay.framework.controller.mail;
 import com.dejay.framework.common.utils.CryptoUtil;
 import com.dejay.framework.common.utils.StringUtil;
 import com.dejay.framework.controller.common.ParentController;
-import com.dejay.framework.vo.mail.MailPublicVO;
 import com.dejay.framework.vo.member.MemberVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
