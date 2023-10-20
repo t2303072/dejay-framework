@@ -7,19 +7,21 @@ import com.dejay.framework.controller.common.ParentController;
 import com.dejay.framework.domain.user.SignUpRequest;
 import com.dejay.framework.vo.member.MemberVO;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Slf4j
-@Controller
+@RestController
+@RequiredArgsConstructor
 @RequestMapping("/member")
 public class MemberController extends ParentController {
 
@@ -79,7 +81,9 @@ public class MemberController extends ParentController {
      * @return
      */
     @GetMapping("/pwdChange")
-    public ModelAndView changePassword(ModelAndView mv){
+    public ModelAndView changePassword(ModelAndView mv, HttpServletRequest request) {
+        String id = request.getParameter("id");
+        mv.addObject("id",id);
         mv.setViewName("member/member-change-password");
         return mv;
     }
@@ -97,4 +101,9 @@ public class MemberController extends ParentController {
 
     }
 
+    @PostMapping("/updatePwd")
+    public Map<String,Object> updatePwd(@RequestBody MemberVO member){
+        Map<String, Object> map = getCommonService().getMemberService().updatePwd(member);
+        return map;
+    }
 }

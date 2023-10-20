@@ -56,4 +56,10 @@
              SELECT LAST_INSERT_ID()
         </selectKey>
     </insert>
+
+    <update id="updatePwd">
+        UPDATE INFO_USER U
+        SET USER_PWD = #{password}
+        WHERE U.USER_ID = #{memberId}
+    </update>
 </mapper>

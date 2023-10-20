@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 @Slf4j
@@ -192,6 +193,11 @@ public class RestMemberServiceImpl extends ParentService implements MemberServic
             }
         }
 
+    }
+
+    @Override
+    public Map<String, Object> updatePwd(MemberVO member) {
+        return null;
     }
 
 }

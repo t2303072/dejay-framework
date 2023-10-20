@@ -21,5 +21,6 @@ public interface MemberMapper extends GeneralMapper {
     int insertMember(Member member);
     MemberVO findMemberByUserName(String userName);
     MemberVO getLoginInfo(String userName);
+    int updatePwd(Member member);
 
 }

@@ -8,6 +8,8 @@ import com.dejay.framework.domain.user.SignUpRequest;
 import com.dejay.framework.vo.common.CollectionPagingVO;
 import com.dejay.framework.vo.member.MemberVO;
 
+import java.util.Map;
+
 public interface MemberService {
 
     // 멤버 목록 조회
@@ -27,4 +29,6 @@ public interface MemberService {
 
     // 로그인 정보 조회
     MemberVO getLoginInfo(LoginRequest loginRequest);
+
+    Map<String,Object> updatePwd(MemberVO member);
 }

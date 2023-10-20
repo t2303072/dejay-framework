@@ -23,9 +23,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -186,4 +189,29 @@ public class MemberServiceImpl extends ParentService implements MemberService{
         }
 
     }
+
+    /**
+     * password 변경하기
+     * @param member
+     * @return
+     */
+    @Override
+    public Map<String, Object> updatePwd(MemberVO member) {
+        HashMap<String, Object> result = new HashMap<>();
+        Member target = Member.builder()
+                                .memberId(member.getUserId())
+                                .password(bCryptPasswordEncoder.encode(member.getUserPwd()))
+                                .build();
+        int update= getCommonMapper().getMemberMapper().updatePwd(target);
+
+        if(update > 0) {
+            result.put("result","success");
+        } else {
+            result.put("result", "fail");
+        }
+
+        return result;
+    }
+
+
 }
