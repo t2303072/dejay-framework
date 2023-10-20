@@ -8,6 +8,8 @@ import jakarta.validation.ValidatorFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -47,5 +49,32 @@ public class ValidationUtil {
         }
 
         return true;
+    }
+
+    /**
+     * 요청 parameter 객체에 대한 검증
+     * @param obj {@link Object}  검증 대상 객체
+     * @param clazz {@link Class} 대상 객체 클래스
+     * @return {@link Boolean}
+     * @param <T>
+     */
+    public <T> Map<String, Object> clientRequestParameterValidator(T obj, Class<T> clazz) {
+        var resultMap = new HashMap<String, Object>();
+        validatorFactory = Validation.buildDefaultValidatorFactory();
+        validator = validatorFactory.getValidator();
+        Set<ConstraintViolation<T>> validate = validator.validate((clazz.cast(obj)));
+
+        if(validate.size() > 0) {
+            log.error(validate.toString());
+
+            for (ConstraintViolation<T> violation : validate) {
+                log.error("[parameterValidator] {}", violation.getMessage());
+                resultMap.put(violation.getPropertyPath().toString(), violation.getMessage());
+            }
+
+            return resultMap;
+        }
+
+        return resultMap;
     }
 }
