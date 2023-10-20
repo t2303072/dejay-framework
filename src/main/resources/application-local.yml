@@ -20,6 +20,23 @@ spring:
   devtools:
     livereload:
       enabled: true
+  mail:
+    default-encoding: UTF-8
+    host: smtp.gmail.com
+    port: 587
+    username: dejayframework@gmail.com
+    password: tvrx phxd gheh bcps
+    properties:
+      mail:
+        debug: true
+        mine:
+          charset: UTF-8
+        transport:
+          protocol: smtp
+        smtp:
+          starttls:
+            enable: true
+
 
 ## mapper logging level
 logging:

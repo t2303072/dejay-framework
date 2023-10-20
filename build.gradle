@@ -78,6 +78,9 @@ dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
 	implementation('nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect')
 
+
+	// mail
+	implementation('org.springframework.boot:spring-boot-starter-mail')
 	// JSP
 //	compileOnly 'org.apache.tomcat.embed:tomcat-embed-jasper'
 //	compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
