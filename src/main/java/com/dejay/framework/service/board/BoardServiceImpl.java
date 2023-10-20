@@ -104,6 +104,11 @@ public class BoardServiceImpl extends ParentService implements BoardService{
         return null;
     }
 
+    @Override
+    public void increaseHits(long boardSeq) {
+
+    }
+
     /**
      *  단 건 게시판 파일 조회
      * @param search

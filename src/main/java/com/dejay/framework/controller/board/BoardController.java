@@ -3,16 +3,19 @@ package com.dejay.framework.controller.board;
 import com.dejay.framework.common.utils.ObjectHandlingUtil;
 import com.dejay.framework.controller.common.ParentController;
 import com.dejay.framework.domain.board.Board;
+import com.dejay.framework.domain.board.BoardPublic;
 import com.dejay.framework.domain.common.Paging;
 import com.dejay.framework.vo.board.BoardPublicVO;
 import com.dejay.framework.vo.search.SearchVO;
 import com.dejay.framework.vo.search.board.BoardSearchVO;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -25,6 +28,11 @@ import java.util.Map;
 @RequestMapping("/board")
 public class BoardController extends ParentController {
 
+    /**
+     * 공통 게시판 목록 조회
+     * @param mv
+     * @return
+     */
     @GetMapping({"", "/"})
     public ModelAndView findAll(ModelAndView mv) {
         mv.setViewName("board/list");
@@ -49,6 +57,7 @@ public class BoardController extends ParentController {
                 .displayRow(10)
                 .build()
         );
+
         // 목록 조회
         List<BoardPublicVO> list = getCommonService().getBoardPublicServiceImpl().findAll(boardSearchVO);
         mv.addObject("list", list);
@@ -66,9 +75,67 @@ public class BoardController extends ParentController {
         return mv;
     }
 
+    /**
+     * 공통 게시판 상세 화면
+     * @param mv
+     * @param seq
+     * @return
+     */
+    @GetMapping("/{seq}")
+    public ModelAndView findById(ModelAndView mv, @PathVariable long seq) {
+        mv.setViewName("board/detail");
+
+        BoardSearchVO boardSearchVO = new BoardSearchVO();
+        boardSearchVO.setBoardSeq(seq);
+        BoardPublicVO rowData = getCommonService().getBoardService().findById(boardSearchVO);
+        mv.addObject("rowData", rowData);
+
+        getCommonService().getBoardService().increaseHits(seq);
+
+        return mv;
+    }
+
+    /**
+     * 공통 게시판 등록 화면
+     * @param mv
+     * @return
+     */
+    @GetMapping("/registration")
+    public String registration(ModelAndView mv, BoardPublic boardPublic) {
+        mv.setViewName("board/registration");
+        mv.addObject("boardPublic", boardPublic);
+        return "board/registration";
+    }
+
+    /**
+     * 공통 게시판 수정 화면
+     * @param mv
+     * @param seq
+     * @return
+     */
+    @GetMapping("/edit/{seq}")
+    public ModelAndView editForm(ModelAndView mv, @PathVariable long seq) {
+        mv.setViewName("board/edit");
+
+        BoardSearchVO boardSearchVO = new BoardSearchVO();
+        boardSearchVO.setBoardSeq(seq);
+        BoardPublicVO rowData = getCommonService().getBoardService().findById(boardSearchVO);
+        mv.addObject("rowData", rowData);
+
+        return mv;
+    }
+
+
+
+    /** API **/
+    /**
+     * 공통 게시판 목록 조회 API
+     * @param model
+     * @param paramMap
+     * @return
+     */
     @PostMapping("/api/list")
     public String findAll(Model model, @RequestBody Map<String, Object> paramMap) {
-
         ObjectMapper om = new ObjectMapper();
         BoardSearchVO boardSearchVO = om.convertValue(paramMap.get("boardPublicVO"), BoardSearchVO.class);
         Paging pagingParam = om.convertValue(paramMap.get("paging"), Paging.class);
@@ -98,38 +165,26 @@ public class BoardController extends ParentController {
         return "board/list :: #list_wrapper";
     }
 
+    /**
+     * 공통 게시판 등록 API
+     * @param model
+     * @param boardPublic
+     * @return
+     */
     @ResponseBody
-    @DeleteMapping("/api/delete")
-    public ResponseEntity deleteBoard(Model model, @RequestParam(value = "lastId") String lastId, @RequestParam(value = "checkedList[]") List<Integer> checkedList) {
-        Map<String, Object> result = getCommonService().getBoardPublicServiceImpl().deleteBySeq(lastId, checkedList);
+    @PostMapping("/api/registration")
+    public ResponseEntity registration(Model model, @RequestBody BoardPublic boardPublic) {
+        Map<String, Object> result = getCommonService().getBoardPublicServiceImpl().registration(boardPublic);
 
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/{seq}")
-    public ModelAndView findById(ModelAndView mv, @PathVariable long seq) {
-        mv.setViewName("board/detail");
-
-        BoardSearchVO boardSearchVO = new BoardSearchVO();
-        boardSearchVO.setBoardSeq(seq);
-        BoardPublicVO rowData = getCommonService().getBoardService().findById(boardSearchVO);
-        mv.addObject("rowData", rowData);
-
-        return mv;
-    }
-
-    @GetMapping("/edit/{seq}")
-    public ModelAndView editForm(ModelAndView mv, @PathVariable long seq) {
-        mv.setViewName("board/edit");
-
-        BoardSearchVO boardSearchVO = new BoardSearchVO();
-        boardSearchVO.setBoardSeq(seq);
-        BoardPublicVO rowData = getCommonService().getBoardService().findById(boardSearchVO);
-        mv.addObject("rowData", rowData);
-
-        return mv;
-    }
-
+    /**
+     * 공통 게시판 수정 API
+     * @param model
+     * @param board
+     * @return
+     */
     @ResponseBody
     @PatchMapping("/api/update/{seq}")
     public ResponseEntity deleteBoard(Model model, @RequestBody Board board) {
@@ -139,9 +194,20 @@ public class BoardController extends ParentController {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/registration")
-    public String registration(ModelAndView mv) {
-//        mv.setViewName("board/registration");
-        return "board/registration";
+    /**
+     * 공통 게시판 삭제 API
+     * @param model
+     * @param lastId
+     * @param checkedList
+     * @return
+     */
+    @ResponseBody
+    @DeleteMapping("/api/delete")
+    public ResponseEntity deleteBoard(Model model, @RequestParam(value = "lastId") String lastId, @RequestParam(value = "checkedList[]") List<Integer> checkedList) {
+        Map<String, Object> result = getCommonService().getBoardPublicServiceImpl().deleteBySeq(lastId, checkedList);
+
+        return ResponseEntity.ok(result);
     }
+
+
 }

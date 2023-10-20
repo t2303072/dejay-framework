@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Board extends BaseEntity {
@@ -13,6 +14,7 @@ public class Board extends BaseEntity {
 
     // 게시판 코드
     private String boardCode;
+    private String boardCd;
 
     // 제목
     @NotNull(message="제목은 필수값 입니다.")

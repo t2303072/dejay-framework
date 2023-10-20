@@ -187,15 +187,15 @@
 
         // 게시글 삭제
         let fnDeleteBoard = () => {
-            if(!confirm('선택한 게시판을 삭제 처리 하시겠습니까?')) {
-                return false;
-            }
             let checkedList = [];
             $('input[name=chkbox]:checked').each(function() {
                 checkedList.push(this.value);
             });
             if(checkedList.length < 1) {
                 alert('삭제 처리 하실 게시판을 선택 해주세요.');
+                return false;
+            }
+            if(!confirm('선택한 게시판을 삭제 처리 하시겠습니까?')) {
                 return false;
             }
             $.ajax({

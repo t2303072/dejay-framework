@@ -6,7 +6,6 @@ import com.dejay.framework.vo.board.BoardPublicVO;
 import com.dejay.framework.vo.board.BoardVO;
 import com.dejay.framework.vo.file.FileVO;
 import com.dejay.framework.vo.member.MemberVO;
-import com.dejay.framework.vo.search.SearchVO;
 import com.dejay.framework.vo.search.board.BoardSearchVO;
 
 import java.util.List;
@@ -35,4 +34,7 @@ public interface BoardService  {
 
     // 공통 게시판 목록 조회
     List<BoardPublicVO> findAll(BoardSearchVO boardSearchVO);
+
+    // 조회수 증가
+    void increaseHits(long boardSeq);
 }

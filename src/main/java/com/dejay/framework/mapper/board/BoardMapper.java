@@ -1,6 +1,7 @@
 package com.dejay.framework.mapper.board;
 
 import com.dejay.framework.domain.board.Board;
+import com.dejay.framework.domain.board.BoardPublic;
 import com.dejay.framework.mapper.common.GeneralMapper;
 import com.dejay.framework.vo.board.BoardPublicVO;
 import com.dejay.framework.vo.file.FileVO;
@@ -48,4 +49,18 @@ public interface BoardMapper extends GeneralMapper {
      * @return {@link Integer}
      */
     int updateBoard(Board board);
+
+    /**
+     * 공통 게시판 등록
+     * @param boardPublic {@link BoardPublic}
+     * @return {@link Integer}
+     */
+    int registrationBoard(BoardPublic boardPublic);
+
+    /**
+     * 조회수 증가
+     * @param boardSeq
+     * @return
+     */
+    int increaseHits(long boardSeq);
 }

@@ -237,5 +237,17 @@
          WHERE BOARD_SEQ = #{boardSeq}
     </update>
 
+    <insert id="registrationBoard">
+        /* 게시판 등록 - BoardMapper.registrationBoard */
+        INSERT INTO BOARD_PUBLIC (BOARD_CD, TITLE, CONTENTS, REG_DT, REG_ID)
+             VALUES (#{boardCd}, #{title}, #{contents}, NOW(), #{regId})
+    </insert>
+
+    <update id="increaseHits">
+        /* 게시판 조회수 증가 - BoardMapper.increaseHits */
+        UPDATE BOARD_PUBLIC
+           SET HITS = HITS + 1
+         WHERE BOARD_SEQ = #{boardSeq}
+    </update>
     <!-- 저장/수정/삭제 [[ -->
 </mapper>
