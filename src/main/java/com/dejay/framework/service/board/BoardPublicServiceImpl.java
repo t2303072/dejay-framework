@@ -6,14 +6,12 @@ import com.dejay.framework.domain.board.BoardPublic;
 import com.dejay.framework.domain.file.File;
 import com.dejay.framework.service.common.ParentService;
 import com.dejay.framework.vo.board.BoardPublicVO;
+import com.dejay.framework.vo.board.BoardReplyVO;
 import com.dejay.framework.vo.board.BoardVO;
 import com.dejay.framework.vo.common.SelectOptionVO;
 import com.dejay.framework.vo.file.FileVO;
 import com.dejay.framework.vo.member.MemberVO;
-import com.dejay.framework.vo.search.SearchVO;
 import com.dejay.framework.vo.search.board.BoardSearchVO;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Valid;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
@@ -48,11 +46,22 @@ public class BoardPublicServiceImpl extends ParentService implements BoardServic
 //        search.setEntityName(TableNameEnum.BOARD.name());
 
         BoardPublicVO rowData = getCommonMapper().getBoardMapper().findById(search);
-        rowData.setRegDtStr(DateUtil.convertLocalDateTimeToString(rowData.getRegDt(), "yyyy-MM-dd HH:mm"));
-//        rowData.setLastDtStr(DateUtil.convertLocalDateTimeToString(rowData.getLastDt(), "yyyy-MM-dd HH:mm"));
+        rowData.setRegDtStr(DateUtil.convertLocalDateTimeToString(rowData.getRegDt(), DateUtil.DATETIME_YMDHM_PATTERN));
+        rowData.setLastDtStr(DateUtil.convertLocalDateTimeToString(rowData.getLastDt(), DateUtil.DATETIME_YMDHM_PATTERN));
 
-        // 게시판에 물린 파일 목록 가져오기
+        // 게시판 댓글 목록 조회
+        if(rowData != null) {
+            List<BoardReplyVO> replyBySeq = getCommonMapper().getBoardMapper().findReplyBySeq(rowData.getBoardSeq());
+            if(!replyBySeq.isEmpty()) {
+                replyBySeq.forEach(ele -> {
+                    ele.setRegDtStr(DateUtil.convertLocalDateTimeToString(ele.getRegDt(), DateUtil.DATETIME_YMDHM_PATTERN));
+                });
+                rowData.setReplyList(replyBySeq);
+            }
+
+            // 게시판에 물린 파일 목록 가져오기
 //        board.setFileList(boardFileSearch(search));
+        }
 
         return rowData;
     }
@@ -71,8 +80,8 @@ public class BoardPublicServiceImpl extends ParentService implements BoardServic
 
         List<BoardPublicVO> list = getCommonMapper().getBoardMapper().findAll(boardSearchVO);
         list.forEach(ele -> {
-            ele.setRegDtStr(DateUtil.convertLocalDateTimeToString(ele.getRegDt(), "yyyy-MM-dd HH:mm"));
-//            ele.setLastDtStr(DateUtil.convertLocalDateTimeToString(ele.getLastDt(), "yyyy-MM-dd HH:mm"));
+            ele.setRegDtStr(DateUtil.convertLocalDateTimeToString(ele.getRegDt(), DateUtil.DATETIME_YMDHM_PATTERN));
+            ele.setLastDtStr(DateUtil.convertLocalDateTimeToString(ele.getLastDt(), DateUtil.DATETIME_YMDHM_PATTERN));
         });
 
         return list;
@@ -188,6 +197,11 @@ public class BoardPublicServiceImpl extends ParentService implements BoardServic
         return result;
     }
 
+    /**
+     * 게시판 등록
+     * @param boardPublic
+     * @return result {@link Map}
+     */
     public Map<String, Object> registration(BoardPublic boardPublic) {
         var result = new HashMap<String, Object>();
         result.put("code", 200);
@@ -218,5 +232,21 @@ public class BoardPublicServiceImpl extends ParentService implements BoardServic
         result.put("message", "등록 되었습니다.");
 
         return result;
+    }
+
+    /**
+     * 공통 게시판 댓글 삭제
+     * @param paramMap
+     * @return
+     */
+    public List<BoardReplyVO> removeBoardReply(Map<String, Object> paramMap) {
+        getCommonMapper().getBoardMapper().removeReplyBySeq(paramMap);
+
+        List<BoardReplyVO> replyBySeq = getCommonMapper().getBoardMapper().findReplyBySeq(Long.parseLong(paramMap.get("boardSeq").toString()));
+        if(!replyBySeq.isEmpty()) {
+            replyBySeq.forEach(ele -> ele.setRegDtStr(DateUtil.convertLocalDateTimeToString(ele.getRegDt(), DateUtil.DATETIME_YMDHM_PATTERN)));
+        }
+
+        return replyBySeq;
     }
 }

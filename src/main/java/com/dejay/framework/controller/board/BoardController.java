@@ -6,6 +6,7 @@ import com.dejay.framework.domain.board.Board;
 import com.dejay.framework.domain.board.BoardPublic;
 import com.dejay.framework.domain.common.Paging;
 import com.dejay.framework.vo.board.BoardPublicVO;
+import com.dejay.framework.vo.board.BoardReplyVO;
 import com.dejay.framework.vo.search.SearchVO;
 import com.dejay.framework.vo.search.board.BoardSearchVO;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,7 +46,7 @@ public class BoardController extends ParentController {
         var searchKeywordTypeOptionList = getCommonService().getBoardPublicServiceImpl().getSearchKeywordTypeList();
         mv.addObject("searchKeywordTypeOptionList", searchKeywordTypeOptionList);
 
-        // TODO: [노출 게시물 갯수 옵션]
+        // TODO: [노출 게시물 갯수 옵션 하드코딩 제거]
 
         // 전체 게시물 수
         int totalCount = getCommonService().getBoardPublicServiceImpl().totalCount(null);
@@ -89,6 +90,7 @@ public class BoardController extends ParentController {
         boardSearchVO.setBoardSeq(seq);
         BoardPublicVO rowData = getCommonService().getBoardService().findById(boardSearchVO);
         mv.addObject("rowData", rowData);
+        mv.addObject("replyList", rowData.getReplyList());
 
         getCommonService().getBoardService().increaseHits(seq);
 
@@ -209,5 +211,18 @@ public class BoardController extends ParentController {
         return ResponseEntity.ok(result);
     }
 
+    /**
+     * 공통 게시판 댓글 삭제 API
+     * @param model
+     * @param paramMap
+     * @return
+     */
+    @DeleteMapping("/api/reply")
+    public String removeReply(Model model, @RequestBody Map<String, Object> paramMap) {
+        List<BoardReplyVO> replyList = getCommonService().getBoardPublicServiceImpl().removeBoardReply(paramMap);
+        model.addAttribute("replyList", replyList);
+
+        return "board/detail :: #reply_wrapper";
+    }
 
 }

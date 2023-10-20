@@ -15,24 +15,37 @@
         <h1>공통 게시판 상세</h1>
     </div>
 
-    <div id="content_wrapper">
-        <div id="info_wrapper" class="bg-secondary">
+    <div id="content_wrapper" th:object="${rowData}">
+        <div id="info_wrapper" class="bg-secondary p-sm-2">
             <p>
                 <span th:text="${rowData.getTitle()}">제목</span>
             </p>
             <p>
-                <span th:text="'작성자: ' + ${rowData.getRegId()} + ' | 등록일: ' + ${rowData.getRegDtStr()} + ' | 조회수:' + ${rowData.getHits()}"></span> <br>
+                <span th:text="'작성자: ' + *{regId} + ' | 등록일: ' + *{regDtStr} + ' | 조회수:' + *{hits}"></span> <br>
             </p>
         </div>
         <div id="file_wrapper"></div>
         <div id="detail_wrapper">
             <p>
-                <span th:text="${rowData.getContents()}"></span>
+                <span th:text="*{contents}"></span>
             </p>
         </div>
-        <div id="button_wrapper">
-            <input type="button" th:value="삭제" th:onclick="'fnDeleteBoard(' + ${rowData.getBoardSeq()} + ')'" />
-            <input type="button" th:value="수정" th:onclick="'fnEditBoard(' + ${rowData.getBoardSeq()} + ')'" />
+        <div id="reply_wrapper" class="bg-secondary p-sm-2">
+            <caption>댓글</caption>
+            <p>
+                <textarea></textarea>
+                <input type="button" value="입력">
+            </p>
+            <div id="reply_data_wrapper" th:each="ele : ${replyList}">
+                <p><span th:text="${ele.getRegId()} + ' | ' + ${ele.getRegDtStr()}"></span>
+                   <span th:classappend="${ele.getRegId() == 'ijzone' ? 'glyphicon glyphicon-remove' : ''}" th:onclick="'fnRemoveReply(' + *{boardSeq} + ', ' + ${ele.getRippleSeq()} + ')'"></span>
+                </p>
+                <p><span th:text="${ele.getContents()}">contents</span></p>
+            </div>
+        </div>
+        <div id="button_wrapper" class="p-sm-2">
+            <input type="button" th:value="삭제" th:onclick="'fnDeleteBoard(' + *{boardSeq} + ')'" />
+            <input type="button" th:value="수정" th:onclick="'fnEditBoard(' + *{boardSeq} + ')'" />
         </div>
     </div>
 </th:block>
@@ -60,6 +73,28 @@
 
         let fnEditBoard = (seq) => {
             window.location.href = `/board/edit/${seq}`;
+        }
+
+        let fnRemoveReply = (boardSeq, rippleSeq) => {
+            const data = {
+                boardSeq: boardSeq
+                , rippleSeq: rippleSeq
+                // , lastId: 'ijzone'
+            }
+            $.ajax({
+                url: '/board/api/reply',
+                type: 'delete',
+                dataType: 'text',
+                contentType: 'application/json; charset=UTF-8',
+                data: JSON.stringify(data)
+            })
+            .done(function(data) {
+                console.log(data);
+                $('#reply_wrapper').replaceWith(data);
+            })
+            .fail(function(jqXHR) {
+                console.log(jqXHR);
+            });
         }
     </script>
 </th:block>

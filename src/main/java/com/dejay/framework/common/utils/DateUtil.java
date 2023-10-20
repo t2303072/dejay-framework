@@ -23,6 +23,9 @@ import java.util.TimeZone;
 @Component
 public class DateUtil {
 
+    public static String DATETIME_YMDHM_PATTERN = "yyyy-MM-dd HH:mm";
+    public static String DATETIME_YMDHMS_PATTERN = "yyyy-MM-dd HH:mm:ss";
+
     /**
      * @desc epoch -> utc date convert
      * @param exp String
@@ -324,6 +327,9 @@ public class DateUtil {
      * @return
      */
     public static String convertLocalDateTimeToString(LocalDateTime tgt, String pattern) {
+        if(tgt == null) {
+            return "";
+        }
         return tgt.format(DateTimeFormatter.ofPattern(pattern));
     }
 

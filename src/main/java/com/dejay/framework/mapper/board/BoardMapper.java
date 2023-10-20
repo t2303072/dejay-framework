@@ -4,6 +4,7 @@ import com.dejay.framework.domain.board.Board;
 import com.dejay.framework.domain.board.BoardPublic;
 import com.dejay.framework.mapper.common.GeneralMapper;
 import com.dejay.framework.vo.board.BoardPublicVO;
+import com.dejay.framework.vo.board.BoardReplyVO;
 import com.dejay.framework.vo.file.FileVO;
 import com.dejay.framework.vo.search.SearchVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -59,8 +60,22 @@ public interface BoardMapper extends GeneralMapper {
 
     /**
      * 조회수 증가
-     * @param boardSeq
-     * @return
+     * @param boardSeq {@link Long}
+     * @return {@link Integer}
      */
     int increaseHits(long boardSeq);
+
+    /**
+     * 게시판 댓글 목록
+     * @param boardSeq {@link Long}
+     * @return {@link List}
+     */
+    List<BoardReplyVO> findReplyBySeq(long boardSeq);
+
+    /**
+     * 게시판 댓글 삭제
+     * @param paramMap {@link Map}
+     * @return {@link Map}
+     */
+    int removeReplyBySeq(Map<String, Object> paramMap);
 }

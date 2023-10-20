@@ -16,6 +16,11 @@
         , ${alias}LAST_DT, ${alias}LAST_ID
     </sql>
 
+    <sql id = "boardReplyColumn">
+          ${alias}RIPPLE_SEQ, ${alias}BOARD_SEQ
+        , ${alias}RIPPLE_NO, ${alias}CONTENTS
+        , ${alias}REG_DT, ${alias}REG_ID
+    </sql>
 
 
     <!-- column ]] -->
@@ -172,6 +177,14 @@
         GROUP BY BOARD_SEQ
     </select>
 
+    <select id="findReplyBySeq">
+        /*게시판 댓글 조회 - BoarderMapper.findReplyBySeq */
+          SELECT <include refid="boardReplyColumn"><property name="alias" value="BP."/></include>
+            FROM BOARD_RIPPLE BP
+           WHERE BOARD_SEQ = #{boardSeq}
+             AND DEL_YN = 'N'
+        ORDER BY RIPPLE_NO DESC
+    </select>
     <!-- 조회 ]] -->
 
 
@@ -219,8 +232,9 @@
             BOARD_SEQ = #{boardSeq}
     </delete>
 
+
     <!-- BOARD_PUBLIC -->
-    <delete id="deleteList">
+    <update id="deleteList">
         /* 게시판 다 건 삭제 - BoardMapper.deleteList */
         UPDATE BOARD_PUBLIC
            SET DEL_YN = 'Y', LAST_DT = NOW(), LAST_ID = #{lastId}
@@ -228,7 +242,7 @@
         <foreach collection="boardSeqList" item="seq" index="idx" separator="," open="(" close=")">
             #{seq}
         </foreach>
-    </delete>
+    </update>
 
     <update id="updateBoard">
         /* 게시판 수정 - BoardMapper.updateBoard */
@@ -249,5 +263,14 @@
            SET HITS = HITS + 1
          WHERE BOARD_SEQ = #{boardSeq}
     </update>
+
+    <update id="removeReplyBySeq">
+        /* 게시판 댓글 삭제 - BoardMapper.removeReplyBySeq */
+        UPDATE BOARD_RIPPLE
+           SET DEL_YN = 'Y'
+         WHERE RIPPLE_SEQ = #{rippleSeq}
+           AND BOARD_SEQ = #{boardSeq}
+    </update>
+
     <!-- 저장/수정/삭제 [[ -->
 </mapper>
