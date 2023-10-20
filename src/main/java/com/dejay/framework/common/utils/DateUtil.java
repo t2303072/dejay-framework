@@ -3,6 +3,7 @@ package com.dejay.framework.common.utils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -324,5 +325,40 @@ public class DateUtil {
      */
     public static String convertLocalDateTimeToString(LocalDateTime tgt, String pattern) {
         return tgt.format(DateTimeFormatter.ofPattern(pattern));
+    }
+
+    /**
+     * 초 => 분초 포맷으로 변경
+     * @param target
+     * @return String
+     */
+    public static String secondToMinuteFormatSetting(String target){
+        String time = target;
+        String minTmFmt = String.valueOf(Integer.parseInt(time) / (60 * 1000));
+        String min = minTmFmt.length() < 2 ? "0" + minTmFmt : minTmFmt;
+        time = String.valueOf(Integer.parseInt(time) - Integer.parseInt(min) * (60*1000));
+        String secTmFmt = String.valueOf(Integer.parseInt(time) / 1000);
+        String sec = secTmFmt.length() < 2? "0"+ secTmFmt : secTmFmt;
+
+
+        return min+sec;
+    }
+
+    /**
+     * 두 날짜의 초 차이를 구한다.
+     * @param targetData1
+     * @param targetData2
+     * @return
+     * @throws ParseException
+     */
+    public static long secDiffDate(String targetData1, String targetData2) throws ParseException {
+
+        DateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+
+        Date date1 = format.parse(targetData1);
+        Date date2 = format.parse(targetData2);
+        long sec = (date1.getTime() - date2.getTime());
+        log.info("second Time"+sec);
+        return sec;
     }
 }

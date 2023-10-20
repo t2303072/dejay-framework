@@ -3,6 +3,7 @@ package com.dejay.framework.vo.member;
 import com.dejay.framework.domain.common.BaseEntity;
 import lombok.*;
 
+import java.util.Date;
 import java.util.Set;
 
 @ToString
@@ -22,8 +23,11 @@ public class MemberVO extends BaseEntity {
     private String deptCd;
     private String appointCode;
     private String positionCode;
+    private String userEtc;
+    private String authEmailSendTime;
+    private Date regDt;
     @Builder
-    public MemberVO(String tableName, String logId1, String logId2, String logType, String logJson, String remark, String regId, long memberSeq, String userType, String userId, String userPwd, String userNm, String userEmail, String authority, String deptCd, String appointCode, String positionCode, String userTel) {
+    public MemberVO(String tableName, String logId1, String logId2, String logType, String logJson, String remark, String regId, long memberSeq, String userType, String userId, String userPwd, String userNm, String userEmail, String authority, String deptCd, String appointCode, String positionCode, String userTel, String userEtc, Date regDt, String authEmailSendTime) {
         super(tableName, logId1, logId2, logType, logJson, remark, regId);
         this.memberSeq = memberSeq;
         this.userId = userId;
@@ -36,5 +40,8 @@ public class MemberVO extends BaseEntity {
         this.deptCd = deptCd;
         this.appointCode = appointCode;
         this.positionCode = positionCode;
+        this.userEtc = userEtc;
+        this.regDt = regDt;
+        this.authEmailSendTime = authEmailSendTime;
     }
 }

@@ -23,8 +23,8 @@
                 <h2>아이디 정보 확인</h2>
                 <div id="text-wrapper"><br><hr>
                     <div>
-                        <label for="userId">아이디</label>
-                        <input type="text" id="userId" path="userEmail"/>
+                        <label for="userId">아이디:</label>
+                        <input type="text" id="userId" path="userEmail" th:value="${memberId}"/>
                     </div>
                 </div>
                 <input id="btnNext" type="button" value="로그인 화면으로 이동" onclick="next()"/>

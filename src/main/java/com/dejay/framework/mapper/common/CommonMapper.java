@@ -4,6 +4,7 @@ package com.dejay.framework.mapper.common;
 import com.dejay.framework.mapper.board.BoardMapper;
 import com.dejay.framework.mapper.code.CodeMapper;
 import com.dejay.framework.mapper.file.FileMapper;
+import com.dejay.framework.mapper.mail.MailMapper;
 import com.dejay.framework.mapper.member.MemberMapper;
 import com.dejay.framework.mapper.menu.MenuMapper;
 import lombok.Getter;
@@ -27,4 +28,6 @@ public class CommonMapper {
     private final MenuMapper menuMapper;
 
     private final FileMapper fileMapper;
+
+    private final MailMapper mailMapper;
 }
