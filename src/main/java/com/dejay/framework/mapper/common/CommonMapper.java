@@ -7,6 +7,7 @@ import com.dejay.framework.mapper.file.FileMapper;
 import com.dejay.framework.mapper.mail.MailMapper;
 import com.dejay.framework.mapper.member.MemberMapper;
 import com.dejay.framework.mapper.menu.MenuMapper;
+import com.dejay.framework.mapper.record.RecordMapper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -30,4 +31,6 @@ public class CommonMapper {
     private final FileMapper fileMapper;
 
     private final MailMapper mailMapper;
+
+    private final RecordMapper recordMapper;
 }

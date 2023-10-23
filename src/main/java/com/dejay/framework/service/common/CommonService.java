@@ -8,6 +8,7 @@ import com.dejay.framework.service.file.FileService;
 import com.dejay.framework.service.mail.MailService;
 import com.dejay.framework.service.member.MemberService;
 import com.dejay.framework.service.menu.MenuService;
+import com.dejay.framework.service.record.RecordService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -28,4 +29,5 @@ public class CommonService {
     private final MenuService menuService;
     private final FileService fileService;
     private final MailService mailService;
+    private final RecordService recordService;
 }
