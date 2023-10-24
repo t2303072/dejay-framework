@@ -23,7 +23,7 @@
             <caption>검색</caption>
             <p>
                 <span th:text="날짜"/>
-                <select id="searchDateType" th:field="*{searchDateRangeOptionList}">
+                <select id="searchDateType" th:field="*{searchDateRangeOptionList}" th:onchange="'fnOnChangeHandler(this)'">
                     <option th:each="ele : ${searchDateRangeOptionList}" th:value="${ele.getCode()}" th:text="|${ele.getDisplayName()}|"></option>
                 </select>
 
@@ -38,7 +38,7 @@
 
             <p>
                 <span th:text="검색"></span>
-                <select id="searchKeywordType" th:field="*{searchKeywordTypeOptionList}">
+                <select id="searchKeywordType" th:field="*{searchKeywordTypeOptionList}" th:onchange="'fnOnChangeHandler(this)'">
                     <option th:each="ele : ${searchKeywordTypeOptionList}" th:value="${ele.getCode()}" th:text="|${ele.getDisplayName()}|"></option>
                 </select>
                 <input type="text" name="searchWord1">
@@ -239,6 +239,20 @@
                 .fail(function(jqXHR) {
                     console.log(jqXHR);
                 });
+        }
+
+        // on change event handler
+        let fnOnChangeHandler = (t) => {
+            let id = $(t);
+            if(id.val() === 'ALL') {
+                if(id.attr('id') === 'searchDateType') {
+                    $('#sDate').val('');
+                    $('#eDate').val('');
+                }
+                if(id.attr('id') === 'searchKeywordType') {
+                    $('input[name=searchWord1]').val('');
+                }
+            }
         }
     </script>
 </th:block>
