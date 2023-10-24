@@ -51,7 +51,6 @@
                 <div>
                     <span id="totalCount" th:text="|전체 ${totalCount}개|"></span>
                     <input id="excel-download" type="button" value="엑셀 다운로드(준비중)">
-                    <input id="excel-upload" type="button" value="엑셀 업로드(준비중)">
                 </div>
                 <thead>
                     <tr>
@@ -71,7 +70,7 @@
                         <td th:text="${row.getRegDtStr()}"></td>
                         <td th:text="${row.getRegId()}"></td>
                         <td th:text="${row.getMenuNm()}"></td>
-                        <td th:text="${row.getLogType()}"></td>
+                        <td th:text="${row.getLogTypeKoreanStr()}"></td>
                         <td><input th:if="${row.getLogSeq() > 0}" th:field="${row.getLogSeq()}" type="button" value="상세" th:onclick="'fnModalHandler(this, 1)'"/></td>
                     </tr>
                     <tr th:if="${#lists.isEmpty(list)}">

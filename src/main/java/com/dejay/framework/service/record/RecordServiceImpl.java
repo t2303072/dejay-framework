@@ -54,7 +54,17 @@ public class RecordServiceImpl extends ParentService implements RecordService {
         }
 
         List<RecordVO> list = getCommonMapper().getRecordMapper().findAll(recordSearchVO);
-        list.forEach(ele -> ele.setRegDtStr(DateUtil.convertLocalDateTimeToString(ele.getRegDt(), DateUtil.DATETIME_YMDHM_PATTERN)));
+        List<MenuVO> menuList = getCommonMapper().getMenuMapper().findCommonMenuCodeList();
+        list.forEach(ele -> {
+                ele.setRegDtStr(DateUtil.convertLocalDateTimeToString(ele.getRegDt(), DateUtil.DATETIME_YMDHM_PATTERN));
+                ele.setLogTypeKoreanStr(setProcessTypeStringInKorean(ele.getLogType()));
+                if (ele.getCodeCd() != null) {
+                    Optional<MenuVO> parentMenu = menuList.stream().filter(ml -> ml.getCodeCd().substring(0, 6).equals(ele.getCodeCd().substring(0, 6))).findFirst();
+                    parentMenu.ifPresent(pm -> ele.setMenuNm(pm.getCodeNm() + " > " + ele.getCodeNm()));
+                }else {
+                    ele.setMenuNm("");
+                }
+        });
 
         return list;
     }
@@ -65,8 +75,12 @@ public class RecordServiceImpl extends ParentService implements RecordService {
         if(rowData != null) {
             rowData.setLogTypeKoreanStr(setProcessTypeStringInKorean(rowData.getLogType()));
             List<MenuVO> menuList = getCommonMapper().getMenuMapper().findCommonMenuCodeList();
-            Optional<MenuVO> parentMenu = menuList.stream().filter(ml -> ml.getCodeCd().substring(0, 6).equals(rowData.getCodeCd().substring(0, 6))).findFirst();
-            parentMenu.ifPresent(pm -> rowData.setMenuNm(pm.getCodeNm() + " > " + rowData.getCodeNm()));
+            if(rowData.getCodeCd() != null) {
+                Optional<MenuVO> parentMenu = menuList.stream().filter(ml -> ml.getCodeCd().substring(0, 6).equals(rowData.getCodeCd().substring(0, 6))).findFirst();
+                parentMenu.ifPresent(pm -> rowData.setMenuNm(pm.getCodeNm() + " > " + rowData.getCodeNm()));
+            }else {
+                rowData.setMenuNm("");
+            }
         }
 
         return rowData;
@@ -78,6 +92,6 @@ public class RecordServiceImpl extends ParentService implements RecordService {
      * @return
      */
     private String setProcessTypeStringInKorean(String tgt) {
-        return Arrays.stream(HttpRequestTypeEnum.values()).filter(m -> m.toString().equals(tgt)).findAny().get().getDesc();
+        return Arrays.stream(HttpRequestTypeEnum.values()).filter(m -> m.toString().equals(tgt)).findAny().orElse(HttpRequestTypeEnum.EMPTY).getDesc();
     }
 }

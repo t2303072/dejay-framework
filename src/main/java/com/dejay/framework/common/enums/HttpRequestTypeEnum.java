@@ -12,6 +12,7 @@ public enum HttpRequestTypeEnum {
     , PATCH("수정")
     , PUT("수정")
     , DELETE("삭제")
+    , EMPTY("")
     ;
 
     private String desc;
