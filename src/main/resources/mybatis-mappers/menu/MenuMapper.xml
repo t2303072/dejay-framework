@@ -169,4 +169,12 @@
 
     <!-- 저장/수정/삭제 [[ -->
 
+
+<!--##### DEJAY_COMMON #####-->
+    <select id="findCommonMenuCodeList">
+        /* [공통 코드] 메뉴 1 depth 조회 MenuMapper.findCommonMenuCodeList */
+        SELECT CODE_CD, CODE_NM
+          FROM INFO_COMMON_CD
+         WHERE CONCAT(SUBSTRING(CODE_CD FROM 1 FOR 4), SUBSTRING(CODE_CD, 7)) = 'MENU00'
+    </select>
 </mapper>

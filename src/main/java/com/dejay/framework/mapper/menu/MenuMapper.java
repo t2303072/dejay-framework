@@ -1,6 +1,5 @@
 package com.dejay.framework.mapper.menu;
 
-import com.dejay.framework.common.annotation.EntityLog;
 import com.dejay.framework.domain.menu.Menu;
 import com.dejay.framework.mapper.common.GeneralMapper;
 import com.dejay.framework.vo.menu.MenuVO;
@@ -23,4 +22,7 @@ public interface MenuMapper extends GeneralMapper {
     // 메뉴 순서 변경
     //@EntityLog
     int updateOrd(Menu menu);
+
+    // [공통 코드] 메뉴 1 depth 조회
+    List<MenuVO> findCommonMenuCodeList();
 }

@@ -45,4 +45,10 @@ public class MenuVO {
 
     // 부모 메뉴 타이틀
     private String pTitle;
+
+    // 공통 코드 값
+    private String codeCd;
+
+    // 공통 코드 명
+    private String codeNm;
 }

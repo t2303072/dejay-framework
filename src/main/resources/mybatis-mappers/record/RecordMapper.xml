@@ -109,7 +109,8 @@
     <select id="findById" resultType="RecordVO">
         /* 이력 상세 조회 - BoarderMapper.findById */
                  SELECT <include refid="recordColumn"><property name="alias" value="IL."/></include>
-                        , CD.CODE_NM AS MENU_NM
+                        , CD.CODE_CD AS CODE_CD
+                        , CD.CODE_NM AS CODE_NM
                    FROM INFO_LOG IL
         LEFT OUTER JOIN INFO_COMMON_CD CD
                      ON IL.MENU_SEQ = CD.CODE_SEQ

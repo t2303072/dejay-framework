@@ -16,6 +16,9 @@ public class RecordVO {
     private long tokenSeq;
     private long userSeq;
     private long menuSeq;
+    private String codeCd;
+    private String codeNm;
+    @Setter
     private String menuNm;
     private String logType;
     @Setter
