@@ -18,6 +18,8 @@ public class RecordVO {
     private long menuSeq;
     private String menuNm;
     private String logType;
+    @Setter
+    private String logTypeKoreanStr;
     private String logEtc;
     private LocalDateTime regDt;
     @Setter

@@ -1,5 +1,6 @@
 package com.dejay.framework.service.record;
 
+import com.dejay.framework.common.enums.HttpRequestTypeEnum;
 import com.dejay.framework.common.utils.DateUtil;
 import com.dejay.framework.service.common.ParentService;
 import com.dejay.framework.vo.common.SelectOptionVO;
@@ -8,6 +9,7 @@ import com.dejay.framework.vo.search.record.RecordSearchVO;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -56,6 +58,19 @@ public class RecordServiceImpl extends ParentService implements RecordService {
 
     @Override
     public RecordVO findById(long logSeq) {
-        return getCommonMapper().getRecordMapper().findById(logSeq);
+        RecordVO rowData = getCommonMapper().getRecordMapper().findById(logSeq);
+        if(rowData != null) {
+            rowData.setLogTypeKoreanStr(setProcessTypeStringInKorean(rowData.getLogType()));
+        }
+        return rowData;
+    }
+
+    /**
+     * 수행 업무 유형 한글 필터
+     * @param tgt
+     * @return
+     */
+    private String setProcessTypeStringInKorean(String tgt) {
+        return Arrays.stream(HttpRequestTypeEnum.values()).filter(m -> m.toString().equals(tgt)).findAny().get().getDesc();
     }
 }
