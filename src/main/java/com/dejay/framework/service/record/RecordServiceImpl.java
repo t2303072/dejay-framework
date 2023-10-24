@@ -2,6 +2,7 @@ package com.dejay.framework.service.record;
 
 import com.dejay.framework.common.enums.HttpRequestTypeEnum;
 import com.dejay.framework.common.utils.DateUtil;
+import com.dejay.framework.common.utils.StringUtil;
 import com.dejay.framework.service.common.ParentService;
 import com.dejay.framework.vo.common.SelectOptionVO;
 import com.dejay.framework.vo.menu.MenuVO;
@@ -9,6 +10,7 @@ import com.dejay.framework.vo.record.RecordVO;
 import com.dejay.framework.vo.search.record.RecordSearchVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,6 +60,7 @@ public class RecordServiceImpl extends ParentService implements RecordService {
         list.forEach(ele -> {
                 ele.setRegDtStr(DateUtil.convertLocalDateTimeToString(ele.getRegDt(), DateUtil.DATETIME_YMDHM_PATTERN));
                 ele.setLogTypeKoreanStr(setProcessTypeStringInKorean(ele.getLogType()));
+                ele.setLogEtc(StringUtil.NVL(ele.getLogEtc()));
                 if (ele.getCodeCd() != null) {
                     Optional<MenuVO> parentMenu = menuList.stream().filter(ml -> ml.getCodeCd().substring(0, 6).equals(ele.getCodeCd().substring(0, 6))).findFirst();
                     parentMenu.ifPresent(pm -> ele.setMenuNm(pm.getCodeNm() + " > " + ele.getCodeNm()));
@@ -74,8 +77,9 @@ public class RecordServiceImpl extends ParentService implements RecordService {
         RecordVO rowData = getCommonMapper().getRecordMapper().findById(logSeq);
         if(rowData != null) {
             rowData.setLogTypeKoreanStr(setProcessTypeStringInKorean(rowData.getLogType()));
-            List<MenuVO> menuList = getCommonMapper().getMenuMapper().findCommonMenuCodeList();
+            rowData.setLogEtc(StringUtil.NVL(rowData.getLogEtc()));
             if(rowData.getCodeCd() != null) {
+                List<MenuVO> menuList = getCommonMapper().getMenuMapper().findCommonMenuCodeList();
                 Optional<MenuVO> parentMenu = menuList.stream().filter(ml -> ml.getCodeCd().substring(0, 6).equals(rowData.getCodeCd().substring(0, 6))).findFirst();
                 parentMenu.ifPresent(pm -> rowData.setMenuNm(pm.getCodeNm() + " > " + rowData.getCodeNm()));
             }else {

@@ -48,9 +48,9 @@
                 <when test="searchKeywordType == 'USER'">
                     AND LOWER(${alias}REG_ID) LIKE LOWER(CONCAT('%', #{searchWord1}, '%'))
                 </when>
-<!--                <when test="searchKeywordType == 'MENU'">-->
-<!--                    AND ${alias}MENU_SEQ = LOWER(CONCAT('%', #{searchWord1}, '%'))-->
-<!--                </when>-->
+                <when test="searchKeywordType == 'MENU'">
+                    AND LOWER(CD.CODE_NM) LIKE LOWER(CONCAT('%', #{searchWord1}, '%'))
+                </when>
             </choose>
         </if>
     </sql>
@@ -81,16 +81,18 @@
     <!-- 조회 [[ -->
 
     <select id="findAllTotalCount" resultType="int">
-        /* 이력 목록 total 조회 - BoarderMapper.findAllTotalCount */
-        SELECT COUNT(1)
-        FROM INFO_LOG IL
+        /* 이력 목록 total 조회 - RecordMapper.findAllTotalCount */
+                 SELECT COUNT(1)
+                   FROM INFO_LOG IL
+        LEFT OUTER JOIN INFO_COMMON_CD CD
+                     ON IL.MENU_SEQ = CD.CODE_SEQ
         <where>
             <include refid="whereClause"><property name="alias" value="IL."/></include>
         </where>
     </select>
 
     <select id="findAll" resultType="RecordVO">
-        /* 이력 목록 조회 - BoarderMapper.findAll */
+        /* 이력 목록 조회 - RecordMapper.findAll */
                  SELECT <include refid="recordColumn"><property name="alias" value="IL."/></include>
                         , CD.CODE_CD AS CODE_CD
                         , CD.CODE_NM AS CODE_NM
@@ -108,7 +110,7 @@
     </select>
 
     <select id="findById" resultType="RecordVO">
-        /* 이력 상세 조회 - BoarderMapper.findById */
+        /* 이력 상세 조회 - RecordMapper.findById */
                  SELECT <include refid="recordColumn"><property name="alias" value="IL."/></include>
                         , CD.CODE_CD AS CODE_CD
                         , CD.CODE_NM AS CODE_NM

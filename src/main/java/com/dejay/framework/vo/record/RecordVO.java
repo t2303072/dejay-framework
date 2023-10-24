@@ -23,6 +23,7 @@ public class RecordVO {
     private String logType;
     @Setter
     private String logTypeKoreanStr;
+    @Setter
     private String logEtc;
     private LocalDateTime regDt;
     @Setter

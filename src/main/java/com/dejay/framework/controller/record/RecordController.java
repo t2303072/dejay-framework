@@ -103,8 +103,8 @@ public class RecordController extends ParentController {
         // 전체 게시물 수
         int totalListCount = getCommonService().getRecordService().totalCount(recordSearchVO);
         model.addAttribute("totalCount", totalListCount);
-//
-//        // 목록 조회
+
+        // 목록 조회
         List<RecordVO> list = getCommonService().getRecordService().findAll(recordSearchVO);
         model.addAttribute("list", list);
 
