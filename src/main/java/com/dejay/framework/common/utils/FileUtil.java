@@ -2,6 +2,7 @@ package com.dejay.framework.common.utils;
 
 import com.dejay.framework.common.enums.FileEntityType;
 import com.dejay.framework.common.enums.FileTypeEnum;
+import com.dejay.framework.vo.file.FilePublicVO;
 import com.dejay.framework.vo.file.FileVO;
 import com.sun.jna.platform.FileUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -41,13 +42,12 @@ public class FileUtil {
      * @param multipartFiles - 파일 객체 리스트
      * @return  리스트 FileVO 객체 리턴
      */
-    public List<FileVO> uploadFiles(final List<MultipartFile> multipartFiles, String filePath) throws Exception {
-        List<FileVO> files = new ArrayList<>();
+    public List<FilePublicVO> uploadFiles(final List<MultipartFile> multipartFiles, String filePath) throws Exception {
+        List<FilePublicVO> files = new ArrayList<>();
         for(MultipartFile multipartFile:multipartFiles){
             if(multipartFile.isEmpty()){
                 continue;
             }
-
             files.add(uploadFile(multipartFile,filePath));
         }
         return files;
@@ -58,11 +58,10 @@ public class FileUtil {
      * @param multipartFile
      * @return 단일 FileVO 객체 리턴
      */
-    public FileVO uploadFile(MultipartFile multipartFile, String fileDir) throws Exception {
+    public FilePublicVO uploadFile(MultipartFile multipartFile, String fileDir) throws Exception {
        String fileName = createFileName(multipartFile.getOriginalFilename());
        String nowDay = DateUtil.getUtcNowDateFormat("yyMM");
        String uploadPath = getUploadPath(nowDay, getOsRootDir()+fileDir) + "/" + fileName;
-       log.info(uploadPath);
 
        File uploadFile = new File(uploadPath);
 
@@ -72,13 +71,12 @@ public class FileUtil {
            log.error(e.getMessage());
        }
 
-       return FileVO.builder()
-                    .filePath(uploadPath)
-                    .fileName(fileName.trim())
-                    .originFileName(multipartFile.getOriginalFilename())
-                    .fileSize(multipartFile.getSize())
+       return FilePublicVO.builder()
+                    .filePath(fileDir+"/"+fileName)
+                    .fileNm(fileName)
+                    .fileSize(String.valueOf(multipartFile.getSize()))
+                    .fileNmOrg(multipartFile.getOriginalFilename())
                     .build();
-
     }
 
     /**

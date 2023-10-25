@@ -111,7 +111,13 @@ a {
     font-size: 2.6rem;
     margin:0;
 }
-
+#fileAdd{
+    padding:10px;
+    border: 1px solid black;
+}
+.file_header_tag{
+    border: 1px solid black;
+}
 #main_wrapper {
     text-align:center;
 }

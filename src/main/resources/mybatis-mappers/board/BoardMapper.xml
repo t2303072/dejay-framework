@@ -255,6 +255,9 @@
         /* 게시판 등록 - BoardMapper.registrationBoard */
         INSERT INTO BOARD_PUBLIC (BOARD_CD, TITLE, CONTENTS, REG_DT, REG_ID)
              VALUES (#{boardCd}, #{title}, #{contents}, NOW(), #{regId})
+        <selectKey resultType="Long" keyProperty="boardSeq" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
     </insert>
 
     <update id="increaseHits">

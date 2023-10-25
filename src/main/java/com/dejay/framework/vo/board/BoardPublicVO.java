@@ -1,6 +1,5 @@
 package com.dejay.framework.vo.board;
 
-import com.dejay.framework.domain.common.BaseEntity;
 import lombok.*;
 
 import java.time.LocalDateTime;

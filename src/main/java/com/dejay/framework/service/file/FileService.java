@@ -1,6 +1,7 @@
 package com.dejay.framework.service.file;
 
 import com.dejay.framework.domain.file.File;
+import com.dejay.framework.vo.file.FilePublicVO;
 import com.dejay.framework.vo.file.FileVO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,7 +13,7 @@ import java.util.List;
 public interface FileService {
 
     // 업로드 파일
-    List<FileVO> uploadFile(List<MultipartFile> files, String entityName, String entityType) throws Exception;
+    List<FilePublicVO> uploadFile(List<MultipartFile> files) throws Exception;
     
     // 파일 저장
     int saveFile(List<File> files, String tableName, Long seq) throws Exception;
@@ -27,7 +28,7 @@ public interface FileService {
     int updateFile(List<File> newFiles, String tableName ,Long entitySeq) throws Exception;
     
     // 단 건 파일 조회
-    FileVO getFile(File file);
+    FilePublicVO getFile(File file);
     
     // 파일 조회
     List<FileVO> getFiles(Long entitySeq, String tableName);

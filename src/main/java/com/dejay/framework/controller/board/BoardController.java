@@ -1,12 +1,14 @@
 package com.dejay.framework.controller.board;
 
 import com.dejay.framework.common.utils.ObjectHandlingUtil;
+import com.dejay.framework.common.utils.StringUtil;
 import com.dejay.framework.controller.common.ParentController;
 import com.dejay.framework.domain.board.Board;
 import com.dejay.framework.domain.board.BoardPublic;
 import com.dejay.framework.domain.common.Paging;
 import com.dejay.framework.vo.board.BoardPublicVO;
 import com.dejay.framework.vo.board.BoardReplyVO;
+import com.dejay.framework.vo.file.FilePublicVO;
 import com.dejay.framework.vo.search.SearchVO;
 import com.dejay.framework.vo.search.board.BoardSearchVO;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -92,6 +95,9 @@ public class BoardController extends ParentController {
         mv.addObject("rowData", rowData);
         mv.addObject("replyList", rowData.getReplyList());
 
+        List<FilePublicVO> files= getCommonService().getFileServiceImpl().getFiles(seq);
+
+        mv.addObject("files", files);
         getCommonService().getBoardService().increaseHits(seq);
 
         return mv;
@@ -123,6 +129,8 @@ public class BoardController extends ParentController {
         boardSearchVO.setBoardSeq(seq);
         BoardPublicVO rowData = getCommonService().getBoardService().findById(boardSearchVO);
         mv.addObject("rowData", rowData);
+        List<FilePublicVO> files = getCommonService().getFileServiceImpl().getFiles(seq);
+        mv.addObject("files",files);
 
         return mv;
     }
@@ -150,6 +158,7 @@ public class BoardController extends ParentController {
 
         // 전체 게시물 수
         int totalListCount = getCommonService().getBoardPublicServiceImpl().totalCount(boardSearchVO);
+
         model.addAttribute("totalCount", totalListCount);
 //
 //        // 목록 조회
@@ -175,8 +184,8 @@ public class BoardController extends ParentController {
      */
     @ResponseBody
     @PostMapping("/api/registration")
-    public ResponseEntity registration(Model model, @RequestBody BoardPublic boardPublic) {
-        Map<String, Object> result = getCommonService().getBoardPublicServiceImpl().registration(boardPublic);
+    public ResponseEntity registration(Model model, @RequestPart(value="data") BoardPublic boardPublic, @RequestPart(value="files",required = false) List<MultipartFile> files) throws Exception {
+        Map<String, Object> result = getCommonService().getBoardPublicServiceImpl().registration(boardPublic, files);
 
         return ResponseEntity.ok(result);
     }
@@ -189,10 +198,9 @@ public class BoardController extends ParentController {
      */
     @ResponseBody
     @PatchMapping("/api/update/{seq}")
-    public ResponseEntity deleteBoard(Model model, @RequestBody Board board) {
-        log.info(board.toString());
+    public ResponseEntity deleteBoard(Model model, @RequestBody Board board) throws Exception {
         Map<String, Object> result = getCommonService().getBoardPublicServiceImpl().updateBoard(board);
-
+        getCommonService().getFileServiceImpl().updateFile(board.getFiles(), board.getBoardSeq(), board.getLastId());
         return ResponseEntity.ok(result);
     }
 
@@ -208,6 +216,7 @@ public class BoardController extends ParentController {
     public ResponseEntity deleteBoard(Model model, @RequestParam(value = "lastId") String lastId, @RequestParam(value = "checkedList[]") List<Integer> checkedList) {
         Map<String, Object> result = getCommonService().getBoardPublicServiceImpl().deleteBySeq(lastId, checkedList);
 
+        getCommonService().getFileServiceImpl().deleteFiles(lastId, checkedList);
         return ResponseEntity.ok(result);
     }
 

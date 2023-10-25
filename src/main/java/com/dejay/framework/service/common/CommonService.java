@@ -4,7 +4,7 @@ import com.dejay.framework.service.authority.AuthorityService;
 import com.dejay.framework.service.board.BoardPublicServiceImpl;
 import com.dejay.framework.service.board.BoardService;
 import com.dejay.framework.service.code.CodeService;
-import com.dejay.framework.service.file.FileService;
+import com.dejay.framework.service.file.FilePublicServiceImpl;
 import com.dejay.framework.service.mail.MailService;
 import com.dejay.framework.service.member.MemberService;
 import com.dejay.framework.service.menu.MenuService;
@@ -27,7 +27,7 @@ public class CommonService {
     private final BoardService boardService;
     private final BoardPublicServiceImpl boardPublicServiceImpl;
     private final MenuService menuService;
-    private final FileService fileService;
+    private final FilePublicServiceImpl fileServiceImpl;
     private final MailService mailService;
     private final RecordService recordService;
 }

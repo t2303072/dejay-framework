@@ -1,8 +1,11 @@
 package com.dejay.framework.domain.board;
 
 import com.dejay.framework.domain.common.BaseEntity;
+import com.dejay.framework.vo.file.FilePublicVO;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -39,8 +42,10 @@ public class Board extends BaseEntity {
     // 수정자 ID
     private String lastId;
 
+    // 파일
+    private List<FilePublicVO> files;
     @Builder
-    public Board(String tableName, String logId1, String logId2, String logType, String logJson, String remark, String regId,Long boardSeq,String boardCode, String title, String contents, String fixYn, String displayYn, String useYn){
+    public Board(String tableName, String logId1, String logId2, String logType, String logJson, String remark, String regId,Long boardSeq,String boardCode, String title, String contents, String fixYn, String displayYn, String useYn,List<FilePublicVO> files){
         super(tableName, logId1, logId2, logType, logJson, remark, regId);
         this.boardSeq = boardSeq;
         this.boardCode = boardCode;
@@ -48,6 +53,7 @@ public class Board extends BaseEntity {
         this.contents = contents;
         this.fixYn = fixYn;
         this.displayYn = displayYn;
-        this.useYn =useYn;
+        this.useYn = useYn;
+        this.files = files;
     }
 }

@@ -15,7 +15,7 @@
         <h1>공통 게시판 수정</h1>
     </div>
 
-    <form th:object="${rowData}">
+    <form id="form" th:object="${rowData}">
         <div id="content_wrapper">
             <div id="info_wrapper" class="bg-secondary p-sm-2">
                 <p>
@@ -30,11 +30,28 @@
                     <span>썸네일 이미지</span>
                     <span>THUMBNAIL IMAGE</span>
                 </p>
+
             </div>
             <div id="detail_wrapper" class="p-sm-2">
                 <textarea th:field="*{contents}"></textarea>
             </div>
-            <div id="file_wrapper"></div>
+            <div class="container">
+                <p class="col-md-2"></p>
+                <p class="col-md-6">파일명</p>
+                <p class="col-md-2">상태</p>
+                <p class="col-md-2">크기</p>
+            </div>
+            <div id="file_wrapper">
+                <div id="data-files">
+                    <div class="data-file" th:each="ele : ${files}" >
+                        <div th:id="${ele.getFileNm()}" th:text="${ele.getFileNmOrg()}"></div><button type="button" th:data-index="${ele.getFileNm()}" onclick="fileDeleteFn(this)">X</button>
+                    </div>
+                </div>
+                <div>
+                    <label for="files">파일 추가</label>
+                    <input type="file" id="files" name="files" onchange="addFile()" style="display:none" multiple>
+                </div>
+            </div>
             <div id="button_wrapper">
                 <input type="button" th:value="삭제" th:onclick="'fnDeleteBoard(' + *{boardSeq} + ')'" />
                 <input type="button" th:value="수정" th:onclick="'fnUpdateBoard(' + *{boardSeq} + ')'"  />
@@ -44,6 +61,42 @@
 </th:block>
 <th:block layout:fragment="script">
     <script th:inline="javascript">
+        let filesArr =[[${files}]];
+
+        console.log(filesArr);
+        function fileDeleteFn(obj){
+            const removeTargetId = obj.dataset.index;
+            let removeTarget = document.getElementById(removeTargetId);
+
+            fileArrDelete(removeTargetId);
+            removeTarget.remove();
+        }
+
+        function fileArrDelete(removeTargetId){
+            let arr = filesArr.filter(file => file.fileNm != removeTargetId);
+            filesArr=Array.from(arr);
+        }
+
+        function createFileInfo(files){
+            const dataFiles = document.getElementById("data-files");
+            files.forEach(file=>{
+                dataFiles.innerHTML += '<div id="'+file.lastModified+'">'+file.name+'</div><button type="button" data-index="'+file.lastModified +'" onclick="fileDeleteFn(this)">X</button>';
+            });
+        }
+
+        function addFile(){
+            const addFile = document.querySelector("#files");
+            const arrData = Array.from(addFile.files);
+            for(let i=0; i<arrData.length; i++){
+                const file = {
+                    fileNm : arrData[i].lastModified,
+                    fileNmOrg : arrData[i].name,
+                    fileSize : arrData[i].size
+                };
+                filesArr.push(file);
+            }
+            createFileInfo(arrData);
+        }
         // 게시글 삭제
         let fnDeleteBoard = (seq) => {
             if(!confirm('삭제 하시겠습니까?')) {
@@ -77,7 +130,8 @@
                 boardSeq: seq,
                 title: $('input[name=title]').val(),
                 contents: $('#contents').val(),
-                lastId: 'ij'
+                lastId: 'ij',
+                files: filesArr
                 // thumbnail image file
                 // ck editor
                 // multiple file upload

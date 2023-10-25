@@ -6,11 +6,12 @@
     <!-- 공통 [[ -->
     <!-- column [[ -->
     <sql id="fileColumn">
-        ${alias}FILE_SEQ, ${alias}ENTITY_NAME
-        , ${alias}ENTITY_SEQ, ${alias}ENTITY_TYPE
-        , ${alias}FILE_PATH, ${alias}FILE_NAME
-        , ${alias}ORIGIN_FILE_NAME, ${alias}FILE_TYPE
-        , ${alias}FILE_SIZE
+        ${alias}FILE_SEQ, ${alias}BOARD_SEQ
+        , ${alias}FILE_NO, ${alias}FILE_PATH
+        , ${alias}FILE_NM, ${alias}FILE_NM_ORG
+        , ${alias}THUMBNAIL_YN, ${alias}DEL_YN
+        , ${alias}FILE_SIZE, ${alias}REG_DT
+        , ${alias}REG_ID
     </sql>
 
     <sql id="tempFileColumn">
@@ -24,14 +25,12 @@
     <!-- whereClause [[ -->
 
     <sql id="whereClause" >
-        <if test="entitySeq != null and entitySeq !=''">
-            AND ${alias}ENTITY_SEQ = #{entitySeq}
+        AND FE.DEL_YN = 'N'
+        <if test="boardSeq != null and boardSeq !=''">
+            AND ${alias}BOARD_SEQ = #{boardSeq}
         </if>
-        <if test="entityName != null and entityName != ''">
-            AND ${alias}ENTITY_NAME = #{entityName}
-        </if>
-        <if test="fileName != null and fileName != ''">
-            AND ${alias}FILE_NAME = #{fileName}
+        <if test="fileNm != null and fileNm != ''">
+            AND ${alias}FILE_NM = #{fileNm}
         </if>
         <if test="fileSeq != null and fileSeq != ''">
             AND ${alias}FILE_SEQ = #{fileSeq}
@@ -45,26 +44,26 @@
 
     <!-- 조회 [[ -->
 
-    <select id="getFiles" resultType="FileVO">
+    <select id="getFiles" resultType="FilePublicVO">
         SELECT
             <include refid="fileColumn"><property name="alias" value="FE."/></include>
-        FROM FILE FE
+        FROM BOARD_FILE FE
         <where>
             <include refid="whereClause"><property name="alias" value="FE."/></include>
         </where>
     </select>
 
 
-    <select id="getFile" resultType="FileVO">
+    <select id="getFile" resultType="FilePublicVO">
         SELECT
             <include refid="fileColumn"><property name="alias" value="FE."/></include>
-        FROM FILE FE
+        FROM BOARD_FILE FE
         <where>
             <include refid="whereClause"><property name="alias" value="FE."/></include>
         </where>
     </select>
 
-    <select id="getTempFile" parameterType="String" resultType="FileVO">
+    <select id="getTempFile" parameterType="String" resultType="FilePublicVO">
         SELECT
             <include refid="tempFileColumn"><property name="alias" value="FT."/></include>
         FROM FILE_TEMP FT
@@ -76,22 +75,24 @@
 
     <insert id="save" >
         /* 파일 저장 - FileMapper.save */
-        INSERT INTO FILE
+        INSERT INTO BOARD_FILE
         (
-            ENTITY_NAME,ENTITY_SEQ,
-            ENTITY_TYPE, FILE_PATH,
-            FILE_NAME, ORIGIN_FILE_NAME,
-            FILE_TYPE,FILE_SIZE
+            BOARD_SEQ, FILE_NO,
+            FILE_PATH, FILE_NM,
+            THUMBNAIL_YN, DEL_YN,
+            REG_DT, REG_ID,
+            FILE_NM_ORG, FILE_SIZE
         )
         VALUES
             (
-                #{entityName},#{entitySeq},
-                #{entityType},#{filePath}
-                ,#{fileName},#{originFileName},
-                #{fileType},#{fileSize}
+                #{boardSeq},#{fileNo},
+                #{filePath},#{fileNm},
+                #{thumbnailYn},#{delYn},
+                sysdate(),#{regId},
+                #{fileNmOrg}, #{fileSize}
             )
     </insert>
-    <insert id="saveTempFile">
+    <!--<insert id="saveTempFile">
         /** 임시 파일 저장 - FileMapper.saveTempFile*/
         INSERT INTO FILE_TEMP
         (
@@ -105,11 +106,24 @@
               #{entityType}, #{originFileName},
               #{fileSize}
             )
-    </insert>
+    </insert> -->
     <update id="deleteFile">
-        /* 파일 삭제 - FileMapper.delete */
-        DELETE FROM FILE WHERE FILE_NAME = #{fileName}
+        /* 파일 삭제 - FileMapper.deleteFile */
+        UPDATE BOARD_FILE
+        SET DEL_YN = 'Y' , REG_DT = sysdate() , REG_ID = #{lastId}
+        WHERE FILE_NM = #{fileNm}
     </update>
+
+    <update id="deleteFileList">
+        /* 파일 삭제 리스트 - FileMapper.deleteFileList */
+        UPDATE BOARD_FILE
+        SET DEL_YN = 'Y', REG_DT = sysdate() , REG_ID = #{lastId}
+        WHERE BOARD_SEQ IN
+        <foreach collection="seqList" item="seq" index="idx" separator="," open="(" close=")">
+            #{seq}
+        </foreach>
+    </update>
+
 
     <!-- 저장/수정/삭제 ]] -->
 </mapper>

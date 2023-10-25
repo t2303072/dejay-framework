@@ -23,8 +23,22 @@
             <p>
                 <span th:text="'작성자: ' + *{regId} + ' | 등록일: ' + *{regDtStr} + ' | 조회수:' + *{hits}"></span> <br>
             </p>
+        </div> <br>
+        <div class="container">
+            <p class="col-md-2"></p>
+            <p class="col-md-6">파일명</p>
+            <p class="col-md-2">상태</p>
+            <p class="col-md-2">크기</p>
         </div>
-        <div id="file_wrapper"></div>
+        <div id="file_wrapper">
+            <div class="data-files" th:each="ele : ${files}">
+                <div th:id="${ele.getFileNm()}" th:text="${ele.getFileNmOrg()}"><button type="button" th:data-index="${ele.getFileNm()}" onclick="deleteFn(this)">X</button></div>
+            </div>
+            <div>
+                <label for="files">파일 추가</label>
+                <input type="file" id="files" name="files" onchange="addFile()" style="display:none" multiple>
+            </div>
+        </div>
         <div id="detail_wrapper">
             <p>
                 <span th:text="*{contents}"></span>
@@ -96,6 +110,8 @@
                 console.log(jqXHR);
             });
         }
+
+
     </script>
 </th:block>
 </html>

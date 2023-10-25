@@ -5,22 +5,29 @@ import com.dejay.framework.domain.board.Board;
 import com.dejay.framework.domain.board.BoardPublic;
 import com.dejay.framework.domain.file.File;
 import com.dejay.framework.service.common.ParentService;
+import com.dejay.framework.service.file.FilePublicServiceImpl;
 import com.dejay.framework.vo.board.BoardPublicVO;
 import com.dejay.framework.vo.board.BoardReplyVO;
 import com.dejay.framework.vo.board.BoardVO;
 import com.dejay.framework.vo.common.SelectOptionVO;
+import com.dejay.framework.vo.file.FilePublicVO;
 import com.dejay.framework.vo.file.FileVO;
 import com.dejay.framework.vo.member.MemberVO;
 import com.dejay.framework.vo.search.board.BoardSearchVO;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
+@Slf4j
 @Primary
 @Component
 public class BoardPublicServiceImpl extends ParentService implements BoardService {
-
+    @Autowired
+    FilePublicServiceImpl fileServiceImpl;
     @Override
     public int insertBoard(Board board, List<File> files, MemberVO member) throws Exception {
         return 0;
@@ -171,7 +178,10 @@ public class BoardPublicServiceImpl extends ParentService implements BoardServic
             result.put("message", "삭제할 대상이 없습니다.");
             return result;
         }
+        paramMap.put("seqList",tgtList); // 파일 입출력을 위한 seqList Setting
+        getCommonMapper().getFileMapper().deleteFileList(paramMap);
         result.put("message", "삭제 되었습니다.");
+
 
         return result;
     }
@@ -202,7 +212,7 @@ public class BoardPublicServiceImpl extends ParentService implements BoardServic
      * @param boardPublic
      * @return result {@link Map}
      */
-    public Map<String, Object> registration(BoardPublic boardPublic) {
+    public Map<String, Object> registration(BoardPublic boardPublic, List<MultipartFile> files) throws Exception {
         var result = new HashMap<String, Object>();
         result.put("code", 200);
 
@@ -228,6 +238,9 @@ public class BoardPublicServiceImpl extends ParentService implements BoardServic
             result.put("errMsg", "incomplete");
             return result;
         }
+
+        List<FilePublicVO> targetFiles = fileServiceImpl.uploadFile(files);
+        fileServiceImpl.saveFile(targetFiles, boardPublic.getBoardSeq(),boardPublic.getRegId());
 
         result.put("message", "등록 되었습니다.");
 
