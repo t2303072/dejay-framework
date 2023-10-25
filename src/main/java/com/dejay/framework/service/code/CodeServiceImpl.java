@@ -8,6 +8,8 @@ import com.dejay.framework.domain.common.Paging;
 import com.dejay.framework.service.common.ParentService;
 import com.dejay.framework.vo.code.CodePublicVO;
 import com.dejay.framework.vo.code.CodeVO;
+import com.dejay.framework.vo.code.CommonCodeVO;
+import com.dejay.framework.vo.common.SelectOptionVO;
 import com.dejay.framework.vo.search.code.CodeSearchVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -136,5 +138,20 @@ public class CodeServiceImpl extends ParentService implements CodeService{
      */
     public CodeVO rowCode(CodeSearchVO search) {
         return (CodeVO) getCommonMapper().getCodeMapper().rowBySearch(search);
+    }
+
+    @Override
+    public List<SelectOptionVO> commonCodeGroupList() {
+        return null;
+    }
+
+    @Override
+    public List<SelectOptionVO> commonCodeCategoryList(String menu) {
+        return null;
+    }
+
+    @Override
+    public List<CommonCodeVO> findAll(CodeSearchVO codeSearchVO) {
+        return null;
     }
 }

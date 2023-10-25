@@ -10,6 +10,7 @@ import lombok.ToString;
 @Getter
 @Setter
 public class SelectOptionVO {
+    private long seq;
     private String code;
     private String displayName;
 }

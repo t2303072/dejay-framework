@@ -3,6 +3,9 @@ package com.dejay.framework.mapper.code;
 import com.dejay.framework.domain.code.Code;
 import com.dejay.framework.mapper.common.GeneralMapper;
 import com.dejay.framework.vo.code.CodePublicVO;
+import com.dejay.framework.vo.code.CommonCodeVO;
+import com.dejay.framework.vo.common.SelectOptionVO;
+import com.dejay.framework.vo.search.code.CodeSearchVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -22,4 +25,23 @@ public interface CodeMapper extends GeneralMapper {
      * @return
      */
     List<CodePublicVO> listCode();
+
+    /**
+     * 코드 그룹 조회
+     * @return
+     */
+    List<SelectOptionVO> commonCodeGroupList();
+
+    /**
+     * 공통 코드 구분(카테고리)
+     * @return
+     */
+    List<SelectOptionVO> commonCodeCategoryList(String code);
+
+    /**
+     * 공통 코드 목록 조회
+     * @param codeSearchVO
+     * @return
+     */
+    List<CommonCodeVO> findAll(CodeSearchVO codeSearchVO);
 }

@@ -114,8 +114,8 @@ public class BoardPublicServiceImpl extends ParentService implements BoardServic
      */
     public List<SelectOptionVO> getSearchDateRangeOptionList() {
         var list = new ArrayList<SelectOptionVO>();
-        list.add(new SelectOptionVO("ALL", "전체"));
-        list.add(new SelectOptionVO("REG_DT", "등록일"));
+        list.add(new SelectOptionVO(0, "ALL", "전체"));
+        list.add(new SelectOptionVO(0, "REG_DT", "등록일"));
 //        list.add(new SelectOptionVO("WEEK", "1 week"));
 //        list.add(new SelectOptionVO("ONE", "1 month"));
 //        list.add(new SelectOptionVO("THREE", "3 months"));
@@ -131,9 +131,9 @@ public class BoardPublicServiceImpl extends ParentService implements BoardServic
      */
     public List<SelectOptionVO> getSearchKeywordTypeList() {
         var list = new ArrayList<SelectOptionVO>();
-        list.add(new SelectOptionVO("ALL", "전체"));
-        list.add(new SelectOptionVO("TITLE", "제목"));
-        list.add(new SelectOptionVO("REG_ID", "등록자"));
+        list.add(new SelectOptionVO(0, "ALL", "전체"));
+        list.add(new SelectOptionVO(0, "TITLE", "제목"));
+        list.add(new SelectOptionVO(0, "REG_ID", "등록자"));
 //        list.add(new SelectOptionVO("SEQ", "게시글 번호"));
 //        list.add(new SelectOptionVO("TITLE", "제목"));
 //        list.add(new SelectOptionVO("CONTENTS", "내용"));

@@ -23,8 +23,8 @@ public class RecordServiceImpl extends ParentService implements RecordService {
     @Override
     public List<SelectOptionVO> getSearchDateRangeOptionList() {
         var list = new ArrayList<SelectOptionVO>();
-        list.add(new SelectOptionVO("ALL", "전체"));
-        list.add(new SelectOptionVO("REG_DT", "접속 일시"));
+        list.add(new SelectOptionVO(0, "ALL", "전체"));
+        list.add(new SelectOptionVO(0, "REG_DT", "접속 일시"));
 
         return list;
     }
@@ -32,9 +32,9 @@ public class RecordServiceImpl extends ParentService implements RecordService {
     @Override
     public List<SelectOptionVO> getSearchKeywordTypeList() {
         var list = new ArrayList<SelectOptionVO>();
-        list.add(new SelectOptionVO("ALL", "전체"));
-        list.add(new SelectOptionVO("USER", "회원 ID"));
-        list.add(new SelectOptionVO("MENU", "접속 메뉴"));
+        list.add(new SelectOptionVO(0, "ALL", "전체"));
+        list.add(new SelectOptionVO(0, "USER", "회원 ID"));
+        list.add(new SelectOptionVO(0, "MENU", "접속 메뉴"));
 
         return list;
     }
