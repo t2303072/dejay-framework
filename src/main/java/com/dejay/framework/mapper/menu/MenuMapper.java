@@ -2,6 +2,7 @@ package com.dejay.framework.mapper.menu;
 
 import com.dejay.framework.domain.menu.Menu;
 import com.dejay.framework.mapper.common.GeneralMapper;
+import com.dejay.framework.vo.code.CommonCodeVO;
 import com.dejay.framework.vo.menu.MenuVO;
 import com.dejay.framework.vo.search.menu.MenuSearchVO;
 import org.apache.ibatis.annotations.Mapper;
@@ -25,4 +26,7 @@ public interface MenuMapper extends GeneralMapper {
 
     // [공통 코드] 메뉴 1 depth 조회
     List<MenuVO> findCommonMenuCodeList();
+
+    // [공통 코드] 메뉴 조회
+    List<CommonCodeVO> findMenuList();
 }

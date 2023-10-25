@@ -23,4 +23,15 @@ public class CommonCodeVO {
     private String regId;
     private LocalDateTime lastDt;
     private String lastId;
+    private int rowNum;
+    // [권한] 저장
+    private String authC;
+    // [권한] 조회
+    private String authR;
+    // [권한] 수정
+    private String authU;
+    // [권한] 삭제
+    private String authD;
+    // [권한] 파일
+    private String authF;
 }

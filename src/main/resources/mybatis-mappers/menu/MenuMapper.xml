@@ -177,4 +177,12 @@
           FROM INFO_COMMON_CD
          WHERE CONCAT(SUBSTRING(CODE_CD FROM 1 FOR 4), SUBSTRING(CODE_CD, 7)) = 'MENU00'
     </select>
+
+    <select id="findMenuList">
+        /* [공통 코드] 메뉴 조회 MenuMapper.findMenuList */
+        SELECT ROW_NUMBER() OVER(ORDER BY CODE_SEQ, CODE_ORD) AS ROW_NUM
+               , CODE_SEQ, CODE_CD, CODE_NM, CODE_DESC, CODE_ETC, CODE_ORD, USE_YN, DEL_YN, REG_DT, REG_ID, LAST_DT, LAST_ID
+          FROM INFO_COMMON_CD
+         WHERE SUBSTRING(CODE_CD FROM 1 FOR 4) = 'MENU' AND CODE_ORD <![CDATA[>]]> 0
+    </select>
 </mapper>
