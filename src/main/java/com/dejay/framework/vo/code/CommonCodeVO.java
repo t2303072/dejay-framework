@@ -5,7 +5,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @ToString
-@EqualsAndHashCode(of = {"boardSeq", "boardCd"}, callSuper = false)
+@EqualsAndHashCode(of = {"codeSeq", "codeCd"}, callSuper = false)
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
@@ -34,4 +34,6 @@ public class CommonCodeVO {
     private String authD;
     // [권한] 파일
     private String authF;
+    // 공통 코드 신규 등록 여부
+    private String newlyAdded;
 }

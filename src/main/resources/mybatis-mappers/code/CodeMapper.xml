@@ -215,9 +215,36 @@
 
     <select id="findAll">
         /* 공통 코드 목록 조회 - CodeMapper.findAll */
-        SELECT *
-          FROM INFO_COMMON_CD
-         WHERE SUBSTRING(CODE_CD FROM 1 FOR 6) LIKE 'MENU02'
-           AND CODE_ORD > 0
+        SELECT ROW_NUMBER() OVER(ORDER BY CODE_SEQ, CODE_ORD) AS ROW_NUM
+               , CODE_SEQ, CODE_CD, CODE_NM, CODE_DESC, CODE_ETC, CODE_ORD, USE_YN, DEL_YN, REG_DT, REG_ID, LAST_DT, LAST_ID
+        FROM INFO_COMMON_CD
+        WHERE SUBSTRING(CODE_CD FROM 1 FOR 4) = 'MENU'
+          AND CODE_ORD <![CDATA[>]]> 0
+          AND DEL_YN = 'N'
     </select>
+
+    <insert id="saveCommonCode">
+        /* 공통 코드 저장 - CodeMapper.saveCommonCode */
+        INSERT INTO INFO_COMMON_CD
+        (
+            CODE_CD, CODE_NM, CODE_DESC, USE_YN, REG_DT, REG_ID
+        )
+        VALUES
+        (
+            #{codeCd}, #{codeNm}, #{codeDesc}, #{useYn}, NOW(), #{regId}
+        )
+    </insert>
+
+    <update id="updateCommonCode">
+        /* 공통 코드 수정 - CodeMapper.updateCommonCode */
+        UPDATE INFO_COMMON_CD
+           SET CODE_NM = #{codeNm}
+             , CODE_DESC = #{codeDesc}
+             , USE_YN = #{useYn}
+             , DEL_YN = #{delYn}
+             , LAST_DT = NOW()
+             , LAST_ID = 'ijzone'
+         WHERE CODE_SEQ = #{codeSeq}
+           AND CODE_CD = #{codeCd}
+    </update>
 </mapper>

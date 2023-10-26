@@ -1,6 +1,7 @@
 package com.dejay.framework.mapper.code;
 
 import com.dejay.framework.domain.code.Code;
+import com.dejay.framework.domain.code.CommonCode;
 import com.dejay.framework.mapper.common.GeneralMapper;
 import com.dejay.framework.vo.code.CodePublicVO;
 import com.dejay.framework.vo.code.CommonCodeVO;
@@ -44,4 +45,17 @@ public interface CodeMapper extends GeneralMapper {
      * @return
      */
     List<CommonCodeVO> findAll(CodeSearchVO codeSearchVO);
+
+    /**
+     * 공통 코드 저장
+     * @param commonCode
+     * @return
+     */
+    int saveCommonCode(CommonCode commonCode);
+    /**
+     * 공통 코드 수정
+     * @param commonCode
+     * @return
+     */
+    int updateCommonCode(CommonCode commonCode);
 }
