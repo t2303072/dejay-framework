@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -152,6 +153,11 @@ public class CodeServiceImpl extends ParentService implements CodeService{
 
     @Override
     public List<CommonCodeVO> findAll(CodeSearchVO codeSearchVO) {
+        return null;
+    }
+
+    @Override
+    public Map<String, Object> updateCommonCode(List<CommonCodeVO> tgt) {
         return null;
     }
 }

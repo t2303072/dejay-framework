@@ -7,6 +7,7 @@ import com.dejay.framework.vo.common.SelectOptionVO;
 import com.dejay.framework.vo.search.code.CodeSearchVO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CodeService {
    // 사이드바 메뉴 조회
@@ -20,4 +21,7 @@ public interface CodeService {
 
    // 공통 코드 조회
    List<CommonCodeVO> findAll(CodeSearchVO codeSearchVO);
+
+   // 공통 코드 수정
+   Map<String, Object> updateCommonCode(List<CommonCodeVO> tgt);
 }

@@ -10,10 +10,13 @@ import com.dejay.framework.vo.search.code.CodeSearchVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Controller
@@ -38,12 +41,6 @@ public class CodeController extends ParentController {
         return getCommonService().getCodeService().commonCodeCategoryList("MENU");
     }
 
-    @PostMapping("/list")
-    @ResponseBody
-    public List<CodePublicVO> codeList(){
-        return getCommonService().getCodeService().listCode();
-    }
-
     /**
      * 공통코드 목록 조회
      * @param mv
@@ -56,5 +53,30 @@ public class CodeController extends ParentController {
         List<CommonCodeVO> list = getCommonService().getCodeService().findAll(new CodeSearchVO());
         mv.addObject("list", list);
         return mv;
+    }
+
+
+/** API **/
+    @PostMapping("/list")
+    @ResponseBody
+    public List<CodePublicVO> codeList(){
+        return getCommonService().getCodeService().listCode();
+    }
+
+    /**
+     * 공통 코드 수정 API
+     * @param tgt
+     * @return
+     */
+    @PutMapping("/api")
+    public String update(Model model, @RequestBody List<CommonCodeVO> tgt) {
+        Map<String, Object> result = getCommonService().getCodeService().updateCommonCode(tgt);
+        List<CommonCodeVO> list = new ArrayList<>();
+        if((int)result.get("code") == 200) {
+            list = getCommonService().getCodeService().findAll(new CodeSearchVO());
+        }
+        model.addAttribute("list", list);
+
+        return "code/list :: #list_wrapper";
     }
 }

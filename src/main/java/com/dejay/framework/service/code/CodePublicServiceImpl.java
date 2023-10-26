@@ -1,15 +1,19 @@
 package com.dejay.framework.service.code;
 
+import com.dejay.framework.domain.code.CommonCode;
 import com.dejay.framework.service.common.ParentService;
 import com.dejay.framework.vo.code.CodePublicVO;
-import com.dejay.framework.vo.code.CodeVO;
 import com.dejay.framework.vo.code.CommonCodeVO;
 import com.dejay.framework.vo.common.SelectOptionVO;
 import com.dejay.framework.vo.search.code.CodeSearchVO;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Component
 @Primary
@@ -36,5 +40,66 @@ public class CodePublicServiceImpl extends ParentService implements CodeService 
     public List<CommonCodeVO> findAll(CodeSearchVO codeSearchVO) {
         List<CommonCodeVO> list = getCommonMapper().getCodeMapper().findAll(codeSearchVO);
         return list;
+    }
+
+    @Override
+    public Map<String, Object> updateCommonCode(List<CommonCodeVO> tgt) {
+        var result = new HashMap<String, Object>();
+        result.put("code", 200);
+        result.put("message", "수정 되었습니다.");
+
+        if(tgt.size() < 1) {
+            result.put("code", 204);
+            result.put("message", "수정할 대상이 없습니다.");
+            return result;
+        }
+
+        List<CommonCode> addList = new ArrayList<>();
+        List<CommonCode> updateList = new ArrayList<>();
+        tgt.forEach(row -> {
+            if(row.getCodeCd().equalsIgnoreCase("FIXED") || row.getCodeCd().equalsIgnoreCase("ADD")) {
+                if(!row.getCodeNm().isBlank()) {
+                    addList.add(CommonCode.builder()
+                            .codeCd(row.getCodeCd())
+                            .codeNm(row.getCodeNm())
+                            .codeDesc(row.getCodeDesc())
+                            .codeOrd(row.getCodeOrd())
+                            .useYn(row.getUseYn())
+                            .delYn(row.getDelYn())
+                            .regId("ijzone")
+                            .build()
+                    );
+                }
+            }else {
+                updateList.add(CommonCode.builder()
+                        .codeSeq(row.getCodeSeq())
+                        .codeCd(row.getCodeCd())
+                        .codeNm(row.getCodeNm())
+                        .codeDesc(row.getCodeDesc())
+                        .codeOrd(row.getCodeOrd())
+                        .useYn(row.getUseYn())
+                        .delYn(row.getDelYn())
+                        .lastId("ijzone")
+                        .build()
+                );
+            }
+
+        });
+
+        AtomicInteger updateCount = new AtomicInteger(0);
+        addList.forEach(row -> {
+            updateCount.addAndGet(getCommonMapper().getCodeMapper().saveCommonCode(row));
+        });
+        updateList.forEach(row -> {
+            updateCount.addAndGet(getCommonMapper().getCodeMapper().updateCommonCode(row));
+        });
+
+        if(updateCount.get() < 1) {
+            result.put("code", 204);
+            result.put("message", "수정할 대상이 없습니다.");
+            return result;
+        }
+
+        return result;
     }
 }
