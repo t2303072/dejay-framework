@@ -170,11 +170,21 @@ public class FilePublicServiceImpl extends ParentService implements FileService 
         return delete > 0 ? 1 : 0;
     }
 
+
+    public FilePublicVO getFile(Long fileSeq){
+        FilePublicVO target = FilePublicVO.builder()
+                                           .fileSeq(fileSeq)
+                                           .build();
+
+        return getCommonMapper().getFileMapper().getFile(target);
+    }
+
     @Override
     public FilePublicVO getFile(String fileNm) {
         FilePublicVO target = FilePublicVO.builder()
-                .fileNm(fileNm)
-                .build();
+                                            .fileNm(fileNm)
+                                            .build();
+
         return getCommonMapper().getFileMapper().getFile(target);
     }
 

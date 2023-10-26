@@ -32,11 +32,7 @@
         </div>
         <div id="file_wrapper">
             <div class="data-files" th:each="ele : ${files}">
-                <div th:id="${ele.getFileNm()}" th:text="${ele.getFileNmOrg()}"><button type="button" th:data-index="${ele.getFileNm()}" onclick="deleteFn(this)">X</button></div>
-            </div>
-            <div>
-                <label for="files">파일 추가</label>
-                <input type="file" id="files" name="files" onchange="addFile()" style="display:none" multiple>
+                <a th:href="@{/file/download/{fileSeq}(fileSeq=${ele.getFileSeq()})}" th:text="${ele.getFileNmOrg()}" onclick="fnFileDownload(this)"></a>
             </div>
         </div>
         <div id="detail_wrapper">
@@ -65,6 +61,9 @@
 </th:block>
 <th:block layout:fragment="script">
     <script th:inline="javascript">
+        let filesArr =[[${files}]];
+
+
         // 게시글 삭제
         let fnDeleteBoard = (seq) => {
             if(!confirm('삭제 하시겠습니까?')) {
@@ -110,8 +109,6 @@
                 console.log(jqXHR);
             });
         }
-
-
     </script>
 </th:block>
 </html>
