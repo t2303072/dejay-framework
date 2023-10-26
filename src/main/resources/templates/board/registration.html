@@ -73,10 +73,13 @@
                 // ck editor
                 // multiple file upload
             }
-            let formData = new FormData($('form')[0]);
+
+            let formData = new FormData();
+
             for(let i=0; i<filesArr.length; i++){
                 formData.append("files", filesArr[i]);
             }
+
             formData.append('data', new Blob([JSON.stringify(data)],{type: "application/json"}));
             $.ajax({
                 url: '/board/api/registration',
