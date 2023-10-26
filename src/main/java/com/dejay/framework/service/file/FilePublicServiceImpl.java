@@ -167,22 +167,15 @@ public class FilePublicServiceImpl extends ParentService implements FileService 
             }
         }
 
-        int insert = 0;
-        if(StringUtil.isNotEmpty(newFileList)) insert = saveFile(newFileList, seq, lastId);
-        return insert > 0 && delete > 0 ? 1 : 0;
+        return delete > 0 ? 1 : 0;
     }
 
     @Override
-    public FilePublicVO getFile(File file) {
-        return null;
-    }
-
-    public List<FilePublicVO> getFiles(Long seq){
-        FilePublicVO file = FilePublicVO.builder()
-                                        .boardSeq(seq)
-                                        .build();
-
-        return getCommonMapper().getFileMapper().getFiles(file);
+    public FilePublicVO getFile(String fileNm) {
+        FilePublicVO target = FilePublicVO.builder()
+                .fileNm(fileNm)
+                .build();
+        return getCommonMapper().getFileMapper().getFile(target);
     }
 
     @Override
@@ -190,8 +183,22 @@ public class FilePublicServiceImpl extends ParentService implements FileService 
         return null;
     }
 
+    public List<FilePublicVO> getFiles(Long seq) {
+        FilePublicVO file = FilePublicVO.builder()
+                .boardSeq(seq)
+                .build();
+
+        return getCommonMapper().getFileMapper().getFiles(file);
+    }
+
+    public void downloadFile(FilePublicVO file, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String realPath = getFileUtil().getOsRootDir() + file.getFilePath();
+        String fileNmOrg = file.getFileNmOrg();
+        getFileUtil().downloadFile(fileNmOrg ,realPath, request, response);
+    }
+
     @Override
-    public void downloadFiles(List<File> fileList, HttpServletRequest reqeust, HttpServletResponse response) throws IOException {
+    public void downloadFiles(List<FilePublicVO> fileList, HttpServletRequest reqeust, HttpServletResponse response) throws IOException {
 
     }
 }

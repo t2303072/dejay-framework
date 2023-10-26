@@ -15,7 +15,7 @@
         <h1>공통 게시판 수정</h1>
     </div>
 
-    <form id="form" th:object="${rowData}">
+    <form id="form" th:object="${rowData}" method="post" enctype="multipart/form-data">
         <div id="content_wrapper">
             <div id="info_wrapper" class="bg-secondary p-sm-2">
                 <p>
@@ -63,7 +63,8 @@
     <script th:inline="javascript">
         let filesArr =[[${files}]];
 
-        console.log(filesArr);
+        let newFilesArr = [];
+
         function fileDeleteFn(obj){
             const removeTargetId = obj.dataset.index;
             let removeTarget = document.getElementById(removeTargetId);
@@ -74,12 +75,15 @@
 
         function fileArrDelete(removeTargetId){
             let arr = filesArr.filter(file => file.fileNm != removeTargetId);
+            let newArr = newFilesArr.filter(file => file.lastModified != removeTargetId);
             filesArr=Array.from(arr);
+            newFilesArr = Array.from(newArr);
         }
 
         function createFileInfo(files){
             const dataFiles = document.getElementById("data-files");
             files.forEach(file=>{
+                newFilesArr.push(file);
                 dataFiles.innerHTML += '<div id="'+file.lastModified+'">'+file.name+'</div><button type="button" data-index="'+file.lastModified +'" onclick="fileDeleteFn(this)">X</button>';
             });
         }
@@ -87,14 +91,6 @@
         function addFile(){
             const addFile = document.querySelector("#files");
             const arrData = Array.from(addFile.files);
-            for(let i=0; i<arrData.length; i++){
-                const file = {
-                    fileNm : arrData[i].lastModified,
-                    fileNmOrg : arrData[i].name,
-                    fileSize : arrData[i].size
-                };
-                filesArr.push(file);
-            }
             createFileInfo(arrData);
         }
         // 게시글 삭제
@@ -137,12 +133,19 @@
                 // multiple file upload
             }
 
+            let formData = new FormData();
+            for(let i=0; i<newFilesArr.length; i++){
+                formData.append("files", newFilesArr[i]);
+            }
+
+            formData.append('data', new Blob([JSON.stringify(data)],{type: "application/json"}));
             $.ajax({
                 url: `/board/api/update/${seq}`,
-                type: 'patch',
-                dataType: 'json',
-                contentType: 'application/json; charset=UTF-8',
-                data: JSON.stringify(data)
+                type: 'post',
+                enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
+                data: formData
             })
             .done(function(data) {
                 console.log(data);

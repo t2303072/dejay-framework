@@ -28,11 +28,11 @@ public interface FileService {
     int updateFile(List<File> newFiles, String tableName ,Long entitySeq) throws Exception;
     
     // 단 건 파일 조회
-    FilePublicVO getFile(File file);
-    
+    FilePublicVO getFile(String fileNm);
+
     // 파일 조회
     List<FileVO> getFiles(Long entitySeq, String tableName);
 
     // 파일 다운로드
-    void downloadFiles(List<File> fileList, HttpServletRequest reqeust, HttpServletResponse response) throws IOException;
+    void downloadFiles(List<FilePublicVO> fileList, HttpServletRequest reqeust, HttpServletResponse response) throws IOException;
 }

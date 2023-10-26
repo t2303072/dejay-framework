@@ -72,7 +72,7 @@ public class FileUtil {
        }
 
        return FilePublicVO.builder()
-                    .filePath(fileDir+"/"+fileName)
+                    .filePath(fileDir+ "/"+nowDay+"/"+fileName)
                     .fileNm(fileName)
                     .fileSize(String.valueOf(multipartFile.getSize()))
                     .fileNmOrg(multipartFile.getOriginalFilename())
