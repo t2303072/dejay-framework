@@ -43,6 +43,7 @@ public class LoggerInterceptor implements HandlerInterceptor {
 //                    .resultJson(reqParam)
                     .status(response.getStatus())
                     .regId("SYSTEM")
+                    .clientIp(request.getRemoteAddr())
                     .build();
             log.info(restApi.toString());
 

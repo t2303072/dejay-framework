@@ -25,4 +25,5 @@ public class RestAPI {
     @Setter
     private String regId;
     private Timestamp regDttm;
+    private String clientIp;
 }
