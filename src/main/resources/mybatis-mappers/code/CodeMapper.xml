@@ -218,9 +218,11 @@
         SELECT ROW_NUMBER() OVER(ORDER BY CODE_SEQ, CODE_ORD) AS ROW_NUM
                , CODE_SEQ, CODE_CD, CODE_NM, CODE_DESC, CODE_ETC, CODE_ORD, USE_YN, DEL_YN, REG_DT, REG_ID, LAST_DT, LAST_ID
         FROM INFO_COMMON_CD
-        WHERE SUBSTRING(CODE_CD FROM 1 FOR 4) = 'MENU'
+        WHERE DEL_YN = 'N'
           AND CODE_ORD <![CDATA[>]]> 0
-          AND DEL_YN = 'N'
+          <if test="code != null and code != ''">
+          AND SUBSTRING(CODE_CD FROM 1 FOR 4) = #{code}
+          </if>
     </select>
 
     <insert id="saveCommonCode">

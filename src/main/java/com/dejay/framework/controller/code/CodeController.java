@@ -49,9 +49,11 @@ public class CodeController extends ParentController {
     @GetMapping({"", "/"})
     public ModelAndView findAll(ModelAndView mv) {
         mv.setViewName("code/list");
-
-        List<CommonCodeVO> list = getCommonService().getCodeService().findAll(new CodeSearchVO());
+        CodeSearchVO codeSearchVO = new CodeSearchVO();
+        codeSearchVO.setCode("MENU");
+        List<CommonCodeVO> list = getCommonService().getCodeService().findAll(codeSearchVO);
         mv.addObject("list", list);
+
         return mv;
     }
 
@@ -75,6 +77,16 @@ public class CodeController extends ParentController {
         if((int)result.get("code") == 200) {
             list = getCommonService().getCodeService().findAll(new CodeSearchVO());
         }
+        model.addAttribute("list", list);
+
+        return "code/list :: #list_wrapper";
+    }
+
+    @GetMapping("/api")
+    public String findAll(Model model, @RequestParam("codeCd") String codeCd) {
+        CodeSearchVO codeSearchVO = new CodeSearchVO();
+        codeSearchVO.setCode(codeCd.substring(0, 4));
+        List<CommonCodeVO> list = getCommonService().getCodeService().findAll(codeSearchVO);
         model.addAttribute("list", list);
 
         return "code/list :: #list_wrapper";
