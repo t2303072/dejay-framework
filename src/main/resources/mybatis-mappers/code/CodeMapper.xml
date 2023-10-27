@@ -215,14 +215,15 @@
 
     <select id="findAll">
         /* 공통 코드 목록 조회 - CodeMapper.findAll */
-        SELECT ROW_NUMBER() OVER(ORDER BY CODE_SEQ, CODE_ORD) AS ROW_NUM
+          SELECT ROW_NUMBER() OVER(ORDER BY CODE_CD) AS ROW_NUM
                , CODE_SEQ, CODE_CD, CODE_NM, CODE_DESC, CODE_ETC, CODE_ORD, USE_YN, DEL_YN, REG_DT, REG_ID, LAST_DT, LAST_ID
-        FROM INFO_COMMON_CD
-        WHERE DEL_YN = 'N'
-          AND CODE_ORD <![CDATA[>]]> 0
+            FROM INFO_COMMON_CD
+           WHERE DEL_YN = 'N'
+             AND CODE_ORD <![CDATA[>]]> 0
           <if test="code != null and code != ''">
-          AND SUBSTRING(CODE_CD FROM 1 FOR 4) = #{code}
+             AND SUBSTRING(CODE_CD FROM 1 FOR 4) = #{code}
           </if>
+        ORDER BY CODE_CD
     </select>
 
     <insert id="saveCommonCode">
