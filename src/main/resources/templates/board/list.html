@@ -44,7 +44,7 @@
         </div>
 
         <div id="list_wrapper" class="p-sm-2">
-            <table class="table table-bordered text-center">
+            <table id="rfrnc-table" class="table table-bordered text-center">
                 <div>
                     <span id="totalCount" th:text="|전체 ${totalCount}개|"></span>
                     <input id="excel-download" type="button" value="엑셀 다운로드(준비중)">
@@ -129,6 +129,12 @@
 
 <th:block layout:fragment="script">
     <script th:inline="javascript">
+        let excelDownload = document.getElementById("excel-download");
+
+        excelDownload.addEventListener("click", function(){
+            let wb = XLSX.utils.table_to_book(document.getElementById("rfrnc-table"), {sheet: "sheet", raw:true});
+            XLSX.writeFile(wb, ('게시판.xlsx'));
+        });
 
         // 전체 체크박스 handler
         let fnCheckboxHandler = (chk_all) => {
@@ -243,6 +249,8 @@
             .fail(function(jqXHR) {
                 console.log(jqXHR);
             });
+
+
         }
     </script>
 </th:block>
