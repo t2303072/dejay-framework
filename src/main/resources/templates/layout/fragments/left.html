@@ -15,6 +15,7 @@
 
         </ul>
     </aside>
+    <script src="/static/js/common.js"></script>
     <script th:inline="javascript">
         let codeMap = new Map();
         $.ajax({
@@ -54,7 +55,11 @@
                     // 부모ID
                     let parentId = codeMap.get(codeCd.substring(0,2));
                     let parentElement = document.getElementById(parentId);
-                    parentElement.innerHTML +=`<li id= ${realCodeCd}> <a href='#'>${data.codeNm}</a></li>`;
+                    let url = data.codeEtc;
+                    if(isEmpty(url)) {
+                        url = "#";
+                    }
+                    parentElement.innerHTML +=`<li id= ${realCodeCd}> <a href='${url}'>${data.codeNm}</a></li>`;
 
                 }
             }
