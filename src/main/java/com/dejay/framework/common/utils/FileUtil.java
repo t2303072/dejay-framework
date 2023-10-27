@@ -258,8 +258,11 @@ public class FileUtil {
             log.info("인코드 파일명 => 디코드로 전환 : {}", URLDecoder.decode(fileName));
 
             log.info("다운로드 파일명 : {} ", fileName);
+
+
             response.setHeader("Content-Type", String.valueOf(getMediaType(filePath)));
-            response.setHeader("Content-Disposition", "attachment; filename*=utf-8''" + fileName + ";");
+            response.setHeader("Content-Disposition", String.format("attachment; filename=\"%s\";", fileName));
+            //response.setHeader("Content-Disposition", "attachment; filename*=utf-8''" + fileName + ";");
 
             InputStream is = new FileInputStream(file);
             OutputStream out = response.getOutputStream();
