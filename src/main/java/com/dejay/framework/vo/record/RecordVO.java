@@ -20,6 +20,7 @@ public class RecordVO {
     private String codeNm;
     @Setter
     private String menuNm;
+    private String clientIp;
     private String logType;
     @Setter
     private String logTypeKoreanStr;

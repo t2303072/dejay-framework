@@ -11,7 +11,7 @@
     <sql id = "recordColumn">
         ${alias}LOG_SEQ, ${alias}TOKEN_SEQ
         , ${alias}USER_SEQ, ${alias}MENU_SEQ
-        , ${alias}LOG_TYPE, ${alias}LOG_ETC
+        , ${alias}CLIENT_IP, ${alias}LOG_TYPE, ${alias}LOG_ETC
         , ${alias}REG_DT, ${alias}REG_ID
     </sql>
 

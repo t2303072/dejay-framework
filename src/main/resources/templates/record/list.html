@@ -66,7 +66,7 @@
                 <tbody id="boardList">
                     <tr th:if="${not #lists.isEmpty(list)}" th:each="row, stat : ${list}">
                         <td th:text="${row.getLogSeq()}"></td>
-                        <td th:text="아이피"></td>
+                        <td th:text="${row.getClientIp()}"></td>
                         <td th:text="${row.getRegDtStr()}"></td>
                         <td th:text="${row.getRegId()}"></td>
                         <td th:text="${row.getMenuNm()}"></td>
