@@ -17,7 +17,7 @@
     <div id="content_wrapper">
         <div id="search_wrapper" class="bg-secondary p-lg-5">
             <span th:text="회원"/>
-            <input type="button" value="회원 선택">
+            <input type="button" value="회원 선택" th:onclick="fnSearchUserList()">
         </div>
 
         <div id="action_wrapper" class="m-lg-2">
@@ -71,10 +71,64 @@
             </table>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div id="modalContainer" class="hidden">
+        <div id="modal_detail_wrapper">
+            <div>
+                <span><b>회원 선택</b></span><span class="glyphicon glyphicon-remove" id="modalCloseButton" th:onclick="'fnModalHandler(this, 0)'"></span>
+            </div>
+            <div class="modal_search_wrapper">
+                <p>
+                    <span th:text="검색"></span>
+                    <input type="text" name="searchKeyword" id="">
+                    <input type="button" value="검색">
+                    <input type="button" value="초기화">
+                </p>
+            </div>
+            <div id="user_list_wrapper" class="row">
+                <div class="left_wrapper bg-dark-subtle col-md-6">
+                    <p th:each="user : ${users}" th:class="left-list">
+                        <span th:text="${user.getUserNm()} + ' ' + ${user.getPositionNm()} + ' / ' + ${user.getAppointNm()} + ' ' + ${user.getDeptNm()}"></span>
+                    </p>
+                </div>
+                <div id="modal_action_wrapper" class="col-md-3">
+                    <span class="glyphicon-arrow-right"></span>
+                    <span class="glyphicon-arrow-left"></span>
+                    <span class="glyphicon-refresh"></span>
+                </div>
+                <div class="right_wrapper col-md-6">
+                    <p th:each="user : ${users}" th:class="left-list">
+                        <span th:text="${user.getUserNm()} + ' ' + ${user.getPositionNm()} + ' / ' + ${user.getAppointNm()} + ' ' + ${user.getDeptNm()}"></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </th:block>
 
 <th:block layout:fragment="script">
     <script th:inline="javascript">
+        // 사용자 조회
+        let fnSearchUserList = () => {
+            let _searchKeyword = $('input[name=searchKeyword]').val();
+            $.ajax({
+                url: '/auth/auth-popup',
+                type: 'get',
+                contentType: 'application/json; charset=UTF-8',
+                data: {searchKeyword: _searchKeyword}
+            })
+            .done(function(data) {
+                console.log(data);
+                $('#modalContainer').removeClass('hidden');
+                $('#user_list_wrapper').replaceWith(data);
+            })
+            .fail(function(jqXHR) {
+                console.log(jqXHR);
+            });
+        }
+
         // 권한 저장
         let fnSaveAuthority = () => {
             const tgtList = [];
@@ -157,6 +211,14 @@
                 }
             }
         })
+
+        let fnModalHandler = (t, f) => {
+            if(f === 0) {
+                $('#modalContainer').addClass('hidden');
+            }else {
+                $('#modalContainer').removeClass('hidden');
+            }
+        }
     </script>
 </th:block>
 </html>

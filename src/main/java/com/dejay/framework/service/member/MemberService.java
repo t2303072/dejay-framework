@@ -7,7 +7,10 @@ import com.dejay.framework.domain.member.Member;
 import com.dejay.framework.domain.user.SignUpRequest;
 import com.dejay.framework.vo.common.CollectionPagingVO;
 import com.dejay.framework.vo.member.MemberVO;
+import com.dejay.framework.vo.search.SearchVO;
+import com.dejay.framework.vo.user.UserVO;
 
+import java.util.List;
 import java.util.Map;
 
 public interface MemberService {
@@ -31,4 +34,7 @@ public interface MemberService {
     MemberVO getLoginInfo(LoginRequest loginRequest);
 
     Map<String,Object> updatePwd(MemberVO member);
+
+    // 전체 사용자 조회
+    List<UserVO> findAllUsers(SearchVO searchVO);
 }

@@ -1,8 +1,6 @@
 package com.dejay.framework.service.member;
 
 import com.dejay.framework.common.enums.ExceptionCodeMsgEnum;
-import com.dejay.framework.common.enums.RequestTypeEnum;
-import com.dejay.framework.common.enums.TableNameEnum;
 import com.dejay.framework.common.exception.CustomLoginException;
 import com.dejay.framework.common.utils.ObjectHandlingUtil;
 import com.dejay.framework.common.utils.TokenFactory;
@@ -18,12 +16,12 @@ import com.dejay.framework.service.common.ParentService;
 import com.dejay.framework.vo.common.CollectionPagingVO;
 import com.dejay.framework.vo.member.MemberVO;
 import com.dejay.framework.vo.search.SearchVO;
+import com.dejay.framework.vo.user.UserVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -211,6 +209,13 @@ public class MemberServiceImpl extends ParentService implements MemberService{
         }
 
         return result;
+    }
+
+    @Override
+    public List<UserVO> findAllUsers(SearchVO searchVO) {
+        List<UserVO> list = getCommonMapper().getMemberMapper().findAllUsers();
+
+        return list;
     }
 
 

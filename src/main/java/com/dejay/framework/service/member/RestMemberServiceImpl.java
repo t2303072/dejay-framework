@@ -18,6 +18,7 @@ import com.dejay.framework.service.common.ParentService;
 import com.dejay.framework.vo.common.CollectionPagingVO;
 import com.dejay.framework.vo.member.MemberVO;
 import com.dejay.framework.vo.search.SearchVO;
+import com.dejay.framework.vo.user.UserVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -197,6 +198,11 @@ public class RestMemberServiceImpl extends ParentService implements MemberServic
 
     @Override
     public Map<String, Object> updatePwd(MemberVO member) {
+        return null;
+    }
+
+    @Override
+    public List<UserVO> findAllUsers(SearchVO searchVO) {
         return null;
     }
 

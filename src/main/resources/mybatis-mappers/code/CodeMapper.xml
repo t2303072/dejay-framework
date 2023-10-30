@@ -195,7 +195,7 @@
     <!-- 저장/수정/삭제 ]] -->
 
 
-<!--##### DEJAY_COMMON #####-->
+<!--#################### DEJAY_COMMON ####################-->
     <select id="commonCodeGroupList">
         /* 코드 그룹 조회 - CodeMapper.commonCodeGroupList */
             SELECT CODE_SEQ AS SEQ, CODE_CD AS CODE, CODE_NM AS DISPLAY_NAME

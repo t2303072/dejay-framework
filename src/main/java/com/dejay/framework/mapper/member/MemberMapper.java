@@ -7,6 +7,7 @@ import com.dejay.framework.domain.user.User;
 import com.dejay.framework.mapper.common.GeneralMapper;
 import com.dejay.framework.vo.member.MemberVO;
 import com.dejay.framework.vo.search.SearchVO;
+import com.dejay.framework.vo.user.UserVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -23,4 +24,9 @@ public interface MemberMapper extends GeneralMapper {
     MemberVO getLoginInfo(String userName);
     int updatePwd(Member member);
 
+    /**
+     * 전체 사용자 조회
+     * @return
+     */
+    List<UserVO> findAllUsers();
 }
