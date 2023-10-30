@@ -5,8 +5,8 @@
 <mapper namespace="com.dejay.framework.mapper.authority.AuthorityMapper">
 
     <select id="selectMenuAuthority">
-        SELECT MEMBER.MEMBER_ID, MEMBER.DEPT_CODE, AUTH.AUTH_LEVEL, MENU.MENU_SEQ
-        FROM MEMBER MEMBER
+            SELECT MEMBER.MEMBER_ID, MEMBER.DEPT_CODE, AUTH.AUTH_LEVEL, MENU.MENU_SEQ
+              FROM MEMBER MEMBER
         INNER JOIN AUTH AUTH
                 ON MEMBER.DEPT_CODE = AUTH.DEPT_CODE
         INNER JOIN CODE CD
@@ -20,4 +20,30 @@
                AND MENU.MENU_ID = #{menuId}
     </select>
 
+    <insert id="saveIndividualAuthority">
+        /* 개인 권한 저장 - BoardMapper.saveIndividualAuthority */
+        INSERT INTO INFO_MENU
+        (
+            MENU_CD, MENU_ORD, AUTH_C, AUTH_R, AUTH_U, AUTH_D, AUTH_F, USER_ID, DISPLAY_USE_YN, REG_DT, REG_ID
+        )
+        VALUES
+        (
+            #{menuCd}, #{menuOrd}, #{authC}, #{authR}, #{authU}, #{authD}, #{authF}, #{userId}, #{displayUseYn}, NOW(), 'ADMIN'
+        )
+    </insert>
+
+    <update id="updateIndividualAuthority">
+        /* 개인 권한 수정 - BoardMapper.updateIndividualAuthority */
+        UPDATE INFO_MENU
+           SET MENU_ORD = #{menuOrd}
+             , AUTH_C = #{authC}
+             , AUTH_R = #{authR}
+             , AUTH_U = #{authU}
+             , AUTH_D = #{authD}
+             , AUTH_F = #{authF}
+             , DISPLAY_USE_YN = #{displayUseYn}
+             , LAST_DT = NOW()
+             , LAST_ID = 'ADMIN'
+         WHERE MENU_SEQ = #{menuSeq} AND MENU_CD = #{menuCd}
+    </update>
 </mapper>

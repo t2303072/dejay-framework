@@ -1,6 +1,7 @@
 package com.dejay.framework.mapper.common;
 
 
+import com.dejay.framework.mapper.authority.AuthorityMapper;
 import com.dejay.framework.mapper.board.BoardMapper;
 import com.dejay.framework.mapper.code.CodeMapper;
 import com.dejay.framework.mapper.file.FileMapper;
@@ -33,4 +34,6 @@ public class CommonMapper {
     private final MailMapper mailMapper;
 
     private final RecordMapper recordMapper;
+
+    private final AuthorityMapper authorityMapper;
 }

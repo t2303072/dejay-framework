@@ -1,5 +1,6 @@
 package com.dejay.framework.mapper.menu;
 
+import com.dejay.framework.domain.authority.Authority;
 import com.dejay.framework.domain.menu.Menu;
 import com.dejay.framework.mapper.common.GeneralMapper;
 import com.dejay.framework.vo.code.CommonCodeVO;
@@ -29,4 +30,7 @@ public interface MenuMapper extends GeneralMapper {
 
     // [공통 코드] 메뉴 조회
     List<CommonCodeVO> findMenuList();
+
+    // 메뉴에 대한 권한 여부 조회
+    long findMenuSeqByUserId(Authority authority);
 }

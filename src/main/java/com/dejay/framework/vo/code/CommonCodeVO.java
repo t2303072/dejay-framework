@@ -24,6 +24,9 @@ public class CommonCodeVO {
     private LocalDateTime lastDt;
     private String lastId;
     private int rowNum;
+
+    // [권한] 메뉴 노출 여부
+    private String displayUseYn;
     // [권한] 저장
     private String authC;
     // [권한] 조회
@@ -36,4 +39,8 @@ public class CommonCodeVO {
     private String authF;
     // 공통 코드 신규 등록 여부
     private String newlyAdded;
+    // 상위 메뉴 코드
+    private String parentCodeCd;
+    // 상위 메뉴 명
+    private String parentCodeNm;
 }

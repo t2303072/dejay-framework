@@ -22,6 +22,9 @@ public class CommonCode {
     private LocalDateTime lastDt;
     private String lastId;
     private int rowNum;
+
+    // [권한] 메뉴 노출 여부
+    private String displayUseYn;
     // [권한] 저장
     private String authC;
     // [권한] 조회
@@ -34,9 +37,13 @@ public class CommonCode {
     private String authF;
     // 공통 코드 신규 등록 여부
     private String newlyAdded;
+    // 상위 메뉴 코드
+    private String parentCodeCd;
+    // 상위 메뉴 명
+    private String parentCodeNm;
 
     @Builder
-    public CommonCode(long codeSeq, String codeCd, String codeNm, String codeDesc, String codeEtc, int codeOrd, String useYn, String delYn, LocalDateTime regDt, String regId, LocalDateTime lastDt, String lastId, int rowNum, String authC, String authR, String authU, String authD, String authF, String newlyAdded) {
+    public CommonCode(long codeSeq, String codeCd, String codeNm, String codeDesc, String codeEtc, int codeOrd, String useYn, String delYn, LocalDateTime regDt, String regId, LocalDateTime lastDt, String lastId, int rowNum, String displayUseYn, String authC, String authR, String authU, String authD, String authF, String newlyAdded, String parentCodeCd, String parentCodeNm) {
         this.codeSeq = codeSeq;
         this.codeCd = codeCd;
         this.codeNm = codeNm;
@@ -50,11 +57,15 @@ public class CommonCode {
         this.lastDt = lastDt;
         this.lastId = lastId;
         this.rowNum = rowNum;
+        this.displayUseYn = displayUseYn;
         this.authC = authC;
         this.authR = authR;
         this.authU = authU;
         this.authD = authD;
         this.authF = authF;
         this.newlyAdded = newlyAdded;
+        this.parentCodeCd = parentCodeCd;
+        this.parentCodeNm = parentCodeNm;
     }
+
 }

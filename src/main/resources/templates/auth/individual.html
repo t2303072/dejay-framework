@@ -21,8 +21,8 @@
         </div>
 
         <div id="action_wrapper" class="m-lg-2">
-            <input type="button" value="엑셀 업로드">
-            <input type="button" value="권한 저장">
+            <input type="button" value="엑셀 업로드(준비중)">
+            <input type="button" value="권한 저장" th:onclick="fnSaveAuthority()">
         </div>
 
         <div id="list_wrapper" class="p-sm-2">
@@ -37,17 +37,31 @@
                     </tr>
                 </thead>
                 <tbody id="authList" th:object="${code}">
-                    <tr th:if="${not #lists.isEmpty(list)}" th:each="row, stat : ${list}">
+                    <tr th:class="auth-row" th:if="${not #lists.isEmpty(list)}" th:each="row, stat : ${list}" th:value="${row.getCodeCd()}">
+                        <input type="hidden" name="_codeCd" th:value="${row.getCodeCd()}">
+                        <input type="hidden" name="_codeOrd" th:value="${row.getCodeOrd()}">
                         <td th:text="${row.getRowNum()}"></td>
-                        <td  th:text="|Category|"></td>
+                        <td th:value="${row.getParentCodeCd()}" th:text="${row.getParentCodeNm()}"></td>
                         <td th:text="${row.getCodeNm()}"></td>
-                        <td><input type="checkbox" th:checked="${#strings.equals('Y', row.getUseYn())}" th:value="${row.getUseYn()}"><span th:text="노출"></span></td>
                         <td>
-                            <input type="checkbox" th:field="*{authR}" th:data-code-cd="${row.codeCd}" th:value="*{authR}"><label th:for="${#ids.prev('authR')}">조회</label>
-                            <input type="checkbox" th:field="*{authC}" th:data-code-cd="${row.codeCd}" th:value="*{authC}"><label th:for="${#ids.prev('authC')}">저장</label>
-                            <input type="checkbox" th:field="*{authU}" th:data-code-cd="${row.codeCd}" th:value="*{authU}"><label th:for="${#ids.prev('authU')}">수정</label>
-                            <input type="checkbox" th:field="*{authD}" th:data-code-cd="${row.codeCd}" th:value="*{authD}"><label th:for="${#ids.prev('authD')}">삭제</label>
-                            <input type="checkbox" th:field="*{authF}" th:data-code-cd="${row.codeCd}" th:value="*{authF}"><label th:for="${#ids.prev('authF')}">파일</label>
+                            <input type="checkbox" th:field="*{displayUseYn}" th:value="*{displayUseYn}">
+                            <label th:for="${#ids.prev('displayUseYn')}">노출</label>
+                        </td>
+                        <td>
+                            <input type="checkbox" th:field="*{authR}" th:data-code-cd="${row.codeCd}" th:value="*{authR}">
+                            <label th:for="${#ids.prev('authR')}">조회</label>
+
+                            <input type="checkbox" th:field="*{authC}" th:data-code-cd="${row.codeCd}" th:value="*{authC}">
+                            <label th:for="${#ids.prev('authC')}">저장</label>
+
+                            <input type="checkbox" th:field="*{authU}" th:data-code-cd="${row.codeCd}" th:value="*{authU}">
+                            <label th:for="${#ids.prev('authU')}">수정</label>
+
+                            <input type="checkbox" th:field="*{authD}" th:data-code-cd="${row.codeCd}" th:value="*{authD}">
+                            <label th:for="${#ids.prev('authD')}">삭제</label>
+
+                            <input type="checkbox" th:field="*{authF}" th:data-code-cd="${row.codeCd}" th:value="*{authF}">
+                            <label th:for="${#ids.prev('authF')}">파일</label>
                         </td>
                     </tr>
                     <tr th:if="${#lists.isEmpty(list)}">
@@ -94,25 +108,38 @@
 
         // 권한 저장
         let fnSaveAuthority = () => {
-            let checkedList = [];
-            $('input[name=chkbox]:checked').each(function() {
-                checkedList.push(this.value);
-            });
-            if(checkedList.length < 1) {
-                alert('삭제 처리 하실 게시판을 선택 해주세요.');
-                return false;
-            }
-            if(!confirm('선택한 게시판을 삭제 처리 하시겠습니까?')) {
-                return false;
-            }
+            const tgtList = [];
+            const authList = $('.auth-row');
+            const userList = [];
+            userList.push("ijzone1");
+            userList.push("ijzone2");
+            userList.push("ijzone3");
+
+            Array.from(authList).forEach(auth => {
+                // console.log(auth);
+                let data = {
+                      menuCd: $(auth).find('input[name=_codeCd]').val()
+                    , menuOrd: $(auth).find('input[name=_codeOrd]').val()
+                    , authC: $(auth).find('input[name=authC]').is(':checked') == true ? 'Y' : 'N'
+                    , authR: $(auth).find('input[name=authR]').is(':checked') == true ? 'Y' : 'N'
+                    , authU: $(auth).find('input[name=authU]').is(':checked') == true ? 'Y' : 'N'
+                    , authD: $(auth).find('input[name=authD]').is(':checked') == true ? 'Y' : 'N'
+                    , authF: $(auth).find('input[name=authF]').is(':checked') == true ? 'Y' : 'N'
+                    , displayUseYn: $(auth).find('input[name=displayUseYn]').is(':checked') == true ? 'Y': 'N'
+                    , userIdList: userList
+                }
+                tgtList.push(data);
+            })
+
             $.ajax({
-                url: '',
-                type: 'delete',
-                data: {lastId: 'ij', checkedList: checkedList}
+                url: '/auth/individual/api',
+                type: 'post',
+                contentType: 'application/json; charset=UTF-8',
+                data: JSON.stringify(tgtList)
             })
             .done(function(data) {
                 console.log(data);
-                fnSearchList(1, 10, 0);
+                alert(data.message);
             })
             .fail(function(jqXHR) {
                 console.log(jqXHR);
