@@ -35,10 +35,8 @@ public class AuthorityServiceImpl extends ParentService implements AuthorityServ
                 row.getUserIdList().forEach(user -> {
                     row.setUserId(user);
                     if(isMenuAuthorityGranted(row)) {
-                        // TODO: IJ 수정 로직
                         saveCount.addAndGet(getCommonMapper().getAuthorityMapper().updateIndividualAuthority(row));
                     }else {
-                        // TODO: IJ 저장 로직
                         saveCount.addAndGet(getCommonMapper().getAuthorityMapper().saveIndividualAuthority(row));
                     }
                 });
