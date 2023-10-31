@@ -28,45 +28,46 @@
         <div id="list_wrapper" class="p-sm-2">
             <table class="table table-bordered text-center">
                 <thead>
-                    <tr>
-                        <th class="text-center" scope="col">No</th>
-                        <th class="text-center" scope="col">카테고리명</th>
-                        <th class="text-center" scope="col">세부 메뉴</th>
-                        <th class="text-center" scope="col">메뉴 노출 여부</th>
-                        <th class="text-center" scope="col">권한 레벨</th>
-                    </tr>
+                <tr>
+                    <th class="text-center" scope="col">No</th>
+                    <th class="text-center" scope="col">카테고리명</th>
+                    <th class="text-center" scope="col">세부 메뉴</th>
+                    <th class="text-center" scope="col">메뉴 노출 여부</th>
+                    <th class="text-center" scope="col">권한 레벨</th>
+                </tr>
                 </thead>
                 <tbody id="authList" th:object="${code}">
-                    <tr th:class="auth-row" th:if="${not #lists.isEmpty(list)}" th:each="row, stat : ${list}" th:value="${row.getCodeCd()}">
-                        <input type="hidden" name="_codeCd" th:value="${row.getCodeCd()}">
-                        <input type="hidden" name="_codeOrd" th:value="${row.getCodeOrd()}">
-                        <td th:text="${row.getRowNum()}"></td>
-                        <td th:value="${row.getParentCodeCd()}" th:text="${row.getParentCodeNm()}"></td>
-                        <td th:text="${row.getCodeNm()}"></td>
-                        <td>
-                            <input type="checkbox" th:field="*{displayUseYn}" th:value="*{displayUseYn}">
-                            <label th:for="${#ids.prev('displayUseYn')}">노출</label>
-                        </td>
-                        <td>
-                            <input type="checkbox" th:field="*{authR}" th:data-code-cd="${row.codeCd}" th:value="*{authR}">
-                            <label th:for="${#ids.prev('authR')}">조회</label>
+                <tr th:class="auth-row" th:if="${not #lists.isEmpty(list)}" th:each="row, stat : ${list}"
+                    th:value="${row.getCodeCd()}">
+                    <input type="hidden" name="_codeCd" th:value="${row.getCodeCd()}">
+                    <input type="hidden" name="_codeOrd" th:value="${row.getCodeOrd()}">
+                    <td th:text="${row.getRowNum()}"></td>
+                    <td th:value="${row.getParentCodeCd()}" th:text="${row.getParentCodeNm()}"></td>
+                    <td th:text="${row.getCodeNm()}"></td>
+                    <td>
+                        <input type="checkbox" th:field="*{displayUseYn}" th:value="*{displayUseYn}">
+                        <label th:for="${#ids.prev('displayUseYn')}">노출</label>
+                    </td>
+                    <td>
+                        <input type="checkbox" th:field="*{authR}" th:data-code-cd="${row.codeCd}" th:value="*{authR}">
+                        <label th:for="${#ids.prev('authR')}">조회</label>
 
-                            <input type="checkbox" th:field="*{authC}" th:data-code-cd="${row.codeCd}" th:value="*{authC}">
-                            <label th:for="${#ids.prev('authC')}">저장</label>
+                        <input type="checkbox" th:field="*{authC}" th:data-code-cd="${row.codeCd}" th:value="*{authC}">
+                        <label th:for="${#ids.prev('authC')}">저장</label>
 
-                            <input type="checkbox" th:field="*{authU}" th:data-code-cd="${row.codeCd}" th:value="*{authU}">
-                            <label th:for="${#ids.prev('authU')}">수정</label>
+                        <input type="checkbox" th:field="*{authU}" th:data-code-cd="${row.codeCd}" th:value="*{authU}">
+                        <label th:for="${#ids.prev('authU')}">수정</label>
 
-                            <input type="checkbox" th:field="*{authD}" th:data-code-cd="${row.codeCd}" th:value="*{authD}">
-                            <label th:for="${#ids.prev('authD')}">삭제</label>
+                        <input type="checkbox" th:field="*{authD}" th:data-code-cd="${row.codeCd}" th:value="*{authD}">
+                        <label th:for="${#ids.prev('authD')}">삭제</label>
 
-                            <input type="checkbox" th:field="*{authF}" th:data-code-cd="${row.codeCd}" th:value="*{authF}">
-                            <label th:for="${#ids.prev('authF')}">파일</label>
-                        </td>
-                    </tr>
-                    <tr th:if="${#lists.isEmpty(list)}">
-                        <td class="no-row-found" colspan="5" th:text="|데이터가 없습니다.|"></td>
-                    </tr>
+                        <input type="checkbox" th:field="*{authF}" th:data-code-cd="${row.codeCd}" th:value="*{authF}">
+                        <label th:for="${#ids.prev('authF')}">파일</label>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(list)}">
+                    <td class="no-row-found" colspan="5" th:text="|데이터가 없습니다.|"></td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -74,33 +75,34 @@
 
     <!-- Modal -->
     <div id="modalContainer" class="hidden">
-        <div id="modal_detail_wrapper">
-            <div>
-                <span><b>회원 선택</b></span><span class="glyphicon glyphicon-remove" id="modalCloseButton" th:onclick="'fnModalHandler(this, 0)'"></span>
+        <div id="modal_detail_wrapper" class="container">
+            <div class="row">
+                <p>
+                    <span><b>회원 선택</b></span>
+                    <span class="glyphicon glyphicon-remove" id="modalCloseButton" th:onclick="'fnModalHandler(this, 0)'"></span>
+                </p>
             </div>
-            <div class="modal_search_wrapper">
+            <div class="modal_search_wrapper row">
                 <p>
                     <span th:text="검색"></span>
-                    <input type="text" name="searchKeyword" id="">
+                    <input type="text" name="searchKeyword">
                     <input type="button" value="검색">
                     <input type="button" value="초기화">
                 </p>
             </div>
             <div id="user_list_wrapper" class="row">
-                <div class="left_wrapper bg-dark-subtle col-md-6">
-                    <p th:each="user : ${users}" th:class="left-list">
+                <div id="valid_user_list" class="left_wrapper col-sm-5">
+                    <p th:each="user : ${users}" th:class="left-list" th:value="${user.getUserSeq()}" th:onclick="'fnSubjectSelectHandler(this)'">
                         <span th:text="${user.getUserNm()} + ' ' + ${user.getPositionNm()} + ' / ' + ${user.getAppointNm()} + ' ' + ${user.getDeptNm()}"></span>
                     </p>
                 </div>
-                <div id="modal_action_wrapper" class="col-md-3">
-                    <span class="glyphicon-arrow-right"></span>
-                    <span class="glyphicon-arrow-left"></span>
-                    <span class="glyphicon-refresh"></span>
+                <div id="modal_action_wrapper" class="col-sm-1 pt-sm-3">
+                    <p class="glyphicon glyphicon-chevron-right" style="font-size: 4rem" th:onclick="'fnMoveSubjectHandler(this, &quot;LTR&quot;)'"></p>
+                    <p class="glyphicon glyphicon-chevron-left" style="font-size: 4rem" th:onclick="'fnMoveSubjectHandler(this, &quot;RTL&quot;)'"></p>
+                    <p class="glyphicon glyphicon-refresh" style="font-size: 4rem" th:onclick="'fnMoveSubjectHandler(this, &quot;CLEAR&quot;)'"></p>
                 </div>
-                <div class="right_wrapper col-md-6">
-                    <p th:each="user : ${users}" th:class="left-list">
-                        <span th:text="${user.getUserNm()} + ' ' + ${user.getPositionNm()} + ' / ' + ${user.getAppointNm()} + ' ' + ${user.getDeptNm()}"></span>
-                    </p>
+                <div id="auth_subject_list" class="right_wrapper col-sm-5">
+
                 </div>
             </div>
         </div>
@@ -141,14 +143,14 @@
             Array.from(authList).forEach(auth => {
                 // console.log(auth);
                 let data = {
-                      menuCd: $(auth).find('input[name=_codeCd]').val()
+                    menuCd: $(auth).find('input[name=_codeCd]').val()
                     , menuOrd: $(auth).find('input[name=_codeOrd]').val()
                     , authC: $(auth).find('input[name=authC]').is(':checked') == true ? 'Y' : 'N'
                     , authR: $(auth).find('input[name=authR]').is(':checked') == true ? 'Y' : 'N'
                     , authU: $(auth).find('input[name=authU]').is(':checked') == true ? 'Y' : 'N'
                     , authD: $(auth).find('input[name=authD]').is(':checked') == true ? 'Y' : 'N'
                     , authF: $(auth).find('input[name=authF]').is(':checked') == true ? 'Y' : 'N'
-                    , displayUseYn: $(auth).find('input[name=displayUseYn]').is(':checked') == true ? 'Y': 'N'
+                    , displayUseYn: $(auth).find('input[name=displayUseYn]').is(':checked') == true ? 'Y' : 'N'
                     , userIdList: userList
                 }
                 tgtList.push(data);
@@ -160,51 +162,51 @@
                 contentType: 'application/json; charset=UTF-8',
                 data: JSON.stringify(tgtList)
             })
-            .done(function(data) {
-                alert(data.message);
-                $('input[type=checkbox]').each(function() {
-                    this.checked = false;
+                .done(function (data) {
+                    alert(data.message);
+                    $('input[type=checkbox]').each(function () {
+                        this.checked = false;
+                    })
                 })
-            })
-            .fail(function(jqXHR) {
-                console.log(jqXHR);
-            });
+                .fail(function (jqXHR) {
+                    console.log(jqXHR);
+                });
         }
 
         // 체크박스 handler
-        $('input[type=checkbox]').on('click', function() {
+        $('input[type=checkbox]').on('click', function () {
             const _this = $(this);
             let _authLevel = $(this).attr('name');
             // $(this).siblings('input[name=authU]').is(':checked')
-            if(_authLevel === 'authR') {
-                if(!_this.siblings('input[name=authR]').is(':checked')) {
+            if (_authLevel === 'authR') {
+                if (!_this.siblings('input[name=authR]').is(':checked')) {
                     _this.siblings('input[name=authC]').prop('checked', false);
                     _this.siblings('input[name=authU]').prop('checked', false);
                     _this.siblings('input[name=authD]').prop('checked', false);
                 }
             }
-            if(_authLevel === 'authC') {
-                if(!_this.siblings('input[name=authC]').is(':checked')) {
+            if (_authLevel === 'authC') {
+                if (!_this.siblings('input[name=authC]').is(':checked')) {
                     _this.siblings('input[name=authU]').prop('checked', false);
                     _this.siblings('input[name=authD]').prop('checked', false);
                 }
 
-                if(!_this.siblings('input[name=authR]').is(':checked')) {
+                if (!_this.siblings('input[name=authR]').is(':checked')) {
                     _this.siblings('input[name=authR]').prop('checked', true);
                 }
             }
-            if(_authLevel === 'authU') {
-                if(!_this.siblings('input[name=authU]').is(':checked')) {
+            if (_authLevel === 'authU') {
+                if (!_this.siblings('input[name=authU]').is(':checked')) {
                     _this.siblings('input[name=authD]').prop('checked', false);
                 }
 
-                if(!_this.siblings('input[name=authR]').is(':checked') || !_this.siblings('input[name=authC]').is(':checked')) {
+                if (!_this.siblings('input[name=authR]').is(':checked') || !_this.siblings('input[name=authC]').is(':checked')) {
                     _this.siblings('input[name=authR]').prop('checked', true);
                     _this.siblings('input[name=authC]').prop('checked', true);
                 }
             }
-            if(_authLevel === 'authD') {
-                if(!_this.siblings('input[name=authR]').is(':checked') || !_this.siblings('input[name=authC]').is(':checked') || !_this.siblings('input[name=authU]').is(':checked')) {
+            if (_authLevel === 'authD') {
+                if (!_this.siblings('input[name=authR]').is(':checked') || !_this.siblings('input[name=authC]').is(':checked') || !_this.siblings('input[name=authU]').is(':checked')) {
                     _this.siblings('input[name=authR]').prop('checked', true);
                     _this.siblings('input[name=authC]').prop('checked', true);
                     _this.siblings('input[name=authU]').prop('checked', true);
@@ -212,12 +214,93 @@
             }
         })
 
+        // Modal handler
         let fnModalHandler = (t, f) => {
-            if(f === 0) {
+            if (f === 0) {
                 $('#modalContainer').addClass('hidden');
-            }else {
+            } else {
                 $('#modalContainer').removeClass('hidden');
             }
+        }
+
+        // 대상자 선택 handler
+        let fnSubjectSelectHandler = (t) => {
+            const _this = $(t);
+
+            let _parentId = _this.parent().attr('id');
+            if(_parentId === 'valid_user_list') {
+                if(_this.hasClass('bg-dark-subtle')) {
+                    _this.removeClass('bg-dark-subtle');
+                }else {
+                    _this.addClass('bg-dark-subtle');
+                }
+            }
+            if(_parentId === 'auth_subject_list') {
+                if(_this.hasClass('bg-dark-subtle')) {
+                    _this.removeClass('bg-dark-subtle');
+                }else {
+                    _this.addClass('bg-dark-subtle');
+                }
+            }
+        }
+
+        // 대상자 이동
+        let fnMoveSubjectHandler = (t, d) => {
+            const _this = $(t);
+            let _parentId = _this.parent().attr('id');
+
+            if(d === 'LTR') {
+                $('p.left-list.bg-dark-subtle').each(function() {
+                    let _ele = $(this).clone();
+                    let _val = _ele.attr('value');
+                    let movable = true;
+
+                    movable = fnSelectedSubjectChecker('p.right-list', _val);
+                    if(movable) {
+                        _ele.removeClass('left-list');
+                        _ele.removeClass('bg-dark-subtle');
+                        _ele.addClass('right-list');
+                        _ele.appendTo('#auth_subject_list');
+                    }
+                })
+            }
+            if(d === 'RTL') {
+                $('p.right-list.bg-dark-subtle').each(function() {
+                    let _val = $(this).attr('value');
+                    $(this).remove();
+
+                    $('p.left-list.bg-dark-subtle').each(function() {
+                        let _this = $(this);
+                        if(_this.attr('value') === _val) {
+                            _this.removeClass('bg-dark-subtle');
+                        }
+                    })
+                })
+            }
+            if(d === 'CLEAR') {
+                $('p.right-list').each(function() {
+                    $(this).remove();
+                })
+                $('p.left-list.bg-dark-subtle').each(function() {
+                    $(this).removeClass('bg-dark-subtle');
+                })
+
+            }
+
+        }
+
+        // 대상자 기 추가 여부 체커
+        let fnSelectedSubjectChecker = (c, v) => {
+            let flag = true;
+            $(c).each(function() {
+                let _valCompare = $(this).attr('value');
+                if(v === _valCompare) {
+                    flag = false;
+                    return false;
+                }
+            })
+
+            return flag;
         }
     </script>
 </th:block>
