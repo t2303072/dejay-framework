@@ -129,12 +129,33 @@
                 _finalList.each(function() {
                     let _seq = $(this).attr('value');
                     let _value = $(this).children('span').attr('value');
-                    // TODO: 기존 추가된 대상 사용자 요소 검사
-                    $('#final_subject_list').append(`<span value="${_seq}">${_value}<span class="glyphicon glyphicon-remove" onclick="fnElementHandler(this, 0)"></span></span>`);
+                    if(fnOnSubjectListChecker(_seq)) {
+                        $('#final_subject_list').append(`<span value="${_seq}">${_value}<span class="glyphicon glyphicon-remove" onclick="fnElementHandler(this, 0)"></span></span>`);
+                    }
                 })
 
                 $('#modalContainer').addClass('hidden');
             }
+        }
+
+        // 대상 목록 체커
+        let fnOnSubjectListChecker = (s) => {
+            let flag = true;
+            if(s == undefined || s === '') {
+                return false;
+            }
+
+            if($('#final_subject_list > span').length > 0) {
+                $('#final_subject_list > span').each(function() {
+                    let _this = $(this);
+                    let _val = _this.attr('value');
+                    if(_val === s) {
+                        flag = false;
+                    }
+                })
+            }
+
+            return flag;
         }
 
         // 사용자 조회
