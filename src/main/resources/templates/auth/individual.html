@@ -88,7 +88,7 @@
                     <span th:text="검색"></span>
                     <input type="text" name="searchKeyword">
                     <input type="button" value="검색" th:onclick="fnSearchUserList()">
-                    <input type="button" value="초기화">
+                    <input type="button" value="초기화" th:onclick="fnRefreshHandler()">
                 </p>
             </div>
             <div id="user_list_wrapper" class="row">
@@ -129,6 +129,7 @@
                 _finalList.each(function() {
                     let _seq = $(this).attr('value');
                     let _value = $(this).children('span').attr('value');
+                    // TODO: 기존 추가된 대상 사용자 요소 검사
                     $('#final_subject_list').append(`<span value="${_seq}">${_value}<span class="glyphicon glyphicon-remove" onclick="fnElementHandler(this, 0)"></span></span>`);
                 })
 
@@ -335,6 +336,12 @@
             })
 
             return flag;
+        }
+
+        // 초기화
+        let fnRefreshHandler = () => {
+            $('input[name=searchKeyword]').val('');
+            fnSearchUserList();
         }
     </script>
 </th:block>
