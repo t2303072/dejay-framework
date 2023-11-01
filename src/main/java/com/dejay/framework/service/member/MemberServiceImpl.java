@@ -213,7 +213,7 @@ public class MemberServiceImpl extends ParentService implements MemberService{
 
     @Override
     public List<UserVO> findAllUsers(SearchVO searchVO) {
-        List<UserVO> list = getCommonMapper().getMemberMapper().findAllUsers();
+        List<UserVO> list = getCommonMapper().getMemberMapper().findAllUsers(searchVO);
 
         return list;
     }

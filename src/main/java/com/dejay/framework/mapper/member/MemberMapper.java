@@ -28,5 +28,5 @@ public interface MemberMapper extends GeneralMapper {
      * 전체 사용자 조회
      * @return
      */
-    List<UserVO> findAllUsers();
+    List<UserVO> findAllUsers(SearchVO searchVO);
 }

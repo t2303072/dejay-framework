@@ -18,6 +18,7 @@
         <div id="search_wrapper" class="bg-secondary p-lg-5">
             <span th:text="회원"/>
             <input type="button" value="회원 선택" th:onclick="fnSearchUserList()">
+            <div id="final_subject_list" class="mt-sm-5"></div>
         </div>
 
         <div id="action_wrapper" class="m-lg-2">
@@ -79,31 +80,34 @@
             <div class="row">
                 <p>
                     <span><b>회원 선택</b></span>
-                    <span class="glyphicon glyphicon-remove" id="modalCloseButton" th:onclick="'fnModalHandler(this, 0)'"></span>
+                    <span class="glyphicon glyphicon-remove" id="modalCloseButton" th:onclick="'fnModalHandler(this, 0)'" style="font-size: 4rem" ></span>
                 </p>
             </div>
             <div class="modal_search_wrapper row">
                 <p>
                     <span th:text="검색"></span>
                     <input type="text" name="searchKeyword">
-                    <input type="button" value="검색">
+                    <input type="button" value="검색" th:onclick="fnSearchUserList()">
                     <input type="button" value="초기화">
                 </p>
             </div>
             <div id="user_list_wrapper" class="row">
                 <div id="valid_user_list" class="left_wrapper col-sm-5">
                     <p th:each="user : ${users}" th:class="left-list" th:value="${user.getUserSeq()}" th:onclick="'fnSubjectSelectHandler(this)'">
-                        <span th:text="${user.getUserNm()} + ' ' + ${user.getPositionNm()} + ' / ' + ${user.getAppointNm()} + ' ' + ${user.getDeptNm()}"></span>
+                        <span th:value="${user.getUserNm()}" th:text="${user.getUserNm()} + ' ' + ${user.getPositionNm()} + ' / ' + ${user.getAppointNm()} + ' ' + ${user.getDeptNm()}"></span>
                     </p>
                 </div>
-                <div id="modal_action_wrapper" class="col-sm-1 pt-sm-3">
+                <div id="modal_list_action_wrapper" class="col-sm-1 pt-sm-3">
                     <p class="glyphicon glyphicon-chevron-right" style="font-size: 4rem" th:onclick="'fnMoveSubjectHandler(this, &quot;LTR&quot;)'"></p>
                     <p class="glyphicon glyphicon-chevron-left" style="font-size: 4rem" th:onclick="'fnMoveSubjectHandler(this, &quot;RTL&quot;)'"></p>
                     <p class="glyphicon glyphicon-refresh" style="font-size: 4rem" th:onclick="'fnMoveSubjectHandler(this, &quot;CLEAR&quot;)'"></p>
                 </div>
                 <div id="auth_subject_list" class="right_wrapper col-sm-5">
-
                 </div>
+            </div>
+            <div id="modal_action_wrapper" class="align-items-center">
+                <input type="button" value="취소" th:onclick="'fnModalHandler(this, 0)'">
+                <input type="button" value="선택" th:onclick="fnSelectSubject()">
             </div>
         </div>
     </div>
@@ -112,6 +116,26 @@
 
 <th:block layout:fragment="script">
     <script th:inline="javascript">
+
+        // 대상 회원 선택
+        let fnSelectSubject = () => {
+            let _finalList = $('#auth_subject_list > .right-list');
+            if(_finalList.length < 1) {
+                alert('회원을 선택 해주세요.');
+                return false;
+            }
+
+            if(confirm('선택 하시겠습니까?')) {
+                _finalList.each(function() {
+                    let _seq = $(this).attr('value');
+                    let _value = $(this).children('span').attr('value');
+                    $('#final_subject_list').append(`<span value="${_seq}">${_value}<span class="glyphicon glyphicon-remove" onclick="fnElementHandler(this, 0)"></span></span>`);
+                })
+
+                $('#modalContainer').addClass('hidden');
+            }
+        }
+
         // 사용자 조회
         let fnSearchUserList = () => {
             let _searchKeyword = $('input[name=searchKeyword]').val();
@@ -122,9 +146,8 @@
                 data: {searchKeyword: _searchKeyword}
             })
             .done(function(data) {
-                console.log(data);
-                $('#modalContainer').removeClass('hidden');
                 $('#user_list_wrapper').replaceWith(data);
+                $('#modalContainer').removeClass('hidden');
             })
             .fail(function(jqXHR) {
                 console.log(jqXHR);
@@ -136,12 +159,14 @@
             const tgtList = [];
             const authList = $('.auth-row');
             const userList = [];
-            userList.push("ijzone1");
-            userList.push("ijzone2");
-            userList.push("ijzone3");
+            $('#final_subject_list').find('span').each(function() {
+                if($(this).attr('value') != undefined) {
+                    userList.push($(this).attr('value'));
+                }
+            })
+            // userList.push("ijzone1");
 
             Array.from(authList).forEach(auth => {
-                // console.log(auth);
                 let data = {
                     menuCd: $(auth).find('input[name=_codeCd]').val()
                     , menuOrd: $(auth).find('input[name=_codeOrd]').val()
@@ -162,15 +187,16 @@
                 contentType: 'application/json; charset=UTF-8',
                 data: JSON.stringify(tgtList)
             })
-                .done(function (data) {
-                    alert(data.message);
-                    $('input[type=checkbox]').each(function () {
-                        this.checked = false;
-                    })
+            .done(function (data) {
+                alert(data.message);
+                $('input[type=checkbox]').each(function () {
+                    this.checked = false;
                 })
-                .fail(function (jqXHR) {
-                    console.log(jqXHR);
-                });
+                $('#final_subject_list').empty();
+            })
+            .fail(function (jqXHR) {
+                console.log(jqXHR);
+            });
         }
 
         // 체크박스 handler
@@ -220,6 +246,14 @@
                 $('#modalContainer').addClass('hidden');
             } else {
                 $('#modalContainer').removeClass('hidden');
+            }
+        }
+
+        // Element handler
+        let fnElementHandler = (t, f) => {
+            const _this = $(t);
+            if (f === 0) {
+                _this.parent('span').remove();
             }
         }
 

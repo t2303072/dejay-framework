@@ -41,20 +41,27 @@
     <select id="findAllUsers">
         /* 전체 사용자 조회 - MemberMapper.findAllUsers */
         WITH DEPT AS (
-            SELECT CODE_NM, CODE_CD
-            FROM INFO_COMMON_CD WHERE SUBSTRING(CODE_CD FROM 1 FOR 4) = 'DEPT' AND DEL_YN = 'N' AND USE_YN = 'Y'
+        SELECT CODE_NM, CODE_CD
+        FROM INFO_COMMON_CD WHERE SUBSTRING(CODE_CD FROM 1 FOR 4) = 'DEPT' AND DEL_YN = 'N' AND USE_YN = 'Y'
         )
-        SELECT USERS.USER_SEQ
-             , USERS.USER_ID
-             , USERS.USER_NM
-             , USERS.DEPT_CD
-             , USERS.APPOINT_CD
-             , USERS.POSITION_CD
-             , (SELECT CODE_NM FROM DEPT WHERE CODE_CD = USERS.DEPT_CD) AS DEPT_NM
-             , (SELECT CODE_NM FROM DEPT WHERE CODE_CD = USERS.APPOINT_CD) AS APPOINT_NM
-             , (SELECT CODE_NM FROM DEPT WHERE CODE_CD = USERS.POSITION_CD) AS POSITION_NM
-          FROM INFO_USER USERS
-         WHERE DEL_YN = 'N' AND USE_YN = 'Y'
+        SELECT A.* FROM (
+            SELECT USERS.USER_SEQ
+            , USERS.USER_ID
+            , USERS.USER_NM
+            , USERS.DEPT_CD
+            , USERS.APPOINT_CD
+            , USERS.POSITION_CD
+            , (SELECT CODE_NM FROM DEPT WHERE CODE_CD = USERS.DEPT_CD) AS DEPT_NM
+            , (SELECT CODE_NM FROM DEPT WHERE CODE_CD = USERS.APPOINT_CD) AS APPOINT_NM
+            , (SELECT CODE_NM FROM DEPT WHERE CODE_CD = USERS.POSITION_CD) AS POSITION_NM
+            FROM INFO_USER USERS
+            WHERE DEL_YN = 'N' AND USE_YN = 'Y'
+        ) A
+        <if test="searchWord1 != null and searchWord1 != ''">
+            <where>
+                A.USER_NM LIKE CONCAT('%', #{searchWord1}, '%') OR A.DEPT_NM LIKE CONCAT('%', #{searchWord1}, '%') OR A.POSITION_NM LIKE CONCAT('%', #{searchWord1}, '%')
+            </where>
+        </if>
     </select>
 
     <insert id="insertMember" useGeneratedKeys="true">
