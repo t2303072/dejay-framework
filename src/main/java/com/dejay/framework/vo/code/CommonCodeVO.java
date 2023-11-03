@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 
 @ToString
 @EqualsAndHashCode(of = {"codeSeq", "codeCd"}, callSuper = false)
-@NoArgsConstructor
 @AllArgsConstructor
 @Setter
 @Getter
@@ -25,8 +24,11 @@ public class CommonCodeVO {
     private String lastId;
     private int rowNum;
 
+    // [권한] 대상자 아이디(코드)
+    private String userId;
     // [권한] 메뉴 노출 여부
     private String displayUseYn;
+    private boolean displayable;
     // [권한] 저장
     private String authC;
     // [권한] 조회
@@ -43,4 +45,19 @@ public class CommonCodeVO {
     private String parentCodeCd;
     // 상위 메뉴 명
     private String parentCodeNm;
+
+    public CommonCodeVO() {
+        this.displayable = false;
+        this.displayUseYn = "N";
+        this.authC = "N";
+        this.authR = "N";
+        this.authU = "N";
+        this.authD = "N";
+        this.authF = "N";
+    }
+
+    public int isDisplayable() {
+        this.displayable = this.displayUseYn == "Y" ? true : false;
+        return 0;
+    }
 }

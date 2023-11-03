@@ -20,6 +20,15 @@
                AND MENU.MENU_ID = #{menuId}
     </select>
 
+    <select id="findDepartmentList">
+          SELECT CODE_SEQ, CODE_CD, CODE_NM
+            FROM INFO_COMMON_CD
+           WHERE SUBSTRING(CODE_CD FROM 1 FOR 6) = 'DEPT01'
+             AND USE_YN = 'Y'
+             AND DEL_YN = 'N'
+        ORDER BY CODE_CD
+    </select>
+
     <insert id="saveIndividualAuthority">
         /* 개인 권한 저장 - BoardMapper.saveIndividualAuthority */
         INSERT INTO INFO_MENU

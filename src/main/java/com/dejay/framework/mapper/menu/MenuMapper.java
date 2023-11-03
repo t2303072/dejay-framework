@@ -29,7 +29,7 @@ public interface MenuMapper extends GeneralMapper {
     List<MenuVO> findCommonMenuCodeList();
 
     // [공통 코드] 메뉴 조회
-    List<CommonCodeVO> findMenuList();
+    List<CommonCodeVO> findMenuList(String deptCd);
 
     // 메뉴에 대한 권한 여부 조회
     long findMenuSeqByUserId(Authority authority);

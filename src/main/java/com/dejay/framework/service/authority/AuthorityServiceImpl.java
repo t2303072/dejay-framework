@@ -17,8 +17,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Service
 public class AuthorityServiceImpl extends ParentService implements AuthorityService {
     @Override
-    public List<CommonCodeVO> findMenuList() {
-        List<CommonCodeVO> list = getCommonMapper().getMenuMapper().findMenuList();
+    public List<CommonCodeVO> findMenuList(String deptCd) {
+        List<CommonCodeVO> list = getCommonMapper().getMenuMapper().findMenuList(deptCd);
+        return list;
+    }
+
+    @Override
+    public List<CommonCodeVO> findDepartmentList() {
+        List<CommonCodeVO> list = getCommonMapper().getAuthorityMapper().findDepartmentList();
         return list;
     }
 
@@ -56,6 +62,42 @@ public class AuthorityServiceImpl extends ParentService implements AuthorityServ
         return result;
     }
 
+    @Override
+    public Map<String, Object> saveGroupAuthority(List<Authority> tgt) {
+        Map<String, Object> result = new HashMap<>();
+        result.put("code", 200);
+        result.put("message", "권한이 저장 완료 되었습니다.");
+
+        AtomicInteger saveCount = new AtomicInteger(0);
+
+        if(tgt.size() > 0) {
+            tgt.forEach(row -> {
+                if(isMenuAuthorityGranted(row)) {
+                    saveCount.addAndGet(getCommonMapper().getAuthorityMapper().updateIndividualAuthority(row));
+                }else {
+                    saveCount.addAndGet(getCommonMapper().getAuthorityMapper().saveIndividualAuthority(row));
+                }
+            });
+        }else {
+            result.put("code", 204);
+            result.put("message", "회원을 선택 해주세요.");
+
+            return result;
+        }
+
+        if(saveCount.get() < 1) {
+            result.put("code", 204);
+            result.put("message", "권한 등록에 실패했습니다.");
+        }
+
+        return result;
+    }
+
+    /**
+     * 권한 부여 여부 확인
+     * @param authority
+     * @return
+     */
     private boolean isMenuAuthorityGranted(Authority authority) {
         log.info(authority.toString());
         long menuSeq = getCommonMapper().getMenuMapper().findMenuSeqByUserId(authority);

@@ -38,8 +38,7 @@
                 </tr>
                 </thead>
                 <tbody id="authList" th:object="${code}">
-                <tr th:class="auth-row" th:if="${not #lists.isEmpty(list)}" th:each="row, stat : ${list}"
-                    th:value="${row.getCodeCd()}">
+                <tr th:class="auth-row" th:if="${not #lists.isEmpty(list)}" th:each="row, stat : ${list}" th:value="${row.getCodeCd()}">
                     <input type="hidden" name="_codeCd" th:value="${row.getCodeCd()}">
                     <input type="hidden" name="_codeOrd" th:value="${row.getCodeOrd()}">
                     <td th:text="${row.getRowNum()}"></td>
