@@ -119,15 +119,17 @@ public class BoardPublicServiceImpl extends ParentService implements BoardServic
      * 검색 날짜 범위 조회
      * @return list {@link List}
      */
-    public List<SelectOptionVO> getSearchDateRangeOptionList() {
+    public List<SelectOptionVO> getSearchDateRangeOptionList(String listType) {
         var list = new ArrayList<SelectOptionVO>();
         list.add(new SelectOptionVO(0, "ALL", "전체"));
+
+        if(listType.equalsIgnoreCase("APPROVE")) {
+            list.add(new SelectOptionVO(0, "REG_DT", "작성일"));
+            list.add(new SelectOptionVO(0, "COMPLETED", "완료일"));
+
+            return list;
+        }
         list.add(new SelectOptionVO(0, "REG_DT", "등록일"));
-//        list.add(new SelectOptionVO("WEEK", "1 week"));
-//        list.add(new SelectOptionVO("ONE", "1 month"));
-//        list.add(new SelectOptionVO("THREE", "3 months"));
-//        list.add(new SelectOptionVO("SIX", "6 months"));
-//        list.add(new SelectOptionVO("YEAR", "1 year"));
 
         return list;
     }
@@ -141,10 +143,6 @@ public class BoardPublicServiceImpl extends ParentService implements BoardServic
         list.add(new SelectOptionVO(0, "ALL", "전체"));
         list.add(new SelectOptionVO(0, "TITLE", "제목"));
         list.add(new SelectOptionVO(0, "REG_ID", "등록자"));
-//        list.add(new SelectOptionVO("SEQ", "게시글 번호"));
-//        list.add(new SelectOptionVO("TITLE", "제목"));
-//        list.add(new SelectOptionVO("CONTENTS", "내용"));
-//        list.add(new SelectOptionVO("REG_ID", "등록자"));
 
         return list;
     }

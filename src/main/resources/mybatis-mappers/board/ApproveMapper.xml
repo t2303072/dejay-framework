@@ -2,11 +2,7 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.dejay.framework.mapper.board.BoardMapper">
-
-    <!-- 공통 [[ -->
-
-    <!-- column [[ -->
+<mapper namespace="com.dejay.framework.mapper.board.ApproveMapper">
 
     <sql id = "boardColumn">
         ${alias}BOARD_SEQ, ${alias}BOARD_CD
@@ -22,31 +18,17 @@
         , ${alias}REG_DT, ${alias}REG_ID
     </sql>
 
-
-    <!-- column ]] -->
-
-    <!-- whereClause [[ -->
-
     <sql id = "whereClause">
-        AND BP.DEL_YN = 'N'
-        <if test="boardCd != null and boardCd != '' ">
-            AND ${alias}BOARD_CD = #{boardCd}
-        </if>
+        AND ${alias}DEL_YN = 'N'
         <if test="boardSeq != null and boardSeq != '' ">
             AND ${alias}BOARD_SEQ = #{boardSeq}
         </if>
-        <if test="fixYn != null and fixYn != '' ">
-            AND ${alias}FIX_YN = #{fixYn}
-        </if>
-        <if test="displayYn != null and displayYn != '' ">
-            AND  ${alias}DISPLAY_YN = #{displayYn}
+        <if test="boardCd != null and boardCd != '' ">
+            AND ${alias}BOARD_CD = #{boardCd}
         </if>
         <if test="(startDt != null and startDt != '') and (endDt != null and endDt != '')">
             <if test="searchDateType == 'REG_DT'">
                 AND ${alias}REG_DT BETWEEN DATE(#{startDt}) AND DATE(#{endDt})+1
-            </if>
-            <if test="searchDateType == ''">
-
             </if>
         </if>
         <if test="searchWord1 != null and searchWord1 != ''">
@@ -57,6 +39,9 @@
                 <when test="searchKeywordType == 'REG_ID'">
                     AND LOWER(${alias}REG_ID) LIKE LOWER(CONCAT('%', #{searchWord1}, '%'))
                 </when>
+                <otherwise>
+                    AND (LOWER(${alias}TITLE) LIKE LOWER(CONCAT('%', #{searchWord1}, '%')) OR LOWER(${alias}REG_ID) LIKE LOWER(CONCAT('%', #{searchWord1}, '%')))
+                </otherwise>
             </choose>
         </if>
     </sql>
@@ -64,9 +49,7 @@
     <sql id = "whereClauseSeq">
             AND ${alias}BOARD_SEQ = #{boardSeq}
     </sql>
-    <!-- whereClause ]] -->
 
-    <!-- orderClause [[ -->
     <sql id="orderClause">
         ORDER BY
         <choose>
@@ -80,91 +63,33 @@
             <otherwise>DESC</otherwise>
         </choose>
     </sql>
-    <!-- orderClause ]] -->
-    <!-- 공통 ]] -->
 
 
     <!-- 조회 [[ -->
 
-    <select id="pagingCountBySearch" resultType="Integer" parameterType="BoardSearchVO">
-        /* 게시판 총 개수 조회 - BoarderMapper.pagingCountBySearch */
-        SELECT COUNT(*)
-        FROM BOARD BD
-        <where>
-            <include refid="whereClause"><property name="alias" value="BD."/></include>
-        </where>
-
-    </select>
-
-    <select id="pagingBySearch"  resultType="BoardVO" parameterType="BoardSearchVO">
-        /*게시판 페이징 조회 - BoarderMapper.pagingBySearch */
-        SELECT
-            <include refid="boardColumn"><property name="alias" value="BD."/></include>
-            ,MAX(ENTITY.REG_DTTM) AS REG_DTTM , REG_ID
-        FROM BOARD BD
-        INNER JOIN ENTITY_LOG ENTITY
-                ON BD.BOARD_SEQ = ENTITY.LOG_ID1
-        <where>
-            <include refid="whereClause"><property name="alias" value="BD."/></include>
-            AND ENTITY.ENTITY_NAME = #{entityName}
-            <if test="searchWord1 != null and searchWord1 != '' ">
-                <choose>
-                    <when test="type1 eq 'ti'">AND BD.TITLE LIKE CONCAT('%', #{searchWord1}, '%')</when>
-                    <when test="type1 eq 'ct'">AND BD.CONTENTS LIKE CONCAT('%', #{searchWord1}, '%')</when>
-                    <when test="type1 eq 're'">AND ENTITY.REG_ID LIKE CONCAT('%', #{searchWord1}, '%')</when>
-                    <when test="type1 == null or type1 eq '' ">AND ( BD.TITLE LIKE CONCAT('%', #{searchWord1}, '%') OR BD.CONTENTS LIKE CONCAT('%', #{searchWord1}, '%')  OR ENTITY.REG_ID LIKE CONCAT('%', #{searchWord1}, '%'))</when>
-                    <otherwise></otherwise>
-                </choose>
-            </if>
-        </where>
-        GROUP BY BOARD_SEQ
-        <include refid="orderClause"><property name="alias" value="BD."/></include>
-        <if test="paging.displayRow > 0">
-            LIMIT #{paging.offset} , #{paging.displayRow}
-        </if>
-
-    </select>
-
-    <select id="rowBySearch" resultType="BoardVO" parameterType="BoardSearchVO">
-        /*게시판 단 건 조회 - BoarderMapper.pagingBySearch */
-        SELECT
-            <include refid="boardColumn"><property name="alias" value="BD."/></include>
-            ,MAX(ENTITY.REG_DTTM) AS REG_DTTM , REG_ID
-        FROM BOARD BD
-        INNER JOIN ENTITY_LOG ENTITY
-                ON BD.BOARD_SEQ = ENTITY.LOG_ID1
-        <where>
-            <include refid="whereClauseSeq"><property name="alias" value="BD."/></include>
-            AND ENTITY.ENTITY_NAME = #{entityName}
-        </where>
-        GROUP BY BOARD_SEQ
-    </select>
-
-    <select id="boardFileSearch" resultType="FileVO" parameterType="BoardSearchVO">
-        SELECT FE.*
-        FROM BOARD BD
-                 INNER JOIN FILE FE
-                            ON BD.BOARD_SEQ = FE.ENTITY_SEQ
-        WHERE
-            FE.ENTITY_SEQ = #{boardSeq}
-          AND FE.ENTITY_NAME IN('BOARD')
-    </select>
-
     <select id="findAllTotalCount" resultType="int">
-        /*게시판 목록 갯수 조회 - BoarderMapper.findAllTotalCount */
-          SELECT COUNT(1)
-            FROM BOARD_PUBLIC BP
+        /*게시판 목록 갯수 조회 - ApproveMapper.findAllTotalCount */
+            SELECT COUNT(1)
+              FROM BOARD_PUBLIC BP
+        INNER JOIN INFO_APPROVE IA
+                ON BP.BOARD_SEQ = IA.BOARD_SEQ
         <where>
-            <include refid="whereClause"><property name="alias" value="BP."/></include>
+               AND BP.BOARD_CD = #{boardCd}
+               <include refid="whereClause"><property name="alias" value="BP."/></include>
         </where>
     </select>
 
     <select id="findAll" resultType="BoardPublicVO">
         /*게시판 목록 조회 - BoarderMapper.findAll */
-          SELECT <include refid="boardColumn"><property name="alias" value="BP."/></include>
-            FROM BOARD_PUBLIC BP
+            SELECT <include refid="boardColumn"><property name="alias" value="BP."/></include>
+                 , IA.APPROVE_STATE
+                 , ROW_NUMBER() OVER(ORDER BY BP.REG_DT DESC) AS ROW_NUM
+              FROM BOARD_PUBLIC BP
+        INNER JOIN INFO_APPROVE IA
+                ON BP.BOARD_SEQ = IA.BOARD_SEQ
         <where>
-            <include refid="whereClause"><property name="alias" value="BP."/></include>
+               AND BP.BOARD_CD = 'MENU0201'
+               <include refid="whereClause"><property name="alias" value="BP."/></include>
         </where>
         GROUP BY BOARD_SEQ
         <include refid="orderClause"><property name="alias" value="BP."/></include>

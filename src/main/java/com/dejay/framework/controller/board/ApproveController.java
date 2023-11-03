@@ -1,7 +1,6 @@
 package com.dejay.framework.controller.board;
 
 import com.dejay.framework.common.utils.ObjectHandlingUtil;
-import com.dejay.framework.common.utils.StringUtil;
 import com.dejay.framework.controller.common.ParentController;
 import com.dejay.framework.domain.board.Board;
 import com.dejay.framework.domain.board.BoardPublic;
@@ -13,13 +12,11 @@ import com.dejay.framework.vo.file.FilePublicVO;
 import com.dejay.framework.vo.search.SearchVO;
 import com.dejay.framework.vo.search.board.BoardSearchVO;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -30,13 +27,13 @@ import java.util.Map;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/board")
-public class BoardController extends ParentController {
+@RequestMapping("/approve")
+public class ApproveController extends ParentController {
 
     // [검색옵션] 날짜
     @ModelAttribute("searchDateRangeOptionList")
     public List<SelectOptionVO> searchDateRangeOptionList() {
-        return getCommonService().getBoardPublicServiceImpl().getSearchDateRangeOptionList(new String());
+        return getCommonService().getBoardPublicServiceImpl().getSearchDateRangeOptionList("APPROVE");
     }
 
     // [검색옵션] 키워드
@@ -45,29 +42,37 @@ public class BoardController extends ParentController {
         return getCommonService().getBoardPublicServiceImpl().getSearchKeywordTypeList();
     }
 
+    // [검색옵션] 진행상태
+    @ModelAttribute("searchStateTypeOptionList")
+    public List<SelectOptionVO> searchStateTypeOptionList() {
+        return getCommonService().getApproveService().getSearchStateTypeOptionList();
+    }
+
     /**
-     * 공통 게시판 목록 조회
+     * 결제 발신함 화면 조회
      * @param mv
      * @return
      */
     @GetMapping({"", "/"})
     public ModelAndView findAll(ModelAndView mv) {
-        mv.setViewName("board/list");
+        mv.setViewName("board/approve-list");
 
         // TODO: [노출 게시물 갯수 옵션 하드코딩 제거]
-        // 전체 게시물 수
-        int totalCount = getCommonService().getBoardPublicServiceImpl().totalCount(null);
-        mv.addObject("totalCount", totalCount);
 
         BoardSearchVO boardSearchVO = new BoardSearchVO();
+        boardSearchVO.setBoardCd("MENU0201");
         boardSearchVO.setPaging(Paging.builder()
                 .currentPage(1)
                 .displayRow(10)
                 .build()
         );
 
+        // 전체 게시물 수
+        int totalCount = getCommonService().getApproveService().totalCount(boardSearchVO);
+        mv.addObject("totalCount", totalCount);
+
         // 목록 조회
-        List<BoardPublicVO> list = getCommonService().getBoardPublicServiceImpl().findAll(boardSearchVO);
+        List<BoardPublicVO> list = getCommonService().getApproveService().findAll(boardSearchVO);
         mv.addObject("list", list);
 
         // paging
@@ -84,7 +89,7 @@ public class BoardController extends ParentController {
     }
 
     /**
-     * 공통 게시판 상세 화면
+     * TODO 공통 게시판 상세 화면
      * @param mv
      * @param seq
      * @return
@@ -108,7 +113,7 @@ public class BoardController extends ParentController {
     }
 
     /**
-     * 공통 게시판 등록 화면
+     * TODO 공통 게시판 등록 화면
      * @param mv
      * @return
      */
@@ -120,7 +125,7 @@ public class BoardController extends ParentController {
     }
 
     /**
-     * 공통 게시판 수정 화면
+     * TODO 공통 게시판 수정 화면
      * @param mv
      * @param seq
      * @return
@@ -143,7 +148,7 @@ public class BoardController extends ParentController {
 
     /** API **/
     /**
-     * 공통 게시판 목록 조회 API
+     * 결제 발신 목록 조회 API
      * @param model
      * @param paramMap
      * @return
@@ -153,6 +158,7 @@ public class BoardController extends ParentController {
         ObjectMapper om = new ObjectMapper();
         BoardSearchVO boardSearchVO = om.convertValue(paramMap.get("boardPublicVO"), BoardSearchVO.class);
         Paging pagingParam = om.convertValue(paramMap.get("paging"), Paging.class);
+        boardSearchVO.setBoardCd("MENU0201");
         boardSearchVO.setPaging(Paging.builder()
                 .currentPage(pagingParam.getCurrentPage())
                 .displayRow(pagingParam.getDisplayRow())
@@ -161,12 +167,12 @@ public class BoardController extends ParentController {
         );
 
         // 전체 게시물 수
-        int totalListCount = getCommonService().getBoardPublicServiceImpl().totalCount(boardSearchVO);
+        int totalListCount = getCommonService().getApproveService().totalCount(boardSearchVO);
 
         model.addAttribute("totalCount", totalListCount);
 //
 //        // 목록 조회
-        List<BoardPublicVO> list = getCommonService().getBoardPublicServiceImpl().findAll(boardSearchVO);
+        List<BoardPublicVO> list = getCommonService().getApproveService().findAll(boardSearchVO);
         model.addAttribute("list", list);
 
         // paging
@@ -177,11 +183,11 @@ public class BoardController extends ParentController {
                 .build();
         model.addAttribute("paging", paging);
 
-        return "board/list :: #list_wrapper";
+        return "board/approve-list :: #list_wrapper";
     }
 
     /**
-     * 공통 게시판 등록 API
+     * TODO 공통 게시판 등록 API
      * @param model
      * @param boardPublic
      * @return
@@ -195,7 +201,7 @@ public class BoardController extends ParentController {
     }
 
     /**
-     * 공통 게시판 수정 API
+     * TODO 공통 게시판 수정 API
      * @param model
      * @param board
      * @return
@@ -212,7 +218,7 @@ public class BoardController extends ParentController {
     }
 
     /**
-     * 공통 게시판 삭제 API
+     * TODO 공통 게시판 삭제 API
      * @param model
      * @param lastId
      * @param checkedList
@@ -228,7 +234,7 @@ public class BoardController extends ParentController {
     }
 
     /**
-     * 공통 게시판 댓글 삭제 API
+     * TODO 공통 게시판 댓글 삭제 API
      * @param model
      * @param paramMap
      * @return

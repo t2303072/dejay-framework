@@ -31,4 +31,6 @@ public class BoardSearchVO extends SearchVO{
     private String searchDateType;
     // 검색 키워드 유형
     private String searchKeywordType;
+    // [결제] 진행 상태
+    private String approveState;
 }

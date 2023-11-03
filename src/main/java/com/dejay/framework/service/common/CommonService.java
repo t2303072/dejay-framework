@@ -1,6 +1,7 @@
 package com.dejay.framework.service.common;
 
 import com.dejay.framework.service.authority.AuthorityService;
+import com.dejay.framework.service.board.ApproveService;
 import com.dejay.framework.service.board.BoardPublicServiceImpl;
 import com.dejay.framework.service.board.BoardService;
 import com.dejay.framework.service.code.CodeService;
@@ -30,4 +31,5 @@ public class CommonService {
     private final FilePublicServiceImpl fileServiceImpl;
     private final MailService mailService;
     private final RecordService recordService;
+    private final ApproveService approveService;
 }
