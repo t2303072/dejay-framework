@@ -177,11 +177,7 @@
                 data: JSON.stringify(tgtList)
             })
             .done(function (data) {
-                debugger;
                 alert(data.message);
-                // $('input[type=checkbox]').each(function () {
-                //     this.checked = false;
-                // })
             })
             .fail(function (jqXHR) {
                 console.log(jqXHR);
