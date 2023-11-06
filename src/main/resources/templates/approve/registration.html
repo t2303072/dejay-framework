@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:input="http://www.w3.org/1999/html"
+      layout:decorate="~{layout/layout}" lang="ko">
+
+<th:block layout:fragment="css">
+  <head>
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/board/common.css}"/>
+    <title>전자결재 작성</title>
+  </head>
+</th:block>
+
+<th:block layout:fragment="content">
+  <div id="main_wrapper">
+    <h1>전자결재 작성</h1>
+  </div>
+
+  <form id="form" th:action="@{/board/registration}" th:object="${boardPublic}" method="post" enctype="multipart/form-data">
+    <div id="content_wrapper">
+      <div id="info_wrapper" class="bg-secondary p-sm-2">
+        <p>
+          <span>작성자</span>
+          <span>name</span>
+        </p>
+        <p>
+          <span>제목<span class="glyphicon-asterisk"></span></span>
+          <span><input type="text" th:field="*{title}"></span>
+        </p>
+        <p>
+          <span>썸네일 이미지</span>
+          <span>THUMBNAIL IMAGE</span>
+        </p>
+      </div>
+      <div id="detail_wrapper" class="p-sm-2">
+        <textarea th:field="*{contents}"></textarea>
+      </div>
+      <div id="file_wrapper">
+        <div id="data-files">
+
+        </div>
+        <div>
+          <label for="files" >파일 추가</label>
+          <input type="file" id="files" name="files" onchange="addFile()" style="display:none" multiple>
+        </div>
+      </div>
+      <div id="button_wrapper">
+        <input type="button" th:value="취소" th:onclick="fnBoardList()" />
+        <input type="button" th:value="저장" th:onclick="fnRegistrationBoard()" />
+      </div>
+    </div>
+    <input type="hidden" th:field="*{regId}">
+    <input type="hidden" th:field="*{boardCd}">
+  </form>
+</th:block>
+<th:block layout:fragment="script">
+  <script th:inline="javascript">
+
+  </script>
+</th:block>
+</html>
