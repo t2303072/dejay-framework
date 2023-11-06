@@ -31,11 +31,6 @@ import java.util.Map;
 @Component
 public class ApproveServiceImpl extends ParentService implements ApproveService {
 
-    /**
-     * 게시판 다 건 조회
-     * @param boardSearchVO
-     * @return list {@link List}
-     */
     @Override
     public List<BoardPublicVO> findAll(BoardSearchVO boardSearchVO) {
         int totalCount = this.totalCount(boardSearchVO);
@@ -73,14 +68,31 @@ public class ApproveServiceImpl extends ParentService implements ApproveService 
         return list;
     }
 
-
-    /**
-     * 결제 게시판 전체 게시물 수 조회
-     * @param boardSearchVO {@link BoardSearchVO}
-     * @return {@link Integer}
-     */
     public int totalCount(BoardSearchVO boardSearchVO) {
         return getCommonMapper().getApproveMapper().findAllTotalCount(boardSearchVO);
+    }
+
+    @Override
+    public Map<String, Object> deleteBySeq(String lastId, List<Integer> tgtList) {
+        // TODO 삭제 처리 전 해당 시퀀스 조회
+        var result = new HashMap<String, Object>();
+        result.put("code", 200);
+
+        var paramMap = new HashMap<String, Object>();
+        paramMap.put("lastId", lastId);
+        paramMap.put("boardSeqList", tgtList);
+        int deleteCount = getCommonMapper().getBoardMapper().deleteList(paramMap);
+        if(deleteCount < 1) {
+            result.put("code", 204);
+            result.put("message", "삭제할 대상이 없습니다.");
+            return result;
+        }
+        paramMap.put("seqList",tgtList); // 파일 입출력을 위한 seqList Setting
+        getCommonMapper().getFileMapper().deleteFileList(paramMap);
+        result.put("message", "삭제 되었습니다.");
+
+
+        return result;
     }
 
 }

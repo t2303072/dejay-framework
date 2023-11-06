@@ -53,9 +53,9 @@ public class ApproveController extends ParentController {
      * @param mv
      * @return
      */
-    @GetMapping({"", "/"})
+    @GetMapping("/request")
     public ModelAndView findAll(ModelAndView mv) {
-        mv.setViewName("board/approve-list");
+        mv.setViewName("board/approve-request-list");
 
         // TODO: [노출 게시물 갯수 옵션 하드코딩 제거]
 
@@ -118,10 +118,11 @@ public class ApproveController extends ParentController {
      * @return
      */
     @GetMapping("/registration")
-    public String registration(ModelAndView mv, BoardPublic boardPublic) {
-        mv.setViewName("board/registration");
+    public ModelAndView registration(ModelAndView mv, BoardPublic boardPublic) {
+        mv.setViewName("approve/registration");
         mv.addObject("boardPublic", boardPublic);
-        return "board/registration";
+
+        return mv;
     }
 
     /**
@@ -183,7 +184,7 @@ public class ApproveController extends ParentController {
                 .build();
         model.addAttribute("paging", paging);
 
-        return "board/approve-list :: #list_wrapper";
+        return "board/approve-request-list :: #list_wrapper";
     }
 
     /**
@@ -218,7 +219,7 @@ public class ApproveController extends ParentController {
     }
 
     /**
-     * TODO 공통 게시판 삭제 API
+     * 공통 게시판 삭제 API
      * @param model
      * @param lastId
      * @param checkedList
@@ -227,7 +228,7 @@ public class ApproveController extends ParentController {
     @ResponseBody
     @DeleteMapping("/api/delete")
     public ResponseEntity deleteBoard(Model model, @RequestParam(value = "lastId") String lastId, @RequestParam(value = "checkedList[]") List<Integer> checkedList) {
-        Map<String, Object> result = getCommonService().getBoardPublicServiceImpl().deleteBySeq(lastId, checkedList);
+        Map<String, Object> result = getCommonService().getApproveService().deleteBySeq(lastId, checkedList);
 
         getCommonService().getFileServiceImpl().deleteFiles(lastId, checkedList);
         return ResponseEntity.ok(result);

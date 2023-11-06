@@ -11,6 +11,7 @@ import com.dejay.framework.vo.search.SearchVO;
 import com.dejay.framework.vo.search.board.BoardSearchVO;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ApproveService {
 
@@ -33,4 +34,12 @@ public interface ApproveService {
      * @return
      */
     List<SelectOptionVO> getSearchStateTypeOptionList();
+
+    /**
+     * 결재 게시물 삭제
+     * @param lastId
+     * @param tgtList
+     * @return
+     */
+    Map<String, Object> deleteBySeq(String lastId, List<Integer> tgtList);
 }

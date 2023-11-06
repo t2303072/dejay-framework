@@ -30,6 +30,9 @@
             <if test="searchDateType == 'REG_DT'">
                 AND ${alias}REG_DT BETWEEN DATE(#{startDt}) AND DATE(#{endDt})+1
             </if>
+            <if test="searchDateType == 'COMPLETED'">
+                AND ${alias}LAST_DT BETWEEN DATE(#{startDt}) AND DATE(#{endDt})+1
+            </if>
         </if>
         <if test="searchWord1 != null and searchWord1 != ''">
             <choose>
@@ -76,6 +79,9 @@
         <where>
                AND BP.BOARD_CD = #{boardCd}
                <include refid="whereClause"><property name="alias" value="BP."/></include>
+           <if test="approveState != null and approveState != '' and approveState != 'ALL'">
+               AND IA.APPROVE_STATE = #{approveState}
+           </if>
         </where>
     </select>
 
@@ -90,6 +96,9 @@
         <where>
                AND BP.BOARD_CD = 'MENU0201'
                <include refid="whereClause"><property name="alias" value="BP."/></include>
+           <if test="approveState != null and approveState != '' and approveState != 'ALL'">
+               AND IA.APPROVE_STATE = #{approveState}
+           </if>
         </where>
         GROUP BY BOARD_SEQ
         <include refid="orderClause"><property name="alias" value="BP."/></include>
