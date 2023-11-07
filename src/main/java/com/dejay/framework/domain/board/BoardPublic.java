@@ -4,6 +4,8 @@ import com.dejay.framework.domain.common.BaseEntity;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @NoArgsConstructor
 public class BoardPublic {
@@ -33,8 +35,14 @@ public class BoardPublic {
     // 수정자 ID
     private String lastId;
 
+    // 결재자 목록
+    private List<Long> approverList;
+
+    // 참조자 목록
+    private List<Long> referrerList;
+
     @Builder
-    public BoardPublic(Long boardSeq, String boardCd, @NotNull(message = "제목은 필수값 입니다.") String title, String contents, String hits, String delYn, String regId, String lastId) {
+    public BoardPublic(Long boardSeq, String boardCd, @NotNull(message = "제목은 필수값 입니다.") String title, String contents, String hits, String delYn, String regId, String lastId, List<Long> approverList, List<Long> referrerList) {
         this.boardSeq = boardSeq;
         this.boardCd = boardCd;
         this.title = title;
@@ -43,5 +51,7 @@ public class BoardPublic {
         this.delYn = delYn;
         this.regId = regId;
         this.lastId = lastId;
+        this.approverList = approverList;
+        this.referrerList = referrerList;
     }
 }

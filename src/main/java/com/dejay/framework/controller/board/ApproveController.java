@@ -7,10 +7,12 @@ import com.dejay.framework.domain.board.BoardPublic;
 import com.dejay.framework.domain.common.Paging;
 import com.dejay.framework.vo.board.BoardPublicVO;
 import com.dejay.framework.vo.board.BoardReplyVO;
+import com.dejay.framework.vo.code.CommonCodeVO;
 import com.dejay.framework.vo.common.SelectOptionVO;
 import com.dejay.framework.vo.file.FilePublicVO;
 import com.dejay.framework.vo.search.SearchVO;
 import com.dejay.framework.vo.search.board.BoardSearchVO;
+import com.dejay.framework.vo.user.UserVO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -113,7 +116,7 @@ public class ApproveController extends ParentController {
     }
 
     /**
-     * TODO 공통 게시판 등록 화면
+     * 전자결제 작성 화면
      * @param mv
      * @return
      */
@@ -121,6 +124,12 @@ public class ApproveController extends ParentController {
     public ModelAndView registration(ModelAndView mv, BoardPublic boardPublic) {
         mv.setViewName("approve/registration");
         mv.addObject("boardPublic", boardPublic);
+
+        // 메뉴 목록 조회
+        List<CommonCodeVO> list = getCommonService().getAuthorityService().findMenuList(new String());
+        mv.addObject("list", list);
+//        mv.addObject("code", new CommonCodeVO());
+        mv.addObject("users", new ArrayList<UserVO>());
 
         return mv;
     }
@@ -196,7 +205,7 @@ public class ApproveController extends ParentController {
     @ResponseBody
     @PostMapping("/api/registration")
     public ResponseEntity registration(Model model, @RequestPart(value="data") BoardPublic boardPublic, @RequestPart(value="files",required = false) List<MultipartFile> files) throws Exception {
-        Map<String, Object> result = getCommonService().getBoardPublicServiceImpl().registration(boardPublic, files);
+        Map<String, Object> result = null;//getCommonService().getBoardPublicServiceImpl().registration(boardPublic, files);
 
         return ResponseEntity.ok(result);
     }
